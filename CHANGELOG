@@ -1,0 +1,18 @@
+== SVN
+
+* Allow specifying the input name/label when doing a select (Patch from David Chelimsky)
+* Raise a specific exception if the developer tries to manipulate form elements before loading a page (Patch from James Deville)
+* Add basic support for Rails-generated JavaScript link tags
+* Ensure Rails-style checkboxes work properly (checkboxes followed by a hidden input with the same name)
+* Add support for alternate POST, PUT and DELETE link clicking (Patch from Kyle Hargraves)
+* Add support for checkboxes (Patches from Kyle Hargraves and Jarkko Laine)
+* Improve matching for labels in potentially ambiguous cases
+* Add support for textarea fields (Patch from Sacha Schlegel)
+* Fix Edge Rails (a.k.a. 2.0 RC) compatibility (Patch from David Chelimsky)
+* Support param hashes nested more than one level (Patch from David Chelimsky)
+
+== 0.1.0 / 2007-11-28
+
+* 1 major enhancement
+  * Birthday!
+

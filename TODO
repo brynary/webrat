@@ -1,0 +1,5 @@
+Option button support
+Full support for multiple forms on a page
+Track the current form based on the location of the last manipulated input, use this as a default for clicks_button
+Make current_url work with redirections
+Support for a hash mapping page names to page URLs
