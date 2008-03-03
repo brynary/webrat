@@ -139,6 +139,18 @@ module ActionController
           add_form_data(input, input.attributes["value"])
         end
       end
+
+      # Verifies that an input radio button exists on the current page and marks it
+      # as checked, so that the value will be submitted with the form.
+      #
+      # Example:
+      #   chooses 'First Option'
+      def chooses(field)
+        radio = find_field_by_name_or_label(field)
+        return flunk("Could not find radio button #{field.inspect}") if radio.nil?
+        return flunk("Input #{radio.inspect} is not a radio button") unless radio.attributes['type'] == 'radio'
+        add_form_data(radio, radio.attributes["value"] || "on")
+      end        
       
       # Verifies that a submit button exists for the form, then submits the form, follows
       # any redirects, and verifies the final page was successful.
@@ -158,6 +170,21 @@ module ActionController
       
       def submits_form(form_id = nil) # :nodoc:
       end
+      
+      # Saves the currently loaded page out to RAILS_ROOT/tmp/ and opens it in the default
+      # web browser if on OS X. Useful for debugging.
+      # 
+      # Example:
+      #   save_and_open_page
+      def save_and_open_page
+        return unless File.exist?(RAILS_ROOT + "/tmp")
+        
+        filename = "webrat-#{Time.now.to_i}.html" 
+     	  File.open(RAILS_ROOT + "/tmp/#{filename}", "w") do |f| 
+     	    f.write response.body 
+     	  end 
+     	  `open tmp/#{filename}`
+     	end
     
     protected # Methods you could call, but probably shouldn't
     
@@ -222,7 +249,7 @@ module ActionController
       
       def find_button(value = nil) # :nodoc:
         return nil unless value
-        submit_buttons.detect { |el| el.attributes["value"] == value }
+        submit_buttons.detect { |el| el.attributes["value"] =~ /^\W*#{value}\b/i }
       end
       
       def add_form_data(input_element, value) # :nodoc:
@@ -269,7 +296,12 @@ module ActionController
         debug_log "REQUESTING PAGE: #{method.to_s.upcase} #{url} with #{data.inspect}"
         @current_url = url
         self.send "#{method}_via_redirect", @current_url, data || {}
-        assert_response :success
+        
+        if response.body =~ /Exception caught/ || response.body.blank? 
+          save_and_open_page
+       	end
+       	
+       	assert_response :success
         reset_dom
       end
       
@@ -343,7 +375,8 @@ module ActionController
       def add_default_params_for(form) # :nodoc:
         add_default_params_from_inputs_for(form)
         add_default_params_from_checkboxes_for(form)
-        add_default_params_from_textateas_for(form)
+        add_default_params_from_radio_buttons_for(form)
+        add_default_params_from_textareas_for(form)
       end
       
       def add_default_params_from_inputs_for(form) # :nodoc:
@@ -362,7 +395,16 @@ module ActionController
         end
       end
       
-      def add_default_params_from_textateas_for(form) # :nodoc:
+      def add_default_params_from_radio_buttons_for(form) # :nodoc:
+        (form / "input").each do |input|
+          next if input.attributes["type"] != "radio"
+          if input.attributes["checked"] == "checked"
+            add_form_data(input, input.attributes["value"])
+          end
+        end
+      end
+      
+      def add_default_params_from_textareas_for(form) # :nodoc:
         (form / "textarea").each do |input|
           add_form_data(input, input.inner_html)
         end

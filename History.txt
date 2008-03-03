@@ -1,6 +1,8 @@
 == SVN
 
-* Fix bad reference to #select method in README (Patch from Luke Melia)
+* Add save_and_open_page to aid in debugging
+* Add radio button support via #chooses method
+* Docfix: bad reference to #select method in README (Patch from Luke Melia)
 * Allow specifying the input name/label when doing a select (Patch from David Chelimsky)
 * Raise a specific exception if the developer tries to manipulate form elements before loading a page (Patch from James Deville)
 * Add basic support for Rails-generated JavaScript link tags

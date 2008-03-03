@@ -5,7 +5,8 @@ class ClicksButtonTest < Test::Unit::TestCase
     @session = ActionController::Integration::Session.new
     @session.stubs(:assert_response)
     @session.stubs(:get_via_redirect)
-    @session.stubs(:response).returns(@response=mock)
+    @response = mock
+    @session.stubs(:response).returns(@response)
   end
   
   def test_should_fail_if_no_buttons
@@ -155,6 +156,20 @@ class ClicksButtonTest < Test::Unit::TestCase
       </form>
     EOS
     @session.expects(:get_via_redirect).with("/login", "user" => {"tos" => "1"})
+    @session.clicks_button
+  end
+  
+  def test_should_send_default_radio_options
+    @response.stubs(:body).returns(<<-EOS)
+      <form method="get" action="/login">
+        <input id="user_gender_male" name="user[gender]" type="radio" value="M" />
+        <label for="user_gender_male">Male</label>
+        <input id="user_gender_female" name="user[gender]" type="radio" value="F" checked="checked" />
+        <label for="user_gender_female">Female</label>
+        <input type="submit" />
+      </form>
+    EOS
+    @session.expects(:get_via_redirect).with("/login", "user" => {"gender" => "F"})
     @session.clicks_button
   end
   
