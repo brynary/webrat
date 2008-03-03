@@ -1,8 +1,7 @@
 = Webrat - Ruby Acceptance Testing for Web applications
 
-by Bryan Helmkamp <bryan@brynary.com> and Seth Fitzsimmons <seth@mojodna.net>.
-
-Initial development sponsored by EastMedia (http://www.eastmedia.com).
+* mailto:bryan@brynary.com
+* mailto:seth@mojodna.net
 
 == DESCRIPTION:
 
@@ -19,13 +18,15 @@ that may make it a requirement for your project. If JavaScript is not central
 to your application, Webrat is a simpler, effective solution that will let you
 run your tests much faster and more frequently. (Benchmarks forthcoming.)
 
+Initial development was sponsored by EastMedia (http://www.eastmedia.com).
+
 == SYNOPSIS:
 
   def test_sign_up
     visits "/"
     clicks_link "Sign up"
     fills_in "Email", :with => "good@example.com"
-    select "Free account"
+    selects "Free account"
     clicks_button "Register"
     ...
   end
