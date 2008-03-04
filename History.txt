@@ -1,5 +1,6 @@
 == Trunk
 
+* Serialize empty text field values just like browsers (Patch from Kamal Fariz Mahyuddi)
 * Added clicks_link_within(selector, link_text), allowing restricting link search 
 to within a given css selector (Path from Luke Melia)
 * Change clicks_link to find the shortest matching link (Patch from Luke Melia)

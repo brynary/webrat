@@ -54,7 +54,7 @@ class FillsInTest < Test::Unit::TestCase
       </form>
     EOS
     
-    @session.expects(:post_via_redirect).with("/login", "user" => {"mail2" => "value"})
+    @session.expects(:post_via_redirect).with("/login", "user" => {"mail1" => "", "mail2" => "value"})
     @session.fills_in "Some", :with => "value"
     @session.clicks_button
   end
@@ -70,7 +70,7 @@ class FillsInTest < Test::Unit::TestCase
       </form>
     EOS
     
-    @session.expects(:post_via_redirect).with("/login", "user" => {"mail1" => "value"})
+    @session.expects(:post_via_redirect).with("/login", "user" => {"mail1" => "value", "mail2" => ""})
     @session.fills_in "Some mail", :with => "value"
     @session.clicks_button
   end

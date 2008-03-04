@@ -399,8 +399,8 @@ module ActionController
       end
       
       def add_default_params_from_inputs_for(form) # :nodoc:
-        ((form / "input[@type='text']") + (form / "input[@type='hidden']")).each do |input|
-          next if input.attributes["value"].blank?
+        (form / "input").each do |input|
+          next unless %w[text hidden].include?(input.attributes["type"])
           add_form_data(input, input.attributes["value"])
         end
       end

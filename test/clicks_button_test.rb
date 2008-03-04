@@ -272,4 +272,15 @@ class ClicksButtonTest < Test::Unit::TestCase
     @session.expects(:post_via_redirect).with("/login", "contestant" => {"scores" => {'1' => '2', '3' => '4'}})
     @session.clicks_button
   end
+
+  def test_should_send_default_empty_text_field_values
+    @response.stubs(:body).returns(<<-EOS)
+      <form method="get" action="/login">
+        <input id="user_email" name="user[email]" value="" type="text" />
+        <input type="submit" />
+      </form>
+    EOS
+    @session.expects(:get_via_redirect).with("/login", "user" => {"email" => ""})
+    @session.clicks_button
+  end
 end
