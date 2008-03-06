@@ -181,5 +181,13 @@ class ClicksLinkTest < Test::Unit::TestCase
     @session.expects(:get_via_redirect).with("/page2", {})
     @session.clicks_link_within "#container", "Link"
   end
-  
+
+  def test_should_not_make_request_when_link_is_local_anchor
+    @response.stubs(:body).returns(<<-EOS)
+      <a href="#section-1">Jump to Section 1</a>
+    EOS
+    # Don't know why @session.expects(:get_via_redirect).never doesn't work here
+    @session.expects(:send).with('get_via_redirect', '#section-1', {}).never
+    @session.clicks_link "Jump to Section 1"
+  end
 end

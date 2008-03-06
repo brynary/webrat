@@ -241,7 +241,7 @@ module ActionController
         http_method = http_method_from_js(onclick)
         authenticity_token = authenticity_token_value(onclick)
         
-        request_page(http_method, href, authenticity_token.blank? ? {} : {"authenticity_token" => authenticity_token})
+        request_page(http_method, href, authenticity_token.blank? ? {} : {"authenticity_token" => authenticity_token}) unless href =~ /^#/ && http_method == :get
       end
       
       def find_field_by_name_or_label(name_or_label) # :nodoc:
