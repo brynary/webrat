@@ -177,14 +177,23 @@ module ActionController
       #   save_and_open_page
       def save_and_open_page
         return unless File.exist?(RAILS_ROOT + "/tmp")
-        
-        filename = "webrat-#{Time.now.to_i}.html" 
-     	  File.open(RAILS_ROOT + "/tmp/#{filename}", "w") do |f| 
-     	    f.write response.body 
-     	  end 
-     	  `open tmp/#{filename}`
-     	end
-    
+
+        filename = "webrat-#{Time.now.to_i}.html"
+        File.open(RAILS_ROOT + "/tmp/#{filename}", "w") do |f|
+          f.write response.body
+        end
+        `open tmp/#{filename}`
+      end
+
+      # Reloads the last page requested. Note that this will resubmit forms
+      # and their data.
+      #
+      # Example:
+      #   reloads
+      def reloads
+        request_page(*@last_request_args) if defined?(@last_request_args) && @last_request_args
+      end
+
     protected # Methods you could call, but probably shouldn't
     
       def authenticity_token_value(onclick)
@@ -313,6 +322,7 @@ module ActionController
       def request_page(method, url, data = {}) # :nodoc:
         debug_log "REQUESTING PAGE: #{method.to_s.upcase} #{url} with #{data.inspect}"
         @current_url = url
+        @last_request_args = [method, url, data]
         self.send "#{method}_via_redirect", @current_url, data || {}
         
         if response.body =~ /Exception caught/ || response.body.blank? 
