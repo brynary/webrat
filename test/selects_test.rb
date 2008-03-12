@@ -59,7 +59,7 @@ class SelectsTest < Test::Unit::TestCase
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:post_via_redirect).with("/login", "end_month" => "e1")
+    @session.expects(:post_via_redirect).with("/login", "start_month" => "s1", "end_month" => "e1")
     @session.selects "January", :from => "end_month"
     @session.clicks_button
   end
@@ -74,7 +74,7 @@ class SelectsTest < Test::Unit::TestCase
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:post_via_redirect).with("/login", "end_month" => "e1")
+    @session.expects(:post_via_redirect).with("/login", "start_month" => "s1", "end_month" => "e1")
     @session.selects "January", :from => "End Month"
     @session.clicks_button
   end

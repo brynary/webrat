@@ -377,36 +377,41 @@ module ActionController
         add_default_params_from_checkboxes_for(form)
         add_default_params_from_radio_buttons_for(form)
         add_default_params_from_textareas_for(form)
+        add_default_params_from_selects_for(form)
       end
       
       def add_default_params_from_inputs_for(form) # :nodoc:
-        (form / "input").each do |input|
-          next if input.attributes["value"].blank? || !%w[text hidden].include?(input.attributes["type"])
+        ((form / "input[@type='text']") + (form / "input[@type='hidden']")).each do |input|
+          next if input.attributes["value"].blank?
           add_form_data(input, input.attributes["value"])
         end
       end
       
       def add_default_params_from_checkboxes_for(form) # :nodoc:
-        (form / "input").each do |input|
-          next if input.attributes["type"] != "checkbox"
-          if input.attributes["checked"] == "checked"
-            add_form_data(input, input.attributes["value"] || "on")
-          end
+        (form / "input[@type='checkbox][@checked='checked']").each do |input|
+          add_form_data(input, input.attributes["value"] || "on")
         end
       end
       
       def add_default_params_from_radio_buttons_for(form) # :nodoc:
-        (form / "input").each do |input|
-          next if input.attributes["type"] != "radio"
-          if input.attributes["checked"] == "checked"
-            add_form_data(input, input.attributes["value"])
-          end
+        (form / "input[@type='radio][@checked='checked']").each do |input|
+          add_form_data(input, input.attributes["value"])
         end
       end
       
       def add_default_params_from_textareas_for(form) # :nodoc:
         (form / "textarea").each do |input|
           add_form_data(input, input.inner_html)
+        end
+      end
+      
+      def add_default_params_from_selects_for(form) # :nodoc:
+        (form / "select").each do |select|
+          selected_options = select / "option[@selected='selected']"
+          selected_options = select / "option:first" if selected_options.empty? 
+          selected_options.each do |option|
+            add_form_data(select, option.attributes["value"] || option.innerHTML)
+          end
         end
       end
       
