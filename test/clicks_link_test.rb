@@ -170,4 +170,16 @@ class ClicksLinkTest < Test::Unit::TestCase
     @session.clicks_link "Link"
   end
   
+  def test_should_click_link_within_a_selector
+    @response.stubs(:body).returns(<<-EOS)
+    <a href="/page1">Link</a>
+    <div id="container">
+      <a href="/page2">Link</a>
+    </div>
+    EOS
+    
+    @session.expects(:get_via_redirect).with("/page2", {})
+    @session.clicks_link_within "#container", "Link"
+  end
+  
 end
