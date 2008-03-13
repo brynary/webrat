@@ -24,7 +24,8 @@ module ActionController
       # Example:
       #   clicks_link "Sign up"
       def clicks_link(link_text)
-        link = links.detect { |el| el.innerHTML =~ /#{link_text}/i }
+        link = find_shortest_matching_link(link_text)
+        
         return flunk("No link with text #{link_text.inspect} was found") if link.nil?
         
         onclick = link.attributes["onclick"]
@@ -224,6 +225,11 @@ module ActionController
         link = links.detect { |el| el.innerHTML =~ /#{link_text}/i }
         return flunk("No link with text #{link_text.inspect} was found") if link.nil?
         request_page(http_method, link.attributes["href"])
+      end
+      
+      def find_shortest_matching_link(link_text)
+        candidates = links.select { |el| el.innerHTML =~ /#{link_text}/i }
+        candidates.sort_by { |el| el.innerText.strip.size }.first
       end
       
       def find_field_by_name_or_label(name_or_label) # :nodoc:
