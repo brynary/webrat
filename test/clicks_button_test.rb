@@ -203,11 +203,19 @@ class ClicksButtonTest < Test::Unit::TestCase
         <input type="checkbox" name="options[]" value="burger" checked="checked" />
         <input type="radio" name="options[]" value="fries" checked="checked" />
         <input type="text" name="options[]" value="soda" />
+        <!-- Same value appearing twice -->
+        <input type="text" name="options[]" value="soda" />
         <input type="hidden" name="options[]" value="dessert" />
+        <input type="hidden" name="response[choices][][selected]" value="one" />
+        <input type="hidden" name="response[choices][][selected]" value="two" />
+        <!-- Same value appearing twice -->
+        <input type="hidden" name="response[choices][][selected]" value="two" />
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:post_via_redirect).with("/login", "options" => ["burger", "dessert", "fries", "soda"])
+    @session.expects(:post_via_redirect).with("/login",
+      "options"  => ["soda", "soda", "dessert", "burger", "fries"],
+      "response" => { "choices" => [{"selected" => "one"}, {"selected" => "two"}, {"selected" => "two"}]})
     @session.clicks_button
   end
   

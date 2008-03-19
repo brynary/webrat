@@ -302,8 +302,8 @@ module ActionController
         
         data.each do |key, value|
           case form_data[form_number][key]
-          when Hash;  then merge(form_data[form_number][key], value)
-          when Array; then form_data[form_number][key] = (form_data[form_number][key] | value).sort
+          when Hash, HashWithIndifferentAccess; then merge(form_data[form_number][key], value)
+          when Array; then form_data[form_number][key] += value
           else form_data[form_number][key] = value
           end
         end
@@ -311,9 +311,15 @@ module ActionController
       
       def merge(a, b) # :nodoc:
         a.keys.each do |k|
-          if b.has_key?(k) and Hash === a[k] and Hash === b[k]
-            a[k] = merge(a[k], b[k])
-            b.delete(k)
+          if b.has_key?(k)
+            case [a[k], b[k]].map(&:class)
+            when [Hash, Hash]
+              a[k] = merge(a[k], b[k])
+              b.delete(k)
+            when [Array, Array]
+              a[k] += b[k]
+              b.delete(k)
+            end
           end
         end
         a.merge!(b)
