@@ -196,6 +196,20 @@ class ClicksButtonTest < Test::Unit::TestCase
     @session.expects(:get_via_redirect).with("/login", "user" => {"tos" => "1"})
     @session.clicks_button
   end
+
+  def test_should_send_default_collection_fields
+    @response.stubs(:body).returns(<<-EOS)
+      <form method="post" action="/login">
+        <input type="checkbox" name="options[]" value="burger" checked="checked" />
+        <input type="radio" name="options[]" value="fries" checked="checked" />
+        <input type="text" name="options[]" value="soda" />
+        <input type="hidden" name="options[]" value="dessert" />
+        <input type="submit" />
+      </form>
+    EOS
+    @session.expects(:post_via_redirect).with("/login", "options" => ["burger", "dessert", "fries", "soda"])
+    @session.clicks_button
+  end
   
   def test_should_not_send_default_unchecked_fields
     @response.stubs(:body).returns(<<-EOS)

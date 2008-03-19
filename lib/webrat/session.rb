@@ -301,10 +301,10 @@ module ActionController
         form_data[form_number] ||= {}
         
         data.each do |key, value|
-          if form_data[form_number][key].is_a?(Hash)
-            merge(form_data[form_number][key], value)
-          else
-            form_data[form_number][key] = value
+          case form_data[form_number][key]
+          when Hash;  then merge(form_data[form_number][key], value)
+          when Array; then form_data[form_number][key] = (form_data[form_number][key] | value).sort
+          else form_data[form_number][key] = value
           end
         end
       end
