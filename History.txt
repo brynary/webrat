@@ -1,5 +1,6 @@
 == Trunk
 
+* Fix incorrect serializing of collection inputs, i.e. name contains [] (Patch from Kamal Fariz Mahyuddi)
 * Added reloads method to reload the page (Patch from Kamal Fariz Mahyuddi)
 * Prevent making a request if clicking on local anchor link (Patch from Kamal Fariz Mahyuddi)
 * Serialize empty text field values just like browsers (Patch from Kamal Fariz Mahyuddi)
