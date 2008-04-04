@@ -1,5 +1,8 @@
 == Trunk
 
+* Added clicks_link_within(selector, link_text), allowing restricting link search 
+to within a given css selector (Path from Luke Melia)
+* Change clicks_link to find the shortest matching link (Patch from Luke Melia)
 * Quick fix to avoid @dom not initialized warnings (Patch from Kamal Fariz Mahyuddi)
 * Add save_and_open_page to aid in debugging
 * Add radio button support via #chooses method
