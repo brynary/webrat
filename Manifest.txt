@@ -10,9 +10,11 @@ lib/webrat.rb
 lib/webrat/rails_extensions.rb
 lib/webrat/session.rb
 test/checks_test.rb
+test/chooses_test.rb
 test/clicks_button_test.rb
 test/clicks_link_test.rb
 test/fills_in_test.rb
 test/helper.rb
+test/reloads_test.rb
 test/selects_test.rb
 test/visits_test.rb
