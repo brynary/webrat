@@ -1,5 +1,6 @@
-== SVN
+== Trunk
 
+* Quick fix to avoid @dom not initialized warnings (Patch from Kamal Fariz Mahyuddi)
 * Add save_and_open_page to aid in debugging
 * Add radio button support via #chooses method
 * Docfix: bad reference to #select method in README (Patch from Luke Melia)
