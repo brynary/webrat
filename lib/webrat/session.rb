@@ -24,16 +24,15 @@ module ActionController
       # Example:
       #   clicks_link "Sign up"
       def clicks_link(link_text)
-        link = links.detect { |el| el.innerHTML =~ /#{link_text}/i }
-        return flunk("No link with text #{link_text.inspect} was found") if link.nil?
-        
-        onclick = link.attributes["onclick"]
-        href    = link.attributes["href"]
-        
-        http_method = http_method_from_js(onclick)
-        authenticity_token = authenticity_token_value(onclick)
-        
-        request_page(http_method, href, authenticity_token.blank? ? {} : {"authenticity_token" => authenticity_token})
+        clicks_one_link_of(all_links, link_text)
+      end
+      
+      # Works like clicks_link, but only looks for the link text within a given selector
+      # 
+      # Example:
+      #   clicks_link_within "#user_12", "Vote"
+      def clicks_link_within(selector, link_text)
+        clicks_one_link_of(links_within(selector), link_text)
       end
       
       # Works like clicks_link, but forces a GET request
@@ -221,9 +220,28 @@ module ActionController
       end
       
       def clicks_link_with_method(link_text, http_method) # :nodoc:
-        link = links.detect { |el| el.innerHTML =~ /#{link_text}/i }
+        link = all_links.detect { |el| el.innerHTML =~ /#{link_text}/i }
         return flunk("No link with text #{link_text.inspect} was found") if link.nil?
         request_page(http_method, link.attributes["href"])
+      end
+      
+      def find_shortest_matching_link(links, link_text)
+        candidates = links.select { |el| el.innerHTML =~ /#{link_text}/i }
+        candidates.sort_by { |el| el.innerText.strip.size }.first
+      end
+      
+      def clicks_one_link_of(links, link_text)
+        link = find_shortest_matching_link(links, link_text)
+        
+        return flunk("No link with text #{link_text.inspect} was found") if link.nil?
+        
+        onclick = link.attributes["onclick"]
+        href    = link.attributes["href"]
+        
+        http_method = http_method_from_js(onclick)
+        authenticity_token = authenticity_token_value(onclick)
+        
+        request_page(http_method, href, authenticity_token.blank? ? {} : {"authenticity_token" => authenticity_token})
       end
       
       def find_field_by_name_or_label(name_or_label) # :nodoc:
@@ -377,36 +395,41 @@ module ActionController
         add_default_params_from_checkboxes_for(form)
         add_default_params_from_radio_buttons_for(form)
         add_default_params_from_textareas_for(form)
+        add_default_params_from_selects_for(form)
       end
       
       def add_default_params_from_inputs_for(form) # :nodoc:
-        (form / "input").each do |input|
-          next if input.attributes["value"].blank? || !%w[text hidden].include?(input.attributes["type"])
+        ((form / "input[@type='text']") + (form / "input[@type='hidden']")).each do |input|
+          next if input.attributes["value"].blank?
           add_form_data(input, input.attributes["value"])
         end
       end
       
       def add_default_params_from_checkboxes_for(form) # :nodoc:
-        (form / "input").each do |input|
-          next if input.attributes["type"] != "checkbox"
-          if input.attributes["checked"] == "checked"
-            add_form_data(input, input.attributes["value"] || "on")
-          end
+        (form / "input[@type='checkbox][@checked='checked']").each do |input|
+          add_form_data(input, input.attributes["value"] || "on")
         end
       end
       
       def add_default_params_from_radio_buttons_for(form) # :nodoc:
-        (form / "input").each do |input|
-          next if input.attributes["type"] != "radio"
-          if input.attributes["checked"] == "checked"
-            add_form_data(input, input.attributes["value"])
-          end
+        (form / "input[@type='radio][@checked='checked']").each do |input|
+          add_form_data(input, input.attributes["value"])
         end
       end
       
       def add_default_params_from_textareas_for(form) # :nodoc:
         (form / "textarea").each do |input|
           add_form_data(input, input.inner_html)
+        end
+      end
+      
+      def add_default_params_from_selects_for(form) # :nodoc:
+        (form / "select").each do |select|
+          selected_options = select / "option[@selected='selected']"
+          selected_options = select / "option:first" if selected_options.empty? 
+          selected_options.each do |option|
+            add_form_data(select, option.attributes["value"] || option.innerHTML)
+          end
         end
       end
       
@@ -425,8 +448,12 @@ module ActionController
         @form_data ||= []
       end
       
-      def links # :nodoc:
+      def all_links # :nodoc:
         (dom / "a[@href]")
+      end
+
+      def links_within(selector) # :nodoc:
+        (dom / selector / "a[@href]")
       end
       
       def form_number(form) # :nodoc:

@@ -219,6 +219,48 @@ class ClicksButtonTest < Test::Unit::TestCase
     @session.clicks_button
   end
   
+  def test_should_send_default_selected_option_value_from_select
+    @response.stubs(:body).returns(<<-EOS)
+      <form method="get" action="/login">
+        <select name="month">
+          <option value="1">January</option>
+          <option value="2" selected="selected">February</option>
+        </select>
+        <input type="submit" />
+      </form>
+    EOS
+    @session.expects(:get_via_redirect).with("/login", "month" => "2")
+    @session.clicks_button
+  end
+
+  def test_should_send_default_selected_option_inner_html_from_select_when_no_value_attribute
+    @response.stubs(:body).returns(<<-EOS)
+      <form method="get" action="/login">
+        <select name="month">
+          <option>January</option>
+          <option selected="selected">February</option>
+        </select>
+        <input type="submit" />
+      </form>
+    EOS
+    @session.expects(:get_via_redirect).with("/login", "month" => "February")
+    @session.clicks_button
+  end
+  
+  def test_should_send_first_select_option_value_when_no_option_selected
+    @response.stubs(:body).returns(<<-EOS)
+      <form method="get" action="/login">
+        <select name="month">
+          <option value="1">January</option>
+          <option value="2">February</option>
+        </select>
+        <input type="submit" />
+      </form>
+    EOS
+    @session.expects(:get_via_redirect).with("/login", "month" => "1")
+    @session.clicks_button
+  end
+  
   def test_should_handle_nested_properties
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">

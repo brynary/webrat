@@ -159,4 +159,27 @@ class ClicksLinkTest < Test::Unit::TestCase
     @session.expects(:get_via_redirect).with("/page1", {})
     @session.clicks_link "Link text"
   end
+  
+  def test_should_choose_the_shortest_link_text_match
+    @response.stubs(:body).returns(<<-EOS)
+    <a href="/page1">Linkerama</a>
+    <a href="/page2">Link</a>
+    EOS
+    
+    @session.expects(:get_via_redirect).with("/page2", {})
+    @session.clicks_link "Link"
+  end
+  
+  def test_should_click_link_within_a_selector
+    @response.stubs(:body).returns(<<-EOS)
+    <a href="/page1">Link</a>
+    <div id="container">
+      <a href="/page2">Link</a>
+    </div>
+    EOS
+    
+    @session.expects(:get_via_redirect).with("/page2", {})
+    @session.clicks_link_within "#container", "Link"
+  end
+  
 end
