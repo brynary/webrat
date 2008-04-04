@@ -454,7 +454,7 @@ module ActionController
       end
 
       def dom # :nodoc:
-        return @dom if @dom
+        return @dom if defined?(@dom) && @dom
         raise "You must visit a path before working with the page." unless response
         @dom = Hpricot(response.body)
         add_default_params
