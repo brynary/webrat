@@ -9,8 +9,10 @@ Hoe.new('webrat', Webrat::VERSION) do |p|
   p.developer "Bryan Helmkamp",   "bryan@brynary.com"
   p.developer "Seth Fitzsimmons", "seth@mojodna.net"
   
-  p.description = p.paragraphs_of('README.txt', 2..5).join("\n\n")
-  p.url = p.paragraphs_of('README.txt', 0).first.split(/\n/)[1..-1]
+  # require "rubygems"; require "ruby-debug"; Debugger.start; debugger
+  
+  p.description = p.paragraphs_of('README.txt', 4..6).join("\n\n")
+  p.url = p.paragraphs_of('README.txt', 1).first.split("\n").first.strip
   p.changes = p.paragraphs_of('History.txt', 0..1).join("\n\n")
 
   p.extra_deps << ["hpricot", ">= 0.6"]

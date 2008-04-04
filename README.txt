@@ -1,5 +1,8 @@
 = Webrat - Ruby Acceptance Testing for Web applications
 
+  http://rubyforge.org/projects/webrat
+  http://github.com/brynary/webrat
+
 * mailto:bryan@brynary.com
 * mailto:seth@mojodna.net
 
