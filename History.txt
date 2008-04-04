@@ -1,4 +1,4 @@
-== Trunk
+== 0.2.0 / 2008-04-04
 
 * Fix incorrect serializing of collection inputs, i.e. name contains [] (Patch from Kamal Fariz Mahyuddi)
 * Added reloads method to reload the page (Patch from Kamal Fariz Mahyuddi)
