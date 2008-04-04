@@ -70,7 +70,11 @@ A test written with Webrat can handle these changes smoothly.
 
 == INSTALL:
 
-  $ ruby script/plugin install http://svn.eastmedia.net/public/plugins/webrat/
+In your stories/helper.rb:
+  
+  require "webrat"
+  
+You could also unpack the gem into vendor/plugins.
 
 == HISTORY:
 
