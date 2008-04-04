@@ -1,3 +1,9 @@
+== Trunk
+
+* Bug fixes
+
+  * Fix regression of not sending default values in password fields
+  
 == 0.2.0 / 2008-04-04
 
 * 4 Major enhancements

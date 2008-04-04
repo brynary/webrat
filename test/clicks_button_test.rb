@@ -125,6 +125,17 @@ class ClicksButtonTest < Test::Unit::TestCase
     @session.expects(:post_via_redirect).with("/login", {})
     @session.clicks_button("Login")
   end
+
+  def test_should_send_default_password_field_values
+    @response.stubs(:body).returns(<<-EOS)
+      <form method="get" action="/login">
+        <input id="user_password" name="user[password]" value="mypass" type="password" />
+        <input type="submit" />
+      </form>
+    EOS
+    @session.expects(:get_via_redirect).with("/login", "user" => {"password" => "mypass"})
+    @session.clicks_button
+  end  
   
   def test_should_send_default_hidden_field_values
     @response.stubs(:body).returns(<<-EOS)
