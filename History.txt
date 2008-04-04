@@ -1,26 +1,34 @@
 == 0.2.0 / 2008-04-04
 
-* Fix incorrect serializing of collection inputs, i.e. name contains [] (Patch from Kamal Fariz Mahyuddi)
-* Added reloads method to reload the page (Patch from Kamal Fariz Mahyuddi)
-* Prevent making a request if clicking on local anchor link (Patch from Kamal Fariz Mahyuddi)
-* Serialize empty text field values just like browsers (Patch from Kamal Fariz Mahyuddi)
-* Added clicks_link_within(selector, link_text), allowing restricting link search 
-to within a given css selector (Path from Luke Melia)
-* Change clicks_link to find the shortest matching link (Patch from Luke Melia)
-* Quick fix to avoid @dom not initialized warnings (Patch from Kamal Fariz Mahyuddi)
-* Add save_and_open_page to aid in debugging
-* Add radio button support via #chooses method
-* Docfix: bad reference to #select method in README (Patch from Luke Melia)
-* Allow specifying the input name/label when doing a select (Patch from David Chelimsky)
-* Raise a specific exception if the developer tries to manipulate form elements before loading a page (Patch from James Deville)
-* Add basic support for Rails-generated JavaScript link tags
-* Ensure Rails-style checkboxes work properly (checkboxes followed by a hidden input with the same name)
-* Add support for alternate POST, PUT and DELETE link clicking (Patch from Kyle Hargraves)
-* Add support for checkboxes (Patches from Kyle Hargraves and Jarkko Laine)
-* Improve matching for labels in potentially ambiguous cases
-* Add support for textarea fields (Patch from Sacha Schlegel)
-* Fix Edge Rails (a.k.a. 2.0 RC) compatibility (Patch from David Chelimsky)
-* Support param hashes nested more than one level (Patch from David Chelimsky)
+* 4 Major enhancements
+
+  * Add save_and_open_page to aid in debugging
+  * Add radio button support via #chooses method
+  * Add basic support for Rails-generated JavaScript link tags
+  * Add support for checkboxes (Patches from Kyle Hargraves and Jarkko Laine)
+  * Add support for textarea fields (Patch from Sacha Schlegel)
+  
+* 8 Minor enhancements
+  
+  * Added reloads method to reload the page (Patch from Kamal Fariz Mahyuddi)
+  * Prevent making a request if clicking on local anchor link (Patch from Kamal Fariz Mahyuddi)
+  * Added clicks_link_within(selector, link_text), allowing restricting link search 
+  to within a given css selector (Path from Luke Melia)
+  * Allow specifying the input name/label when doing a select (Patch from David Chelimsky)
+  * Raise a specific exception if the developer tries to manipulate form elements before loading a page (Patch from James Deville)
+  * Add support for alternate POST, PUT and DELETE link clicking (Patch from Kyle Hargraves)
+  * Change clicks_link to find the shortest matching link (Patch from Luke Melia)
+  * Improve matching for labels in potentially ambiguous cases
+  
+* 7 Bug fixes
+
+  * Fix incorrect serializing of collection inputs, i.e. name contains [] (Patch from Kamal Fariz Mahyuddi)
+  * Serialize empty text field values just like browsers (Patch from Kamal Fariz Mahyuddi)
+  * Quick fix to avoid @dom not initialized warnings (Patch from Kamal Fariz Mahyuddi)
+  * Docfix: bad reference to #select method in README (Patch from Luke Melia)
+  * Ensure Rails-style checkboxes work properly (checkboxes followed by a hidden input with the same name)
+  * Fix Edge Rails (a.k.a. 2.0 RC) compatibility (Patch from David Chelimsky)
+  * Support param hashes nested more than one level (Patch from David Chelimsky)
 
 == 0.1.0 / 2007-11-28
 

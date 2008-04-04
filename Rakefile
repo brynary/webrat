@@ -13,7 +13,7 @@ Hoe.new('webrat', Webrat::VERSION) do |p|
   
   p.description = p.paragraphs_of('README.txt', 4..6).join("\n\n")
   p.url = p.paragraphs_of('README.txt', 1).first.split("\n").first.strip
-  p.changes = p.paragraphs_of('History.txt', 0..1).join("\n\n")
+  p.changes = p.paragraphs_of('History.txt', 0..3).join("\n\n")
 
   p.extra_deps << ["hpricot", ">= 0.6"]
   
@@ -24,11 +24,4 @@ end
 desc "Upload rdoc to brynary.com"
 task :publish_rdoc => :docs do
   sh "scp -r doc/ brynary.com:/apps/uploads/webrat"
-end 
-
-# desc 'Generate RDoc documentation for the Webrat plugin.'
-# Rake::RDocTask.new(:rdoc) do |rdoc|
-#   rdoc.options << '--line-numbers' << '--inline-source'
-#   rdoc.rdoc_files.include('README')
-#   rdoc.rdoc_files.include('lib/**/*.rb')
-# end
+end
