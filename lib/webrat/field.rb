@@ -177,11 +177,28 @@ module Webrat
 
   class RadioField < Field
 
+    def to_param
+      return nil if @value.nil?
+      super
+    end
+    
+    def choose
+      other_options.each do |option|
+        option.unset
+      end
+      
+      set(@element["value"] || "on")
+    end
+    
   protected
 
+    def other_options
+      @form.fields.select { |f| f.name == name }
+    end
+    
     def default_value
       if @element["checked"] == "checked"
-        @element["value"]
+        @element["value"] || "on"
       else
         nil
       end

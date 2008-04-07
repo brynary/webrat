@@ -28,6 +28,18 @@ module Webrat
       
       nil
     end
+
+    def fields
+      return @fields if @fields
+      
+      @fields = []
+      
+      (@element / "input, textarea, select").each do |field_element|
+        @fields << Field.class_for_element(field_element).new(self, field_element)
+      end
+      
+      @fields
+    end
     
     def submit
       Page.new(@page.session, form_action, form_method, params)
@@ -63,18 +75,6 @@ module Webrat
   
     def fields_by_type(field_types)
       fields.select { |f| field_types.include?(f.class) }
-    end
-    
-    def fields
-      return @fields if @fields
-      
-      @fields = []
-      
-      (@element / "input, textarea, select").each do |field_element|
-        @fields << Field.class_for_element(field_element).new(self, field_element)
-      end
-      
-      @fields
     end
     
     def params

@@ -58,11 +58,9 @@ module Webrat
     #
     # Example:
     #   chooses 'First Option'
-    def chooses(field)
-      radio = find_field_by_name_or_label(field)
-      flunk("Could not find radio button #{field.inspect}") if radio.nil?
-      flunk("Input #{radio.inspect} is not a radio button") unless radio['type'] == 'radio'
-      add_form_data(radio, radio["value"] || "on")
+    def chooses(label)
+      field = find_field(label, RadioField)
+      field.choose
     end
 
     # Verifies that a an option element exists on the current page with the specified

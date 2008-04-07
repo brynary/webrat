@@ -7,7 +7,6 @@ module Webrat
     end
     
     def matches_text?(text)
-      # require "rubygems"; require "ruby-debug"; Debugger.start; debugger
       @element.innerHTML =~ /^\W*#{Regexp.escape(text.to_s)}\b/i
     end
     
