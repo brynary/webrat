@@ -30,7 +30,6 @@ module Webrat
     # or the text inside a <tt><label></tt> element that points at the <tt><input></tt> field.
     def fills_in(id_or_name_or_label, options = {})
       field = find_field(id_or_name_or_label, TextField, TextareaField)
-      flunk("Could not find text or password input or textarea #{id_or_name_or_label.inspect}") if field.nil?
       field.set(options[:with])
     end
 
@@ -41,7 +40,6 @@ module Webrat
     #   checks 'Remember Me'
     def checks(id_or_name_or_label)
       field = find_field(id_or_name_or_label, CheckboxField)
-      flunk("Could not find checkbox #{id_or_name_or_label.inspect}") if field.nil?
       field.check
     end
 
@@ -52,7 +50,6 @@ module Webrat
     #   unchecks 'Remember Me'
     def unchecks(id_or_name_or_label)
       field = find_field(id_or_name_or_label, CheckboxField)
-      flunk("Could not find checkbox #{id_or_name_or_label.inspect}") if field.nil?
       field.uncheck
     end
 
@@ -80,7 +77,6 @@ module Webrat
     def selects(option_text, options = {})
       id_or_name_or_label = options[:from]
       field = find_field(id_or_name_or_label, SelectField)
-      flunk("Could not find select #{id_or_name_or_label.inspect}") if field.nil?
       option = field.find_option(option_text)
       flunk("Could not find option #{option_text.inspect}") if option.nil?
       option.choose
@@ -195,7 +191,6 @@ module Webrat
   protected
     
     def find_link(text)
-      
       matching_links = []
       
       links.each do |possible_link|
@@ -215,7 +210,7 @@ module Webrat
         return result if result
       end
       
-      nil
+      flunk("Could not find #{field_types.inspect}: #{id_or_name_or_label.inspect}")
     end
     
     def request_page(url, method, data)

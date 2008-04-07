@@ -2,35 +2,19 @@ module Webrat
   class Field
     
     def self.class_for_element(element)
-      case element.name
-      when "select"
-        SelectField
-      when "textarea"
-        TextareaField
-      when "input"
-        case element["type"]
-        when "checkbox"
-          CheckboxField
-        when "radio"
-          RadioField
-        when "text"
-          TextField
-        when "hidden"
-          HiddenField
-        when "password"
-          PasswordField
-        when "reset"
-          ResetField
-        when "submit"
-          ButtonField
-        when "image"
-          ButtonField
+      if element.name == "input"
+        if %w[submit image].include?(element["type"])
+          field_class = "button"
         else
-          raise "Invalid field element: #{element.inspect}"
+          field_class = element["type"]
         end
       else
-        raise "Invalid field element: #{element.inspect}"
+        field_class = element.name
       end
+      
+      Webrat.const_get("#{field_class.capitalize}Field")
+    rescue NameError
+      raise "Invalid field element: #{element.inspect}"
     end
     
     def initialize(form, element)
@@ -114,87 +98,136 @@ module Webrat
     end
     
   end
-end
+  
+  class ButtonField < Field
 
-# module Webrat
-#   class FieldFinder
-#     def initialize(root, id_or_name_or_label, element_types, input_types = nil)
-#       @root                 = root
-#       @id_or_name_or_label  = id_or_name_or_label.to_s
-#       @element_types        = Array(element_types)
-#       @input_types          = Array(input_types)
-#       
-#       @candidates = nil
-#     end
-#     
-#     def find
-#       find_by_id(@id_or_name_or_label) ||
-#       find_by_name ||
-#       find_by_label
-#     end
-#     
-#   protected
-#   
-#     # def find_select_list_by_name_or_label(name_or_label) # :nodoc:
-#     #   select = find_element_by_name("select", name_or_label)
-#     #   return select if select
-#     # 
-#     #   label = find_form_label(name_or_label)
-#     #   label ? field_for_label(label) : nil
-#     # end
-#     #   
-#     # def find_option_by_value(option_value, select=nil) # :nodoc:
-#     #   options = select.nil? ? (dom / "option") : (select / "option")
-#     #   options.detect { |el| el.innerHTML == option_value }
-#     # end
-#   
-#     def field_for_label(label)
-#       inputs_within_label = canidates_within(label)
-#       
-#       if inputs_within_label.any?
-#         inputs_within_label.first 
-#       else
-#         find_by_id(label["for"])
-#       end
-#     end
-#   
-#     def find_by_id(id)
-#       candidates.detect { |el| el["id"] == id }
-#     end
-#     
-#     def find_by_name
-#       candidates.detect { |el| el["name"] == @id_or_name_or_label }
-#     end
-#     
-#     def find_by_label
-#       label = canididate_labels.sort_by { |el| el.innerText.strip.size }.first
-#       label ? field_for_label(label) : nil
-#     end
-#     
-#     def canididate_labels
-#       (@root / "label").select { |el| el.innerText =~ /^\W*#{Regexp.escape(@id_or_name_or_label)}\b/i }
-#     end
-#     
-#     def candidates
-#       return @candidates if @candidates
-#       @candidates = canidates_within(@root)
-#     end
-#     
-#     def canidates_within(root)
-#       candidates = []
-#       
-#       @element_types.each do |element_type|
-#         if "input" == element_type && @input_types.any?
-#           @input_types.each do |input_type|
-#             candidates += (root / "input[@type=#{input_type}]")
-#           end
-#         else
-#           candidates += (root / element_type)
-#         end
-#       end
-#       
-#       candidates
-#     end
-#     
-#   end
-# end
+    def matches_value?(value)
+      @element["value"] =~ /^\W*#{value}\b/i
+    end
+
+    def to_param
+      return nil if @value.nil?
+      super
+    end
+
+    def default_value
+      nil
+    end
+
+    def click
+      set(@element["value"]) unless @element["name"].blank?
+      @form.submit
+    end
+
+  end
+
+  class HiddenField < Field
+
+    def to_param
+      if collection_name?
+        super
+      else
+        checkbox_with_same_name = @form.find_field(name, CheckboxField)
+
+        if checkbox_with_same_name.to_param.nil?
+          super
+        else
+          nil
+        end
+      end
+    end
+
+  protected
+
+    def collection_name?
+      name =~ /\[\]/
+    end
+
+  end
+
+  class CheckboxField < Field
+
+    def to_param
+      return nil if @value.nil?
+      super
+    end
+
+    def check
+      set(@element["value"] || "on")
+    end
+
+    def uncheck
+      set(nil)
+    end
+
+  protected
+
+    def default_value
+      if @element["checked"] == "checked"
+        @element["value"] || "on"
+      else
+        nil
+      end
+    end
+
+  end
+
+  class PasswordField < Field
+  end
+
+  class RadioField < Field
+
+  protected
+
+    def default_value
+      if @element["checked"] == "checked"
+        @element["value"]
+      else
+        nil
+      end
+    end
+
+  end
+
+  class TextareaField < Field
+
+  protected
+
+    def default_value
+      @element.inner_html
+    end
+
+  end
+
+  class TextField < Field
+  end
+
+  class ResetField < Field
+  end
+
+  class SelectField < Field
+
+    def find_option(text)
+      options.detect { |o| o.matches_text?(text) }
+    end
+
+  protected
+
+    def default_value
+      selected_options = @element / "option[@selected='selected']"
+      selected_options = @element / "option:first" if selected_options.empty? 
+      selected_options.map do |option|
+        option["value"] || option.innerHTML
+      end
+    end
+
+    def options
+      option_elements.map { |oe| SelectOption.new(self, oe) }
+    end
+
+    def option_elements
+      (@element / "option")
+    end
+
+  end
+end
