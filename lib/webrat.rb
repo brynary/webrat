@@ -27,7 +27,7 @@ module ActionController
         @current_page = Webrat::Page.new(self, *args)
       end
       
-      [:fills_in, :clicks_button, :selects, :chooses, :checks, :unchecks].each do |method_name|
+      [:reloads, :fills_in, :clicks_button, :selects, :chooses, :checks, :unchecks, :clicks_link, :clicks_put_link, :clicks_get_link, :clicks_post_link, :clicks_delete_link].each do |method_name|
         define_method(method_name) do |*args|
           current_page.send(method_name, *args)
         end
@@ -36,6 +36,4 @@ module ActionController
     end
   end
 end
-
-
 

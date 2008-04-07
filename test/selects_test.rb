@@ -14,8 +14,10 @@ class SelectsTest < Test::Unit::TestCase
         <select name="month"><option value="1">January</option></select>
       </form>
     EOS
-    @session.expects(:flunk)
-    @session.selects "February"
+    
+    assert_raises RuntimeError do
+      @session.selects "February", :from => "month"
+    end
   end
   
   def test_should_fail_if_option_not_found_in_list_specified_by_element_name
@@ -25,8 +27,10 @@ class SelectsTest < Test::Unit::TestCase
         <select name="year"><option value="2008">2008</option></select>
       </form>
     EOS
-    @session.expects(:flunk)
-    @session.selects "February", :from => "year"
+    
+    assert_raises RuntimeError do
+      @session.selects "February", :from => "year"
+    end
   end
   
   def test_should_fail_if_specified_list_not_found
@@ -35,8 +39,10 @@ class SelectsTest < Test::Unit::TestCase
         <select name="month"><option value="1">January</option></select>
       </form>
     EOS
-    @session.expects(:flunk)
-    @session.selects "February", :from => "year"
+    
+    assert_raises RuntimeError do
+      @session.selects "February", :from => "year"
+    end
   end
   
   def test_should_send_value_from_option
@@ -47,7 +53,7 @@ class SelectsTest < Test::Unit::TestCase
       </form>
     EOS
     @session.expects(:post_via_redirect).with("/login", "month" => "1")
-    @session.selects "January"
+    @session.selects "January", :from => "month"
     @session.clicks_button
   end
   
@@ -87,7 +93,7 @@ class SelectsTest < Test::Unit::TestCase
       </form>
     EOS
     @session.expects(:post_via_redirect).with("/login", "month" => "January")
-    @session.selects "January"
+    @session.selects "January", :from => "month"
     @session.clicks_button
   end
 end

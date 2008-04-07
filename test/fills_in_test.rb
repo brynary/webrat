@@ -45,7 +45,7 @@ class FillsInTest < Test::Unit::TestCase
       @session.clicks_button
     end
     
-    def test_should_choose_the_closest_label_match
+    def test_should_choose_the_shortest_label_match
       @response.stubs(:body).returns(<<-EOS)
         <form method="post" action="/login">
           <label for="user_mail1">Some other mail</label>

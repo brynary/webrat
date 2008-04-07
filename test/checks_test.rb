@@ -13,8 +13,10 @@ class ChecksTest < Test::Unit::TestCase
       <form method="post" action="/login">
       </form>
     EOS
-    @session.expects(:flunk)
-    @session.checks "remember_me"
+    
+    assert_raises RuntimeError do
+      @session.checks "remember_me"
+    end
   end
 
   def test_should_fail_if_input_is_not_a_checkbox
@@ -23,8 +25,10 @@ class ChecksTest < Test::Unit::TestCase
         <input type="text" name="remember_me" />
       </form>
     EOS
-    @session.expects(:flunk)
-    @session.checks "remember_me"
+    
+    assert_raises RuntimeError do
+      @session.checks "remember_me"
+    end
   end
   
   def test_should_check_rails_style_checkboxes
@@ -79,8 +83,10 @@ class UnchecksTest < Test::Unit::TestCase
       <form method="post" action="/login">
       </form>
     EOS
-    @session.expects(:flunk)
-    @session.unchecks "remember_me"
+
+    assert_raises RuntimeError do
+      @session.unchecks "remember_me"
+    end
   end
 
   def test_should_fail_if_input_is_not_a_checkbox
@@ -89,8 +95,10 @@ class UnchecksTest < Test::Unit::TestCase
         <input type="text" name="remember_me" />
       </form>
     EOS
-    @session.expects(:flunk)
-    @session.unchecks "remember_me"
+    
+    assert_raises RuntimeError do
+      @session.unchecks "remember_me"
+    end
   end
   
   def test_should_uncheck_rails_style_checkboxes
@@ -103,6 +111,7 @@ class UnchecksTest < Test::Unit::TestCase
       </form>
     EOS
     @session.expects(:get_via_redirect).with("/login", "user" => {"tos" => "0"})
+    @session.checks "TOS"
     @session.unchecks "TOS"
     @session.clicks_button
   end

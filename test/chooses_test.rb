@@ -14,8 +14,10 @@ class ChoosesTest < Test::Unit::TestCase
       <form method="post" action="/login">
       </form>
     EOS
-    @session.expects(:flunk)
-    @session.chooses "first option"
+    
+    assert_raises RuntimeError do
+      @session.chooses "first option"
+    end
   end
   
   def test_should_fail_if_input_is_not_a_radio_button
@@ -24,8 +26,10 @@ class ChoosesTest < Test::Unit::TestCase
         <input type="text" name="first_option" />
       </form>
     EOS
-    @session.expects(:flunk)
-    @session.chooses "first_option"
+    
+    assert_raises RuntimeError do
+      @session.chooses "first_option"
+    end
   end  
   
   def test_should_check_rails_style_radio_buttons

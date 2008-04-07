@@ -5,6 +5,8 @@ class ClicksButtonTest < Test::Unit::TestCase
     @session = ActionController::Integration::Session.new
     @session.stubs(:assert_response)
     @session.stubs(:get_via_redirect)
+    @page = Webrat::Page.new(@session)
+    @session.stubs(:current_page).returns(@page)
     @response = mock
     @session.stubs(:response).returns(@response)
   end
@@ -13,8 +15,10 @@ class ClicksButtonTest < Test::Unit::TestCase
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login"></form>
     EOS
-    @session.expects(:flunk)
-    @session.clicks_button
+    
+    assert_raises RuntimeError do
+      @session.clicks_button
+    end
   end
   
   def test_should_fail_if_input_is_not_a_submit_button
@@ -23,8 +27,10 @@ class ClicksButtonTest < Test::Unit::TestCase
         <input type="reset" />
       </form>
     EOS
-    @session.expects(:flunk)
-    @session.clicks_button
+    
+    assert_raises RuntimeError do
+      @session.clicks_button
+    end
   end
   
   def test_should_default_to_get_method
@@ -53,7 +59,7 @@ class ClicksButtonTest < Test::Unit::TestCase
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:current_url).returns("/current")
+    @page.stubs(:url).returns("/current")
     @session.expects(:get_via_redirect).with("/current", {})
     @session.clicks_button
   end
@@ -225,7 +231,7 @@ class ClicksButtonTest < Test::Unit::TestCase
       </form>
     EOS
     @session.expects(:post_via_redirect).with("/login",
-      "options"  => ["soda", "soda", "dessert", "burger", "fries"],
+      "options"  => ["burger", "fries", "soda", "soda", "dessert"],
       "response" => { "choices" => [{"selected" => "one"}, {"selected" => "two"}, {"selected" => "two"}]})
     @session.clicks_button
   end
