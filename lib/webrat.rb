@@ -26,6 +26,10 @@ module ActionController
       def visits(*args)
         @current_page = Webrat::Page.new(self, *args)
       end
+
+      def save_and_open_page
+        current_page.save_and_open
+      end
       
       [:reloads, :fills_in, :clicks_button, :selects, :chooses, :checks, :unchecks, :clicks_link, :clicks_put_link, :clicks_get_link, :clicks_post_link, :clicks_delete_link].each do |method_name|
         define_method(method_name) do |*args|
