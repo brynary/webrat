@@ -29,7 +29,7 @@ module Webrat
     # <tt>field</tt> can be either the value of a name attribute (i.e. <tt>user[email]</tt>)
     # or the text inside a <tt><label></tt> element that points at the <tt><input></tt> field.
     def fills_in(id_or_name_or_label, options = {})
-      field = find_field(id_or_name_or_label, TextField, TextareaField)
+      field = find_field(id_or_name_or_label, TextField, TextareaField, PasswordField)
       field.set(options[:with])
     end
 
