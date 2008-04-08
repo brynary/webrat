@@ -13,9 +13,11 @@ module Webrat
       @url      = url
       @method   = method
       @data     = data
-      
+
       reset_dom
       reloads if @url
+      
+      session.current_page = self
     end
     
     # Verifies an input field or textarea exists on the current page, and stores a value for

@@ -18,6 +18,10 @@ module ActionController
         @current_page ||= Webrat::Page.new(self)
       end
       
+      def current_page=(new_page)
+        @current_page = new_page
+      end
+      
       # Issues a GET request for a page, follows any redirects, and verifies the final page
       # load was successful.
       #

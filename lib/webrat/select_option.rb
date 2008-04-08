@@ -6,8 +6,8 @@ module Webrat
       @element = element
     end
     
-    def matches_text?(text)
-      @element.innerHTML =~ /^\W*#{Regexp.escape(text.to_s)}\b/i
+    def matches_text?(text)      
+      @element.innerHTML == text.to_s
     end
     
     def choose
