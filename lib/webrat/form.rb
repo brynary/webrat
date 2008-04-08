@@ -16,6 +16,17 @@ module Webrat
       find_field_by_label(possible_fields, id_or_name_or_label) ||
       nil
     end
+    
+    def find_select_option(option_text)
+      select_fields = fields_by_type([SelectField])
+      
+      select_fields.each do |select_field|
+        result = select_field.find_option(option_text)
+        return result if result
+      end
+      
+      nil
+    end
 
     def find_button(value = nil)
       return fields_by_type([ButtonField]).first if value.nil?

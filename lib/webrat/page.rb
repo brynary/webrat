@@ -76,8 +76,14 @@ module Webrat
     #   selects "February", :from => "Event Month"
     def selects(option_text, options = {})
       id_or_name_or_label = options[:from]
-      field = find_field(id_or_name_or_label, SelectField)
-      option = field.find_option(option_text)
+      
+      if id_or_name_or_label
+        field = find_field(id_or_name_or_label, SelectField)
+        option = field.find_option(option_text)
+      else
+        option = find_select_option(option_text)
+      end
+        
       flunk("Could not find option #{option_text.inspect}") if option.nil?
       option.choose
     end
@@ -189,6 +195,16 @@ module Webrat
     end
 
   protected
+    
+    def find_select_option(option_text)
+      forms.each do |form|
+        result = form.find_select_option(option_text)
+        return result if result
+      end
+      
+      nil
+    end
+  
     
     def find_link(text)
       matching_links = []
