@@ -117,13 +117,14 @@ module Webrat
       link.click
     end
 
-    # # Works like clicks_link, but only looks for the link text within a given selector
-    # # 
-    # # Example:
-    # #   clicks_link_within "#user_12", "Vote"
-    # def clicks_link_within(selector, link_text)
-    #   clicks_one_link_of(links_within(selector), link_text)
-    # end
+    # Works like clicks_link, but only looks for the link text within a given selector
+    # 
+    # Example:
+    #   clicks_link_within "#user_12", "Vote"
+    def clicks_link_within(selector, link_text)
+      link = find_link(link_text, selector)
+      link.click
+    end
 
     # Works like clicks_link, but forces a GET request
     # 
@@ -206,10 +207,10 @@ module Webrat
     end
   
     
-    def find_link(text)
+    def find_link(text, selector = nil)
       matching_links = []
       
-      links.each do |possible_link|
+      links_within(selector).each do |possible_link|
         matching_links << possible_link if possible_link.matches_text?(text)
       end
       
@@ -253,11 +254,13 @@ module Webrat
     end
     
     def links
-      return @links if @links
-      
-      @links = (dom / "a[@href]").map do |link_element|
+      @links ||= links_within(nil)
+    end
+    
+    def links_within(selector)
+      (dom / selector / "a[@href]").map do |link_element|
         Link.new(self, link_element)
-      end      
+      end
     end
     
     def forms
