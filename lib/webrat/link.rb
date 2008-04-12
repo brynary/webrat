@@ -10,7 +10,7 @@ module Webrat
       method ||= http_method
       return if href =~ /^#/ && method == :get
       
-      Page.new(@page.session, href, method, authenticity_token.blank? ? {} : {"authenticity_token" => authenticity_token})
+      Page.new(@page.session, absolute_href, method, authenticity_token.blank? ? {} : {"authenticity_token" => authenticity_token})
     end
     
     def matches_text?(link_text)
@@ -25,6 +25,16 @@ module Webrat
 
     def href
       @element["href"]
+    end
+
+    def absolute_href
+      if href =~ /^\?/
+        "#{@page.url}#{href}"
+      elsif href !~ /^\//
+        "#{@page.url}/#{href}"
+      else
+        href
+      end
     end
     
     def authenticity_token
