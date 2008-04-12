@@ -6,8 +6,12 @@ module Webrat
       @element = element
     end
     
-    def matches_text?(text)      
-      @element.innerHTML == text.to_s
+    def matches_text?(text)
+      if text.is_a?(Regexp)
+        @element.innerHTML =~ text
+      else
+        @element.innerHTML == text.to_s
+      end
     end
     
     def choose

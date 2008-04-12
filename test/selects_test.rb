@@ -108,4 +108,31 @@ class SelectsTest < Test::Unit::TestCase
     @session.selects "January", :from => "month"
     @session.clicks_button
   end
+
+  def test_should_find_option_by_regexp
+    @response.stubs(:body).returns(<<-EOS)
+      <form method="post" action="/login">
+        <select name="month"><option>January</option></select>
+        <input type="submit" />
+      </form>
+    EOS
+    @session.expects(:post_via_redirect).with("/login", "month" => "January")
+    @session.selects(/jan/i)
+    @session.clicks_button
+  end
+
+  def test_should_find_option_by_regexp_in_list_specified_by_label
+    @response.stubs(:body).returns(<<-EOS)
+      <form method="post" action="/login">
+        <label for="start_month">Start Month</label>
+        <select id="start_month" name="start_month"><option value="s1">January</option></select>
+        <label for="end_month">End Month</label>
+        <select id="end_month" name="end_month"><option value="e1">January</option></select>
+        <input type="submit" />
+      </form>
+    EOS
+    @session.expects(:post_via_redirect).with("/login", "start_month" => "s1", "end_month" => "e1")
+    @session.selects(/jan/i, :from => "End Month")
+    @session.clicks_button
+  end
 end
