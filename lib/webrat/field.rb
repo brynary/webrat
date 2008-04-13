@@ -215,6 +215,9 @@ module Webrat
     end
 
   end
+  
+  class FileField < Field
+  end
 
   class TextField < Field
   end

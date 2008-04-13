@@ -77,6 +77,16 @@ class ClicksButtonTest < Test::Unit::TestCase
     @session.clicks_button
   end
   
+  def test_should_not_explode_on_file_fields
+    @response.stubs(:body).returns(<<-EOS)
+      <form method="get" action="/form1">
+        <input type="file" />
+        <input type="submit" />
+      </form>
+    EOS
+    @session.clicks_button
+  end
+  
   def test_should_submit_the_form_with_the_specified_button
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/form1">
