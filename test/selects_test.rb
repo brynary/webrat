@@ -56,6 +56,17 @@ class SelectsTest < Test::Unit::TestCase
     @session.selects "January", :from => "month"
     @session.clicks_button
   end
+
+  def test_should_work_with_empty_select_lists
+    @response.stubs(:body).returns(<<-EOS)
+      <form method="post" action="/login">
+        <select name="month"></select>
+        <input type="submit" />
+      </form>
+    EOS
+    @session.expects(:post_via_redirect).with("/login", 'month' => '')
+    @session.clicks_button
+  end
   
   def test_should_work_without_specifying_the_field_name_or_label
     @response.stubs(:body).returns(<<-EOS)

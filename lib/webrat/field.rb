@@ -237,6 +237,7 @@ module Webrat
       selected_options = @element / "option[@selected='selected']"
       selected_options = @element / "option:first" if selected_options.empty? 
       selected_options.map do |option|
+        return "" if option.nil?
         option["value"] || option.innerHTML
       end
     end
