@@ -190,4 +190,22 @@ class ClicksLinkTest < Test::Unit::TestCase
     @session.expects(:send).with('get_via_redirect', '#section-1', {}).never
     @session.clicks_link "Jump to Section 1"
   end
+
+  def test_should_follow_relative_links
+    @session.current_page.stubs(:url).returns("/page")
+    @response.stubs(:body).returns(<<-EOS)
+      <a href="sub">Jump to sub page</a>
+    EOS
+    @session.expects(:get_via_redirect).with("/page/sub", {})
+    @session.clicks_link "Jump to sub page"
+  end
+
+  def test_should_follow_query_parameters
+    @session.current_page.stubs(:url).returns("/page")
+    @response.stubs(:body).returns(<<-EOS)
+      <a href="?foo=bar">Jump to foo bar</a>
+    EOS
+    @session.expects(:get_via_redirect).with("/page?foo=bar", {})
+    @session.clicks_link "Jump to foo bar"
+  end
 end

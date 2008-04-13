@@ -1,5 +1,9 @@
 == Trunk
 
+* Enhancements
+
+  * Support relative links, including href="?foo=bar" (Patch from Kyle Hargraves)
+  
 * Bug fixes
 
   * Fix regression of not sending default values in password fields
