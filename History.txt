@@ -2,6 +2,7 @@
 
 * Enhancements
 
+  * Support matching select options by regexp (Patch from Kyle Hargraves)
   * Support relative links, including href="?foo=bar" (Patch from Kyle Hargraves)
   
 * Bug fixes
