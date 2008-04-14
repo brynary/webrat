@@ -7,6 +7,7 @@
   
 * Bug fixes
 
+  * Fix bug with empty select list option (Patch from Kyle Hargraves)
   * Fix regression of not sending default values in password fields
   
 == 0.2.0 / 2008-04-04
