@@ -43,6 +43,11 @@ class Merb::Test::RspecStory
     follow_redirect! while redirect?
     status
   end
+  def post_via_redirect(path, parameters = {}, headers = {})
+    @controller=post path, parameters, headers
+    follow_redirect! while redirect?
+    status
+  end  
   def delete_via_redirect(path, parameters = {}, headers = {})
     @controller=delete path, parameters, headers
     follow_redirect! while redirect?
