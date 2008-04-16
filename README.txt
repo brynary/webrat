@@ -63,7 +63,7 @@ A test written with Webrat can handle these changes smoothly.
 
 == REQUIREMENTS:
 
-* Rails >= 1.2.6
+* Rails >= 1.2.6 or Merb edge
 * Hpricot >= 0.6
 * Rails integration tests in Test::Unit _or_
 * RSpec stories (using an RSpec version >= revision 2997)
@@ -75,6 +75,12 @@ In your stories/helper.rb:
   require "webrat"
   
 You could also unpack the gem into vendor/plugins.
+
+To avoid losing sessions, you need this in environments/test.rb:
+
+Merb::Config.use do |c|
+  c[:session_store] = 'memory' 
+end  
 
 == HISTORY:
 
