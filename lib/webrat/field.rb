@@ -3,7 +3,7 @@ module Webrat
     
     def self.class_for_element(element)
       if element.name == "input"
-        if %w[submit image].include?(element["type"])
+        if %w[submit image button].include?(element["type"])
           field_class = "button"
         else
           field_class = element["type"] || "text" #default type; 'type' attribute is not mandatory
@@ -11,7 +11,6 @@ module Webrat
       else
         field_class = element.name
       end
-      
       Webrat.const_get("#{field_class.capitalize}Field")
     #rescue NameError
     #  raise "Invalid field element: #{element.inspect}"

@@ -77,6 +77,23 @@ class ClicksButtonTest < Test::Unit::TestCase
     @session.clicks_button
   end
   
+  #<button type='submit'> is also valid HTML.
+  def test_should_work_with_button_submit
+    @response.stubs(:body).returns(<<-EOS)
+<form action="/form1" method="post"><p><label for="login">Login</label><br/>
+
+<input type="text" class="text" name="login"/></p>
+
+<p><label for="password">Password</label><br/>
+<input type="password" class="password" name="password"/></p>
+<p><button type="submit">Log in</button></p>
+</form>
+
+    EOS
+    @session.expects(:post_via_redirect)
+    @session.clicks_button
+  end  
+  
   def test_should_not_explode_on_file_fields
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/form1">
