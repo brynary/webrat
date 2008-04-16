@@ -6,15 +6,15 @@ module Webrat
         if %w[submit image].include?(element["type"])
           field_class = "button"
         else
-          field_class = element["type"]
+          field_class = element["type"] || "text" #default type; 'type' attribute is not mandatory
         end
       else
         field_class = element.name
       end
       
       Webrat.const_get("#{field_class.capitalize}Field")
-    rescue NameError
-      raise "Invalid field element: #{element.inspect}"
+    #rescue NameError
+    #  raise "Invalid field element: #{element.inspect}"
     end
     
     def initialize(form, element)
@@ -92,8 +92,10 @@ module Webrat
     def param_parser
       if defined?(CGIMethods)
         CGIMethods
-      else
+      elsif defined?(ActionController::AbstractRequest)
         ActionController::AbstractRequest
+      else
+        Webrat::ParamParser #used for Merb
       end
     end
     

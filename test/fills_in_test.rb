@@ -137,6 +137,18 @@ class FillsInTest < Test::Unit::TestCase
     @session.fills_in "user[email]", :with => "foo@example.com"
     @session.clicks_button
   end
+
+  def test_should_work_without_input_type
+    @response.stubs(:body).returns(<<-EOS)
+      <form method="post" action="/login">
+        <input id="user_email" name="user[email]"  />
+        <input type="submit" />
+      </form>
+    EOS
+    @session.expects(:post_via_redirect).with("/login", "user" => {"email" => "foo@example.com"})
+    @session.fills_in "user[email]", :with => "foo@example.com"
+    @session.clicks_button
+  end
   
   def test_should_work_with_symbols
     @response.stubs(:body).returns(<<-EOS)
