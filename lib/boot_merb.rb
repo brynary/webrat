@@ -33,29 +33,38 @@ class Merb::Test::RspecStory
   
   #Session defines the following (used by webrat), but RspecStory doesn't. Merb's get/put/delete return a controller,
   #which is where we get our status and response from. 
+  #
+  #We have to preserve cookies like this, or the session is lost.
+  def request_via_redirect(method,path,parameters={},headers={})
+    mycookies = @controller.cookies rescue nil #will be nil if no requests yet
+    @controller=self.send(method, path, parameters, headers) do |new_controller|
+      new_controller.cookies = mycookies
+    end
+    follow_redirect! while redirect?
+    status
+  end
+  
   def get_via_redirect(path, parameters = {}, headers = {})
-    @controller=get path, parameters, headers
-    follow_redirect! while redirect?
-    status
+    request_via_redirect(:get,path,parameters,headers)
   end
+
   def put_via_redirect(path, parameters = {}, headers = {})
-    @controller=put path, parameters, headers
-    follow_redirect! while redirect?
-    status
+    request_via_redirect(:put,path,parameters,headers)
   end
+
   def post_via_redirect(path, parameters = {}, headers = {})
-    @controller=post path, parameters, headers
-    follow_redirect! while redirect?
-    status
+    request_via_redirect(:post,path,parameters,headers)
   end  
+
   def delete_via_redirect(path, parameters = {}, headers = {})
-    @controller=delete path, parameters, headers
-    follow_redirect! while redirect?
-    status
+    request_via_redirect(:delete,path,parameters,headers)
   end  
   
   def follow_redirect!
-    @controller=get @controller.headers["Location"]
+    mycookies = @controller.cookies rescue nil
+    @controller=get @controller.headers["Location"] do |new_controller|
+      new_controller.cookies=mycookies
+    end
   end
   
   def redirect?
@@ -78,6 +87,13 @@ class Merb::Test::RspecStory
     end
   end  
 end
+
+class Application < Merb::Controller
+  def cookies=(newcookies)
+    @_cookies = newcookies
+  end
+end
+
 
 #Other utilities used by Webrat that are present in Rails but not Merb. We can require heavy dependencies
 #here because we're only loaded in Test mode. 
