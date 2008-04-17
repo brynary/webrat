@@ -332,4 +332,26 @@ class ClicksButtonTest < Test::Unit::TestCase
     @session.expects(:get_via_redirect).with("/login", "user" => {"email" => ""})
     @session.clicks_button
   end
+
+  def test_should_recognize_button_tags
+    @response.stubs(:body).returns(<<-EOS)
+      <form method="get" action="/login">
+        <input id="user_email" name="user[email]" value="" type="text" />
+        <button type="submit" />
+      </form>
+    EOS
+    @session.expects(:get_via_redirect).with("/login", "user" => {"email" => ""})
+    @session.clicks_button
+  end
+
+  def test_should_recognize_button_tags_by_content
+    @response.stubs(:body).returns(<<-EOS)
+      <form method="get" action="/login">
+        <input id="user_email" name="user[email]" value="" type="text" />
+        <button type="submit">Login</button>
+      </form>
+    EOS
+    @session.expects(:get_via_redirect).with("/login", "user" => {"email" => ""})
+    @session.clicks_button "Login"
+  end
 end

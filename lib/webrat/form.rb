@@ -45,7 +45,7 @@ module Webrat
       
       @fields = []
       
-      (@element / "input, textarea, select").each do |field_element|
+      (@element / "button, input, textarea, select").each do |field_element|
         @fields << Field.class_for_element(field_element).new(self, field_element)
       end
       

@@ -101,8 +101,12 @@ module Webrat
   
   class ButtonField < Field
 
+    def matches_text?(text)
+      @element.innerHTML =~ /#{Regexp.escape(text.to_s)}/i
+    end
+
     def matches_value?(value)
-      @element["value"] =~ /^\W*#{Regexp.escape(value.to_s)}/i
+      @element["value"] =~ /^\W*#{Regexp.escape(value.to_s)}/i || matches_text?(value)
     end
 
     def to_param
