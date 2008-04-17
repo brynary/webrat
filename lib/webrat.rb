@@ -4,6 +4,9 @@ end
 
 module Webrat
   VERSION = '0.2.1'
+  def self.root
+    defined?(RAILS_ROOT) ? RAILS_ROOT : Merb.root
+  end
 end
 
 if defined?(Merb)

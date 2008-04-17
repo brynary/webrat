@@ -94,10 +94,10 @@ module Webrat
     # Example:
     #   save_and_open
     def save_and_open
-      return unless File.exist?(RAILS_ROOT + "/tmp")
+      return unless File.exist?(Webrat.root + "/tmp")
 
       filename = "webrat-#{Time.now.to_i}.html"
-      File.open(RAILS_ROOT + "/tmp/#{filename}", "w") do |f|
+      File.open(Webrat.root + "/tmp/#{filename}", "w") do |f|
         f.write response.body
       end
       `open tmp/#{filename}`
