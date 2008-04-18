@@ -10,6 +10,7 @@ module Webrat
 end
 
 if defined?(Merb)
+  puts "************ Booting merb mode"
   require File.join(File.dirname(__FILE__), "boot_merb.rb")
 else
   require File.join(File.dirname(__FILE__), "boot_rails.rb")
