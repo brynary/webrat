@@ -102,4 +102,7 @@ require 'cgi'
 require File.join(File.dirname(__FILE__), "merb_support", "param_parser.rb")
 require File.join(File.dirname(__FILE__), "merb_support", "url_encoded_pair_parser.rb")
 require File.join(File.dirname(__FILE__), "merb_support", "indifferent_access.rb")
+require File.join(File.dirname(__FILE__), "merb_support", "support.rb")
+
+
 

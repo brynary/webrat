@@ -1,7 +1,6 @@
 # This class has dubious semantics and we only have it so that
 # people can write params[:key] instead of params['key']
 # and they get the same value for both keys.
-
 class HashWithIndifferentAccess < Hash
   def initialize(constructor = {})
     if constructor.is_a?(Hash)
@@ -123,16 +122,4 @@ class HashWithIndifferentAccess < Hash
     end
 end
 
-module ActiveSupport #:nodoc:
-  module CoreExtensions #:nodoc:
-    module Hash #:nodoc:
-      module IndifferentAccess #:nodoc:
-        def with_indifferent_access
-          hash = HashWithIndifferentAccess.new(self)
-          hash.default = self.default
-          hash
-        end
-      end
-    end
-  end
-end
+
