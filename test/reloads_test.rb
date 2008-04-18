@@ -5,7 +5,7 @@ RAILS_ROOT = "." unless defined?(RAILS_ROOT)
 class ReloadsTest < Test::Unit::TestCase
 
   def setup
-    @session = ActionController::Integration::Session.new
+    @session = test_session
     @session.stubs(:assert_response)
     @session.stubs(:get_via_redirect)
     @response = mock

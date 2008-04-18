@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + "/helper"
 
 class ClicksButtonTest < Test::Unit::TestCase
   def setup
-    @session = ActionController::Integration::Session.new
+    @session = test_session
     @session.stubs(:assert_response)
     @session.stubs(:get_via_redirect)
     @page = Webrat::Page.new(@session)
