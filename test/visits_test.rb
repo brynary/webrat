@@ -5,12 +5,21 @@ RAILS_ROOT = "." unless defined?(RAILS_ROOT)
 class VisitsTest < Test::Unit::TestCase
 
   def setup
-    @session = ActionController::Integration::Session.new
-    @session.stubs(:assert_response)
-    @session.stubs(:get_via_redirect)
-    @response = mock
-    @session.stubs(:response).returns(@response)
-    @response.stubs(:body).returns("")
+    if ENV["TEST_MODE"] == "rails"
+      @session = ActionController::Integration::Session.new
+      @session.stubs(:assert_response)
+      @session.stubs(:get_via_redirect)
+      @response = mock
+      @session.stubs(:response).returns(@response)
+      @response.stubs(:body).returns("")
+    elsif ENV["TEST_MODE"] == "merb"
+      @session = Merb::Test::RspecStory.new
+      @session.stubs(:assert_response)
+      @session.stubs(:get_via_redirect)
+      @response = mock
+      @session.stubs(:response).returns(@response)
+      @response.stubs(:body).returns("")
+    end
   end
 
   def test_should_use_get
