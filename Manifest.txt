@@ -20,6 +20,7 @@ lib/boot_rails.rb
 lib/merb_support/indifferent_access.rb
 lib/merb_support/param_parser.rb
 lib/merb_support/url_encoded_pair_parser.rb
+lib/merb_support/support.rb
 test/checks_test.rb
 test/chooses_test.rb
 test/clicks_button_test.rb
