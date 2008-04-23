@@ -35,8 +35,13 @@ class Merb::Test::RspecStory
   #which is where we get our status and response from. 
   #
   #We have to preserve cookies like this, or the session is lost.
+  #
+  #While (in a web application) a PUT is modelled as a POST with a parameter _method, 
+  #this close to the metal we need to make sure that we actually hit the underlying 'put' method,
+  #so we rewrite 'method'.
   def request_via_redirect(method,path,parameters={},headers={})
-    mycookies = @controller.cookies rescue nil #will be nil if no requests yet
+    method = parameters["_method"] if !parameters["_method"].blank?
+    mycookies = defined?(@controller) ? @controller.cookies : nil #will be nil if no requests yet
     @controller=self.send(method, path, parameters, headers) do |new_controller|
       new_controller.cookies = mycookies
     end

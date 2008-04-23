@@ -9,6 +9,8 @@ class ClicksButtonTest < Test::Unit::TestCase
     @session.stubs(:current_page).returns(@page)
     @response = mock
     @session.stubs(:response).returns(@response)
+    @controller = mock
+    @controller.stubs(:status).returns(200)
   end
   
   def test_should_fail_if_no_buttons
@@ -349,4 +351,29 @@ class ClicksButtonTest < Test::Unit::TestCase
     @session.expects(:get_via_redirect).with("/login", "user" => {"email" => ""})
     @session.clicks_button
   end
+  
+  def test_should_use_put_method_when_needed
+    @response.stubs(:body).returns(<<-EOS)
+      <form method="put" action="/login">
+        <input id="user_email" name="user[email]" value="test@example.com" type="hidden" />
+        <input type="submit" />
+      </form>
+    EOS
+    @session.stubs(:redirect?).returns(false)
+    @session.expects(:put).returns(@controller)
+    @session.clicks_button
+  end
+
+  def test_should_use_delete_method_when_needed
+    @response.stubs(:body).returns(<<-EOS)
+      <form method="delete" action="/login">
+        <input id="user_email" name="user[email]" value="test@example.com" type="hidden" />
+        <input type="submit" />
+      </form>
+    EOS
+    @session.stubs(:redirect?).returns(false)
+    @session.expects(:delete).returns(@controller)
+    @session.clicks_button
+  end
+  
 end
