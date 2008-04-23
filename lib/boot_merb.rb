@@ -42,9 +42,21 @@ class Merb::Test::RspecStory
   def request_via_redirect(method,path,parameters={},headers={})
     method = parameters["_method"] if !parameters["_method"].blank?
     mycookies = defined?(@controller) ? @controller.cookies : nil #will be nil if no requests yet
-    @controller=self.send(method, path, parameters, headers) do |new_controller|
-      new_controller.cookies = mycookies
+    begin
+      @controller=self.send(method, path, parameters, headers) do |new_controller|
+        new_controller.cookies = mycookies
+      end
+    rescue => exception
+      raise unless exception.kind_of?(Merb::ControllerExceptions::Base)
+      #Now we want to go one level below 'post' to build the request ourselves, then send it to the controller
+      exception_klass = exception.class
+      klass = ::Exceptions rescue Merb::Controller
+      request = fake_request
+      request.params[:exception] = exception
+      request.params[:action] = exception_klass.name
+      @controller=dispatch_request(request, klass, exception_klass.name)
     end
+    
     follow_redirect! while redirect?
     status
   end
