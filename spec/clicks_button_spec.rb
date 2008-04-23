@@ -1,7 +1,7 @@
-require File.dirname(__FILE__) + "/helper"
+require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
 
-class ClicksButtonTest < Test::Unit::TestCase
-  def setup
+describe "clicks_button" do
+  before do
     @session = ActionController::Integration::Session.new
     @session.stubs(:assert_response)
     @session.stubs(:get_via_redirect)
@@ -11,29 +11,25 @@ class ClicksButtonTest < Test::Unit::TestCase
     @session.stubs(:response).returns(@response)
   end
   
-  def test_should_fail_if_no_buttons
+  it "should_fail_if_no_buttons" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login"></form>
     EOS
     
-    assert_raises RuntimeError do
-      @session.clicks_button
-    end
+    lambda { @session.clicks_button }.should raise_error
   end
   
-  def test_should_fail_if_input_is_not_a_submit_button
+  it "should_fail_if_input_is_not_a_submit_button" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <input type="reset" />
       </form>
     EOS
-    
-    assert_raises RuntimeError do
-      @session.clicks_button
-    end
+
+    lambda { @session.clicks_button }.should raise_error
   end
   
-  def test_should_default_to_get_method
+  it "should_default_to_get_method" do
     @response.stubs(:body).returns(<<-EOS)
       <form action="/login">
         <input type="submit" />
@@ -43,7 +39,7 @@ class ClicksButtonTest < Test::Unit::TestCase
     @session.clicks_button
   end
   
-  def test_should_assert_valid_response
+  it "should_assert_valid_response" do
     @response.stubs(:body).returns(<<-EOS)
       <form action="/login">
         <input type="submit" />
@@ -53,7 +49,7 @@ class ClicksButtonTest < Test::Unit::TestCase
     @session.clicks_button
   end
   
-  def test_should_default_to_current_url
+  it "should_default_to_current_url" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get">
         <input type="submit" />
@@ -64,7 +60,7 @@ class ClicksButtonTest < Test::Unit::TestCase
     @session.clicks_button
   end
   
-  def test_should_submit_the_first_form_by_default
+  it "should_submit_the_first_form_by_default" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/form1">
         <input type="submit" />
@@ -77,7 +73,7 @@ class ClicksButtonTest < Test::Unit::TestCase
     @session.clicks_button
   end
   
-  def test_should_not_explode_on_file_fields
+  it "should_not_explode_on_file_fields" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/form1">
         <input type="file" />
@@ -87,7 +83,7 @@ class ClicksButtonTest < Test::Unit::TestCase
     @session.clicks_button
   end
   
-  def test_should_submit_the_form_with_the_specified_button
+  it "should_submit_the_form_with_the_specified_button" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/form1">
         <input type="submit" />
@@ -100,7 +96,7 @@ class ClicksButtonTest < Test::Unit::TestCase
     @session.clicks_button "Form2"
   end
   
-  def test_should_use_action_from_form
+  it "should_use_action_from_form" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <input type="submit" />
@@ -110,7 +106,7 @@ class ClicksButtonTest < Test::Unit::TestCase
     @session.clicks_button
   end
   
-  def test_should_use_method_from_form
+  it "should_use_method_from_form" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <input type="submit" />
@@ -120,7 +116,7 @@ class ClicksButtonTest < Test::Unit::TestCase
     @session.clicks_button
   end
   
-  def test_should_send_button_as_param_if_it_has_a_name
+  it "should_send_button_as_param_if_it_has_a_name" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <input type="submit" name="cancel" value="Cancel" />
@@ -131,7 +127,7 @@ class ClicksButtonTest < Test::Unit::TestCase
     @session.clicks_button("Login")
   end
   
-  def test_should_not_send_button_as_param_if_it_has_no_name
+  it "should_not_send_button_as_param_if_it_has_no_name" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <input type="submit" name="cancel" value="Cancel" />
@@ -142,7 +138,7 @@ class ClicksButtonTest < Test::Unit::TestCase
     @session.clicks_button("Login")
   end
 
-  def test_should_send_default_password_field_values
+  it "should_send_default_password_field_values" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <input id="user_password" name="user[password]" value="mypass" type="password" />
@@ -153,7 +149,7 @@ class ClicksButtonTest < Test::Unit::TestCase
     @session.clicks_button
   end  
   
-  def test_should_send_default_hidden_field_values
+  it "should_send_default_hidden_field_values" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <input id="user_email" name="user[email]" value="test@example.com" type="hidden" />
@@ -164,7 +160,7 @@ class ClicksButtonTest < Test::Unit::TestCase
     @session.clicks_button
   end
   
-  def test_should_send_default_text_field_values
+  it "should_send_default_text_field_values" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <input id="user_email" name="user[email]" value="test@example.com" type="text" />
@@ -175,7 +171,7 @@ class ClicksButtonTest < Test::Unit::TestCase
     @session.clicks_button
   end
   
-  def test_should_send_default_checked_fields
+  it "should_send_default_checked_fields" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <input id="user_tos" name="user[tos]" value="1" type="checkbox" checked="checked" />
@@ -186,7 +182,7 @@ class ClicksButtonTest < Test::Unit::TestCase
     @session.clicks_button
   end
   
-  def test_should_send_default_radio_options
+  it "should_send_default_radio_options" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <input id="user_gender_male" name="user[gender]" type="radio" value="M" />
@@ -200,7 +196,7 @@ class ClicksButtonTest < Test::Unit::TestCase
     @session.clicks_button
   end
   
-  def test_should_send_correct_data_for_rails_style_unchecked_fields
+  it "should_send_correct_data_for_rails_style_unchecked_fields" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <input id="user_tos" name="user[tos]" type="checkbox" value="1" />
@@ -212,7 +208,7 @@ class ClicksButtonTest < Test::Unit::TestCase
     @session.clicks_button
   end
   
-  def test_should_send_correct_data_for_rails_style_checked_fields
+  it "should_send_correct_data_for_rails_style_checked_fields" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <input id="user_tos" name="user[tos]" type="checkbox" value="1" checked="checked" />
@@ -224,7 +220,7 @@ class ClicksButtonTest < Test::Unit::TestCase
     @session.clicks_button
   end
 
-  def test_should_send_default_collection_fields
+  it "should_send_default_collection_fields" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <input type="checkbox" name="options[]" value="burger" checked="checked" />
@@ -246,7 +242,7 @@ class ClicksButtonTest < Test::Unit::TestCase
     @session.clicks_button
   end
   
-  def test_should_not_send_default_unchecked_fields
+  it "should_not_send_default_unchecked_fields" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <input id="user_tos" name="user[tos]" value="1" type="checkbox" />
@@ -257,7 +253,7 @@ class ClicksButtonTest < Test::Unit::TestCase
     @session.clicks_button
   end
   
-  def test_should_send_default_textarea_values
+  it "should_send_default_textarea_values" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/posts">
         <textarea name="post[body]">Post body here!</textarea>
@@ -268,7 +264,7 @@ class ClicksButtonTest < Test::Unit::TestCase
     @session.clicks_button
   end
   
-  def test_should_send_default_selected_option_value_from_select
+  it "should_send_default_selected_option_value_from_select" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <select name="month">
@@ -282,7 +278,7 @@ class ClicksButtonTest < Test::Unit::TestCase
     @session.clicks_button
   end
 
-  def test_should_send_default_selected_option_inner_html_from_select_when_no_value_attribute
+  it "should_send_default_selected_option_inner_html_from_select_when_no_value_attribute" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <select name="month">
@@ -296,7 +292,7 @@ class ClicksButtonTest < Test::Unit::TestCase
     @session.clicks_button
   end
   
-  def test_should_send_first_select_option_value_when_no_option_selected
+  it "should_send_first_select_option_value_when_no_option_selected" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <select name="month">
@@ -310,7 +306,7 @@ class ClicksButtonTest < Test::Unit::TestCase
     @session.clicks_button
   end
   
-  def test_should_handle_nested_properties
+  it "should_handle_nested_properties" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <input type="text" id="contestant_scores_12" name="contestant[scores][1]" value="2"/>
@@ -322,7 +318,7 @@ class ClicksButtonTest < Test::Unit::TestCase
     @session.clicks_button
   end
 
-  def test_should_send_default_empty_text_field_values
+  it "should_send_default_empty_text_field_values" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <input id="user_email" name="user[email]" value="" type="text" />
@@ -333,7 +329,7 @@ class ClicksButtonTest < Test::Unit::TestCase
     @session.clicks_button
   end
 
-  def test_should_recognize_button_tags
+  it "should_recognize_button_tags" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <input id="user_email" name="user[email]" value="" type="text" />
@@ -344,7 +340,7 @@ class ClicksButtonTest < Test::Unit::TestCase
     @session.clicks_button
   end
 
-  def test_should_recognize_button_tags_by_content
+  it "should_recognize_button_tags_by_content" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <input id="user_email" name="user[email]" value="" type="text" />

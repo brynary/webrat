@@ -1,5 +1,5 @@
 require "rubygems"
-require "test/unit"
+require "spec"
 # gem install redgreen for colored test output
 begin require "redgreen" unless ENV['TM_CURRENT_LINE']; rescue LoadError; end
 require "mocha"
@@ -17,4 +17,8 @@ class ActionController::Integration::Session
   def flunk(message)
     raise message
   end
+end
+
+Spec::Runner.configure do |config|
+  config.mock_with :mocha
 end

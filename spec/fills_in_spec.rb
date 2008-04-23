@@ -1,14 +1,14 @@
-require File.dirname(__FILE__) + "/helper"
+require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
 
-class FillsInTest < Test::Unit::TestCase
-  def setup
+describe "fills_in" do
+  before do
     @session = ActionController::Integration::Session.new
     @session.stubs(:assert_response)
     @session.stubs(:get_via_redirect)
     @session.stubs(:response).returns(@response=mock)
   end
   
-  def test_should_work_with_textareas
+  it "should_work_with_textareas" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <label for="user_text">User Text</label>
@@ -21,7 +21,7 @@ class FillsInTest < Test::Unit::TestCase
     @session.clicks_button
   end
   
-  def test_should_work_with_password_fields
+  it "should_work_with_password_fields" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <input id="user_text" name="user[text]" type="password" />
@@ -33,18 +33,16 @@ class FillsInTest < Test::Unit::TestCase
     @session.clicks_button
   end
 
-  def test_should_fail_if_input_not_found
+  it "should_fail_if_input_not_found" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
       </form>
     EOS
     
-    assert_raises RuntimeError do
-      @session.fills_in "Email", :with => "foo@example.com"
-    end
+    lambda { @session.fills_in "Email", :with => "foo@example.com" }.should raise_error
   end
   
-  def test_should_allow_overriding_default_form_values
+  it "should_allow_overriding_default_form_values" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <label for="user_email">Email</label>
@@ -57,7 +55,7 @@ class FillsInTest < Test::Unit::TestCase
     @session.clicks_button
   end
   
-  def test_should_choose_the_shortest_label_match
+  it "should_choose_the_shortest_label_match" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <label for="user_mail1">Some other mail</label>
@@ -73,7 +71,7 @@ class FillsInTest < Test::Unit::TestCase
     @session.clicks_button
   end
   
-  def test_should_choose_the_first_label_match_if_closest_is_a_tie
+  it "should_choose_the_first_label_match_if_closest_is_a_tie" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <label for="user_mail1">Some mail one</label>
@@ -89,7 +87,7 @@ class FillsInTest < Test::Unit::TestCase
     @session.clicks_button
   end
   
-  def test_should_anchor_label_matches_to_start_of_label
+  it "should_anchor_label_matches_to_start_of_label" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <label for="user_email">Some mail</label>
@@ -97,10 +95,10 @@ class FillsInTest < Test::Unit::TestCase
       </form>
     EOS
     
-    assert_raises(RuntimeError) { @session.fills_in "mail", :with => "value" }
+    lambda { @session.fills_in "mail", :with => "value" }.should raise_error
   end
   
-  def test_should_anchor_label_matches_to_word_boundaries
+  it "should_anchor_label_matches_to_word_boundaries" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <label for="user_email">Emailtastic</label>
@@ -108,10 +106,10 @@ class FillsInTest < Test::Unit::TestCase
       </form>
     EOS
     
-    assert_raises(RuntimeError) { @session.fills_in "Email", :with => "value" }
+    lambda { @session.fills_in "Email", :with => "value" }.should raise_error
   end
   
-  def test_should_work_with_inputs_nested_in_labels
+  it "should_work_with_inputs_nested_in_labels" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <label>
@@ -126,7 +124,7 @@ class FillsInTest < Test::Unit::TestCase
     @session.clicks_button
   end
   
-  def test_should_work_with_full_input_names
+  it "should_work_with_full_input_names" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <input id="user_email" name="user[email]" type="text" />
@@ -138,7 +136,7 @@ class FillsInTest < Test::Unit::TestCase
     @session.clicks_button
   end
   
-  def test_should_work_with_symbols
+  it "should_work_with_symbols" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <label for="user_email">Email</label>

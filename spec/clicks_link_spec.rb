@@ -1,14 +1,14 @@
-require File.dirname(__FILE__) + "/helper"
+require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
 
-class ClicksLinkTest < Test::Unit::TestCase
-  def setup
+describe "clicks_link" do
+  before do
     @session = ActionController::Integration::Session.new
     @session.stubs(:assert_response)
     @session.stubs(:get_via_redirect)
     @session.stubs(:response).returns(@response=mock)
   end
 
-  def test_should_use_get_by_default
+  it "should_use_get_by_default" do
     @response.stubs(:body).returns(<<-EOS)
       <a href="/page">Link text</a>
     EOS
@@ -16,7 +16,7 @@ class ClicksLinkTest < Test::Unit::TestCase
     @session.clicks_link "Link text"
   end
 
-  def test_should_click_get_links
+  it "should_click_get_links" do
     @response.stubs(:body).returns(<<-EOS)
       <a href="/page">Link text</a>
     EOS
@@ -24,7 +24,7 @@ class ClicksLinkTest < Test::Unit::TestCase
     @session.clicks_get_link "Link text"
   end
   
-  def test_should_click_delete_links
+  it "should_click_delete_links" do
     @response.stubs(:body).returns(<<-EOS)
       <a href="/page">Link text</a>
     EOS
@@ -32,7 +32,7 @@ class ClicksLinkTest < Test::Unit::TestCase
     @session.clicks_delete_link "Link text"
   end
   
-  def test_should_click_post_links
+  it "should_click_post_links" do
     @response.stubs(:body).returns(<<-EOS)
       <a href="/page">Link text</a>
     EOS
@@ -40,7 +40,7 @@ class ClicksLinkTest < Test::Unit::TestCase
     @session.clicks_post_link "Link text"
   end
   
-  def test_should_click_put_links
+  it "should_click_put_links" do
     @response.stubs(:body).returns(<<-EOS)
       <a href="/page">Link text</a>
     EOS
@@ -48,7 +48,7 @@ class ClicksLinkTest < Test::Unit::TestCase
     @session.clicks_put_link "Link text"
   end
   
-  def test_should_click_rails_javascript_links_with_authenticity_tokens
+  it "should_click_rails_javascript_links_with_authenticity_tokens" do
     @response.stubs(:body).returns(<<-EOS)
       <a href="/posts" onclick="var f = document.createElement('form');
         f.style.display = 'none';
@@ -67,7 +67,7 @@ class ClicksLinkTest < Test::Unit::TestCase
     @session.clicks_link "Posts"
   end
   
-  def test_should_click_rails_javascript_delete_links
+  it "should_click_rails_javascript_delete_links" do
     @response.stubs(:body).returns(<<-EOS)
       <a href="/posts/1" onclick="var f = document.createElement('form');
         f.style.display = 'none';
@@ -86,7 +86,7 @@ class ClicksLinkTest < Test::Unit::TestCase
     @session.clicks_link "Delete"
   end
   
-  def test_should_click_rails_javascript_post_links
+  it "should_click_rails_javascript_post_links" do
     @response.stubs(:body).returns(<<-EOS)
       <a href="/posts" onclick="var f = document.createElement('form');
         f.style.display = 'none';
@@ -100,7 +100,7 @@ class ClicksLinkTest < Test::Unit::TestCase
     @session.clicks_link "Posts"
   end
   
-  def test_should_click_rails_javascript_put_links
+  it "should_click_rails_javascript_put_links" do
     @response.stubs(:body).returns(<<-EOS)
       <a href="/posts" onclick="var f = document.createElement('form');
         f.style.display = 'none';
@@ -119,7 +119,7 @@ class ClicksLinkTest < Test::Unit::TestCase
     @session.clicks_link "Put"
   end
   
-  def test_should_assert_valid_response
+  it "should_assert_valid_response" do
     @response.stubs(:body).returns(<<-EOS)
       <a href="/page">Link text</a>
     EOS
@@ -127,7 +127,7 @@ class ClicksLinkTest < Test::Unit::TestCase
     @session.clicks_link "Link text"
   end
   
-  def test_should_not_be_case_sensitive
+  it "should_not_be_case_sensitive" do
     @response.stubs(:body).returns(<<-EOS)
       <a href="/page">Link text</a>
     EOS
@@ -135,7 +135,7 @@ class ClicksLinkTest < Test::Unit::TestCase
     @session.clicks_link "LINK TEXT"
   end
   
-  def test_should_match_link_substrings
+  it "should_match_link_substrings" do
     @response.stubs(:body).returns(<<-EOS)
       <a href="/page">This is some cool link text, isn't it?</a>
     EOS
@@ -143,7 +143,7 @@ class ClicksLinkTest < Test::Unit::TestCase
     @session.clicks_link "Link text"
   end
   
-  def test_should_work_with_elements_in_the_link
+  it "should_work_with_elements_in_the_link" do
     @response.stubs(:body).returns(<<-EOS)
       <a href="/page"><span>Link text</span></a>
     EOS
@@ -151,7 +151,7 @@ class ClicksLinkTest < Test::Unit::TestCase
     @session.clicks_link "Link text"
   end
   
-  def test_should_match_the_first_matching_link
+  it "should_match_the_first_matching_link" do
     @response.stubs(:body).returns(<<-EOS)
       <a href="/page1">Link text</a>
       <a href="/page2">Link text</a>
@@ -160,7 +160,7 @@ class ClicksLinkTest < Test::Unit::TestCase
     @session.clicks_link "Link text"
   end
   
-  def test_should_choose_the_shortest_link_text_match
+  it "should_choose_the_shortest_link_text_match" do
     @response.stubs(:body).returns(<<-EOS)
     <a href="/page1">Linkerama</a>
     <a href="/page2">Link</a>
@@ -170,7 +170,7 @@ class ClicksLinkTest < Test::Unit::TestCase
     @session.clicks_link "Link"
   end
   
-  def test_should_click_link_within_a_selector
+  it "should_click_link_within_a_selector" do
     @response.stubs(:body).returns(<<-EOS)
     <a href="/page1">Link</a>
     <div id="container">
@@ -182,7 +182,7 @@ class ClicksLinkTest < Test::Unit::TestCase
     @session.clicks_link_within "#container", "Link"
   end
 
-  def test_should_not_make_request_when_link_is_local_anchor
+  it "should_not_make_request_when_link_is_local_anchor" do
     @response.stubs(:body).returns(<<-EOS)
       <a href="#section-1">Jump to Section 1</a>
     EOS
@@ -191,7 +191,7 @@ class ClicksLinkTest < Test::Unit::TestCase
     @session.clicks_link "Jump to Section 1"
   end
 
-  def test_should_follow_relative_links
+  it "should_follow_relative_links" do
     @session.current_page.stubs(:url).returns("/page")
     @response.stubs(:body).returns(<<-EOS)
       <a href="sub">Jump to sub page</a>
@@ -200,7 +200,7 @@ class ClicksLinkTest < Test::Unit::TestCase
     @session.clicks_link "Jump to sub page"
   end
 
-  def test_should_follow_query_parameters
+  it "should_follow_query_parameters" do
     @session.current_page.stubs(:url).returns("/page")
     @response.stubs(:body).returns(<<-EOS)
       <a href="?foo=bar">Jump to foo bar</a>
