@@ -88,6 +88,17 @@ module Webrat
       option.choose
     end
 
+    # Verifies that an input file field exists on the current page and sets
+    # its value to the given +file+, so that the file will be uploaded
+    # along with the form.
+    #
+    # Example:
+    #   attaches_file "Photo", "/path/to/the/photo.jpg"
+    def attaches_file(id_or_name_or_label, path)
+      field = find_field(id_or_name_or_label, FileField)
+      field.set(path)
+    end
+
     # Saves the currently loaded page out to RAILS_ROOT/tmp/ and opens it in the default
     # web browser if on OS X. Useful for debugging.
     # 

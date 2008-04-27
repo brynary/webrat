@@ -97,6 +97,21 @@ module Webrat
       end
     end
     
+    def replace_param_value(params, oval, nval)
+      output = Hash.new
+      params.each do |key, value|
+        case value
+        when Hash
+          value = replace_param_value(value, oval, nval)
+        when Array
+          value = value.map { |o| o == oval ? nval : oval }
+        when oval
+          value = nval
+        end
+        output[key] = value
+      end
+      output
+    end
   end
   
   class ButtonField < Field
@@ -221,6 +236,15 @@ module Webrat
   end
   
   class FileField < Field
+
+    def to_param
+      if @value.nil?
+        super
+      else
+        replace_param_value(super, @value, ActionController::TestUploadedFile.new(@value))
+      end
+    end
+
   end
 
   class TextField < Field
