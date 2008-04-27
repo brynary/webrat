@@ -12,13 +12,13 @@ describe "reloads" do
     @response.stubs(:body).returns("")
   end
 
-  it "should_reload_the_page" do
+  it "should reload the page" do
     @session.expects(:get_via_redirect).with("/", {}).times(2)
     @session.visits("/")
     @session.reloads
   end
 
-  it "should_not_request_page_if_not_visited_any_page" do
+  it "should not request page if not visited any page" do
     @session.expects(:get_via_redirect).never
     @session.reloads
   end

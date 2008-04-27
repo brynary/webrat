@@ -12,17 +12,17 @@ describe "visits" do
     @response.stubs(:body).returns("")
   end
 
-  it "should_use_get" do
+  it "should use get" do
     @session.expects(:get_via_redirect).with("/", {})
     @session.visits("/")
   end
   
-  it "should_assert_valid_response" do
+  it "should assert valid response" do
     @session.expects(:assert_response).with(:success)
     @session.visits("/")
   end
   
-  it "should_require_a_visit_before_manipulating_page" do
+  it "should require a visit before manipulating page" do
     lambda { @session.fills_in "foo", :with => "blah" }.should raise_error
   end
 end

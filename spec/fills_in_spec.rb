@@ -8,7 +8,7 @@ describe "fills_in" do
     @session.stubs(:response).returns(@response=mock)
   end
   
-  it "should_work_with_textareas" do
+  it "should work with textareas" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <label for="user_text">User Text</label>
@@ -21,7 +21,7 @@ describe "fills_in" do
     @session.clicks_button
   end
   
-  it "should_work_with_password_fields" do
+  it "should work with password fields" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <input id="user_text" name="user[text]" type="password" />
@@ -33,7 +33,7 @@ describe "fills_in" do
     @session.clicks_button
   end
 
-  it "should_fail_if_input_not_found" do
+  it "should fail if input not found" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
       </form>
@@ -42,7 +42,7 @@ describe "fills_in" do
     lambda { @session.fills_in "Email", :with => "foo@example.com" }.should raise_error
   end
   
-  it "should_allow_overriding_default_form_values" do
+  it "should allow overriding default form values" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <label for="user_email">Email</label>
@@ -55,7 +55,7 @@ describe "fills_in" do
     @session.clicks_button
   end
   
-  it "should_choose_the_shortest_label_match" do
+  it "should choose the shortest label match" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <label for="user_mail1">Some other mail</label>
@@ -71,7 +71,7 @@ describe "fills_in" do
     @session.clicks_button
   end
   
-  it "should_choose_the_first_label_match_if_closest_is_a_tie" do
+  it "should choose the first label match if closest is a tie" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <label for="user_mail1">Some mail one</label>
@@ -87,7 +87,7 @@ describe "fills_in" do
     @session.clicks_button
   end
   
-  it "should_anchor_label_matches_to_start_of_label" do
+  it "should anchor label matches to start of label" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <label for="user_email">Some mail</label>
@@ -98,7 +98,7 @@ describe "fills_in" do
     lambda { @session.fills_in "mail", :with => "value" }.should raise_error
   end
   
-  it "should_anchor_label_matches_to_word_boundaries" do
+  it "should anchor label matches to word boundaries" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <label for="user_email">Emailtastic</label>
@@ -109,7 +109,7 @@ describe "fills_in" do
     lambda { @session.fills_in "Email", :with => "value" }.should raise_error
   end
   
-  it "should_work_with_inputs_nested_in_labels" do
+  it "should work with inputs nested in labels" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <label>
@@ -124,7 +124,7 @@ describe "fills_in" do
     @session.clicks_button
   end
   
-  it "should_work_with_full_input_names" do
+  it "should work with full input names" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <input id="user_email" name="user[email]" type="text" />
@@ -136,7 +136,7 @@ describe "fills_in" do
     @session.clicks_button
   end
   
-  it "should_work_with_symbols" do
+  it "should work with symbols" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <label for="user_email">Email</label>

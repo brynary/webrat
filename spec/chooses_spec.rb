@@ -8,7 +8,7 @@ describe "chooses" do
     @session.stubs(:response).returns(@response=mock)
   end
   
-  it "should_fail_if_no_radio_buttons_found" do
+  it "should fail if no radio buttons found" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
       </form>
@@ -17,7 +17,7 @@ describe "chooses" do
     lambda { @session.chooses "first option" }.should raise_error
   end
   
-  it "should_fail_if_input_is_not_a_radio_button" do
+  it "should fail if input is not a radio button" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <input type="text" name="first_option" />
@@ -27,7 +27,7 @@ describe "chooses" do
     lambda { @session.chooses "first_option" }.should raise_error
   end
   
-  it "should_check_rails_style_radio_buttons" do
+  it "should check rails style radio buttons" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <input id="user_gender_male" name="user[gender]" type="radio" value="M" />
@@ -42,7 +42,7 @@ describe "chooses" do
     @session.clicks_button
   end
   
-  it "should_only_submit_last_chosen_value" do
+  it "should only submit last chosen value" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <input id="user_gender_male" name="user[gender]" type="radio" value="M" />
@@ -58,7 +58,7 @@ describe "chooses" do
     @session.clicks_button
   end  
   
-  it "should_result_in_the_value_on_being_posted_if_not_specified" do
+  it "should result in the value on being posted if not specified" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <input type="radio" name="first_option" />
@@ -70,7 +70,7 @@ describe "chooses" do
     @session.clicks_button
   end
   
-  it "should_result_in_the_value_on_being_posted_if_not_specified_and_checked_by_default" do
+  it "should result in the value on being posted if not specified and checked by default" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <input type="radio" name="first_option" checked="checked"/>

@@ -8,7 +8,7 @@ describe "checks" do
     @session.stubs(:response).returns(@response=mock)
   end
 
-  it "should_fail_if_no_checkbox_found" do
+  it "should fail if no checkbox found" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
       </form>
@@ -17,7 +17,7 @@ describe "checks" do
     lambda { @session.checks "remember_me" }.should raise_error
   end
 
-  it "should_fail_if_input_is_not_a_checkbox" do
+  it "should fail if input is not a checkbox" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <input type="text" name="remember_me" />
@@ -27,7 +27,7 @@ describe "checks" do
     lambda { @session.checks "remember_me" }.should raise_error
   end
   
-  it "should_check_rails_style_checkboxes" do
+  it "should check rails style checkboxes" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <input id="user_tos" name="user[tos]" type="checkbox" value="1" />
@@ -41,7 +41,7 @@ describe "checks" do
     @session.clicks_button
   end
   
-  it "should_result_in_the_value_on_being_posted_if_not_specified" do
+  it "should result in the value on being posted if not specified" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <input type="checkbox" name="remember_me" />
@@ -53,7 +53,7 @@ describe "checks" do
     @session.clicks_button
   end
   
-  it "should_result_in_a_custom_value_being_posted" do
+  it "should result in a custom value being posted" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <input type="checkbox" name="remember_me" value="yes" />
@@ -74,7 +74,7 @@ describe "unchecks" do
     @session.stubs(:response).returns(@response=mock)
   end
 
-  it "should_fail_if_no_checkbox_found" do
+  it "should fail if no checkbox found" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
       </form>
@@ -83,7 +83,7 @@ describe "unchecks" do
     lambda { @session.unchecks "remember_me" }.should raise_error
   end
 
-  it "should_fail_if_input_is_not_a_checkbox" do
+  it "should fail if input is not a checkbox" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <input type="text" name="remember_me" />
@@ -93,7 +93,7 @@ describe "unchecks" do
     lambda { @session.unchecks "remember_me" }.should raise_error
   end
   
-  it "should_uncheck_rails_style_checkboxes" do
+  it "should uncheck rails style checkboxes" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <input id="user_tos" name="user[tos]" type="checkbox" value="1" checked="checked" />
@@ -108,7 +108,7 @@ describe "unchecks" do
     @session.clicks_button
   end
 
-  it "should_result_in_value_not_being_posted" do
+  it "should result in value not being posted" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <input type="checkbox" name="remember_me" value="yes" checked="checked" />

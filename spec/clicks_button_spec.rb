@@ -11,7 +11,7 @@ describe "clicks_button" do
     @session.stubs(:response).returns(@response)
   end
   
-  it "should_fail_if_no_buttons" do
+  it "should fail if no buttons" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login"></form>
     EOS
@@ -19,7 +19,7 @@ describe "clicks_button" do
     lambda { @session.clicks_button }.should raise_error
   end
   
-  it "should_fail_if_input_is_not_a_submit_button" do
+  it "should fail if input is not a submit button" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <input type="reset" />
@@ -29,7 +29,7 @@ describe "clicks_button" do
     lambda { @session.clicks_button }.should raise_error
   end
   
-  it "should_default_to_get_method" do
+  it "should default to get method" do
     @response.stubs(:body).returns(<<-EOS)
       <form action="/login">
         <input type="submit" />
@@ -39,7 +39,7 @@ describe "clicks_button" do
     @session.clicks_button
   end
   
-  it "should_assert_valid_response" do
+  it "should assert valid response" do
     @response.stubs(:body).returns(<<-EOS)
       <form action="/login">
         <input type="submit" />
@@ -49,7 +49,7 @@ describe "clicks_button" do
     @session.clicks_button
   end
   
-  it "should_default_to_current_url" do
+  it "should default to current url" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get">
         <input type="submit" />
@@ -60,7 +60,7 @@ describe "clicks_button" do
     @session.clicks_button
   end
   
-  it "should_submit_the_first_form_by_default" do
+  it "should submit the first form by default" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/form1">
         <input type="submit" />
@@ -73,7 +73,7 @@ describe "clicks_button" do
     @session.clicks_button
   end
   
-  it "should_not_explode_on_file_fields" do
+  it "should not explode on file fields" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/form1">
         <input type="file" />
@@ -83,7 +83,7 @@ describe "clicks_button" do
     @session.clicks_button
   end
   
-  it "should_submit_the_form_with_the_specified_button" do
+  it "should submit the form with the specified button" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/form1">
         <input type="submit" />
@@ -96,7 +96,7 @@ describe "clicks_button" do
     @session.clicks_button "Form2"
   end
   
-  it "should_use_action_from_form" do
+  it "should use action from form" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <input type="submit" />
@@ -106,7 +106,7 @@ describe "clicks_button" do
     @session.clicks_button
   end
   
-  it "should_use_method_from_form" do
+  it "should use method from form" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <input type="submit" />
@@ -116,7 +116,7 @@ describe "clicks_button" do
     @session.clicks_button
   end
   
-  it "should_send_button_as_param_if_it_has_a_name" do
+  it "should send button as param if it has a name" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <input type="submit" name="cancel" value="Cancel" />
@@ -127,7 +127,7 @@ describe "clicks_button" do
     @session.clicks_button("Login")
   end
   
-  it "should_not_send_button_as_param_if_it_has_no_name" do
+  it "should not send button as param if it has no name" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <input type="submit" name="cancel" value="Cancel" />
@@ -138,7 +138,7 @@ describe "clicks_button" do
     @session.clicks_button("Login")
   end
 
-  it "should_send_default_password_field_values" do
+  it "should send default password field values" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <input id="user_password" name="user[password]" value="mypass" type="password" />
@@ -149,7 +149,7 @@ describe "clicks_button" do
     @session.clicks_button
   end  
   
-  it "should_send_default_hidden_field_values" do
+  it "should send default hidden field values" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <input id="user_email" name="user[email]" value="test@example.com" type="hidden" />
@@ -160,7 +160,7 @@ describe "clicks_button" do
     @session.clicks_button
   end
   
-  it "should_send_default_text_field_values" do
+  it "should send default text field values" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <input id="user_email" name="user[email]" value="test@example.com" type="text" />
@@ -171,7 +171,7 @@ describe "clicks_button" do
     @session.clicks_button
   end
   
-  it "should_send_default_checked_fields" do
+  it "should send default checked fields" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <input id="user_tos" name="user[tos]" value="1" type="checkbox" checked="checked" />
@@ -182,7 +182,7 @@ describe "clicks_button" do
     @session.clicks_button
   end
   
-  it "should_send_default_radio_options" do
+  it "should send default radio options" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <input id="user_gender_male" name="user[gender]" type="radio" value="M" />
@@ -196,7 +196,7 @@ describe "clicks_button" do
     @session.clicks_button
   end
   
-  it "should_send_correct_data_for_rails_style_unchecked_fields" do
+  it "should send correct data for rails style unchecked fields" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <input id="user_tos" name="user[tos]" type="checkbox" value="1" />
@@ -208,7 +208,7 @@ describe "clicks_button" do
     @session.clicks_button
   end
   
-  it "should_send_correct_data_for_rails_style_checked_fields" do
+  it "should send correct data for rails style checked fields" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <input id="user_tos" name="user[tos]" type="checkbox" value="1" checked="checked" />
@@ -220,7 +220,7 @@ describe "clicks_button" do
     @session.clicks_button
   end
 
-  it "should_send_default_collection_fields" do
+  it "should send default collection fields" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <input type="checkbox" name="options[]" value="burger" checked="checked" />
@@ -242,7 +242,7 @@ describe "clicks_button" do
     @session.clicks_button
   end
   
-  it "should_not_send_default_unchecked_fields" do
+  it "should not send default unchecked fields" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <input id="user_tos" name="user[tos]" value="1" type="checkbox" />
@@ -253,7 +253,7 @@ describe "clicks_button" do
     @session.clicks_button
   end
   
-  it "should_send_default_textarea_values" do
+  it "should send default textarea values" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/posts">
         <textarea name="post[body]">Post body here!</textarea>
@@ -264,7 +264,7 @@ describe "clicks_button" do
     @session.clicks_button
   end
   
-  it "should_send_default_selected_option_value_from_select" do
+  it "should send default selected option value from select" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <select name="month">
@@ -278,7 +278,7 @@ describe "clicks_button" do
     @session.clicks_button
   end
 
-  it "should_send_default_selected_option_inner_html_from_select_when_no_value_attribute" do
+  it "should send default selected option inner html from select when no value attribute" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <select name="month">
@@ -292,7 +292,7 @@ describe "clicks_button" do
     @session.clicks_button
   end
   
-  it "should_send_first_select_option_value_when_no_option_selected" do
+  it "should send first select option value when no option selected" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <select name="month">
@@ -306,7 +306,7 @@ describe "clicks_button" do
     @session.clicks_button
   end
   
-  it "should_handle_nested_properties" do
+  it "should handle nested properties" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <input type="text" id="contestant_scores_12" name="contestant[scores][1]" value="2"/>
@@ -318,7 +318,7 @@ describe "clicks_button" do
     @session.clicks_button
   end
 
-  it "should_send_default_empty_text_field_values" do
+  it "should send default empty text field values" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <input id="user_email" name="user[email]" value="" type="text" />
@@ -329,7 +329,7 @@ describe "clicks_button" do
     @session.clicks_button
   end
 
-  it "should_recognize_button_tags" do
+  it "should recognize button tags" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <input id="user_email" name="user[email]" value="" type="text" />
@@ -340,7 +340,7 @@ describe "clicks_button" do
     @session.clicks_button
   end
 
-  it "should_recognize_button_tags_by_content" do
+  it "should recognize button tags by content" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <input id="user_email" name="user[email]" value="" type="text" />

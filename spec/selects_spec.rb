@@ -8,7 +8,7 @@ describe "selects" do
     @session.stubs(:response).returns(@response=mock)
   end
 
-  it "should_fail_if_option_not_found" do
+  it "should fail if option not found" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <select name="month"><option value="1">January</option></select>
@@ -18,7 +18,7 @@ describe "selects" do
     lambda { @session.selects "February", :from => "month" }.should raise_error
   end
   
-  it "should_fail_if_option_not_found_in_list_specified_by_element_name" do
+  it "should fail if option not found in list specified by element name" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <select name="month"><option value="1">January</option></select>
@@ -29,7 +29,7 @@ describe "selects" do
     lambda { @session.selects "February", :from => "year" }.should raise_error
   end
   
-  it "should_fail_if_specified_list_not_found" do
+  it "should fail if specified list not found" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <select name="month"><option value="1">January</option></select>
@@ -39,7 +39,7 @@ describe "selects" do
     lambda { @session.selects "February", :from => "year" }.should raise_error
   end
   
-  it "should_send_value_from_option" do
+  it "should send value from option" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <select name="month"><option value="1">January</option></select>
@@ -51,7 +51,7 @@ describe "selects" do
     @session.clicks_button
   end
 
-  it "should_work_with_empty_select_lists" do
+  it "should work with empty select lists" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <select name="month"></select>
@@ -62,7 +62,7 @@ describe "selects" do
     @session.clicks_button
   end
   
-  it "should_work_without_specifying_the_field_name_or_label" do
+  it "should work without specifying the field name or label" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <select name="month"><option value="1">January</option></select>
@@ -74,7 +74,7 @@ describe "selects" do
     @session.clicks_button
   end
   
-  it "should_send_value_from_option_in_list_specified_by_name" do
+  it "should send value from option in list specified by name" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <select name="start_month"><option value="s1">January</option></select>
@@ -87,7 +87,7 @@ describe "selects" do
     @session.clicks_button
   end
   
-  it "should_send_value_from_option_in_list_specified_by_label" do
+  it "should send value from option in list specified by label" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <label for="start_month">Start Month</label>
@@ -102,7 +102,7 @@ describe "selects" do
     @session.clicks_button
   end
   
-  it "should_use_option_text_if_no_value" do
+  it "should use option text if no value" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <select name="month"><option>January</option></select>
@@ -114,7 +114,7 @@ describe "selects" do
     @session.clicks_button
   end
 
-  it "should_find_option_by_regexp" do
+  it "should find option by regexp" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <select name="month"><option>January</option></select>
@@ -126,7 +126,7 @@ describe "selects" do
     @session.clicks_button
   end
 
-  it "should_find_option_by_regexp_in_list_specified_by_label" do
+  it "should find option by regexp in list specified by label" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <label for="start_month">Start Month</label>
