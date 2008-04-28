@@ -1,14 +1,14 @@
-= Webrat - Ruby Acceptance Testing for Web applications
+Webrat
+======
 
-  http://rubyforge.org/projects/webrat
-  http://github.com/brynary/webrat
+- [Code on GitHub](http://github.com/brynary/webrat)
+- [Tickets on Lighthouse](http://webrat.lighthouseapp.com/)
 
-* mailto:bryan@brynary.com
-* mailto:seth@mojodna.net
+Description
+-----------
 
-== DESCRIPTION:
-
-Webrat lets you quickly write robust and thorough acceptance tests for a Ruby
+Webrat (_Ruby Acceptance Testing for Web applications_)
+lets you quickly write robust and thorough acceptance tests for a Ruby
 web application. By leveraging the DOM, it can run tests similarly to an
 in-browser testing solution without the associated performance hit (and
 browser dependency). The result is tests that are less fragile and more
@@ -19,20 +19,21 @@ Selenium, the primary consideration should be how much JavaScript the
 application uses. In-browser testing is currently the only way to test JS, and
 that may make it a requirement for your project. If JavaScript is not central
 to your application, Webrat is a simpler, effective solution that will let you
-run your tests much faster and more frequently. (Benchmarks forthcoming.)
+run your tests much faster and more frequently.
 
-Initial development was sponsored by EastMedia (http://www.eastmedia.com).
+Initial development was sponsored by [EastMedia](http://www.eastmedia.com).
 
-== SYNOPSIS:
+Synopsis
+--------
 
-  def test_sign_up
-    visits "/"
-    clicks_link "Sign up"
-    fills_in "Email", :with => "good@example.com"
-    selects "Free account"
-    clicks_button "Register"
-    ...
-  end
+    def test_sign_up
+      visits "/"
+      clicks_link "Sign up"
+      fills_in "Email", :with => "good@example.com"
+      selects "Free account"
+      clicks_button "Register"
+      ...
+    end
   
 Behind the scenes, this will perform the following work:
 
@@ -50,37 +51,47 @@ Behind the scenes, this will perform the following work:
 Take special note of the things _not_ specified in that test, that might cause
 tests to break unnecessarily as your application evolves:
 
-* The input field IDs or names (e.g. "user_email" or "user[email]"), which
+- The input field IDs or names (e.g. "user_email" or "user[email]"), which
   could change if you rename a model
-* The ID of the form element (Webrat can do a good job of guessing, even if
+- The ID of the form element (Webrat can do a good job of guessing, even if
   there are multiple forms on the page.)
-* The URLs of links followed
-* The URL the form submission should be sent to, which could change if you
+- The URLs of links followed
+- The URL the form submission should be sent to, which could change if you
   adjust your routes or controllers
-* The HTTP method for the login request
+- The HTTP method for the login request
 
-A test written with Webrat can handle these changes smoothly.
+A test written with Webrat can handle these changes to these without any modifications.
 
-== REQUIREMENTS:
+Install
+-------
 
-* Rails >= 1.2.6
-* Hpricot >= 0.6
-* Rails integration tests in Test::Unit _or_
-* RSpec stories (using an RSpec version >= revision 2997)
+To install the latest release:
 
-== INSTALL:
+    sudo gem install webrat
 
 In your stories/helper.rb:
   
-  require "webrat"
+    require "webrat"
   
 You could also unpack the gem into vendor/plugins.
 
-== HISTORY:
+Requirements
+------------
 
-See CHANGELOG in this directory.
+- Rails >= 1.2.6
+- Hpricot >= 0.6
+- Rails integration tests in Test::Unit _or_
+- RSpec stories (using an RSpec version >= revision 2997)
 
-== LICENSE:
+Authors
+-------
+
+- Maintained by [Bryan Helmkamp](mailto:bryan@brynary.com)
+- Original code written by [Seth Fitzsimmons](mailto:seth@mojodna.net)
+- Many other contributors. See attributions in History.txt
+
+License
+-------
 
 Copyright (c) 2007 Bryan Helmkamp, Seth Fitzsimmons.
-See MIT-LICENSE in this directory.
+See MIT-LICENSE.txt in this directory.
