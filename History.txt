@@ -2,6 +2,7 @@
 
 * Enhancements
 
+  * Support file fields using attaches_file (Patch from Kyle Hargraves)
   * Support button elements (Patch from Nick Sieger)
   * Support matching select options by regexp (Patch from Kyle Hargraves)
   * Support relative links, including href="?foo=bar" (Patch from Kyle Hargraves)
