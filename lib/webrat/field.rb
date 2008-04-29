@@ -105,6 +105,10 @@ module Webrat
     def matches_value?(value)
       @element["value"] =~ /^\W*#{Regexp.escape(value.to_s)}/i
     end
+    
+    def matches_caption?(value)
+      @element.innerHTML =~ /^\W*#{Regexp.escape(value.to_s)}/i
+    end
 
     def to_param
       return nil if @value.nil?

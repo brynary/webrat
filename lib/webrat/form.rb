@@ -37,6 +37,11 @@ module Webrat
         return possible_button if possible_button.matches_value?(value)
       end
       
+      #If nothing matched on value, try by name. 
+      possible_buttons.each do |possible_button|
+        return possible_button if possible_button.matches_caption?(value)
+      end
+      
       nil
     end
 
