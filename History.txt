@@ -2,9 +2,11 @@
 
 * Enhancements
 
+  * Support file fields using attaches_file (Patch from Kyle Hargraves)
   * Support button elements (Patch from Nick Sieger)
   * Support matching select options by regexp (Patch from Kyle Hargraves)
   * Support relative links, including href="?foo=bar" (Patch from Kyle Hargraves)
+  * Support links to fully qualified URLs starting with http:// or https:// (Luke Melia)
   
 * Bug fixes
 
@@ -26,7 +28,7 @@
   * Added reloads method to reload the page (Patch from Kamal Fariz Mahyuddi)
   * Prevent making a request if clicking on local anchor link (Patch from Kamal Fariz Mahyuddi)
   * Added clicks_link_within(selector, link_text), allowing restricting link search 
-  to within a given css selector (Path from Luke Melia)
+  to within a given css selector (Patch from Luke Melia)
   * Allow specifying the input name/label when doing a select (Patch from David Chelimsky)
   * Raise a specific exception if the developer tries to manipulate form elements before loading a page (Patch from James Deville)
   * Add support for alternate POST, PUT and DELETE link clicking (Patch from Kyle Hargraves)

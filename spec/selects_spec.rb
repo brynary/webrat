@@ -1,51 +1,45 @@
-require File.dirname(__FILE__) + "/helper"
+require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
 
-class SelectsTest < Test::Unit::TestCase
-  def setup
+describe "selects" do
+  before do
     @session = ActionController::Integration::Session.new
     @session.stubs(:assert_response)
     @session.stubs(:get_via_redirect)
     @session.stubs(:response).returns(@response=mock)
   end
 
-  def test_should_fail_if_option_not_found
+  it "should fail if option not found" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <select name="month"><option value="1">January</option></select>
       </form>
     EOS
     
-    assert_raises RuntimeError do
-      @session.selects "February", :from => "month"
-    end
+    lambda { @session.selects "February", :from => "month" }.should raise_error
   end
   
-  def test_should_fail_if_option_not_found_in_list_specified_by_element_name
+  it "should fail if option not found in list specified by element name" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <select name="month"><option value="1">January</option></select>
         <select name="year"><option value="2008">2008</option></select>
       </form>
     EOS
-    
-    assert_raises RuntimeError do
-      @session.selects "February", :from => "year"
-    end
+
+    lambda { @session.selects "February", :from => "year" }.should raise_error
   end
   
-  def test_should_fail_if_specified_list_not_found
+  it "should fail if specified list not found" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <select name="month"><option value="1">January</option></select>
       </form>
     EOS
-    
-    assert_raises RuntimeError do
-      @session.selects "February", :from => "year"
-    end
+
+    lambda { @session.selects "February", :from => "year" }.should raise_error
   end
   
-  def test_should_send_value_from_option
+  it "should send value from option" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <select name="month"><option value="1">January</option></select>
@@ -57,7 +51,7 @@ class SelectsTest < Test::Unit::TestCase
     @session.clicks_button
   end
 
-  def test_should_work_with_empty_select_lists
+  it "should work with empty select lists" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <select name="month"></select>
@@ -68,7 +62,7 @@ class SelectsTest < Test::Unit::TestCase
     @session.clicks_button
   end
   
-  def test_should_work_without_specifying_the_field_name_or_label
+  it "should work without specifying the field name or label" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <select name="month"><option value="1">January</option></select>
@@ -80,7 +74,7 @@ class SelectsTest < Test::Unit::TestCase
     @session.clicks_button
   end
   
-  def test_should_send_value_from_option_in_list_specified_by_name
+  it "should send value from option in list specified by name" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <select name="start_month"><option value="s1">January</option></select>
@@ -93,7 +87,7 @@ class SelectsTest < Test::Unit::TestCase
     @session.clicks_button
   end
   
-  def test_should_send_value_from_option_in_list_specified_by_label
+  it "should send value from option in list specified by label" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <label for="start_month">Start Month</label>
@@ -108,7 +102,7 @@ class SelectsTest < Test::Unit::TestCase
     @session.clicks_button
   end
   
-  def test_should_use_option_text_if_no_value
+  it "should use option text if no value" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <select name="month"><option>January</option></select>
@@ -120,7 +114,7 @@ class SelectsTest < Test::Unit::TestCase
     @session.clicks_button
   end
 
-  def test_should_find_option_by_regexp
+  it "should find option by regexp" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <select name="month"><option>January</option></select>
@@ -132,7 +126,7 @@ class SelectsTest < Test::Unit::TestCase
     @session.clicks_button
   end
 
-  def test_should_find_option_by_regexp_in_list_specified_by_label
+  it "should find option by regexp in list specified by label" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <label for="start_month">Start Month</label>

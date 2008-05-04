@@ -1,37 +1,33 @@
-require File.dirname(__FILE__) + "/helper"
+require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
 
-class ChecksTest < Test::Unit::TestCase
-  def setup
+describe "checks" do
+  before do
     @session = ActionController::Integration::Session.new
     @session.stubs(:assert_response)
     @session.stubs(:get_via_redirect)
     @session.stubs(:response).returns(@response=mock)
   end
 
-  def test_should_fail_if_no_checkbox_found
+  it "should fail if no checkbox found" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
       </form>
     EOS
     
-    assert_raises RuntimeError do
-      @session.checks "remember_me"
-    end
+    lambda { @session.checks "remember_me" }.should raise_error
   end
 
-  def test_should_fail_if_input_is_not_a_checkbox
+  it "should fail if input is not a checkbox" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <input type="text" name="remember_me" />
       </form>
     EOS
     
-    assert_raises RuntimeError do
-      @session.checks "remember_me"
-    end
+    lambda { @session.checks "remember_me" }.should raise_error
   end
   
-  def test_should_check_rails_style_checkboxes
+  it "should check rails style checkboxes" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <input id="user_tos" name="user[tos]" type="checkbox" value="1" />
@@ -45,7 +41,7 @@ class ChecksTest < Test::Unit::TestCase
     @session.clicks_button
   end
   
-  def test_should_result_in_the_value_on_being_posted_if_not_specified
+  it "should result in the value on being posted if not specified" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <input type="checkbox" name="remember_me" />
@@ -57,7 +53,7 @@ class ChecksTest < Test::Unit::TestCase
     @session.clicks_button
   end
   
-  def test_should_result_in_a_custom_value_being_posted
+  it "should result in a custom value being posted" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <input type="checkbox" name="remember_me" value="yes" />
@@ -70,38 +66,34 @@ class ChecksTest < Test::Unit::TestCase
   end
 end
 
-class UnchecksTest < Test::Unit::TestCase
-  def setup
+describe "unchecks" do
+  before do
     @session = ActionController::Integration::Session.new
     @session.stubs(:assert_response)
     @session.stubs(:get_via_redirect)
     @session.stubs(:response).returns(@response=mock)
   end
 
-  def test_should_fail_if_no_checkbox_found
+  it "should fail if no checkbox found" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
       </form>
     EOS
 
-    assert_raises RuntimeError do
-      @session.unchecks "remember_me"
-    end
+    lambda { @session.unchecks "remember_me" }.should raise_error
   end
 
-  def test_should_fail_if_input_is_not_a_checkbox
+  it "should fail if input is not a checkbox" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <input type="text" name="remember_me" />
       </form>
     EOS
     
-    assert_raises RuntimeError do
-      @session.unchecks "remember_me"
-    end
+    lambda { @session.unchecks "remember_me" }.should raise_error
   end
   
-  def test_should_uncheck_rails_style_checkboxes
+  it "should uncheck rails style checkboxes" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <input id="user_tos" name="user[tos]" type="checkbox" value="1" checked="checked" />
@@ -116,7 +108,7 @@ class UnchecksTest < Test::Unit::TestCase
     @session.clicks_button
   end
 
-  def test_should_result_in_value_not_being_posted
+  it "should result in value not being posted" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <input type="checkbox" name="remember_me" value="yes" checked="checked" />

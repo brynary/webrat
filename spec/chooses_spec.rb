@@ -1,38 +1,33 @@
-require File.dirname(__FILE__) + "/helper"
+require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
 
-class ChoosesTest < Test::Unit::TestCase
-  
-  def setup
+describe "chooses" do
+  before do
     @session = ActionController::Integration::Session.new
     @session.stubs(:assert_response)
     @session.stubs(:get_via_redirect)
     @session.stubs(:response).returns(@response=mock)
   end
   
-  def test_should_fail_if_no_radio_buttons_found
+  it "should fail if no radio buttons found" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
       </form>
     EOS
     
-    assert_raises RuntimeError do
-      @session.chooses "first option"
-    end
+    lambda { @session.chooses "first option" }.should raise_error
   end
   
-  def test_should_fail_if_input_is_not_a_radio_button
+  it "should fail if input is not a radio button" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <input type="text" name="first_option" />
       </form>
     EOS
     
-    assert_raises RuntimeError do
-      @session.chooses "first_option"
-    end
+    lambda { @session.chooses "first_option" }.should raise_error
   end
   
-  def test_should_check_rails_style_radio_buttons
+  it "should check rails style radio buttons" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <input id="user_gender_male" name="user[gender]" type="radio" value="M" />
@@ -47,7 +42,7 @@ class ChoosesTest < Test::Unit::TestCase
     @session.clicks_button
   end
   
-  def test_should_only_submit_last_chosen_value
+  it "should only submit last chosen value" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="get" action="/login">
         <input id="user_gender_male" name="user[gender]" type="radio" value="M" />
@@ -63,7 +58,7 @@ class ChoosesTest < Test::Unit::TestCase
     @session.clicks_button
   end  
   
-  def test_should_result_in_the_value_on_being_posted_if_not_specified
+  it "should result in the value on being posted if not specified" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <input type="radio" name="first_option" />
@@ -75,7 +70,7 @@ class ChoosesTest < Test::Unit::TestCase
     @session.clicks_button
   end
   
-  def test_should_result_in_the_value_on_being_posted_if_not_specified_and_checked_by_default
+  it "should result in the value on being posted if not specified and checked by default" do
     @response.stubs(:body).returns(<<-EOS)
       <form method="post" action="/login">
         <input type="radio" name="first_option" checked="checked"/>
@@ -85,5 +80,4 @@ class ChoosesTest < Test::Unit::TestCase
     @session.expects(:post_via_redirect).with("/login", "first_option" => "on")
     @session.clicks_button
   end
-  
 end

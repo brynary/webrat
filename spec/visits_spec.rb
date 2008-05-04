@@ -1,10 +1,9 @@
-require File.dirname(__FILE__) + "/helper"
+require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
 
 RAILS_ROOT = "." unless defined?(RAILS_ROOT)
 
-class VisitsTest < Test::Unit::TestCase
-
-  def setup
+describe "visits" do
+  before do
     @session = ActionController::Integration::Session.new
     @session.stubs(:assert_response)
     @session.stubs(:get_via_redirect)
@@ -13,19 +12,17 @@ class VisitsTest < Test::Unit::TestCase
     @response.stubs(:body).returns("")
   end
 
-  def test_should_use_get
+  it "should use get" do
     @session.expects(:get_via_redirect).with("/", {})
     @session.visits("/")
   end
   
-  def test_should_assert_valid_response
+  it "should assert valid response" do
     @session.expects(:assert_response).with(:success)
     @session.visits("/")
   end
   
-  def test_should_require_a_visit_before_manipulating_page
-    assert_raise(RuntimeError) do
-      @session.fills_in "foo", :with => "blah"
-    end
+  it "should require a visit before manipulating page" do
+    lambda { @session.fills_in "foo", :with => "blah" }.should raise_error
   end
 end
