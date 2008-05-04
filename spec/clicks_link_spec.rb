@@ -199,6 +199,23 @@ describe "clicks_link" do
     @session.expects(:get_via_redirect).with("/page/sub", {})
     @session.clicks_link "Jump to sub page"
   end
+  
+  it "should follow fully qualified local links" do
+    @response.stubs(:body).returns(<<-EOS)
+      <a href="http://www.example.com/page/sub">Jump to sub page</a>
+    EOS
+    @session.expects(:get_via_redirect).with("/page/sub", {})
+    @session.clicks_link "Jump to sub page"
+  end
+
+  it "should follow fully qualified secure local links" do
+    @response.stubs(:body).returns(<<-EOS)
+      <a href="https://www.example.com/page/sub">Jump to sub page</a>
+    EOS
+    @session.expects(:https!).with(true)
+    @session.expects(:get_via_redirect).with("/page/sub", {})
+    @session.clicks_link "Jump to sub page"
+  end
 
   it "should follow query parameters" do
     @session.current_page.stubs(:url).returns("/page")

@@ -10,6 +10,7 @@ module Webrat
       method ||= http_method
       return if href =~ /^#/ && method == :get
       
+      update_protocol(href)
       Page.new(@page.session, absolute_href, method, authenticity_token.blank? ? {} : {"authenticity_token" => authenticity_token})
     end
     
@@ -26,9 +27,19 @@ module Webrat
     def href
       @element["href"]
     end
+    
+    def update_protocol(href)
+      if href =~ /^https:/
+        @page.session.https!(true)
+      elsif href =~ /^http:/
+        @page.session.https!(false)
+      end
+    end
 
     def absolute_href
-      if href =~ /^\?/
+      if href =~ %r{^https?://www.example.com(/.*)}
+        $LAST_MATCH_INFO.captures.first
+      elsif href =~ /^\?/
         "#{@page.url}#{href}"
       elsif href !~ /^\//
         "#{@page.url}/#{href}"
