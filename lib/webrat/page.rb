@@ -99,7 +99,7 @@ module Webrat
       field.set(path)
     end
 
-    # Saves the currently loaded page out to RAILS_ROOT/tmp/ and opens it in the default
+    # Saves the page out to RAILS_ROOT/tmp/ and opens it in the default
     # web browser if on OS X. Useful for debugging.
     # 
     # Example:
@@ -108,10 +108,15 @@ module Webrat
       return unless File.exist?(RAILS_ROOT + "/tmp")
 
       filename = "webrat-#{Time.now.to_i}.html"
-      File.open(RAILS_ROOT + "/tmp/#{filename}", "w") do |f|
-        f.write response.body
+      path = RAILS_ROOT + "/tmp/#{filename}"
+      File.open(path, "w") do |f|
+        f.write rewrite_css_and_image_references(response.body)
       end
-      `open tmp/#{filename}`
+      open_in_browser(path)
+    end
+    
+    def open_in_browser(path) # :nodoc
+      `open #{path}`
     end
 
     # Issues a request for the URL pointed to by a link on the current page,
@@ -290,6 +295,10 @@ module Webrat
     
     def flunk(message)
       raise message
+    end
+    
+    def rewrite_css_and_image_references(response_html) # :nodoc
+      response_html.gsub(/"\/(stylesheets|images)/, RAILS_ROOT + '/public/\1')
     end
     
   end

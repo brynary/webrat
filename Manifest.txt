@@ -34,6 +34,7 @@ spec/clicks_link_spec.rb
 spec/fills_in_spec.rb
 spec/rcov.opts
 spec/reloads_spec.rb
+spec/save_and_open_page_spec.rb
 spec/selects_spec.rb
 spec/spec.opts
 spec/spec_helper.rb
