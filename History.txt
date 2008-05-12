@@ -7,6 +7,7 @@
   * Support matching select options by regexp (Patch from Kyle Hargraves)
   * Support relative links, including href="?foo=bar" (Patch from Kyle Hargraves)
   * Support links to fully qualified URLs starting with http:// or https:// (Luke Melia)
+  * save_and_open_page rewrites css and image references to provide a friendlier debugging experience (Luke Melia)
   
 * Bug fixes
 
