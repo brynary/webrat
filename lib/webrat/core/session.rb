@@ -1,5 +1,10 @@
 module Webrat
   class Session
+    
+    def saved_page_dir
+      File.expand_path(".")
+    end
+    
     def current_page
       @current_page ||= Page.new(self)
     end
@@ -16,6 +21,10 @@ module Webrat
       super || current_page.respond_to?(name)
     end
     
+    def save_and_open_page
+      current_page.save_and_open
+    end
+    
     def method_missing(name, *args)
       if current_page.respond_to?(name)
         current_page.send(name, *args)
@@ -23,5 +32,6 @@ module Webrat
         super
       end
     end
+    
   end
 end

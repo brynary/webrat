@@ -5,6 +5,7 @@ RAILS_ROOT = "." unless defined?(RAILS_ROOT)
 describe "reloads" do
   before do
     @session = Webrat::TestSession.new
+    @session.response_body = "Hello world"
   end
 
   it "should reload the page" do

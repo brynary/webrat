@@ -5,6 +5,7 @@ RAILS_ROOT = "." unless defined?(RAILS_ROOT)
 describe "visits" do
   before do
     @session = Webrat::TestSession.new
+    @session.response_body = "Hello world"
   end
 
   it "should use get" do

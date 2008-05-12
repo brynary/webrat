@@ -15,10 +15,6 @@ module ActionController
         Webrat::Page.new(webrat_session, *args)
       end
 
-      def save_and_open_page
-        webrat_session.save_and_open_page
-      end
-      
       def respond_to?(name)
         super || webrat_session.respond_to?(name)
       end

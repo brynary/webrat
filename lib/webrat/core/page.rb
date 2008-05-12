@@ -1,3 +1,4 @@
+require "rubygems"
 require "hpricot"
 require "English"
 
@@ -105,13 +106,15 @@ module Webrat
     # Example:
     #   save_and_open
     def save_and_open
-      return unless File.exist?(RAILS_ROOT + "/tmp")
+      return unless File.exist?(session.saved_page_dir)
 
-      filename = "webrat-#{Time.now.to_i}.html"
-      File.open(RAILS_ROOT + "/tmp/#{filename}", "w") do |f|
-        f.write response.body
+      filename = "#{session.saved_page_dir}/webrat-#{Time.now.to_i}.html"
+      
+      File.open(filename, "w") do |f|
+        f.write session.response_body
       end
-      `open tmp/#{filename}`
+      
+      `open #{filename}`
     end
 
     # Issues a request for the URL pointed to by a link on the current page,
@@ -256,12 +259,7 @@ module Webrat
     
     def reset_dom
       @dom    = nil
-      @links  = nil
       @forms  = nil
-    end
-    
-    def links
-      @links ||= links_within(nil)
     end
     
     def links_within(selector)

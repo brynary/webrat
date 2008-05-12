@@ -5,6 +5,10 @@ module Webrat
       @integration_session = integration_session
     end
     
+    def saved_page_dir
+      File.expand_path(File.join(RAILS_ROOT, "tmp"))
+    end
+    
     def get(url, data)
       @integration_session.get_via_redirect(url, data)
     end
