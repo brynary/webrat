@@ -291,7 +291,8 @@ module Webrat
     end
     
     def rewrite_css_and_image_references(response_html) # :nodoc
-      response_html.gsub(/"\/(stylesheets|images)/, RAILS_ROOT + '/public/\1')
+      return response_html unless session.doc_root
+      response_html.gsub(/"\/(stylesheets|images)/, session.doc_root + '/\1')
     end
     
   end

@@ -4,6 +4,10 @@ module Webrat
     def initialize(integration_session)
       @integration_session = integration_session
     end
+
+    def doc_root
+      File.expand_path(File.join(RAILS_ROOT, 'public'))
+    end
     
     def saved_page_dir
       File.expand_path(File.join(RAILS_ROOT, "tmp"))

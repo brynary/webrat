@@ -1,6 +1,10 @@
 module Webrat
   class Session
     
+    def doc_root
+      nil
+    end
+    
     def saved_page_dir
       File.expand_path(".")
     end
