@@ -244,18 +244,14 @@ module Webrat
     def request_page(url, method, data)
       debug_log "REQUESTING PAGE: #{method.to_s.upcase} #{url} with #{data.inspect}"
       
-      session.send "#{method}_via_redirect", url, data || {}
+      session.send "#{method}", url, data || {}
 
-      if response.body =~ /Exception caught/ || response.body.blank? 
+      if session.response_body =~ /Exception caught/ || session.response_body.blank? 
         save_and_open
       end
 
-      session.assert_response :success
+      flunk("Page load was not successful (Code: #{session.response_code.inspect})") unless (200..299).include?(session.response_code)
       reset_dom
-    end
-    
-    def response
-      session.response
     end
     
     def reset_dom
@@ -284,8 +280,8 @@ module Webrat
       
     def dom # :nodoc:
       return @dom if defined?(@dom) && @dom
-      flunk("You must visit a path before working with the page.") unless @session.response
-      @dom = Hpricot(@session.response.body)
+      flunk("You must visit a path before working with the page.") unless @session.response_code
+      @dom = Hpricot(@session.response_body)
     end
     
     def flunk(message)

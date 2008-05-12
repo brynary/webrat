@@ -12,12 +12,7 @@ silence_warnings do
 end
 
 require File.expand_path(File.dirname(__FILE__) + "/../lib/webrat")
-
-class ActionController::Integration::Session
-  def flunk(message)
-    raise message
-  end
-end
+require File.dirname(__FILE__) + "/fakes/test_session"
 
 Spec::Runner.configure do |config|
   config.mock_with :mocha

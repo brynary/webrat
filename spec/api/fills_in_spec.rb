@@ -1,40 +1,37 @@
-require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
+require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
 
 describe "fills_in" do
   before do
-    @session = ActionController::Integration::Session.new
-    @session.stubs(:assert_response)
-    @session.stubs(:get_via_redirect)
-    @session.stubs(:response).returns(@response=mock)
+    @session = Webrat::TestSession.new
   end
   
   it "should work with textareas" do
-    @response.stubs(:body).returns(<<-EOS)
+    @session.response_body = <<-EOS
       <form method="post" action="/login">
         <label for="user_text">User Text</label>
         <textarea id="user_text" name="user[text]"></textarea>
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:post_via_redirect).with("/login", "user" => {"text" => "filling text area"})
+    @session.expects(:post).with("/login", "user" => {"text" => "filling text area"})
     @session.fills_in "User Text", :with => "filling text area"
     @session.clicks_button
   end
   
   it "should work with password fields" do
-    @response.stubs(:body).returns(<<-EOS)
+    @session.response_body = <<-EOS
       <form method="post" action="/login">
         <input id="user_text" name="user[text]" type="password" />
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:post_via_redirect).with("/login", "user" => {"text" => "pass"})
+    @session.expects(:post).with("/login", "user" => {"text" => "pass"})
     @session.fills_in "user_text", :with => "pass"
     @session.clicks_button
   end
 
   it "should fail if input not found" do
-    @response.stubs(:body).returns(<<-EOS)
+    @session.response_body = <<-EOS
       <form method="get" action="/login">
       </form>
     EOS
@@ -43,20 +40,20 @@ describe "fills_in" do
   end
   
   it "should allow overriding default form values" do
-    @response.stubs(:body).returns(<<-EOS)
+    @session.response_body = <<-EOS
       <form method="post" action="/login">
         <label for="user_email">Email</label>
         <input id="user_email" name="user[email]" value="test@example.com" type="text" />
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:post_via_redirect).with("/login", "user" => {"email" => "foo@example.com"})
+    @session.expects(:post).with("/login", "user" => {"email" => "foo@example.com"})
     @session.fills_in "user[email]", :with => "foo@example.com"
     @session.clicks_button
   end
   
   it "should choose the shortest label match" do
-    @response.stubs(:body).returns(<<-EOS)
+    @session.response_body = <<-EOS
       <form method="post" action="/login">
         <label for="user_mail1">Some other mail</label>
         <input id="user_mail1" name="user[mail1]" type="text" />
@@ -66,13 +63,13 @@ describe "fills_in" do
       </form>
     EOS
     
-    @session.expects(:post_via_redirect).with("/login", "user" => {"mail1" => "", "mail2" => "value"})
+    @session.expects(:post).with("/login", "user" => {"mail1" => "", "mail2" => "value"})
     @session.fills_in "Some", :with => "value"
     @session.clicks_button
   end
   
   it "should choose the first label match if closest is a tie" do
-    @response.stubs(:body).returns(<<-EOS)
+    @session.response_body = <<-EOS
       <form method="post" action="/login">
         <label for="user_mail1">Some mail one</label>
         <input id="user_mail1" name="user[mail1]" type="text" />
@@ -82,13 +79,13 @@ describe "fills_in" do
       </form>
     EOS
     
-    @session.expects(:post_via_redirect).with("/login", "user" => {"mail1" => "value", "mail2" => ""})
+    @session.expects(:post).with("/login", "user" => {"mail1" => "value", "mail2" => ""})
     @session.fills_in "Some mail", :with => "value"
     @session.clicks_button
   end
   
   it "should anchor label matches to start of label" do
-    @response.stubs(:body).returns(<<-EOS)
+    @session.response_body = <<-EOS
       <form method="post" action="/login">
         <label for="user_email">Some mail</label>
         <input id="user_email" name="user[email]" value="test@example.com" type="text" />
@@ -99,7 +96,7 @@ describe "fills_in" do
   end
   
   it "should anchor label matches to word boundaries" do
-    @response.stubs(:body).returns(<<-EOS)
+    @session.response_body = <<-EOS
       <form method="post" action="/login">
         <label for="user_email">Emailtastic</label>
         <input id="user_email" name="user[email]" value="test@example.com" type="text" />
@@ -110,7 +107,7 @@ describe "fills_in" do
   end
   
   it "should work with inputs nested in labels" do
-    @response.stubs(:body).returns(<<-EOS)
+    @session.response_body = <<-EOS
       <form method="post" action="/login">
         <label>
           Email
@@ -119,32 +116,32 @@ describe "fills_in" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:post_via_redirect).with("/login", "user" => {"email" => "foo@example.com"})
+    @session.expects(:post).with("/login", "user" => {"email" => "foo@example.com"})
     @session.fills_in "Email", :with => "foo@example.com"
     @session.clicks_button
   end
   
   it "should work with full input names" do
-    @response.stubs(:body).returns(<<-EOS)
+    @session.response_body = <<-EOS
       <form method="post" action="/login">
         <input id="user_email" name="user[email]" type="text" />
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:post_via_redirect).with("/login", "user" => {"email" => "foo@example.com"})
+    @session.expects(:post).with("/login", "user" => {"email" => "foo@example.com"})
     @session.fills_in "user[email]", :with => "foo@example.com"
     @session.clicks_button
   end
   
   it "should work with symbols" do
-    @response.stubs(:body).returns(<<-EOS)
+    @session.response_body = <<-EOS
       <form method="post" action="/login">
         <label for="user_email">Email</label>
         <input id="user_email" name="user[email]" type="text" />
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:post_via_redirect).with("/login", "user" => {"email" => "foo@example.com"})
+    @session.expects(:post).with("/login", "user" => {"email" => "foo@example.com"})
     @session.fills_in :email, :with => "foo@example.com"
     @session.clicks_button
   end

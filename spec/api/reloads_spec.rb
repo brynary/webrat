@@ -1,0 +1,15 @@
+require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
+
+RAILS_ROOT = "." unless defined?(RAILS_ROOT)
+
+describe "reloads" do
+  before do
+    @session = Webrat::TestSession.new
+  end
+
+  it "should reload the page" do
+    @session.expects(:get).with("/", {}).times(2)
+    @session.visits("/")
+    @session.reloads
+  end
+end
