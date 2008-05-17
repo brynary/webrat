@@ -43,7 +43,8 @@ module Webrat
     end
     
     def to_param
-      param_parser.parse_query_parameters("#{name}=#{@value}")
+      value = @value.to_s.gsub('&', '%26')
+      param_parser.parse_query_parameters("#{name}=#{value}")
     end
     
     def set(value)
