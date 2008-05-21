@@ -240,11 +240,19 @@ module Webrat
   
   class FileField < Field
 
+    attr_accessor :content_type
+
+    def set(value, content_type = nil)
+      super(value)
+      @content_type = content_type
+    end
+
     def to_param
       if @value.nil?
         super
       else
-        replace_param_value(super, @value, ActionController::TestUploadedFile.new(@value))
+        file = content_type ? ActionController::TestUploadedFile.new(@value, content_type) : ActionController::TestUploadedFile.new(@value)
+        replace_param_value(super, @value, file)
       end
     end
 
