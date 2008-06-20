@@ -6,11 +6,17 @@ module Webrat
       @element  = element
     end
     
-    def click(method = nil)
+    def click(method = nil, options = {})
       method ||= http_method
       return if href =~ /^#/ && method == :get
-
-      Page.new(@page.session, absolute_href, method, data)
+      
+      options[:javascript] = true if options[:javascript].nil?
+      
+      if options[:javascript]
+        Page.new(@page.session, absolute_href, method, data)
+      else
+        Page.new(@page.session, absolute_href, :get, {})
+      end
     end
     
     def matches_text?(link_text)

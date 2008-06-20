@@ -16,7 +16,7 @@ module Webrat
       @data     = data
 
       reset_dom
-      reloads if @url
+      load_page if @url
       
       session.current_page = self
     end
@@ -128,11 +128,15 @@ module Webrat
     # JavaScript onclick handlers for PUT, POST and DELETE links, as well as
     # CSRF authenticity tokens if they are present.
     #
+    # Javascript imitation can be disabled by passing the option :javascript => false
+    #
     # Example:
     #   clicks_link "Sign up"
-    def clicks_link(link_text)
+    #
+    #   clicks_link "Sign up", :javascript => false
+    def clicks_link(link_text, options = {})
       link = find_link(link_text)
-      link.click
+      link.click(nil, options)
     end
 
     # Works like clicks_link, but only looks for the link text within a given selector
@@ -207,13 +211,17 @@ module Webrat
     # Example:
     #   reloads
     def reloads
-      request_page(@url, @method, @data)
+      load_page
     end
 
     def submits_form(form_id = nil) # :nodoc:
     end
 
   protected
+  
+    def load_page
+      request_page(@url, @method, @data)
+    end
     
     def find_select_option(option_text)
       forms.each do |form|

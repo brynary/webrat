@@ -97,6 +97,20 @@ describe "clicks_link" do
     @session.clicks_link "Posts"
   end
   
+  it "should click rails javascript post links without javascript" do
+    @session.response_body = <<-EOS
+      <a href="/posts" onclick="var f = document.createElement('form');
+        f.style.display = 'none';
+        this.parentNode.appendChild(f);
+        f.method = 'POST';
+        f.action = this.href;
+        f.submit();
+        return false;">Posts</a>
+    EOS
+    @session.expects(:get).with("/posts", {})
+    @session.clicks_link "Posts", :javascript => false
+  end
+  
   it "should click rails javascript put links" do
     @session.response_body = <<-EOS
       <a href="/posts" onclick="var f = document.createElement('form');
