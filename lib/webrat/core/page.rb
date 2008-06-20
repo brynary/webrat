@@ -1,3 +1,4 @@
+require "rubygems"
 require "hpricot"
 require "English"
 
@@ -99,19 +100,25 @@ module Webrat
       field.set(path)
     end
 
-    # Saves the currently loaded page out to RAILS_ROOT/tmp/ and opens it in the default
+    # Saves the page out to RAILS_ROOT/tmp/ and opens it in the default
     # web browser if on OS X. Useful for debugging.
     # 
     # Example:
     #   save_and_open
     def save_and_open
-      return unless File.exist?(RAILS_ROOT + "/tmp")
+      return unless File.exist?(session.saved_page_dir)
 
-      filename = "webrat-#{Time.now.to_i}.html"
-      File.open(RAILS_ROOT + "/tmp/#{filename}", "w") do |f|
-        f.write response.body
+      filename = "#{session.saved_page_dir}/webrat-#{Time.now.to_i}.html"
+      
+      File.open(filename, "w") do |f|
+        f.write rewrite_css_and_image_references(session.response_body)
       end
-      `open tmp/#{filename}`
+
+      open_in_browser(filename)
+    end
+    
+    def open_in_browser(path) # :nodoc
+      `open #{path}`
     end
 
     # Issues a request for the URL pointed to by a link on the current page,
@@ -244,28 +251,19 @@ module Webrat
     def request_page(url, method, data)
       debug_log "REQUESTING PAGE: #{method.to_s.upcase} #{url} with #{data.inspect}"
       
-      session.send "#{method}_via_redirect", url, data || {}
+      session.send "#{method}", url, data || {}
 
-      if response.body =~ /Exception caught/ || response.body.blank? 
+      if session.response_body =~ /Exception caught/ || session.response_body.blank? 
         save_and_open
       end
 
-      session.assert_response :success
+      flunk("Page load was not successful (Code: #{session.response_code.inspect})") unless (200..299).include?(session.response_code)
       reset_dom
-    end
-    
-    def response
-      session.response
     end
     
     def reset_dom
       @dom    = nil
-      @links  = nil
       @forms  = nil
-    end
-    
-    def links
-      @links ||= links_within(nil)
     end
     
     def links_within(selector)
@@ -284,12 +282,17 @@ module Webrat
       
     def dom # :nodoc:
       return @dom if defined?(@dom) && @dom
-      flunk("You must visit a path before working with the page.") unless @session.response
-      @dom = Hpricot(@session.response.body)
+      flunk("You must visit a path before working with the page.") unless @session.response_code
+      @dom = Hpricot(@session.response_body)
     end
     
     def flunk(message)
       raise message
+    end
+    
+    def rewrite_css_and_image_references(response_html) # :nodoc
+      return response_html unless session.doc_root
+      response_html.gsub(/"\/(stylesheets|images)/, session.doc_root + '/\1')
     end
     
   end

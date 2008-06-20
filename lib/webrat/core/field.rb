@@ -6,7 +6,7 @@ module Webrat
         if %w[submit image].include?(element["type"])
           field_class = "button"
         else
-          field_class = element["type"]
+          field_class = element["type"] || "text"
         end
       else
         field_class = element.name
@@ -93,6 +93,8 @@ module Webrat
       if defined?(CGIMethods)
         CGIMethods
       else
+        require "action_controller"
+        require "action_controller/integration"
         ActionController::AbstractRequest
       end
     end

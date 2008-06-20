@@ -6,11 +6,14 @@
   * Support button elements (Patch from Nick Sieger)
   * Support matching select options by regexp (Patch from Kyle Hargraves)
   * Support relative links, including href="?foo=bar" (Patch from Kyle Hargraves)
+  * Support links to fully qualified URLs starting with http:// or https:// (Luke Melia)
+  * save_and_open_page rewrites css and image references to provide a friendlier debugging experience (Luke Melia)
   
 * Bug fixes
 
   * Fix bug with empty select list option (Patch from Kyle Hargraves)
   * Fix regression of not sending default values in password fields
+  * Don't explode if encountering inputs with no type attribute (assume text)
   
 == 0.2.0 / 2008-04-04
 
@@ -27,7 +30,7 @@
   * Added reloads method to reload the page (Patch from Kamal Fariz Mahyuddi)
   * Prevent making a request if clicking on local anchor link (Patch from Kamal Fariz Mahyuddi)
   * Added clicks_link_within(selector, link_text), allowing restricting link search 
-  to within a given css selector (Path from Luke Melia)
+  to within a given css selector (Patch from Luke Melia)
   * Allow specifying the input name/label when doing a select (Patch from David Chelimsky)
   * Raise a specific exception if the developer tries to manipulate form elements before loading a page (Patch from James Deville)
   * Add support for alternate POST, PUT and DELETE link clicking (Patch from Kyle Hargraves)
