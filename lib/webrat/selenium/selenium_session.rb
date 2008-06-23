@@ -10,8 +10,9 @@ module Webrat
       @selenium.open(url)
     end
     
-    def fills_in(label_text, options)
-      @selenium.type("webrat=#{Regexp.escape(label_text)}", "#{options[:with]}")
+    def fills_in(field_identifier, options)
+      locator = "webrat=#{Regexp.escape(field_identifier)}"
+      @selenium.type(locator, "#{options[:with]}")
     end
     
     def response_body
@@ -27,6 +28,11 @@ module Webrat
 
     def clicks_link(link_text, options = {})
       @selenium.click("webratlink=#{link_text}")
+      wait_for_result(options[:wait])
+    end
+    
+    def clicks_link_within(selector, link_text, options = {})
+      @selenium.click("webratlinkwithin=#{selector}|#{link_text}")
       wait_for_result(options[:wait])
     end
 
@@ -123,6 +129,24 @@ module Webrat
         var candidateLinks = $A(links).select(function(candidateLink) {
           return PatternMatcher.matches(locator, getText(candidateLink));
         });
+        if (candidateLinks.length == 0) {
+          return null;
+        }
+        candidateLinks = candidateLinks.sortBy(function(s) { return s.length * -1; }); //reverse length sort
+        return candidateLinks.first();
+      JS
+      
+      @selenium.add_location_strategy('webratlinkwithin', <<-JS)
+        var locatorParts = locator.split('|');
+        var cssAncestor = locatorParts[0];
+        var linkText = locatorParts[1];
+        var matchingElements = cssQuery(cssAncestor, inDocument);
+        var candidateLinks = matchingElements.collect(function(ancestor){
+          var links = ancestor.getElementsByTagName('a');
+          return $A(links).select(function(candidateLink) {
+            return PatternMatcher.matches(linkText, getText(candidateLink));
+          });
+        }).flatten().compact();
         if (candidateLinks.length == 0) {
           return null;
         }
