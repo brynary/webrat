@@ -34,6 +34,10 @@ module Webrat
       possible_buttons = fields_by_type([ButtonField])
       
       possible_buttons.each do |possible_button|
+        return possible_button if possible_button.matches_id?(value)
+      end
+      
+      possible_buttons.each do |possible_button|
         return possible_button if possible_button.matches_value?(value)
       end
       
