@@ -66,7 +66,6 @@ module Webrat
     end
     
     def labels
-      return nil if label_elements.empty?
       @labels ||= label_elements.map { |element| Label.new(self, element) }
     end
     
