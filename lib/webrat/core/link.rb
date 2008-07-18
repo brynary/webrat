@@ -14,7 +14,8 @@ module Webrat
     end
     
     def matches_text?(link_text)
-      text =~ /#{Regexp.escape(link_text.to_s)}/i
+      matcher = /#{Regexp.escape(link_text.to_s)}/i
+      text =~ matcher || title =~ matcher
     end
     
     def text
@@ -25,6 +26,10 @@ module Webrat
   
     def data
       authenticity_token.blank? ? {} : {"authenticity_token" => authenticity_token}
+    end
+
+    def title
+      @element['title']
     end
 
     def href
