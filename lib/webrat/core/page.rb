@@ -261,7 +261,7 @@ module Webrat
       
       session.send "#{method}", url, data || {}
 
-      if session.response_body =~ /Exception caught/ || session.response_body.blank? 
+      if session.response_body =~ /Exception caught/
         save_and_open
       end
 
