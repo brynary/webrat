@@ -323,6 +323,16 @@ describe "clicks_button" do
     @session.clicks_button
   end
 
+  it "should recognize image button tags" do
+    @session.response_body = <<-EOS
+      <form action="/">
+        <input type="image" />
+      </form>
+    EOS
+    @session.expects(:get)
+    @session.clicks_button
+  end
+
   it "should recognize button tags by content" do
     @session.response_body = <<-EOS
       <form method="get" action="/login">
