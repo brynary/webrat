@@ -21,6 +21,8 @@ module Webrat
       Page.new(self, *args)
     end
     
+    alias_method :visit, :visits
+    
     def respond_to?(name)
       super || current_page.respond_to?(name)
     end

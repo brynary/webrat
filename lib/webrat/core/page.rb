@@ -36,6 +36,8 @@ module Webrat
       field.set(options[:with])
     end
 
+    alias_method :fill_in, :fills_in
+    
     # Verifies that an input checkbox exists on the current page and marks it
     # as checked, so that the value will be submitted with the form.
     #
@@ -46,6 +48,8 @@ module Webrat
       field.check
     end
 
+    alias_method :check, :checks
+    
     # Verifies that an input checkbox exists on the current page and marks it
     # as unchecked, so that the value will not be submitted with the form.
     #
@@ -56,6 +60,8 @@ module Webrat
       field.uncheck
     end
 
+    alias_method :uncheck, :unchecks
+    
     # Verifies that an input radio button exists on the current page and marks it
     # as checked, so that the value will be submitted with the form.
     #
@@ -66,6 +72,8 @@ module Webrat
       field.choose
     end
 
+    alias_method :choose, :chooses
+    
     # Verifies that a an option element exists on the current page with the specified
     # text. You can optionally restrict the search to a specific select list by
     # assigning <tt>options[:from]</tt> the value of the select list's name or
@@ -89,6 +97,8 @@ module Webrat
       option.choose
     end
 
+    alias_method :select, :selects
+    
     # Verifies that an input file field exists on the current page and sets
     # its value to the given +file+, so that the file will be uploaded
     # along with the form.
@@ -100,6 +110,8 @@ module Webrat
       field.set(path)
     end
 
+    alias_method :attach_file, :attaches_file
+    
     # Saves the page out to RAILS_ROOT/tmp/ and opens it in the default
     # web browser if on OS X. Useful for debugging.
     # 
@@ -139,6 +151,8 @@ module Webrat
       link.click(nil, options)
     end
 
+    alias_method :click_link, :clicks_link
+    
     # Works like clicks_link, but only looks for the link text within a given selector
     # 
     # Example:
@@ -148,6 +162,8 @@ module Webrat
       link.click
     end
 
+    alias_method :click_link_within, :clicks_link_within
+    
     # Works like clicks_link, but forces a GET request
     # 
     # Example:
@@ -157,6 +173,8 @@ module Webrat
       link.click(:get)
     end
 
+    alias_method :click_get_link, :clicks_get_link
+    
     # Works like clicks_link, but issues a DELETE request instead of a GET
     # 
     # Example:
@@ -166,6 +184,8 @@ module Webrat
       link.click(:delete)
     end
 
+    alias_method :click_delete_link, :clicks_delete_link
+    
     # Works like clicks_link, but issues a POST request instead of a GET
     # 
     # Example:
@@ -175,6 +195,8 @@ module Webrat
       link.click(:post)
     end
 
+    alias_method :click_post_link, :clicks_post_link
+    
     # Works like clicks_link, but issues a PUT request instead of a GET
     # 
     # Example:
@@ -184,6 +206,8 @@ module Webrat
       link.click(:put)
     end
 
+    alias_method :click_put_link, :clicks_put_link
+    
     # Verifies that a submit button exists for the form, then submits the form, follows
     # any redirects, and verifies the final page was successful.
     #
@@ -205,6 +229,8 @@ module Webrat
       button.click
     end
 
+    alias_method :click_button, :clicks_button
+    
     # Reloads the last page requested. Note that this will resubmit forms
     # and their data.
     #
@@ -214,9 +240,13 @@ module Webrat
       load_page
     end
 
+    alias_method :reload, :reloads
+    
     def submits_form(form_id = nil) # :nodoc:
     end
 
+    alias_method :submit_form, :submits_form
+    
   protected
   
     def load_page
