@@ -56,4 +56,17 @@ describe "attaches_file" do
     @session.attaches_file "Spreadsheet", @filename
     @session.clicks_button
   end
+
+  it "should allow the content type to be specified" do
+    @session.response_body = <<-EOS
+      <form method="post" action="/widgets">
+        <label for="person_picture">Picture</label>
+        <input type="file" id="person_picture" name="person[picture]" />
+        <input type="submit" />
+      </form>
+    EOS
+    ActionController::TestUploadedFile.expects(:new).with(@filename, "image/png").returns(@uploaded_file)
+    @session.attaches_file "Picture", @filename, "image/png"
+    @session.clicks_button
+  end
 end

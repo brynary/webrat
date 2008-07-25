@@ -48,6 +48,18 @@ describe "selects" do
     @session.clicks_button
   end
 
+  it "should send values with HTML encoded ampersands" do
+    @session.response_body = <<-EOS
+      <form method="post" action="/login">
+        <select name="encoded"><option value="A &amp; B">Encoded</option></select>
+        <input type="submit" />
+      </form>
+    EOS
+    @session.expects(:post).with("/login", "encoded" => "A & B")
+    @session.selects "Encoded", :from => "encoded"
+    @session.clicks_button
+  end
+
   it "should work with empty select lists" do
     @session.response_body = <<-EOS
       <form method="post" action="/login">

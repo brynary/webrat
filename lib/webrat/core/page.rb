@@ -101,13 +101,14 @@ module Webrat
     
     # Verifies that an input file field exists on the current page and sets
     # its value to the given +file+, so that the file will be uploaded
-    # along with the form.
+    # along with the form. An optional <tt>content_type</tt> may be given.
     #
     # Example:
-    #   attaches_file "Photo", "/path/to/the/photo.jpg"
-    def attaches_file(id_or_name_or_label, path)
+    #   attaches_file "Resume", "/path/to/the/resume.txt"
+    #   attaches_file "Photo", "/path/to/the/image.png", "image/png"
+    def attaches_file(id_or_name_or_label, path, content_type = nil)
       field = find_field(id_or_name_or_label, FileField)
-      field.set(path)
+      field.set(path, content_type)
     end
 
     alias_method :attach_file, :attaches_file
