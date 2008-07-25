@@ -29,6 +29,7 @@ describe "clicks_link" do
     @session.clicks_delete_link "Link text"
   end
   
+  
   it "should click post links" do
     @session.response_body = <<-EOS
       <a href="/page">Link text</a>
@@ -179,6 +180,15 @@ describe "clicks_link" do
     
     @session.should_receive(:get).with("/page2", {})
     @session.clicks_link "Link"
+  end
+  
+  it "should treat non-breaking spaces as spaces" do
+    @session.response_body = <<-EOS
+    <a href="/page1">This&nbsp;is&nbsp;a&nbsp;link</a>
+    EOS
+    
+    @session.should_receive(:get).with("/page1", {})
+    @session.clicks_link "This is a link"
   end
   
   it "should click link within a selector" do
