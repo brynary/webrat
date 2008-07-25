@@ -42,6 +42,10 @@ module Webrat
       label.matches_text?(label_text)
     end
     
+    def matches_alt?(alt)
+      @element["alt"] =~ /^\W*#{Regexp.escape(alt.to_s)}/i
+    end
+    
     def to_param
       value = @value.to_s.gsub('&', '%26')
       param_parser.parse_query_parameters("#{name}=#{value}")
@@ -124,7 +128,7 @@ module Webrat
     end
 
     def matches_value?(value)
-      @element["value"] =~ /^\W*#{Regexp.escape(value.to_s)}/i || matches_text?(value)
+      @element["value"] =~ /^\W*#{Regexp.escape(value.to_s)}/i || matches_text?(value) || matches_alt?(value)
     end
 
     def to_param
