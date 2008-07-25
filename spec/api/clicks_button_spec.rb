@@ -332,6 +332,16 @@ describe "clicks_button" do
     @session.expects(:get)
     @session.clicks_button
   end
+  
+  it "should find image buttons by their alt text" do
+    @session.response_body = <<-EOS
+      <form action="/">
+        <input type="image" alt="Go" />
+      </form>
+    EOS
+    @session.expects(:get)
+    @session.clicks_button "Go"
+  end
 
   it "should recognize button tags by content" do
     @session.response_body = <<-EOS
