@@ -7,7 +7,7 @@ describe "visits" do
   end
 
   it "should use get" do
-    @session.expects(:get).with("/", {})
+    @session.should_receive(:get).with("/", {})
     @session.visits("/")
   end
   

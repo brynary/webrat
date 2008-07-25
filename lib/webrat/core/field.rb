@@ -258,8 +258,17 @@ module Webrat
       if @value.nil?
         super
       else
-        file = content_type ? ActionController::TestUploadedFile.new(@value, content_type) : ActionController::TestUploadedFile.new(@value)
-        replace_param_value(super, @value, file)
+        replace_param_value(super, @value, test_uploaded_file)
+      end
+    end
+    
+  protected
+  
+    def test_uploaded_file
+      if content_type
+        ActionController::TestUploadedFile.new(@value, content_type)
+      else
+        ActionController::TestUploadedFile.new(@value)
       end
     end
 

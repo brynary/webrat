@@ -29,7 +29,7 @@ describe "clicks_button" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:get)
+    @session.should_receive(:get)
     @session.clicks_button
   end
   
@@ -52,7 +52,7 @@ describe "clicks_button" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:get).with("/form1", {})
+    @session.should_receive(:get).with("/form1", {})
     @session.clicks_button
   end
   
@@ -75,7 +75,7 @@ describe "clicks_button" do
         <input type="submit" value="Form2" />
       </form>
     EOS
-    @session.expects(:get).with("/form2", {})
+    @session.should_receive(:get).with("/form2", {})
     @session.clicks_button "Form2"
   end
   
@@ -85,7 +85,7 @@ describe "clicks_button" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:get).with("/login", {})
+    @session.should_receive(:get).with("/login", {})
     @session.clicks_button
   end
   
@@ -95,7 +95,7 @@ describe "clicks_button" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:post)
+    @session.should_receive(:post)
     @session.clicks_button
   end
   
@@ -106,7 +106,7 @@ describe "clicks_button" do
         <input type="submit" name="login" value="Login" />
       </form>
     EOS
-    @session.expects(:post).with("/login", "login" => "Login")
+    @session.should_receive(:post).with("/login", "login" => "Login")
     @session.clicks_button("Login")
   end
   
@@ -117,7 +117,7 @@ describe "clicks_button" do
         <input type="submit" value="Login" />
       </form>
     EOS
-    @session.expects(:post).with("/login", {})
+    @session.should_receive(:post).with("/login", {})
     @session.clicks_button("Login")
   end
 
@@ -128,7 +128,7 @@ describe "clicks_button" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:get).with("/login", "user" => {"password" => "mypass"})
+    @session.should_receive(:get).with("/login", "user" => {"password" => "mypass"})
     @session.clicks_button
   end  
   
@@ -139,7 +139,7 @@ describe "clicks_button" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:get).with("/login", "user" => {"email" => "test@example.com"})
+    @session.should_receive(:get).with("/login", "user" => {"email" => "test@example.com"})
     @session.clicks_button
   end
   
@@ -150,7 +150,7 @@ describe "clicks_button" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:get).with("/login", "user" => {"email" => "test@example.com"})
+    @session.should_receive(:get).with("/login", "user" => {"email" => "test@example.com"})
     @session.clicks_button
   end
   
@@ -161,7 +161,7 @@ describe "clicks_button" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:get).with("/login", "user" => {"tos" => "1"})
+    @session.should_receive(:get).with("/login", "user" => {"tos" => "1"})
     @session.clicks_button
   end
   
@@ -175,7 +175,7 @@ describe "clicks_button" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:get).with("/login", "user" => {"gender" => "F"})
+    @session.should_receive(:get).with("/login", "user" => {"gender" => "F"})
     @session.clicks_button
   end
   
@@ -187,7 +187,7 @@ describe "clicks_button" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:get).with("/login", "user" => {"tos" => "0"})
+    @session.should_receive(:get).with("/login", "user" => {"tos" => "0"})
     @session.clicks_button
   end
   
@@ -199,7 +199,7 @@ describe "clicks_button" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:get).with("/login", "user" => {"tos" => "1"})
+    @session.should_receive(:get).with("/login", "user" => {"tos" => "1"})
     @session.clicks_button
   end
 
@@ -219,7 +219,7 @@ describe "clicks_button" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:post).with("/login",
+    @session.should_receive(:post).with("/login",
       "options"  => ["burger", "fries", "soda", "soda", "dessert"],
       "response" => { "choices" => [{"selected" => "one"}, {"selected" => "two"}, {"selected" => "two"}]})
     @session.clicks_button
@@ -232,7 +232,7 @@ describe "clicks_button" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:get).with("/login", {})
+    @session.should_receive(:get).with("/login", {})
     @session.clicks_button
   end
   
@@ -243,7 +243,7 @@ describe "clicks_button" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:post).with("/posts", "post" => {"body" => "Post body here!"})
+    @session.should_receive(:post).with("/posts", "post" => {"body" => "Post body here!"})
     @session.clicks_button
   end
   
@@ -257,7 +257,7 @@ describe "clicks_button" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:get).with("/login", "month" => "2")
+    @session.should_receive(:get).with("/login", "month" => "2")
     @session.clicks_button
   end
 
@@ -271,7 +271,7 @@ describe "clicks_button" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:get).with("/login", "month" => "February")
+    @session.should_receive(:get).with("/login", "month" => "February")
     @session.clicks_button
   end
   
@@ -285,7 +285,7 @@ describe "clicks_button" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:get).with("/login", "month" => "1")
+    @session.should_receive(:get).with("/login", "month" => "1")
     @session.clicks_button
   end
   
@@ -297,7 +297,7 @@ describe "clicks_button" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:post).with("/login", "contestant" => {"scores" => {'1' => '2', '3' => '4'}})
+    @session.should_receive(:post).with("/login", "contestant" => {"scores" => {'1' => '2', '3' => '4'}})
     @session.clicks_button
   end
 
@@ -308,7 +308,7 @@ describe "clicks_button" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:get).with("/login", "user" => {"email" => ""})
+    @session.should_receive(:get).with("/login", "user" => {"email" => ""})
     @session.clicks_button
   end
 
@@ -319,7 +319,7 @@ describe "clicks_button" do
         <button type="submit" />
       </form>
     EOS
-    @session.expects(:get).with("/login", "user" => {"email" => ""})
+    @session.should_receive(:get).with("/login", "user" => {"email" => ""})
     @session.clicks_button
   end
 
@@ -329,7 +329,7 @@ describe "clicks_button" do
         <input type="image" />
       </form>
     EOS
-    @session.expects(:get)
+    @session.should_receive(:get)
     @session.clicks_button
   end
   
@@ -339,7 +339,7 @@ describe "clicks_button" do
         <input type="image" alt="Go" />
       </form>
     EOS
-    @session.expects(:get)
+    @session.should_receive(:get)
     @session.clicks_button "Go"
   end
 
@@ -350,7 +350,7 @@ describe "clicks_button" do
         <button type="submit">Login</button>
       </form>
     EOS
-    @session.expects(:get).with("/login", "user" => {"email" => ""})
+    @session.should_receive(:get).with("/login", "user" => {"email" => ""})
     @session.clicks_button "Login"
   end
 end

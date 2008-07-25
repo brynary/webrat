@@ -5,8 +5,8 @@ describe "attaches_file" do
     @session = Webrat::TestSession.new
 
     @filename = __FILE__
-    @uploaded_file = mock
-    ActionController::TestUploadedFile.stubs(:new).returns(@uploaded_file)
+    @uploaded_file = mock("uploaded file")
+    ActionController::TestUploadedFile.stub!(:new).and_return(@uploaded_file)
   end
 
   it "should fail if no file field found" do
@@ -24,7 +24,7 @@ describe "attaches_file" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:post).with("/widgets", { "widget" => { "file" => "" } })
+    @session.should_receive(:post).with("/widgets", { "widget" => { "file" => "" } })
     @session.clicks_button
   end
 
@@ -36,7 +36,7 @@ describe "attaches_file" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:post).with("/widgets", { "widget" => { "file" => @uploaded_file } })
+    @session.should_receive(:post).with("/widgets", { "widget" => { "file" => @uploaded_file } })
     @session.attaches_file "Document", @filename
     @session.clicks_button
   end
@@ -51,7 +51,7 @@ describe "attaches_file" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:post).with("/widgets", { "widget" => { "files" => [@uploaded_file, @uploaded_file] } })
+    @session.should_receive(:post).with("/widgets", { "widget" => { "files" => [@uploaded_file, @uploaded_file] } })
     @session.attaches_file "Document", @filename
     @session.attaches_file "Spreadsheet", @filename
     @session.clicks_button
@@ -65,7 +65,7 @@ describe "attaches_file" do
         <input type="submit" />
       </form>
     EOS
-    ActionController::TestUploadedFile.expects(:new).with(@filename, "image/png").returns(@uploaded_file)
+    ActionController::TestUploadedFile.should_receive(:new).with(@filename, "image/png").any_number_of_times
     @session.attaches_file "Picture", @filename, "image/png"
     @session.clicks_button
   end

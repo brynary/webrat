@@ -43,7 +43,7 @@ describe "selects" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:post).with("/login", "month" => "1")
+    @session.should_receive(:post).with("/login", "month" => "1")
     @session.selects "January", :from => "month"
     @session.clicks_button
   end
@@ -55,7 +55,7 @@ describe "selects" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:post).with("/login", "encoded" => "A & B")
+    @session.should_receive(:post).with("/login", "encoded" => "A & B")
     @session.selects "Encoded", :from => "encoded"
     @session.clicks_button
   end
@@ -67,7 +67,7 @@ describe "selects" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:post).with("/login", 'month' => '')
+    @session.should_receive(:post).with("/login", 'month' => '')
     @session.clicks_button
   end
   
@@ -78,7 +78,7 @@ describe "selects" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:post).with("/login", "month" => "1")
+    @session.should_receive(:post).with("/login", "month" => "1")
     @session.selects "January"
     @session.clicks_button
   end
@@ -91,7 +91,7 @@ describe "selects" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:post).with("/login", "start_month" => "s1", "end_month" => "e1")
+    @session.should_receive(:post).with("/login", "start_month" => "s1", "end_month" => "e1")
     @session.selects "January", :from => "end_month"
     @session.clicks_button
   end
@@ -106,7 +106,7 @@ describe "selects" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:post).with("/login", "start_month" => "s1", "end_month" => "e1")
+    @session.should_receive(:post).with("/login", "start_month" => "s1", "end_month" => "e1")
     @session.selects "January", :from => "End Month"
     @session.clicks_button
   end
@@ -118,7 +118,7 @@ describe "selects" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:post).with("/login", "month" => "January")
+    @session.should_receive(:post).with("/login", "month" => "January")
     @session.selects "January", :from => "month"
     @session.clicks_button
   end
@@ -130,7 +130,7 @@ describe "selects" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:post).with("/login", "month" => "January")
+    @session.should_receive(:post).with("/login", "month" => "January")
     @session.selects(/jan/i)
     @session.clicks_button
   end
@@ -145,7 +145,7 @@ describe "selects" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:post).with("/login", "start_month" => "s1", "end_month" => "e1")
+    @session.should_receive(:post).with("/login", "start_month" => "s1", "end_month" => "e1")
     @session.selects(/jan/i, :from => "End Month")
     @session.clicks_button
   end

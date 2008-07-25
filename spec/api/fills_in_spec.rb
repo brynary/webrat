@@ -13,7 +13,7 @@ describe "fills_in" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:post).with("/login", "user" => {"text" => "filling text area"})
+    @session.should_receive(:post).with("/login", "user" => {"text" => "filling text area"})
     @session.fills_in "User Text", :with => "filling text area"
     @session.clicks_button
   end
@@ -25,7 +25,7 @@ describe "fills_in" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:post).with("/login", "user" => {"text" => "pass"})
+    @session.should_receive(:post).with("/login", "user" => {"text" => "pass"})
     @session.fills_in "user_text", :with => "pass"
     @session.clicks_button
   end
@@ -47,7 +47,7 @@ describe "fills_in" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:post).with("/login", "user" => {"email" => "foo@example.com"})
+    @session.should_receive(:post).with("/login", "user" => {"email" => "foo@example.com"})
     @session.fills_in "user[email]", :with => "foo@example.com"
     @session.clicks_button
   end
@@ -63,7 +63,7 @@ describe "fills_in" do
       </form>
     EOS
     
-    @session.expects(:post).with("/login", "user" => {"mail1" => "", "mail2" => "value"})
+    @session.should_receive(:post).with("/login", "user" => {"mail1" => "", "mail2" => "value"})
     @session.fills_in "Some", :with => "value"
     @session.clicks_button
   end
@@ -79,22 +79,9 @@ describe "fills_in" do
       </form>
     EOS
     
-    @session.expects(:post).with("/login", "user" => {"mail1" => "value", "mail2" => ""})
+    @session.should_receive(:post).with("/login", "user" => {"mail1" => "value", "mail2" => ""})
     @session.fills_in "Some mail", :with => "value"
     @session.clicks_button
-  end
-  
-  it "should support unlabelled inputs" do # regression test
-    @session.response_body = <<-EOS
-      <form method="post" action="/login">
-        <input id="user_name" name="user[name]" value="test person" type="text" />
-        <label for="user_email">email</label>
-        <input id="user_email" name="user[email]" value="test@example.com" type="text" />
-        <input id="user_address" name="user[address]" value="123 some street" type="text" />
-      </form>
-    EOS
-    
-    lambda { @session.fills_in "email", :with => "value" }.should_not raise_error
   end
   
   it "should anchor label matches to start of label" do
@@ -129,7 +116,7 @@ describe "fills_in" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:post).with("/login", "user" => {"email" => "foo@example.com"})
+    @session.should_receive(:post).with("/login", "user" => {"email" => "foo@example.com"})
     @session.fills_in "Email", :with => "foo@example.com"
     @session.clicks_button
   end
@@ -141,7 +128,7 @@ describe "fills_in" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:post).with("/login", "user" => {"email" => "foo@example.com"})
+    @session.should_receive(:post).with("/login", "user" => {"email" => "foo@example.com"})
     @session.fills_in "user[email]", :with => "foo@example.com"
     @session.clicks_button
   end
@@ -154,7 +141,7 @@ describe "fills_in" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:post).with("/login", "user" => {"email" => "foo@example.com"})
+    @session.should_receive(:post).with("/login", "user" => {"email" => "foo@example.com"})
     @session.fills_in :email, :with => "foo@example.com"
     @session.clicks_button
   end

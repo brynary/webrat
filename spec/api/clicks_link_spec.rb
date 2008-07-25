@@ -9,7 +9,7 @@ describe "clicks_link" do
     @session.response_body = <<-EOS
       <a href="/page">Link text</a>
     EOS
-    @session.expects(:get).with("/page", {})
+    @session.should_receive(:get).with("/page", {})
     @session.clicks_link "Link text"
   end
 
@@ -17,7 +17,7 @@ describe "clicks_link" do
     @session.response_body = <<-EOS
       <a href="/page">Link text</a>
     EOS
-    @session.expects(:get).with("/page", {})
+    @session.should_receive(:get).with("/page", {})
     @session.clicks_get_link "Link text"
   end
   
@@ -25,7 +25,7 @@ describe "clicks_link" do
     @session.response_body = <<-EOS
       <a href="/page">Link text</a>
     EOS
-    @session.expects(:delete).with("/page", {})
+    @session.should_receive(:delete).with("/page", {})
     @session.clicks_delete_link "Link text"
   end
   
@@ -33,7 +33,7 @@ describe "clicks_link" do
     @session.response_body = <<-EOS
       <a href="/page">Link text</a>
     EOS
-    @session.expects(:post).with("/page", {})
+    @session.should_receive(:post).with("/page", {})
     @session.clicks_post_link "Link text"
   end
   
@@ -41,7 +41,7 @@ describe "clicks_link" do
     @session.response_body = <<-EOS
       <a href="/page">Link text</a>
     EOS
-    @session.expects(:put).with("/page", {})
+    @session.should_receive(:put).with("/page", {})
     @session.clicks_put_link "Link text"
   end
   
@@ -60,7 +60,7 @@ describe "clicks_link" do
         f.submit();
         return false;">Posts</a>
     EOS
-    @session.expects(:post).with("/posts", "authenticity_token" => "aa79cb354597a60a3786e7e291ed4f74d77d3a62")
+    @session.should_receive(:post).with("/posts", "authenticity_token" => "aa79cb354597a60a3786e7e291ed4f74d77d3a62")
     @session.clicks_link "Posts"
   end
   
@@ -79,7 +79,7 @@ describe "clicks_link" do
         f.submit();
         return false;">Delete</a>
     EOS
-    @session.expects(:delete).with("/posts/1", {})
+    @session.should_receive(:delete).with("/posts/1", {})
     @session.clicks_link "Delete"
   end
   
@@ -93,7 +93,7 @@ describe "clicks_link" do
         f.submit();
         return false;">Posts</a>
     EOS
-    @session.expects(:post).with("/posts", {})
+    @session.should_receive(:post).with("/posts", {})
     @session.clicks_link "Posts"
   end
   
@@ -107,7 +107,7 @@ describe "clicks_link" do
         f.submit();
         return false;">Posts</a>
     EOS
-    @session.expects(:get).with("/posts", {})
+    @session.should_receive(:get).with("/posts", {})
     @session.clicks_link "Posts", :javascript => false
   end
   
@@ -126,7 +126,7 @@ describe "clicks_link" do
         f.submit();
         return false;">Put</a></h2>
     EOS
-    @session.expects(:put).with("/posts", {})
+    @session.should_receive(:put).with("/posts", {})
     @session.clicks_link "Put"
   end
   
@@ -142,7 +142,7 @@ describe "clicks_link" do
     @session.response_body = <<-EOS
       <a href="/page">Link text</a>
     EOS
-    @session.expects(:get).with("/page", {})
+    @session.should_receive(:get).with("/page", {})
     @session.clicks_link "LINK TEXT"
   end
   
@@ -150,7 +150,7 @@ describe "clicks_link" do
     @session.response_body = <<-EOS
       <a href="/page">This is some cool link text, isn't it?</a>
     EOS
-    @session.expects(:get).with("/page", {})
+    @session.should_receive(:get).with("/page", {})
     @session.clicks_link "Link text"
   end
   
@@ -158,16 +158,8 @@ describe "clicks_link" do
     @session.response_body = <<-EOS
       <a href="/page"><span>Link text</span></a>
     EOS
-    @session.expects(:get).with("/page", {})
+    @session.should_receive(:get).with("/page", {})
     @session.clicks_link "Link text"
-  end
-  
-  it "should work with anchor titles" do
-    @session.response_body = <<-EOS
-      <a href="/page" title="Link title">Link text</a>
-    EOS
-    @session.expects(:get).with("/page", {})
-    @session.clicks_link "Link title"
   end
   
   it "should match the first matching link" do
@@ -175,7 +167,7 @@ describe "clicks_link" do
       <a href="/page1">Link text</a>
       <a href="/page2">Link text</a>
     EOS
-    @session.expects(:get).with("/page1", {})
+    @session.should_receive(:get).with("/page1", {})
     @session.clicks_link "Link text"
   end
   
@@ -185,7 +177,7 @@ describe "clicks_link" do
     <a href="/page2">Link</a>
     EOS
     
-    @session.expects(:get).with("/page2", {})
+    @session.should_receive(:get).with("/page2", {})
     @session.clicks_link "Link"
   end
   
@@ -197,7 +189,7 @@ describe "clicks_link" do
     </div>
     EOS
     
-    @session.expects(:get).with("/page2", {})
+    @session.should_receive(:get).with("/page2", {})
     @session.clicks_link_within "#container", "Link"
   end
 
@@ -205,17 +197,17 @@ describe "clicks_link" do
     @session.response_body = <<-EOS
       <a href="#section-1">Jump to Section 1</a>
     EOS
-    # Don't know why @session.expects(:get).never doesn't work here
-    @session.expects(:send).with('get_via_redirect', '#section-1', {}).never
+    # Don't know why @session.should_receive(:get).never doesn't work here
+    @session.should_receive(:send).with('get_via_redirect', '#section-1', {}).never
     @session.clicks_link "Jump to Section 1"
   end
 
   it "should follow relative links" do
-    @session.current_page.stubs(:url).returns("/page")
+    @session.current_page.stub!(:url).and_return("/page")
     @session.response_body = <<-EOS
       <a href="sub">Jump to sub page</a>
     EOS
-    @session.expects(:get).with("/page/sub", {})
+    @session.should_receive(:get).with("/page/sub", {})
     @session.clicks_link "Jump to sub page"
   end
   
@@ -223,16 +215,16 @@ describe "clicks_link" do
     @session.response_body = <<-EOS
       <a href="http://www.example.com/page/sub">Jump to sub page</a>
     EOS
-    @session.expects(:get).with("/page/sub", {})
+    @session.should_receive(:get).with("/page/sub", {})
     @session.clicks_link "Jump to sub page"
   end
 
   it "should follow query parameters" do
-    @session.current_page.stubs(:url).returns("/page")
+    @session.current_page.stub!(:url).and_return("/page")
     @session.response_body = <<-EOS
       <a href="?foo=bar">Jump to foo bar</a>
     EOS
-    @session.expects(:get).with("/page?foo=bar", {})
+    @session.should_receive(:get).with("/page?foo=bar", {})
     @session.clicks_link "Jump to foo bar"
   end
 end

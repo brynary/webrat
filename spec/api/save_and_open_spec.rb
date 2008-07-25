@@ -16,33 +16,33 @@ describe "save_and_open_page" do
       </html>
     HTML
 
-    File.stubs(:exist?).returns(true)
-    Time.stubs(:now).returns(1234)
-    Webrat::Page.any_instance.stubs(:open_in_browser)
+    File.stub!(:exist?).and_return(true)
+    Time.stub!(:now).and_return(1234)
+    @session.current_page.stub!(:open_in_browser)
     
-    @file_handle = mock()
-    File.stubs(:open).with(filename, 'w').yields(@file_handle)
-    @file_handle.stubs(:write)
+    @file_handle = mock("file handle")
+    File.stub!(:open).with(filename, 'w').and_yield(@file_handle)
+    @file_handle.stub!(:write)
   end
 
   it "should rewrite css rules" do
-    @file_handle.expects(:write).with do |html|
-      html =~ %r|#{@session.doc_root}/stylesheets/foo.css|s
+    @file_handle.should_receive(:write) do |html|
+      html.should =~ %r|#{@session.doc_root}/stylesheets/foo.css|s
     end
     
     @session.save_and_open_page
   end
   
   it "should rewrite image paths" do
-    @file_handle.expects(:write).with do |html|
-      html =~ %r|#{@session.doc_root}/images/bar.png|s
+    @file_handle.should_receive(:write) do |html|
+      html.should =~ %r|#{@session.doc_root}/images/bar.png|s
     end
     
     @session.save_and_open_page
   end
   
   it "should open the temp file in a browser" do
-    Webrat::Page.any_instance.expects(:open_in_browser).with(filename)
+    @session.current_page.should_receive(:open_in_browser).with(filename)
     @session.save_and_open_page
   end
   

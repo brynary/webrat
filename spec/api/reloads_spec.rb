@@ -7,7 +7,7 @@ describe "reloads" do
   end
 
   it "should reload the page" do
-    @session.expects(:get).with("/", {}).times(2)
+    @session.should_receive(:get).with("/", {}).twice
     @session.visits("/")
     @session.reloads
   end

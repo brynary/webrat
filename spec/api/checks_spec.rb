@@ -33,7 +33,7 @@ describe "checks" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:get).with("/login", "user" => {"tos" => "1"})
+    @session.should_receive(:get).with("/login", "user" => {"tos" => "1"})
     @session.checks "TOS"
     @session.clicks_button
   end
@@ -45,7 +45,7 @@ describe "checks" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:post).with("/login", "remember_me" => "on")
+    @session.should_receive(:post).with("/login", "remember_me" => "on")
     @session.checks "remember_me"
     @session.clicks_button
   end
@@ -57,7 +57,7 @@ describe "checks" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:post).with("/login", "remember_me" => "yes")
+    @session.should_receive(:post).with("/login", "remember_me" => "yes")
     @session.checks "remember_me"
     @session.clicks_button
   end
@@ -96,7 +96,7 @@ describe "unchecks" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:get).with("/login", "user" => {"tos" => "0"})
+    @session.should_receive(:get).with("/login", "user" => {"tos" => "0"})
     @session.checks "TOS"
     @session.unchecks "TOS"
     @session.clicks_button
@@ -109,7 +109,7 @@ describe "unchecks" do
         <input type="submit" />
       </form>
     EOS
-    @session.expects(:post).with("/login", {})
+    @session.should_receive(:post).with("/login", {})
     @session.unchecks "remember_me"
     @session.clicks_button
   end
