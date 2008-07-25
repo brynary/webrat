@@ -162,6 +162,14 @@ describe "clicks_link" do
     @session.clicks_link "Link text"
   end
   
+  it "should work with anchor titles" do
+    @session.response_body = <<-EOS
+      <a href="/page" title="Link title">Link text</a>
+    EOS
+    @session.expects(:get).with("/page", {})
+    @session.clicks_link "Link title"
+  end
+  
   it "should match the first matching link" do
     @session.response_body = <<-EOS
       <a href="/page1">Link text</a>

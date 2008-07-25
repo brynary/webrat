@@ -25,8 +25,8 @@ module Webrat
     end
 
     def label_text
-      return nil unless label
-      label.text
+      return nil if labels.empty?
+      labels.first.text
     end
     
     def matches_id?(id)
@@ -38,8 +38,8 @@ module Webrat
     end
     
     def matches_label?(label_text)
-      return false unless label
-      label.matches_text?(label_text)
+      return false if labels.empty?
+      labels.any? { |label| label.matches_text?(label_text) }
     end
     
     def matches_alt?(alt)
@@ -69,25 +69,28 @@ module Webrat
       @element["name"]
     end
     
-    def label
-      return nil if label_element.nil?
-      @label ||= Label.new(self, label_element)
+    def labels
+      @labels ||= label_elements.map { |element| Label.new(self, element) }
     end
     
-    def label_element
-      @label_element ||= begin
-        parent = @element.parent
-        while parent.respond_to?(:parent)
-          return parent if parent.name == "label"
-          parent = parent.parent
+    def label_elements
+      return @label_elements unless @label_elements.nil?
+      @label_elements = []
+
+      parent = @element.parent
+      while parent.respond_to?(:parent)
+        if parent.name == 'label'
+          @label_elements.push parent
+          break
         end
-      
-        if id.blank?
-          nil
-        else
-          @form.element.at("label[@for=#{id}]")
-        end
+        parent = parent.parent
       end
+
+      unless id.blank?
+        @label_elements += @form.element / "label[@for=#{id}]"
+      end
+
+      @label_elements
     end
     
     def default_value

@@ -84,6 +84,19 @@ describe "fills_in" do
     @session.clicks_button
   end
   
+  it "should support unlabelled inputs" do # regression test
+    @session.response_body = <<-EOS
+      <form method="post" action="/login">
+        <input id="user_name" name="user[name]" value="test person" type="text" />
+        <label for="user_email">email</label>
+        <input id="user_email" name="user[email]" value="test@example.com" type="text" />
+        <input id="user_address" name="user[address]" value="123 some street" type="text" />
+      </form>
+    EOS
+    
+    lambda { @session.fills_in "email", :with => "value" }.should_not raise_error
+  end
+  
   it "should anchor label matches to start of label" do
     @session.response_body = <<-EOS
       <form method="post" action="/login">
