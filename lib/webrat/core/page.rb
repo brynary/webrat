@@ -55,6 +55,18 @@ module Webrat
 
     alias_method :reload, :reloads
     
+    # Works like clicks_link, but only looks for the link text within a given selector
+    # 
+    # Example:
+    #   clicks_link_within "#user_12", "Vote"
+    def clicks_link_within(selector, link_text)
+      within(selector) do |scope|
+        scope.clicks_link(link_text)
+      end
+    end
+
+    alias_method :click_link_within, :clicks_link_within
+    
     def_delegators :scope, :fill_in,            :fills_in
     def_delegators :scope, :check,              :checks
     def_delegators :scope, :uncheck,            :unchecks
@@ -62,7 +74,6 @@ module Webrat
     def_delegators :scope, :select,             :selects
     def_delegators :scope, :attach_file,        :attaches_file
     def_delegators :scope, :click_link,         :clicks_link
-    def_delegators :scope, :click_link_within,  :clicks_link_within
     def_delegators :scope, :click_get_link,     :clicks_get_link
     def_delegators :scope, :click_delete_link,  :clicks_delete_link
     def_delegators :scope, :click_post_link,    :clicks_post_link

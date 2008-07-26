@@ -103,16 +103,6 @@ module Webrat
 
     alias_method :click_link, :clicks_link
     
-    # Works like clicks_link, but only looks for the link text within a given selector
-    # 
-    # Example:
-    #   clicks_link_within "#user_12", "Vote"
-    def clicks_link_within(selector, link_text)
-      find_link(link_text, selector).click
-    end
-
-    alias_method :click_link_within, :clicks_link_within
-    
     # Works like clicks_link, but forces a GET request
     # 
     # Example:
