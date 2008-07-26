@@ -19,6 +19,10 @@ module ActionController
         super || webrat_session.respond_to?(name)
       end
 
+      def within(selector, &block)
+        webrat_session.within(selector, &block)
+      end
+      
       def method_missing(name, *args)
         if webrat_session.respond_to?(name)
           webrat_session.send(name, *args)

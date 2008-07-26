@@ -44,6 +44,10 @@ module Webrat
       current_page.save_and_open
     end
     
+    def within(selector, &block)
+      current_page.within(selector, &block)
+    end
+    
     def method_missing(name, *args)
       if current_page.respond_to?(name)
         current_page.send(name, *args)
