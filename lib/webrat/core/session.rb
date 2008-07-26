@@ -9,6 +9,19 @@ module Webrat
       File.expand_path(".")
     end
     
+    def request_page(url, method, data)
+      debug_log "REQUESTING PAGE: #{method.to_s.upcase} #{url} with #{data.inspect}"
+      send "#{method}", url, data || {}
+    end
+    
+    def success_code?
+      (200..299).include?(response_code)
+    end
+    
+    def exception_caught?
+      response_body =~ /Exception caught/
+    end
+    
     def current_page
       @current_page ||= Page.new(self)
     end

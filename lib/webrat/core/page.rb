@@ -15,7 +15,7 @@ module Webrat
       @method   = method
       @data     = data
 
-      reset_dom
+      reset_scope
       load_page if @url
       
       session.current_page = self
@@ -32,7 +32,7 @@ module Webrat
     # <tt>field</tt> can be either the value of a name attribute (i.e. <tt>user[email]</tt>)
     # or the text inside a <tt><label></tt> element that points at the <tt><input></tt> field.
     def fills_in(id_or_name_or_label, options = {})
-      field = find_field(id_or_name_or_label, TextField, TextareaField, PasswordField)
+      field = scope.find_field(id_or_name_or_label, TextField, TextareaField, PasswordField)
       field.set(options[:with])
     end
 
@@ -44,7 +44,7 @@ module Webrat
     # Example:
     #   checks 'Remember Me'
     def checks(id_or_name_or_label)
-      field = find_field(id_or_name_or_label, CheckboxField)
+      field = scope.find_field(id_or_name_or_label, CheckboxField)
       field.check
     end
 
@@ -56,7 +56,7 @@ module Webrat
     # Example:
     #   unchecks 'Remember Me'
     def unchecks(id_or_name_or_label)
-      field = find_field(id_or_name_or_label, CheckboxField)
+      field = scope.find_field(id_or_name_or_label, CheckboxField)
       field.uncheck
     end
 
@@ -68,7 +68,7 @@ module Webrat
     # Example:
     #   chooses 'First Option'
     def chooses(label)
-      field = find_field(label, RadioField)
+      field = scope.find_field(label, RadioField)
       field.choose
     end
 
@@ -87,10 +87,10 @@ module Webrat
       id_or_name_or_label = options[:from]
       
       if id_or_name_or_label
-        field = find_field(id_or_name_or_label, SelectField)
+        field = scope.find_field(id_or_name_or_label, SelectField)
         option = field.find_option(option_text)
       else
-        option = find_select_option(option_text)
+        option = scope.find_select_option(option_text)
       end
         
       flunk("Could not find option #{option_text.inspect}") if option.nil?
@@ -107,7 +107,7 @@ module Webrat
     #   attaches_file "Resume", "/path/to/the/resume.txt"
     #   attaches_file "Photo", "/path/to/the/image.png", "image/png"
     def attaches_file(id_or_name_or_label, path, content_type = nil)
-      field = find_field(id_or_name_or_label, FileField)
+      field = scope.find_field(id_or_name_or_label, FileField)
       field.set(path, content_type)
     end
 
@@ -148,7 +148,7 @@ module Webrat
     #
     #   clicks_link "Sign up", :javascript => false
     def clicks_link(link_text, options = {})
-      link = find_link(link_text)
+      link = scope.find_link(link_text)
       link.click(nil, options)
     end
 
@@ -159,7 +159,7 @@ module Webrat
     # Example:
     #   clicks_link_within "#user_12", "Vote"
     def clicks_link_within(selector, link_text)
-      link = find_link(link_text, selector)
+      link = scope.find_link(link_text, selector)
       link.click
     end
 
@@ -170,7 +170,7 @@ module Webrat
     # Example:
     #   clicks_get_link "Log out"
     def clicks_get_link(link_text)
-      link = find_link(link_text)
+      link = scope.find_link(link_text)
       link.click(:get)
     end
 
@@ -181,7 +181,7 @@ module Webrat
     # Example:
     #   clicks_delete_link "Log out"
     def clicks_delete_link(link_text)
-      link = find_link(link_text)
+      link = scope.find_link(link_text)
       link.click(:delete)
     end
 
@@ -192,7 +192,7 @@ module Webrat
     # Example:
     #   clicks_post_link "Vote"
     def clicks_post_link(link_text)
-      link = find_link(link_text)
+      link = scope.find_link(link_text)
       link.click(:post)
     end
 
@@ -203,7 +203,7 @@ module Webrat
     # Example:
     #   clicks_put_link "Update profile"
     def clicks_put_link(link_text)
-      link = find_link(link_text)
+      link = scope.find_link(link_text)
       link.click(:put)
     end
 
@@ -221,7 +221,7 @@ module Webrat
     def clicks_button(value = nil)
       button = nil
       
-      forms.each do |form|
+      scope.forms.each do |form|
         button = form.find_button(value)
         break if button
       end
@@ -251,78 +251,20 @@ module Webrat
   protected
   
     def load_page
-      request_page(@url, @method, @data)
-    end
-    
-    def find_select_option(option_text)
-      forms.each do |form|
-        result = form.find_select_option(option_text)
-        return result if result
-      end
-      
-      nil
-    end
-  
-    
-    def find_link(text, selector = nil)
-      matching_links = []
-      
-      links_within(selector).each do |possible_link|
-        matching_links << possible_link if possible_link.matches_text?(text)
-      end
-      
-      if matching_links.any?
-        matching_links.sort_by { |l| l.text.length }.first
-      else
-        flunk("Could not find link with text #{text.inspect}")
-      end
-    end
-    
-    def find_field(id_or_name_or_label, *field_types)
-      forms.each do |form|
-        result = form.find_field(id_or_name_or_label, *field_types)
-        return result if result
-      end
-      
-      flunk("Could not find #{field_types.inspect}: #{id_or_name_or_label.inspect}")
-    end
-    
-    def request_page(url, method, data)
-      debug_log "REQUESTING PAGE: #{method.to_s.upcase} #{url} with #{data.inspect}"
-      
-      session.send "#{method}", url, data || {}
+      session.request_page(@url, @method, @data)
 
-      if session.response_body =~ /Exception caught/
-        save_and_open
-      end
+      save_and_open if session.exception_caught?
 
-      flunk("Page load was not successful (Code: #{session.response_code.inspect})") unless (200..299).include?(session.response_code)
-      reset_dom
+      flunk("Page load was not successful (Code: #{session.response_code.inspect})") unless session.success_code?
+      reset_scope
     end
     
-    def reset_dom
-      @dom    = nil
-      @forms  = nil
+    def reset_scope
+      @scope = nil
     end
     
-    def links_within(selector)
-      (dom / selector / "a[@href]").map do |link_element|
-        Link.new(self, link_element)
-      end
-    end
-    
-    def forms
-      return @forms if @forms
-      
-      @forms = (dom / "form").map do |form_element|
-        Form.new(self, form_element)
-      end
-    end
-      
-    def dom # :nodoc:
-      return @dom if defined?(@dom) && @dom
-      flunk("You must visit a path before working with the page.") unless @session.response_code
-      @dom = Hpricot(@session.response_body)
+    def scope
+      @scope ||= Scope.new(self, session.response_body)
     end
     
     def flunk(message)
