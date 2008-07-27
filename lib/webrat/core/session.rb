@@ -50,6 +50,10 @@ module Webrat
       @current_page = new_page
     end
     
+    def within(selector)
+      yield Scope.new(current_page, response_body, selector)
+    end
+    
     def visits(*args)
       Page.new(self, *args)
     end

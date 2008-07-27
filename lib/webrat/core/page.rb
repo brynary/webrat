@@ -24,10 +24,6 @@ module Webrat
       session.current_page = self
     end
     
-    def within(selector)
-      yield Scope.new(self, session.response_body, selector)
-    end
-    
     # Reloads the last page requested. Note that this will resubmit forms
     # and their data.
     #
@@ -44,7 +40,7 @@ module Webrat
     # Example:
     #   clicks_link_within "#user_12", "Vote"
     def clicks_link_within(selector, link_text)
-      within(selector) do |scope|
+      session.within(selector) do |scope|
         scope.clicks_link(link_text)
       end
     end
