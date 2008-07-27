@@ -13,9 +13,9 @@ module Webrat
       options[:javascript] = true if options[:javascript].nil?
       
       if options[:javascript]
-        Page.new(@page.session, absolute_href, method, data)
+        @page.session.request_page(absolute_href, method, data)
       else
-        Page.new(@page.session, absolute_href, :get, {})
+        @page.session.request_page(absolute_href, :get, {})
       end
     end
     

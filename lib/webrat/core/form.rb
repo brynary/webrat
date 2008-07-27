@@ -53,7 +53,7 @@ module Webrat
     end
     
     def submit
-      Page.new(@page.session, form_action, form_method, params)
+      @page.session.request_page(form_action, form_method, params)
     end
 
   protected

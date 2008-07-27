@@ -68,10 +68,6 @@ module Webrat
     
     def load_page
       session.request_page(@url, @method, @data)
-
-      save_and_open_page if session.exception_caught?
-
-      flunk("Page load was not successful (Code: #{session.response_code.inspect})") unless session.success_code?
       reset_scope
     end
     
