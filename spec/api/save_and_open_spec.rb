@@ -18,7 +18,7 @@ describe "save_and_open_page" do
 
     File.stub!(:exist?).and_return(true)
     Time.stub!(:now).and_return(1234)
-    @session.current_page.stub!(:open_in_browser)
+    @session.stub!(:open_in_browser)
     
     @file_handle = mock("file handle")
     File.stub!(:open).with(filename, 'w').and_yield(@file_handle)
@@ -42,7 +42,7 @@ describe "save_and_open_page" do
   end
   
   it "should open the temp file in a browser" do
-    @session.current_page.should_receive(:open_in_browser).with(filename)
+    @session.should_receive(:open_in_browser).with(filename)
     @session.save_and_open_page
   end
   

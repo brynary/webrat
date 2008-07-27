@@ -7,7 +7,8 @@ module Webrat
   class Page
     extend Forwardable
     include Logging
-
+    include Flunk
+    
     attr_reader :session
     attr_reader :url
     
@@ -25,23 +26,6 @@ module Webrat
     
     def within(selector)
       yield Scope.new(self, session.response_body, selector)
-    end
-    
-    # Saves the page out to RAILS_ROOT/tmp/ and opens it in the default
-    # web browser if on OS X. Useful for debugging.
-    # 
-    # Example:
-    #   save_and_open
-    def save_and_open
-      return unless File.exist?(session.saved_page_dir)
-
-      filename = "#{session.saved_page_dir}/webrat-#{Time.now.to_i}.html"
-      
-      File.open(filename, "w") do |f|
-        f.write rewrite_css_and_image_references(session.response_body)
-      end
-
-      open_in_browser(filename)
     end
     
     # Reloads the last page requested. Note that this will resubmit forms
@@ -82,14 +66,10 @@ module Webrat
     
   protected
     
-    def open_in_browser(path) # :nodoc
-      `open #{path}`
-    end
-    
     def load_page
       session.request_page(@url, @method, @data)
 
-      save_and_open if session.exception_caught?
+      save_and_open_page if session.exception_caught?
 
       flunk("Page load was not successful (Code: #{session.response_code.inspect})") unless session.success_code?
       reset_scope
@@ -101,15 +81,6 @@ module Webrat
     
     def scope
       @scope ||= Scope.new(self, session.response_body)
-    end
-    
-    def flunk(message)
-      raise message
-    end
-    
-    def rewrite_css_and_image_references(response_html) # :nodoc
-      return response_html unless session.doc_root
-      response_html.gsub(/"\/(stylesheets|images)/, session.doc_root + '/\1')
     end
     
   end

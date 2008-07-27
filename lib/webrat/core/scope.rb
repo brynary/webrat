@@ -1,5 +1,6 @@
 module Webrat
   class Scope
+    include Flunk
     
     def initialize(page, html, selector = nil)
       @page = page

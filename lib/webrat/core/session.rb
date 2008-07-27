@@ -1,5 +1,22 @@
 module Webrat
   class Session
+
+    # Saves the page out to RAILS_ROOT/tmp/ and opens it in the default
+    # web browser if on OS X. Useful for debugging.
+    # 
+    # Example:
+    #   save_and_open_page
+    def save_and_open_page
+      return unless File.exist?(saved_page_dir)
+
+      filename = "#{saved_page_dir}/webrat-#{Time.now.to_i}.html"
+      
+      File.open(filename, "w") do |f|
+        f.write rewrite_css_and_image_references(response_body)
+      end
+
+      open_in_browser(filename)
+    end    
     
     def doc_root
       nil
@@ -40,8 +57,13 @@ module Webrat
       super || current_page.respond_to?(name)
     end
     
-    def save_and_open_page
-      current_page.save_and_open
+    def open_in_browser(path) # :nodoc
+      `open #{path}`
+    end
+    
+    def rewrite_css_and_image_references(response_html) # :nodoc
+      return response_html unless doc_root
+      response_html.gsub(/"\/(stylesheets|images)/, doc_root + '/\1')
     end
     
     def method_missing(name, *args, &block)
