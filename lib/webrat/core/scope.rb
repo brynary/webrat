@@ -1,5 +1,6 @@
 module Webrat
   class Scope
+    include Logging
     include Flunk
     
     def initialize(page, html, selector = nil)

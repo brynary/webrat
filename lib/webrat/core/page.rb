@@ -24,28 +24,13 @@ module Webrat
       session.current_page = self
     end
     
-    # Reloads the last page requested. Note that this will resubmit forms
-    # and their data.
-    #
-    # Example:
-    #   reloads
-    def reloads
-      load_page
+    def http_method
+      @method
     end
-
-    alias_method :reload, :reloads
     
-    # Works like clicks_link, but only looks for the link text within a given selector
-    # 
-    # Example:
-    #   clicks_link_within "#user_12", "Vote"
-    def clicks_link_within(selector, link_text)
-      session.within(selector) do |scope|
-        scope.clicks_link(link_text)
-      end
+    def data
+      @data
     end
-
-    alias_method :click_link_within, :clicks_link_within
     
     def_delegators :scope, :fill_in,            :fills_in
     def_delegators :scope, :check,              :checks
@@ -59,6 +44,10 @@ module Webrat
     def_delegators :scope, :click_post_link,    :clicks_post_link
     def_delegators :scope, :click_put_link,     :clicks_put_link
     def_delegators :scope, :click_button,       :clicks_button
+
+    def scope
+      @scope ||= Scope.new(self, session.response_body)
+    end    
     
   protected
     
@@ -71,9 +60,7 @@ module Webrat
       @scope = nil
     end
     
-    def scope
-      @scope ||= Scope.new(self, session.response_body)
-    end
+
     
   end
 end

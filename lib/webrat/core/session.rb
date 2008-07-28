@@ -46,9 +46,37 @@ module Webrat
       @current_page ||= Page.new(self)
     end
     
+    def current_scope
+      current_page.scope
+    end
+    
     def current_page=(new_page)
       @current_page = new_page
     end
+    
+    # Reloads the last page requested. Note that this will resubmit forms
+    # and their data.
+    #
+    # Example:
+    #   reloads
+    def reloads
+      request_page(@current_page.url, current_page.http_method, current_page.data)
+    end
+
+    alias_method :reload, :reloads
+      
+    
+    # Works like clicks_link, but only looks for the link text within a given selector
+    # 
+    # Example:
+    #   clicks_link_within "#user_12", "Vote"
+    def clicks_link_within(selector, link_text)
+      within(selector) do |scope|
+        scope.clicks_link(link_text)
+      end
+    end
+
+    alias_method :click_link_within, :clicks_link_within
     
     def within(selector)
       yield Scope.new(current_page, response_body, selector)
@@ -75,7 +103,7 @@ module Webrat
     
     def method_missing(name, *args, &block)
       if current_page.respond_to?(name)
-        current_page.send(name, *args, &block)
+        current_scope.send(name, *args, &block)
       else
         super
       end
