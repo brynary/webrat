@@ -1,3 +1,4 @@
+Restore SSL support for Rails (See 73d3b72108254c0f1ad00e63f8e712115cc8ca7c)
 Full support for multiple forms on a page
 Track the current form based on the location of the last manipulated input, use this as a default for clicks_button
 Make current_url work with redirections

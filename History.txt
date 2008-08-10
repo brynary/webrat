@@ -1,16 +1,33 @@
 == Trunk
 
-* Enhancements
+* Major enhancements
 
-  * Support file fields using attaches_file (Patch from Kyle Hargraves)
+  * Added #within for manipulating the current page within a selector scope
+  * Add support for file fields via #attaches_file method (Patch from Kyle Hargraves)
+  * Support relative links, including href="?foo=bar" (Patch from Kyle Hargraves)
+  * Separated Rails-specific code from the Webrat core to make it easier to use Webrat with other environments
+  * Alias visits as visit, clicks_link as click_link, etc. for better readability
+  
+* Minor enhancements
+
+  * Add support for disabling JavaScript when clicking a link to enable testing of both JS
+    and non-JS implementations (Luke Melia and Bryan Helmkamp)
+  * Support &nbsp's as spaces in matching link text (Patch from Luke Melia)
   * Support button elements (Patch from Nick Sieger)
   * Support matching select options by regexp (Patch from Kyle Hargraves)
-  * Support relative links, including href="?foo=bar" (Patch from Kyle Hargraves)
   * Support links to fully qualified URLs starting with http:// or https:// (Luke Melia)
   * save_and_open_page rewrites css and image references to provide a friendlier debugging experience (Luke Melia)
+  * Added support for matching alt attributes in fields (primarly for clicks_button) (Patch from Aaron Quint)
+  * Support '&amp;' in submitted values (Patch from Kyle Hargraves)
+  * Support clicking links by title (Patch from Dan Barry)
+  * Added missing spec for clicking image buttons (Patch from Tim Harper)
+  * Switched tests to specs, and from Mocha to RSpec's mocking library
   
 * Bug fixes
 
+  * Don't open blank pages in the browser (Patch from Kyle Hargraves)
+  * Support radio buttons with multiple labels (Patch from Dan Barry)
+  * Fix load order bug on some platforms (Patch from Ismael Celis)
   * Fix bug with empty select list option (Patch from Kyle Hargraves)
   * Fix regression of not sending default values in password fields
   * Don't explode if encountering inputs with no type attribute (assume text)
