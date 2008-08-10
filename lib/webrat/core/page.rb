@@ -31,19 +31,6 @@ module Webrat
     def data
       @data
     end
-    
-    def_delegators :scope, :fill_in,            :fills_in
-    def_delegators :scope, :check,              :checks
-    def_delegators :scope, :uncheck,            :unchecks
-    def_delegators :scope, :choose,             :chooses
-    def_delegators :scope, :select,             :selects
-    def_delegators :scope, :attach_file,        :attaches_file
-    def_delegators :scope, :click_link,         :clicks_link
-    def_delegators :scope, :click_get_link,     :clicks_get_link
-    def_delegators :scope, :click_delete_link,  :clicks_delete_link
-    def_delegators :scope, :click_post_link,    :clicks_post_link
-    def_delegators :scope, :click_put_link,     :clicks_put_link
-    def_delegators :scope, :click_button,       :clicks_button
 
     def scope
       @scope ||= Scope.new(self, session.response_body)
@@ -59,8 +46,6 @@ module Webrat
     def reset_scope
       @scope = nil
     end
-    
-
     
   end
 end

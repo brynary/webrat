@@ -1,6 +1,8 @@
 module Webrat
   class Session
-
+    extend Forwardable
+    include Logging
+    
     # Saves the page out to RAILS_ROOT/tmp/ and opens it in the default
     # web browser if on OS X. Useful for debugging.
     # 
@@ -88,10 +90,6 @@ module Webrat
     
     alias_method :visit, :visits
     
-    def respond_to?(name)
-      super || current_page.respond_to?(name)
-    end
-    
     def open_in_browser(path) # :nodoc
       `open #{path}`
     end
@@ -100,14 +98,19 @@ module Webrat
       return response_html unless doc_root
       response_html.gsub(/"\/(stylesheets|images)/, doc_root + '/\1')
     end
-    
-    def method_missing(name, *args, &block)
-      if current_page.respond_to?(name)
-        current_scope.send(name, *args, &block)
-      else
-        super
-      end
-    end
+
+    def_delegators :current_scope, :fill_in,            :fills_in
+    def_delegators :current_scope, :check,              :checks
+    def_delegators :current_scope, :uncheck,            :unchecks
+    def_delegators :current_scope, :choose,             :chooses
+    def_delegators :current_scope, :select,             :selects
+    def_delegators :current_scope, :attach_file,        :attaches_file
+    def_delegators :current_scope, :click_link,         :clicks_link
+    def_delegators :current_scope, :click_get_link,     :clicks_get_link
+    def_delegators :current_scope, :click_delete_link,  :clicks_delete_link
+    def_delegators :current_scope, :click_post_link,    :clicks_post_link
+    def_delegators :current_scope, :click_put_link,     :clicks_put_link
+    def_delegators :current_scope, :click_button,       :clicks_button
     
   end
 end
