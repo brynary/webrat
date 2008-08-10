@@ -3,6 +3,7 @@
 * Major enhancements
 
   * Added #within for manipulating the current page within a selector scope
+  * Add support for simulating SSL requests (Luke Melia)
   * Add support for file fields via #attaches_file method (Patch from Kyle Hargraves)
   * Support relative links, including href="?foo=bar" (Patch from Kyle Hargraves)
   * Separated Rails-specific code from the Webrat core to make it easier to use Webrat with other environments
@@ -10,13 +11,12 @@
   
 * Minor enhancements
 
-  * Expose current DOM (as an Hpricot object) as current_dom
+  * Expose current DOM (as an Hpricot object) as #current_dom
   * Add support for disabling JavaScript when clicking a link to enable testing of both JS
     and non-JS implementations (Luke Melia and Bryan Helmkamp)
   * Support &nbsp's as spaces in matching link text (Patch from Luke Melia)
   * Support button elements (Patch from Nick Sieger)
   * Support matching select options by regexp (Patch from Kyle Hargraves)
-  * Support links to fully qualified URLs starting with http:// or https:// (Luke Melia)
   * save_and_open_page rewrites css and image references to provide a friendlier debugging experience (Luke Melia)
   * Added support for matching alt attributes in fields (primarly for clicks_button) (Patch from Aaron Quint)
   * Support '&amp;' in submitted values (Patch from Kyle Hargraves)
