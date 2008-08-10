@@ -18,7 +18,11 @@ module Webrat
       end
 
       open_in_browser(filename)
-    end    
+    end
+    
+    def current_url
+      @current_page.url
+    end
     
     def doc_root
       nil
@@ -52,10 +56,6 @@ module Webrat
       current_page.scope
     end
     
-    def current_page=(new_page)
-      @current_page = new_page
-    end
-    
     # Reloads the last page requested. Note that this will resubmit forms
     # and their data.
     #
@@ -81,11 +81,11 @@ module Webrat
     alias_method :click_link_within, :clicks_link_within
     
     def within(selector)
-      yield Scope.new(current_page, response_body, selector)
+      yield Scope.new(self, response_body, selector)
     end
     
     def visits(*args)
-      Page.new(self, *args)
+      @current_page = Page.new(self, *args)
     end
     
     alias_method :visit, :visits

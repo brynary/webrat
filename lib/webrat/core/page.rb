@@ -9,42 +9,23 @@ module Webrat
     include Logging
     include Flunk
     
-    attr_reader :session
     attr_reader :url
+    attr_reader :data
+    attr_reader :http_method
     
     def initialize(session, url = nil, method = :get, data = {})
-      @session  = session
-      @url      = url
-      @method   = method
-      @data     = data
-
-      reset_scope
-      load_page if @url
+      @session      = session
+      @url          = url
+      @http_method  = method
+      @data         = data
       
-      session.current_page = self
-    end
-    
-    def http_method
-      @method
-    end
-    
-    def data
-      @data
+      session.request_page(@url, @http_method, @data) if @url
+      
+      @scope = nil
     end
 
     def scope
-      @scope ||= Scope.new(self, session.response_body)
-    end    
-    
-  protected
-    
-    def load_page
-      session.request_page(@url, @method, @data)
-      reset_scope
-    end
-    
-    def reset_scope
-      @scope = nil
+      @scope ||= Scope.new(@session, @session.response_body)
     end
     
   end

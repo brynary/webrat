@@ -2,8 +2,8 @@ module Webrat
   class Form
     attr_reader :element
     
-    def initialize(page, element)
-      @page     = page
+    def initialize(session, element)
+      @session  = session
       @element  = element
       @fields   = nil
     end
@@ -53,7 +53,7 @@ module Webrat
     end
     
     def submit
-      @page.session.request_page(form_action, form_method, params)
+      @session.request_page(form_action, form_method, params)
     end
 
   protected
@@ -104,7 +104,7 @@ module Webrat
     end
     
     def form_action
-      @element["action"].blank? ? @page.url : @element["action"]
+      @element["action"].blank? ? @session.current_url : @element["action"]
     end
     
     def merge(all_params, new_param)

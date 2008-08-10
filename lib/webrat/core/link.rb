@@ -1,8 +1,8 @@
 module Webrat
   class Link
     
-    def initialize(page, element)
-      @page     = page
+    def initialize(session, element)
+      @session  = session
       @element  = element
     end
     
@@ -13,9 +13,9 @@ module Webrat
       options[:javascript] = true if options[:javascript].nil?
       
       if options[:javascript]
-        @page.session.request_page(absolute_href, method, data)
+        @session.request_page(absolute_href, method, data)
       else
-        @page.session.request_page(absolute_href, :get, {})
+        @session.request_page(absolute_href, :get, {})
       end
     end
     
@@ -47,9 +47,9 @@ module Webrat
       if href =~ %r{^https?://www.example.com(/.*)}
         $LAST_MATCH_INFO.captures.first
       elsif href =~ /^\?/
-        "#{@page.url}#{href}"
+        "#{@session.current_url}#{href}"
       elsif href !~ /^\//
-        "#{@page.url}/#{href}"
+        "#{@session.current_url}/#{href}"
       else
         href
       end

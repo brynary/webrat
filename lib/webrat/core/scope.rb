@@ -3,9 +3,9 @@ module Webrat
     include Logging
     include Flunk
     
-    def initialize(page, html, selector = nil)
-      @page = page
-      @html = html
+    def initialize(session, html, selector = nil)
+      @session  = session
+      @html     = html
       @selector = selector
     end
     
@@ -210,7 +210,7 @@ module Webrat
     
     def links_within(selector)
       (dom / selector / "a[@href]").map do |link_element|
-        Link.new(@page, link_element)
+        Link.new(@session, link_element)
       end
     end
     
@@ -218,7 +218,7 @@ module Webrat
       return @forms if @forms
       
       @forms = (dom / "form").map do |form_element|
-        Form.new(@page, form_element)
+        Form.new(@session, form_element)
       end
     end
     
