@@ -2,7 +2,7 @@ module Webrat
   class RailsSession < Session
     
     def initialize(integration_session)
-      super
+      super()
       @integration_session = integration_session
     end
 

@@ -1,16 +1,18 @@
 require "forwardable"
+require "ostruct"
 
 module Webrat
   class Session
     extend Forwardable
     include Logging
     
+    attr_reader :current_url
+    
     def initialize
-      @current_url  = nil
       @http_method  = :get
       @data         = {}
     end
-    
+
     # Saves the page out to RAILS_ROOT/tmp/ and opens it in the default
     # web browser if on OS X. Useful for debugging.
     # 
@@ -28,8 +30,13 @@ module Webrat
       open_in_browser(filename)
     end
     
-    def current_url
-      @current_url
+    # For backwards compatibility -- removing in 1.0
+    def current_page
+      page = OpenStruct.new
+      page.url = @current_url
+      page.http_method = @http_method
+      page.data = @data
+      page
     end
     
     def doc_root
@@ -40,12 +47,17 @@ module Webrat
       File.expand_path(".")
     end
     
-    def request_page(url, method, data)
-      debug_log "REQUESTING PAGE: #{method.to_s.upcase} #{url} with #{data.inspect}"
-      send "#{method}", url, data || {}
+    def request_page(url, http_method, data)
+      debug_log "REQUESTING PAGE: #{http_method.to_s.upcase} #{url} with #{data.inspect}"
+      send "#{http_method}", url, data || {}
       
       save_and_open_page if exception_caught?
-      flunk("Page load was not successful (Code: #{session.response_code.inspect})") unless success_code?
+      flunk("Page load was not successful (Code: #{response_code.inspect})") unless success_code?
+      
+      @scope        = nil
+      @current_url  = url
+      @http_method  = http_method
+      @data         = data
     end
     
     def success_code?
@@ -89,10 +101,6 @@ module Webrat
     end
     
     def visits(url = nil, http_method = :get, data = {})
-      @current_url  = url
-      @http_method  = http_method
-      @data         = data
-      
       request_page(url, http_method, data)
     end
     

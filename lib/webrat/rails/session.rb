@@ -12,7 +12,7 @@ module ActionController
       # Example:
       #   visits "/"
       def visits(*args)
-        @webrat_session.visits(*args)
+        webrat_session.visits(*args)
       end
 
       def respond_to?(name)
