@@ -1,3 +1,5 @@
+require "hpricot"
+
 module Webrat
   class Scope
     include Logging

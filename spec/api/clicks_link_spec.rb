@@ -213,7 +213,7 @@ describe "clicks_link" do
   end
 
   it "should follow relative links" do
-    @session.current_page.stub!(:url).and_return("/page")
+    @session.stub!(:current_url).and_return("/page")
     @session.response_body = <<-EOS
       <a href="sub">Jump to sub page</a>
     EOS
@@ -230,7 +230,7 @@ describe "clicks_link" do
   end
 
   it "should follow query parameters" do
-    @session.current_page.stub!(:url).and_return("/page")
+    @session.stub!(:current_url).and_return("/page")
     @session.response_body = <<-EOS
       <a href="?foo=bar">Jump to foo bar</a>
     EOS

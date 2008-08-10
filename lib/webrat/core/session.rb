@@ -1,7 +1,15 @@
+require "forwardable"
+
 module Webrat
   class Session
     extend Forwardable
     include Logging
+    
+    def initialize
+      @current_url  = nil
+      @http_method  = :get
+      @data         = {}
+    end
     
     # Saves the page out to RAILS_ROOT/tmp/ and opens it in the default
     # web browser if on OS X. Useful for debugging.
@@ -21,7 +29,7 @@ module Webrat
     end
     
     def current_url
-      @current_page.url
+      @current_url
     end
     
     def doc_root
@@ -48,12 +56,8 @@ module Webrat
       response_body =~ /Exception caught/
     end
     
-    def current_page
-      @current_page ||= Page.new(self)
-    end
-    
     def current_scope
-      current_page.scope
+      @scope ||= Scope.new(self, response_body)
     end
     
     # Reloads the last page requested. Note that this will resubmit forms
@@ -62,7 +66,7 @@ module Webrat
     # Example:
     #   reloads
     def reloads
-      request_page(@current_page.url, current_page.http_method, current_page.data)
+      request_page(@current_url, @http_method, @data)
     end
 
     alias_method :reload, :reloads
@@ -84,8 +88,12 @@ module Webrat
       yield Scope.new(self, response_body, selector)
     end
     
-    def visits(*args)
-      @current_page = Page.new(self, *args)
+    def visits(url = nil, http_method = :get, data = {})
+      @current_url  = url
+      @http_method  = http_method
+      @data         = data
+      
+      request_page(url, http_method, data)
     end
     
     alias_method :visit, :visits

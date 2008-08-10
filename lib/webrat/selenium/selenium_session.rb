@@ -2,6 +2,7 @@ module Webrat
   class SeleniumSession < Session
     
     def initialize(selenium_driver)
+      super
       @selenium = selenium_driver
       define_location_strategies
     end
