@@ -10,6 +10,7 @@
   
 * Minor enhancements
 
+  * Expose current DOM (as an Hpricot object) as current_dom
   * Add support for disabling JavaScript when clicking a link to enable testing of both JS
     and non-JS implementations (Luke Melia and Bryan Helmkamp)
   * Support &nbsp's as spaces in matching link text (Patch from Luke Melia)

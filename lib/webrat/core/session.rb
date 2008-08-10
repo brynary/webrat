@@ -30,6 +30,10 @@ module Webrat
       open_in_browser(filename)
     end
     
+    def current_dom
+      current_scope.dom
+    end
+    
     # For backwards compatibility -- removing in 1.0
     def current_page
       page = OpenStruct.new

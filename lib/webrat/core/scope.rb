@@ -162,6 +162,18 @@ module Webrat
 
     alias_method :click_button, :clicks_button
     
+    def dom # :nodoc:
+      return @dom if defined?(@dom) && @dom
+      @dom = Hpricot(@html)
+      
+      if @selector
+        html = (@dom / @selector).first.to_html
+        @dom = Hpricot(html)
+      end
+      
+      return @dom
+    end
+    
   protected
   
     def find_select_option(option_text, id_or_name_or_label)
@@ -222,18 +234,6 @@ module Webrat
       @forms = (dom / "form").map do |form_element|
         Form.new(@session, form_element)
       end
-    end
-    
-    def dom # :nodoc:
-      return @dom if defined?(@dom) && @dom
-      @dom = Hpricot(@html)
-      
-      if @selector
-        html = (@dom / @selector).first.to_html
-        @dom = Hpricot(html)
-      end
-      
-      return @dom
     end
     
   end

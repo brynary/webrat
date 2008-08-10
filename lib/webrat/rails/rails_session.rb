@@ -15,18 +15,22 @@ module Webrat
     end
     
     def get(url, data)
+      update_protocol(url)
       @integration_session.get_via_redirect(url, data)
     end
     
     def post(url, data)
+      update_protocol(url)
       @integration_session.post_via_redirect(url, data)
     end
     
     def put(url, data)
+      update_protocol(url)
       @integration_session.put_via_redirect(url, data)
     end
     
     def delete(url, data)
+      update_protocol(url)
       @integration_session.delete_via_redirect(url, data)
     end
     
