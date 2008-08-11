@@ -134,6 +134,19 @@ describe "selects" do
     @session.selects(/jan/i)
     @session.clicks_button
   end
+  
+  it "should fail if no option matching the regexp exists" do
+    @session.response_body = <<-EOS
+      <form method="post" action="/login">
+        <select name="month"><option>January</option></select>
+        <input type="submit" />
+      </form>
+    EOS
+    
+    lambda {
+      @session.selects(/feb/i)
+    }.should raise_error
+  end
 
   it "should find option by regexp in list specified by label" do
     @session.response_body = <<-EOS

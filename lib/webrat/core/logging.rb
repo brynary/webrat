@@ -3,7 +3,7 @@ module Webrat
     
     def debug_log(message) # :nodoc:
       return unless logger
-      logger.debug
+      logger.debug(message)
     end
 
     def logger # :nodoc:

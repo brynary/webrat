@@ -131,12 +131,42 @@ describe "clicks_link" do
     @session.clicks_link "Put"
   end
   
+  it "should fail if the javascript link doesn't have a value for the _method input" do
+    @session.response_body = <<-EOS
+      <a href="/posts/1" onclick="var f = document.createElement('form');
+        f.style.display = 'none';
+        this.parentNode.appendChild(f);
+        f.method = 'POST';
+        f.action = this.href;
+        var m = document.createElement('input');
+        m.setAttribute('type', 'hidden');
+        m.setAttribute('name', '_method');
+        f.appendChild(m);
+        f.submit();
+        return false;">Link</a>
+    EOS
+    
+    lambda {
+      @session.clicks_link "Link"
+    }.should raise_error
+  end
+  
   it "should assert valid response" do
     @session.response_body = <<-EOS
       <a href="/page">Link text</a>
     EOS
     @session.response_code = 404
     lambda { @session.clicks_link "Link text" }.should raise_error
+  end
+  
+  it "should fail is the link doesn't exist" do
+    @session.response_body = <<-EOS
+      <a href="/page">Link text</a>
+    EOS
+    
+    lambda {
+      @session.clicks_link "Missing link"
+    }.should raise_error
   end
   
   it "should not be case sensitive" do
