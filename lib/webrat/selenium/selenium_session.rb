@@ -109,7 +109,12 @@ module Webrat
     def dragdrop(*args) #:nodoc:
       @selenium.dragdrop(*args)
     end
-        
+
+    def fire_event(field_identifier, event)
+      locator = "webrat=#{Regexp.escape(field_identifier)}"
+      @selenium.fire_event(locator, "#{event}")
+    end
+    
   protected
     
     def adjust_if_regexp(text_or_regexp) #:nodoc:
