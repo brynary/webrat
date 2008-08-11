@@ -5,6 +5,7 @@ module Webrat
   class Session
     extend Forwardable
     include Logging
+    include Flunk
     
     attr_reader :current_url
     
