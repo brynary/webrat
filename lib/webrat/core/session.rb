@@ -54,7 +54,11 @@ module Webrat
     
     def request_page(url, http_method, data)
       debug_log "REQUESTING PAGE: #{http_method.to_s.upcase} #{url} with #{data.inspect}"
-      send "#{http_method}", url, data || {}
+      if @current_url
+        send "#{http_method}", url, data || {}, {"HTTP_REFERER" => @current_url}
+      else
+        send "#{http_method}", url, data || {}
+      end
       
       save_and_open_page if exception_caught?
       flunk("Page load was not successful (Code: #{response_code.inspect})") unless success_code?
