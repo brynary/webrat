@@ -255,7 +255,7 @@ describe "clicks_link" do
     @session.response_body = <<-EOS
       <a href="http://www.example.com/page/sub">Jump to sub page</a>
     EOS
-    @session.should_receive(:get).with("/page/sub", {})
+    @session.should_receive(:get).with("http://www.example.com/page/sub", {})
     @session.clicks_link "Jump to sub page"
   end
 

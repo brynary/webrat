@@ -44,11 +44,9 @@ module Webrat
     end
 
     def absolute_href
-      if href =~ %r{^https?://www.example.com(/.*)}
-        $LAST_MATCH_INFO.captures.first
-      elsif href =~ /^\?/
+      if href =~ /^\?/
         "#{@session.current_url}#{href}"
-      elsif href !~ /^\//
+      elsif href !~ %r{^https?://www.example.com(/.*)} && (href !~ /^\//)
         "#{@session.current_url}/#{href}"
       else
         href

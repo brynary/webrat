@@ -16,22 +16,22 @@ module Webrat
     
     def get(url, data)
       update_protocol(url)
-      @integration_session.get_via_redirect(url, data)
+      @integration_session.get_via_redirect(remove_protocol(url), data)
     end
     
     def post(url, data)
       update_protocol(url)
-      @integration_session.post_via_redirect(url, data)
+      @integration_session.post_via_redirect(remove_protocol(url), data)
     end
     
     def put(url, data)
       update_protocol(url)
-      @integration_session.put_via_redirect(url, data)
+      @integration_session.put_via_redirect(remove_protocol(url), data)
     end
     
     def delete(url, data)
       update_protocol(url)
-      @integration_session.delete_via_redirect(url, data)
+      @integration_session.delete_via_redirect(remove_protocol(url), data)
     end
     
     def response_body
@@ -44,6 +44,14 @@ module Webrat
     
   protected
   
+    def remove_protocol(href)
+      if href =~ %r{^https?://www.example.com(/.*)}
+        $LAST_MATCH_INFO.captures.first
+      else
+        href
+      end
+    end
+    
     def update_protocol(href)
       if href =~ /^https:/
         @integration_session.https!(true)
