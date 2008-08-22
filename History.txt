@@ -11,6 +11,7 @@
   
 * Minor enhancements
 
+  * Add support for redirect_to :back by sending HTTP_REFERER headers (Patch from Hendrik Volkmer)
   * Expose current DOM (as an Hpricot object) as #current_dom
   * Add support for disabling JavaScript when clicking a link to enable testing of both JS
     and non-JS implementations (Luke Melia and Bryan Helmkamp)
