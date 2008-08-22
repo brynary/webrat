@@ -14,24 +14,24 @@ module Webrat
       File.expand_path(File.join(RAILS_ROOT, "tmp"))
     end
     
-    def get(url, data)
+    def get(url, data, headers = nil)
       update_protocol(url)
-      @integration_session.get_via_redirect(remove_protocol(url), data)
+      @integration_session.get_via_redirect(remove_protocol(url), data, headers)
     end
     
-    def post(url, data)
+    def post(url, data, headers = nil)
       update_protocol(url)
-      @integration_session.post_via_redirect(remove_protocol(url), data)
+      @integration_session.post_via_redirect(remove_protocol(url), data, headers)
     end
     
-    def put(url, data)
+    def put(url, data, headers = nil)
       update_protocol(url)
-      @integration_session.put_via_redirect(remove_protocol(url), data)
+      @integration_session.put_via_redirect(remove_protocol(url), data, headers)
     end
     
-    def delete(url, data)
+    def delete(url, data, headers = nil)
       update_protocol(url)
-      @integration_session.delete_via_redirect(remove_protocol(url), data)
+      @integration_session.delete_via_redirect(remove_protocol(url), data, headers)
     end
     
     def response_body
