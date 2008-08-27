@@ -12,6 +12,7 @@ silence_warnings do
 end
 
 require File.expand_path(File.dirname(__FILE__) + "/../lib/webrat")
+require File.expand_path(File.dirname(__FILE__) + "/../lib/webrat/rails")
 require File.dirname(__FILE__) + "/fakes/test_session"
 
 Spec::Runner.configure do |config|
