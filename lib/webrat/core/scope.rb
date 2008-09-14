@@ -4,6 +4,7 @@ module Webrat
   class Scope
     include Logging
     include Flunk
+    include Assertions
     
     def initialize(session, html, selector = nil)
       @session  = session

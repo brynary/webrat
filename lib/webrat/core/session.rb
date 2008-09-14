@@ -141,5 +141,7 @@ module Webrat
     def_delegators :current_scope, :click_post_link,    :clicks_post_link
     def_delegators :current_scope, :click_put_link,     :clicks_put_link
     def_delegators :current_scope, :click_button,       :clicks_button
+    def_delegators :current_scope, :should_see
+    def_delegators :current_scope, :should_not_see
   end
 end
