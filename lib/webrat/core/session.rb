@@ -109,6 +109,11 @@ module Webrat
       yield Scope.new(self, response_body, selector)
     end
     
+    # Issues a GET request for a page, follows any redirects, and verifies the final page
+    # load was successful.
+    #
+    # Example:
+    #   visits "/"
     def visits(url = nil, http_method = :get, data = {})
       request_page(url, http_method, data)
     end
@@ -136,6 +141,5 @@ module Webrat
     def_delegators :current_scope, :click_post_link,    :clicks_post_link
     def_delegators :current_scope, :click_put_link,     :clicks_put_link
     def_delegators :current_scope, :click_button,       :clicks_button
-    
   end
 end
