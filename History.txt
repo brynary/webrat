@@ -3,6 +3,7 @@
 * Major enhancements
 
   * Added #within for manipulating the current page within a selector scope
+  * Add should_see and should_not_see for verifying HTML response bodys
   * Add support for simulating SSL requests (Luke Melia)
   * Add support for file fields via #attaches_file method (Patch from Kyle Hargraves)
   * Support relative links, including href="?foo=bar" (Patch from Kyle Hargraves)
