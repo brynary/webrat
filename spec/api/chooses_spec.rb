@@ -77,4 +77,19 @@ describe "chooses" do
     @session.should_receive(:post).with("/login", "first_option" => "on")
     @session.clicks_button
   end
+  
+  it "should result in the value of the selected radio button being posted when a subsequent one is checked by default" do
+    @session.response_body = <<-EOS
+      <form method="post" action="/login">
+        <input id="user_gender_male" name="user[gender]" type="radio" value="M" />
+        <label for="user_gender_male">Male</label>
+        <input id="user_gender_female" name="user[gender]" type="radio" value="F" checked="checked" />
+        <label for="user_gender_female">Female</label>
+        <input type="submit" />
+      </form>
+    EOS
+    @session.should_receive(:post).with("/login", "user" => {"gender" => "M"})
+    @session.chooses "Male"
+    @session.clicks_button
+  end
 end

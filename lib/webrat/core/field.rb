@@ -213,7 +213,7 @@ module Webrat
     
     def choose
       other_options.each do |option|
-        option.unset
+        option.set(nil)
       end
       
       set(@element["value"] || "on")
