@@ -47,10 +47,15 @@ module Webrat
     end
     
     def to_param
+      return nil if disabled?
       value = @value.to_s.gsub('&', '%26')
       param_parser.parse_query_parameters("#{name}=#{value}")
     end
-    
+
+    def disabled?
+      @element.attributes.has_key? "disabled"
+    end
+
     def set(value)
       @value = value
     end
