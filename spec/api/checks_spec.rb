@@ -50,6 +50,16 @@ describe "checks" do
     @session.clicks_button
   end
   
+  it "should fail if the checkbox is disabled" do
+    @session.response_body = <<-EOS
+      <form method="post" action="/login">
+        <input type="checkbox" name="remember_me" disabled="disabled" />
+        <input type="submit" />
+      </form>
+    EOS
+    lambda { @session.checks "remember_me" }.should raise_error
+  end
+  
   it "should result in a custom value being posted" do
     @session.response_body = <<-EOS
       <form method="post" action="/login">
@@ -84,6 +94,16 @@ describe "unchecks" do
       </form>
     EOS
     
+    lambda { @session.unchecks "remember_me" }.should raise_error
+  end
+  
+  it "should fail if the checkbox is disabled" do
+    @session.response_body = <<-EOS
+      <form method="post" action="/login">
+        <input type="checkbox" name="remember_me" checked="checked" disabled="disabled" />
+        <input type="submit" />
+      </form>
+    EOS
     lambda { @session.unchecks "remember_me" }.should raise_error
   end
   

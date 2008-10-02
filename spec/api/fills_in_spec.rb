@@ -39,6 +39,18 @@ describe "fills_in" do
     lambda { @session.fills_in "Email", :with => "foo@example.com" }.should raise_error
   end
   
+  it "should fail if input is disabled" do
+    @session.response_body = <<-EOS
+      <form method="get" action="/login">
+        <label for="user_email">Email</label>
+        <input id="user_email" name="user[email]" type="text" disabled="disabled" />
+        <input type="submit" />
+      </form>
+    EOS
+    
+    lambda { @session.fills_in "Email", :with => "foo@example.com" }.should raise_error
+  end
+  
   it "should allow overriding default form values" do
     @session.response_body = <<-EOS
       <form method="post" action="/login">

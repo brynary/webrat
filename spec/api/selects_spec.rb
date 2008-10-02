@@ -35,6 +35,18 @@ describe "selects" do
 
     lambda { @session.selects "February", :from => "year" }.should raise_error
   end
+
+  
+  it "should fail if the select is disabled" do
+    @session.response_body = <<-EOS
+      <form method="post" action="/login">
+        <select name="month" disabled="disabled"><option value="1">January</option></select>
+        <input type="submit" />
+      </form>
+    EOS
+
+    lambda { @session.selects "January", :from => "month" }.should raise_error
+  end
   
   it "should send value from option" do
     @session.response_body = <<-EOS

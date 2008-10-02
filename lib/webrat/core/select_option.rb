@@ -15,6 +15,7 @@ module Webrat
     end
     
     def choose
+      @select.raise_error_if_disabled
       @select.set(value)
     end
     

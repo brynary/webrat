@@ -22,6 +22,17 @@ describe "clicks_button" do
 
     lambda { @session.clicks_button }.should raise_error
   end
+
+  
+  it "should fail if button is disabled" do
+    @session.response_body = <<-EOS
+      <form method="get" action="/login">
+        <input type="submit" disabled="disabled" />
+      </form>
+    EOS
+
+    lambda { @session.clicks_button }.should raise_error
+  end
   
   it "should default to get method" do
     @session.response_body = <<-EOS

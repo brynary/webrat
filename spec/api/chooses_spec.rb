@@ -53,7 +53,18 @@ describe "chooses" do
     @session.chooses "Female"
     @session.chooses "Male"
     @session.clicks_button
-  end  
+  end
+  
+  it "should fail if the radio button is disabled" do
+    @session.response_body = <<-EOS
+      <form method="post" action="/login">
+        <input type="radio" name="first_option" disabled="disabled" />
+        <input type="submit" />
+      </form>
+    EOS
+    
+    lambda { @session.chooses "first_option" }.should raise_error
+  end
   
   it "should result in the value on being posted if not specified" do
     @session.response_body = <<-EOS

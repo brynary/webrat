@@ -45,7 +45,15 @@ module Webrat
     def matches_alt?(alt)
       @element["alt"] =~ /^\W*#{Regexp.escape(alt.to_s)}/i
     end
+
+    def disabled?
+      !@element["disabled"].nil? && @element["disabled"] != 'false'
+    end
     
+    def raise_error_if_disabled
+      raise "Cannot interact with disabled form element (#{self})" if disabled?
+    end
+        
     def to_param
       value = @value.to_s.gsub('&', '%26')
       param_parser.parse_query_parameters("#{name}=#{value}")
@@ -144,6 +152,7 @@ module Webrat
     end
 
     def click
+      raise_error_if_disabled
       set(@element["value"]) unless @element["name"].blank?
       @form.submit
     end
@@ -182,10 +191,12 @@ module Webrat
     end
 
     def check
+      raise_error_if_disabled
       set(@element["value"] || "on")
     end
 
     def uncheck
+      raise_error_if_disabled
       set(nil)
     end
 
@@ -212,6 +223,7 @@ module Webrat
     end
     
     def choose
+      raise_error_if_disabled
       other_options.each do |option|
         option.set(nil)
       end
