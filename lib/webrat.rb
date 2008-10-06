@@ -3,7 +3,7 @@ Dir[File.join(File.dirname(__FILE__), "webrat", "*.rb")].each do |file|
 end
 
 module Webrat
-  VERSION = '0.2.1'
+  VERSION = '0.2.2'
   def self.root
     defined?(RAILS_ROOT) ? RAILS_ROOT : Merb.root
   end
