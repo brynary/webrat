@@ -29,27 +29,17 @@ module Webrat
     end
 
     def find_button(value = nil)
-      return fields_by_type([ButtonField]).first if value.nil?
-      
-      possible_buttons = fields_by_type([ButtonField])
-      
-      possible_buttons.each do |possible_button|
-        return possible_button if possible_button.matches_value?(value)
-      end
-      
-      nil
+      return fields_by_type([ButtonField]).first if value.nil?      
+      possible_buttons = fields_by_type([ButtonField])      
+      possible_buttons.detect { |possible_button| possible_button.matches_value?(value) }
     end
 
     def fields
       return @fields if @fields
       
-      @fields = []
-      
-      (@element / "button, input, textarea, select").each do |field_element|
-        @fields << Field.class_for_element(field_element).new(self, field_element)
+      @fields = (@element / "button, input, textarea, select").collect do |field_element|
+        Field.class_for_element(field_element).new(self, field_element)
       end
-      
-      @fields
     end
     
     def submit
@@ -59,29 +49,18 @@ module Webrat
   protected
   
     def find_field_by_id(possible_fields, id)
-      possible_fields.each do |possible_field|
-        return possible_field if possible_field.matches_id?(id)
-      end
-      
-      nil
+      possible_fields.detect { |possible_field| possible_field.matches_id?(id) }
     end
     
     def find_field_by_name(possible_fields, name)
-      possible_fields.each do |possible_field|
-        return possible_field if possible_field.matches_name?(name)
-      end
-      
-      nil
+      possible_fields.detect { |possible_field| possible_field.matches_name?(name) }
     end
     
     def find_field_by_label(possible_fields, label)      
-      matching_fields = []
-      
-      possible_fields.each do |possible_field|
-        matching_fields << possible_field if possible_field.matches_label?(label)
-      end
-      
-      matching_fields.sort_by { |f| f.label_text.length }.first
+      matching_fields = possible_fields.select do |possible_field|
+        possible_field.matches_label?(label)
+      end      
+      matching_fields.min { |a, b| a.label_text.length <=> b.label_text.length }
     end
   
     def fields_by_type(field_types)
