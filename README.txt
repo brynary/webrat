@@ -65,7 +65,10 @@ A test written with Webrat can handle these changes to these without any modific
 Install
 -------
 
-To install the latest release:
+* Rails >= 1.2.6 or Merb edge
+* Hpricot >= 0.6
+* Rails integration tests in Test::Unit _or_
+* RSpec stories (using an RSpec version >= revision 2997)
 
     sudo gem install webrat
 
@@ -75,6 +78,13 @@ In your stories/helper.rb:
   
 You could also unpack the gem into vendor/plugins.
 
+To avoid losing sessions, you need this in environments/test.rb:
+
+Merb::Config.use do |c|
+  c[:session_store] = 'memory' 
+end  
+
+== HISTORY:
 Requirements
 ------------
 

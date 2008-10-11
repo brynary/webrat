@@ -1,4 +1,5 @@
 coverage
+.DS_Store
 pkg
 doc
 ri

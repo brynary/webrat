@@ -34,7 +34,16 @@ module Webrat
       possible_buttons = fields_by_type([ButtonField])
       
       possible_buttons.each do |possible_button|
+        return possible_button if possible_button.matches_id?(value)
+      end
+      
+      possible_buttons.each do |possible_button|
         return possible_button if possible_button.matches_value?(value)
+      end
+      
+      #If nothing matched on value, try by name. 
+      possible_buttons.each do |possible_button|
+        return possible_button if possible_button.matches_caption?(value)
       end
       
       nil
@@ -45,7 +54,7 @@ module Webrat
       
       @fields = []
       
-      (@element / "button, input, textarea, select").each do |field_element|
+      (@element / "input, textarea, select, button").each do |field_element|
         @fields << Field.class_for_element(field_element).new(self, field_element)
       end
       
@@ -123,7 +132,7 @@ module Webrat
     def merge_hash_values(a, b) # :nodoc:
       a.keys.each do |k|
         if b.has_key?(k)
-          case [a[k], b[k]].map(&:class)
+          case [a[k].class, b[k].class]
           when [Hash, Hash]
             a[k] = merge_hash_values(a[k], b[k])
             b.delete(k)
