@@ -5,9 +5,11 @@ require "spec"
 begin require "redgreen" unless ENV['TM_CURRENT_LINE']; rescue LoadError; end
 
 if ["rails","merb"].include?(ENV["TEST_MODE"])
-  require File.join(File.dirname(__FILE__), "helper_#{ENV["TEST_MODE"]}.rb")
+  require File.join(File.dirname(__FILE__), "webrat", "#{ENV["TEST_MODE"]}", "helper.rb")
 else
-  raise "Please set the environment variable TEST_MODE to either 'rails' or 'merb'."
+  puts "Please set the environment variable TEST_MODE to either 'rails' or 'merb'."
+  $stdout.flush
+  exit 1 
 end
   
 require File.expand_path(File.dirname(__FILE__) + "/../lib/webrat")

@@ -82,12 +82,11 @@ module Webrat
     # along with the form. An optional <tt>content_type</tt> may be given.
     #
     # Example:
-<<<<<<< HEAD:lib/webrat/core/scope.rb
     #   attaches_file "Resume", "/path/to/the/resume.txt"
     #   attaches_file "Photo", "/path/to/the/image.png", "image/png"
     def attaches_file(id_or_name_or_label, path, content_type = nil)
       find_field(id_or_name_or_label, FileField).set(path, content_type)
-=======
+    end
     #   save_and_open
     def save_and_open
       return unless File.exist?(Webrat.root + "/tmp")
@@ -97,7 +96,6 @@ module Webrat
         f.write response.body
       end
       `open tmp/#{filename}`
->>>>>>> 300880db2f0d50a3e2d7b171eb9745cb50e1c534:lib/webrat/page.rb
     end
 
     alias_method :attach_file, :attaches_file
