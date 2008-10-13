@@ -54,7 +54,7 @@ module Webrat
     end
 
     def wait_for_ajax(timeout = 15000)
-      @selenium.wait_for_condition "window.Ajax.activeRequestCount == 0", timeout
+      @selenium.wait_for_condition "Ajax.activeRequestCount == 0", timeout
     end
 
     def wait_for_effects(timeout = 15000)
