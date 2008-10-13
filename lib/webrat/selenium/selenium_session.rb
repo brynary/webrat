@@ -28,11 +28,13 @@ module Webrat
       @selenium.click("button=#{button_text}")
       wait_for_result(options[:wait])
     end
+    alias_method :click_button, :clicks_button
 
     def clicks_link(link_text, options = {})
       @selenium.click("webratlink=#{link_text}")
       wait_for_result(options[:wait])
     end
+    alias_method :click_link, :clicks_link
     
     def clicks_link_within(selector, link_text, options = {})
       @selenium.click("webratlinkwithin=#{selector}|#{link_text}")
