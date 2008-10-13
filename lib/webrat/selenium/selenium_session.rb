@@ -2,7 +2,7 @@ module Webrat
   class SeleniumSession < Session
     
     def initialize(selenium_driver)
-      super
+      super()
       @selenium = selenium_driver
       define_location_strategies
     end
@@ -10,6 +10,8 @@ module Webrat
     def visits(url)
       @selenium.open(url)
     end
+    
+    alias_method :visit, :visits
     
     def fills_in(field_identifier, options)
       locator = "webrat=#{Regexp.escape(field_identifier)}"
@@ -99,6 +101,9 @@ module Webrat
         candidateLabels = candidateLabels.sortBy(function(s) { return s.length * -1; }); //reverse length sort
         var locatedLabel = candidateLabels.first();
         var labelFor = locatedLabel.getAttribute('for');
+        if ((labelFor == null) && (locatedLabel.hasChildNodes())) {
+          return locatedLabel.firstChild; //TODO: should find the first form field, not just any node
+        }
         return selenium.browserbot.locationStrategies['id'].call(this, labelFor, inDocument, inWindow);
       JS
 
