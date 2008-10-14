@@ -344,6 +344,16 @@ describe "clicks_button" do
     @session.clicks_button
   end
   
+  it "should find buttons by their IDs" do
+    @session.response_body = <<-EOS
+      <form action="/">
+        <input type="submit" id="my_button" />
+      </form>
+    EOS
+    @session.should_receive(:get)
+    @session.clicks_button "my_button"
+  end
+  
   it "should find image buttons by their alt text" do
     @session.response_body = <<-EOS
       <form action="/">

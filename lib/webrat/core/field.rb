@@ -138,6 +138,10 @@ module Webrat
       @element.innerHTML =~ /#{Regexp.escape(text.to_s)}/i
     end
 
+    # def matches_id?(id)
+    #   @element["id"] =~ /^\W*#{Regexp.escape(id.to_s)}/i
+    # end
+    
     def matches_value?(value)
       @element["value"] =~ /^\W*#{Regexp.escape(value.to_s)}/i || matches_text?(value) || matches_alt?(value)
     end

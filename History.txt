@@ -26,6 +26,7 @@
   * Support clicking links by title (Patch from Dan Barry)
   * Added missing spec for clicking image buttons (Patch from Tim Harper)
   * Switched tests to specs, and from Mocha to RSpec's mocking library
+  * Add support to click_button for IDs (Patch form Gwyn Morfey)
   
 * Bug fixes
 
