@@ -165,6 +165,21 @@ describe "clicks_button" do
     @session.clicks_button
   end
   
+  it "should not send disabled field values" do
+    @session.response_body = <<-EOS
+      <form method="get" action="/login">
+        <input disabled id="user_email" name="user[email]" value="test@example.com" type="text" />
+        <input disabled id="user_gender_male" name="user[gender]" type="radio" value="M" />
+        <label for="user_gender_male">Male</label>
+        <input disabled id="user_gender_female" name="user[gender]" type="radio" value="F" checked="checked" />
+        <label for="user_gender_female">Female</label>
+        <input type="submit" />
+      </form>
+    EOS
+    @session.should_receive(:get).with("/login", {})
+    @session.clicks_button
+  end
+  
   it "should send default checked fields" do
     @session.response_body = <<-EOS
       <form method="get" action="/login">
