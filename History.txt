@@ -27,7 +27,8 @@
   * Support clicking links by title (Patch from Dan Barry)
   * Added missing spec for clicking image buttons (Patch from Tim Harper)
   * Switched tests to specs, and from Mocha to RSpec's mocking library
-  * Add support to click_button for IDs (Patch form Gwyn Morfey)
+  * Add support to click_button for IDs (Patch from Gwyn Morfey)
+  * Miscellaneous core refactorings (Patch from Jan Suchal)
   
 * Bug fixes
 
@@ -37,6 +38,7 @@
   * Fix bug with empty select list option (Patch from Kyle Hargraves)
   * Fix regression of not sending default values in password fields
   * Don't explode if encountering inputs with no type attribute (assume text)
+  * Fix bug where choosing a radio button in a series with a default submitted the incorrect field value (Luke Melia)
   
 == 0.2.0 / 2008-04-04
 
