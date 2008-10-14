@@ -49,3 +49,4 @@ spec/spec_helper.rb
 spec/webrat/core/logging_spec.rb
 spec/webrat/core/session_spec.rb
 spec/webrat/rails/rails_session_spec.rb
+webrat.gemspec
