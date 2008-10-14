@@ -47,7 +47,7 @@ module Webrat
     end
 
     def disabled?
-      !@element["disabled"].nil? && @element["disabled"] != 'false'
+      @element.attributes.has_key?("disabled") && @element["disabled"] != 'false'
     end
     
     def raise_error_if_disabled
@@ -58,10 +58,6 @@ module Webrat
       return nil if disabled?
       value = @value.to_s.gsub('&', '%26')
       param_parser.parse_query_parameters("#{name}=#{value}")
-    end
-
-    def disabled?
-      @element.attributes.has_key? "disabled"
     end
 
     def set(value)
