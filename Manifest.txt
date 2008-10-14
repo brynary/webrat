@@ -8,6 +8,7 @@ init.rb
 install.rb
 lib/webrat.rb
 lib/webrat/core.rb
+lib/webrat/core/assertions.rb
 lib/webrat/core/field.rb
 lib/webrat/core/flunk.rb
 lib/webrat/core/form.rb
@@ -36,6 +37,8 @@ spec/api/fills_in_spec.rb
 spec/api/reloads_spec.rb
 spec/api/save_and_open_spec.rb
 spec/api/selects_spec.rb
+spec/api/should_not_see_spec.rb
+spec/api/should_see_spec.rb
 spec/api/visits_spec.rb
 spec/api/within_spec.rb
 spec/fakes/test_session.rb
