@@ -87,89 +87,14 @@ module Webrat
       @selenium.check("webrat=#{label_text}")
     end
         
-    protected
-        
-    def define_location_strategies
-      @selenium.add_location_strategy('label', <<-JS)
-        var allLabels = inDocument.getElementsByTagName("label");
-        var candidateLabels = $A(allLabels).select(function(candidateLabel){
-          var regExp = new RegExp('^' + locator + '\\\\b', 'i');
-          var labelText = getText(candidateLabel).strip();
-          return (labelText.search(regExp) >= 0);
-        });
-        if (candidateLabels.length == 0) {
-          return null;      
-        }
-        candidateLabels = candidateLabels.sortBy(function(s) { return s.length * -1; }); //reverse length sort
-        var locatedLabel = candidateLabels.first();
-        var labelFor = locatedLabel.getAttribute('for');
-        if ((labelFor == null) && (locatedLabel.hasChildNodes())) {
-          return locatedLabel.firstChild; //TODO: should find the first form field, not just any node
-        }
-        return selenium.browserbot.locationStrategies['id'].call(this, labelFor, inDocument, inWindow);
-      JS
-
-      @selenium.add_location_strategy('webrat', <<-JS)
-        var locationStrategies = selenium.browserbot.locationStrategies;
-        return locationStrategies['id'].call(this, locator, inDocument, inWindow)
-                || locationStrategies['name'].call(this, locator, inDocument, inWindow)
-                || locationStrategies['label'].call(this, locator, inDocument, inWindow)
-                || null;
-      JS
-
-      @selenium.add_location_strategy('button', <<-JS)
-        if (locator == '*') {
-          return selenium.browserbot.locationStrategies['xpath'].call(this, "//input[@type='submit']", inDocument, inWindow)
-        }
-        var inputs = inDocument.getElementsByTagName('input');
-        return $A(inputs).find(function(candidate){
-          inputType = candidate.getAttribute('type');
-          if (inputType == 'submit' || inputType == 'image') {
-            var buttonText = $F(candidate);
-            return (PatternMatcher.matches(locator + '*', buttonText));
-          }
-          return false;
-        });
-      JS
-      
-      @selenium.add_location_strategy('webratlink', <<-JS)
-        var links = inDocument.getElementsByTagName('a');
-        var candidateLinks = $A(links).select(function(candidateLink) {
-          return PatternMatcher.matches(locator, getText(candidateLink));
-        });
-        if (candidateLinks.length == 0) {
-          return null;
-        }
-        candidateLinks = candidateLinks.sortBy(function(s) { return s.length * -1; }); //reverse length sort
-        return candidateLinks.first();
-      JS
-      
-      @selenium.add_location_strategy('webratlinkwithin', <<-JS)
-        var locatorParts = locator.split('|');
-        var cssAncestor = locatorParts[0];
-        var linkText = locatorParts[1];
-        var matchingElements = cssQuery(cssAncestor, inDocument);
-        var candidateLinks = matchingElements.collect(function(ancestor){
-          var links = ancestor.getElementsByTagName('a');
-          return $A(links).select(function(candidateLink) {
-            return PatternMatcher.matches(linkText, getText(candidateLink));
-          });
-        }).flatten().compact();
-        if (candidateLinks.length == 0) {
-          return null;
-        }
-        candidateLinks = candidateLinks.sortBy(function(s) { return s.length * -1; }); //reverse length sort
-        return candidateLinks.first();
-      JS
-      
-      @selenium.add_location_strategy('webratselectwithoption', <<-JS)
-        var optionElements = inDocument.getElementsByTagName('option');
-        var locatedOption = $A(optionElements).find(function(candidate){
-          return (PatternMatcher.matches(locator, getText(candidate)));
-        });
-        return locatedOption ? locatedOption.parentNode : null;
-      JS
-    end
+  protected
     
+    def define_location_strategies
+      Dir[File.join(File.dirname(__FILE__), "location_strategy_javascript", "*.js")].sort.each do |file|
+        strategy_js = File.read(file)
+        strategy_name = File.basename(file, '.js')
+        @selenium.add_location_strategy(strategy_name, strategy_js)
+      end
+    end
   end
 end
