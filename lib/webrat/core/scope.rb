@@ -205,14 +205,12 @@ module Webrat
     end
     
     def find_link(text, selector = nil)
-      matching_links = []
-      
-      links_within(selector).each do |possible_link|
-        matching_links << possible_link if possible_link.matches_text?(text)
+      matching_links = links_within(selector).select do |possible_link|
+        possible_link.matches_text?(text)
       end
       
       if matching_links.any?
-        matching_links.sort_by { |l| l.text.length }.first
+        matching_links.min { |a, b| a.text.length <=> b.text.length }
       else
         flunk("Could not find link with text #{text.inspect}")
       end
