@@ -10,6 +10,7 @@
   * Separated Rails-specific code from the Webrat core to make it easier to use Webrat with other environments
   * Alias visits as visit, clicks_link as click_link, etc. for better readability
   * Raise error when trying to interact with a disabled form element (Luke Melia)
+  * Don't send disabled form elements to the server (Patch from Nicholas A. Evans)
   
 * Minor enhancements
 
