@@ -6,8 +6,12 @@ module Webrat
   class SinatraSession < RackSession
     include Sinatra::Test::Methods
 
-    def get(*args)
-      get_it(*args)
+    def get(url, data, headers = nil)
+      get_it(url, data)
+    end
+
+    def post(url, data, headers = nil)
+      post_it(url, data)
     end
   end
 end
