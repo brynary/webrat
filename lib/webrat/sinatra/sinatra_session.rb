@@ -6,12 +6,12 @@ module Webrat
   class SinatraSession < RackSession
     include Sinatra::Test::Methods
 
-    def get(url, data, headers = nil)
-      get_it(url, data)
-    end
-
-    def post(url, data, headers = nil)
-      post_it(url, data)
+    %w(get head post put delete).each do |verb|
+      define_method(verb) do |*args|
+        url, data, headers = *args
+        self.__send__("#{verb}_it", url, data)
+        follow! while @response.redirect?
+      end
     end
   end
 end
