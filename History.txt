@@ -2,6 +2,7 @@
 
 * Major enhancements
 
+  * Added support for Sinatra and Rack (Aslak Hellesøy)
   * Added #within for manipulating the current page within a selector scope
   * Add support for simulating SSL requests (Luke Melia)
   * Add support for file fields via #attaches_file method (Patch from Kyle Hargraves)
