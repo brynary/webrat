@@ -10,8 +10,9 @@ module Webrat
     attr_reader :current_url
     
     def initialize
-      @http_method  = :get
-      @data         = {}
+      @http_method     = :get
+      @data            = {}
+      @default_headers = {}
     end
 
     # Saves the page out to RAILS_ROOT/tmp/ and opens it in the default
@@ -52,14 +53,25 @@ module Webrat
       File.expand_path(".")
     end
     
+    def basic_auth(user, pass)
+      @default_headers['HTTP_AUTHORIZATION'] = "Basic " + ["#{user}:#{pass}"].pack("m*")
+    end
+
+    def headers
+      @default_headers.dup
+    end
+
     def request_page(url, http_method, data)
-      debug_log "REQUESTING PAGE: #{http_method.to_s.upcase} #{url} with #{data.inspect}"
-      if @current_url
-        send "#{http_method}", url, data || {}, {"HTTP_REFERER" => @current_url}
-      else
+      h = headers
+      h['HTTP_REFERER'] = @current_url if @current_url
+
+      debug_log "REQUESTING PAGE: #{http_method.to_s.upcase} #{url} with #{data.inspect} and HTTP headers #{h.inspect}"
+      if h.empty?
         send "#{http_method}", url, data || {}
+      else
+        send "#{http_method}", url, data || {}, h
       end
-      
+
       save_and_open_page if exception_caught?
       flunk("Page load was not successful (Code: #{response_code.inspect})") unless success_code?
       
