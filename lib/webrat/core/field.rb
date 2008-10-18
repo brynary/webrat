@@ -174,7 +174,7 @@ module Webrat
       else
         checkbox_with_same_name = @form.find_field(name, CheckboxField)
 
-        if checkbox_with_same_name.to_param.nil?
+        if checkbox_with_same_name.to_param.blank?
           super
         else
           nil
