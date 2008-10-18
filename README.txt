@@ -1,11 +1,9 @@
-Webrat
-======
+=== Webrat
 
 - [Code on GitHub](http://github.com/brynary/webrat)
 - [Tickets on Lighthouse](http://webrat.lighthouseapp.com/)
 
-Description
------------
+=== Description
 
 Webrat (_Ruby Acceptance Testing for Web applications_)
 lets you quickly write robust and thorough acceptance tests for a Ruby
@@ -23,8 +21,7 @@ run your tests much faster and more frequently.
 
 Initial development was sponsored by [EastMedia](http://www.eastmedia.com).
 
-Synopsis
---------
+=== Synopsis
 
     def test_sign_up
       visits "/"
@@ -62,13 +59,9 @@ tests to break unnecessarily as your application evolves:
 
 A test written with Webrat can handle these changes to these without any modifications.
 
-Install
--------
+=== Install
 
-* Rails >= 1.2.6 or Merb edge
-* Hpricot >= 0.6
-* Rails integration tests in Test::Unit _or_
-* RSpec stories (using an RSpec version >= revision 2997)
+To install the latest release:
 
     sudo gem install webrat
 
@@ -85,23 +78,20 @@ Merb::Config.use do |c|
 end  
 
 == HISTORY:
-Requirements
-------------
+=== Requirements
 
 - Rails >= 1.2.6
 - Hpricot >= 0.6
 - Rails integration tests in Test::Unit _or_
 - RSpec stories (using an RSpec version >= revision 2997)
 
-Authors
--------
+=== Authors
 
 - Maintained by [Bryan Helmkamp](mailto:bryan@brynary.com)
 - Original code written by [Seth Fitzsimmons](mailto:seth@mojodna.net)
 - Many other contributors. See attributions in History.txt
 
-License
--------
+=== License
 
 Copyright (c) 2007 Bryan Helmkamp, Seth Fitzsimmons.
 See MIT-LICENSE.txt in this directory.

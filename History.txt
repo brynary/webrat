@@ -3,12 +3,14 @@
 * Major enhancements
 
   * Added #within for manipulating the current page within a selector scope
+  * Add should_see and should_not_see for verifying HTML response bodys
   * Add support for simulating SSL requests (Luke Melia)
   * Add support for file fields via #attaches_file method (Patch from Kyle Hargraves)
   * Support relative links, including href="?foo=bar" (Patch from Kyle Hargraves)
   * Separated Rails-specific code from the Webrat core to make it easier to use Webrat with other environments
   * Alias visits as visit, clicks_link as click_link, etc. for better readability
   * Raise error when trying to interact with a disabled form element (Luke Melia)
+  * Don't send disabled form elements to the server (Patch from Nicholas A. Evans)
   
 * Minor enhancements
 
@@ -25,6 +27,8 @@
   * Support clicking links by title (Patch from Dan Barry)
   * Added missing spec for clicking image buttons (Patch from Tim Harper)
   * Switched tests to specs, and from Mocha to RSpec's mocking library
+  * Add support to click_button for IDs (Patch from Gwyn Morfey)
+  * Miscellaneous core refactorings (Patch from Jan Suchal)
   
 * Bug fixes
 
@@ -34,6 +38,7 @@
   * Fix bug with empty select list option (Patch from Kyle Hargraves)
   * Fix regression of not sending default values in password fields
   * Don't explode if encountering inputs with no type attribute (assume text)
+  * Fix bug where choosing a radio button in a series with a default submitted the incorrect field value (Luke Melia)
   
 == 0.2.0 / 2008-04-04
 

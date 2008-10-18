@@ -46,7 +46,7 @@ module Webrat
     end
 
     def disabled?
-      !@element["disabled"].nil? && @element["disabled"] != 'false'
+      @element.attributes.has_key?("disabled") && @element["disabled"] != 'false'
     end
     
     def raise_error_if_disabled
@@ -54,10 +54,11 @@ module Webrat
     end
         
     def to_param
+      return nil if disabled?
       value = @value.to_s.gsub('&', '%26')
       param_parser.parse_query_parameters("#{name}=#{value}")
     end
-    
+
     def set(value)
       @value = value
     end
@@ -137,6 +138,10 @@ module Webrat
       @element.innerHTML =~ /#{Regexp.escape(text.to_s)}/i
     end
 
+    # def matches_id?(id)
+    #   @element["id"] =~ /^\W*#{Regexp.escape(id.to_s)}/i
+    # end
+    
     def matches_value?(value)
       @element["value"] =~ /^\W*#{Regexp.escape(value.to_s)}/i || matches_text?(value) || matches_alt?(value)
     end

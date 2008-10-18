@@ -4,6 +4,7 @@ module Webrat
   class Scope
     include Logging
     include Flunk
+    include Assertions
     
     def initialize(session, html, selector = nil)
       @session  = session
@@ -175,18 +176,20 @@ module Webrat
     alias_method :click_button, :clicks_button
     
     def dom # :nodoc:
-      return @dom if defined?(@dom) && @dom
-      @dom = Hpricot(@html)
-      
-      if @selector
-        html = (@dom / @selector).first.to_html
-        @dom = Hpricot(html)
-      end
-      
-      return @dom
+      @dom ||= Hpricot(scoped_html)
     end
     
   protected
+  
+    def scoped_html
+      @scoped_html ||= begin
+        if @selector
+          (Hpricot(@html) / @selector).first.to_html
+        else
+          @html
+        end
+      end
+    end
   
     def find_select_option(option_text, id_or_name_or_label)
       if id_or_name_or_label
@@ -212,14 +215,12 @@ module Webrat
     end
     
     def find_link(text, selector = nil)
-      matching_links = []
-      
-      links_within(selector).each do |possible_link|
-        matching_links << possible_link if possible_link.matches_text?(text)
+      matching_links = links_within(selector).select do |possible_link|
+        possible_link.matches_text?(text)
       end
       
       if matching_links.any?
-        matching_links.sort_by { |l| l.text.length }.first
+        matching_links.min { |a, b| a.text.length <=> b.text.length }
       else
         flunk("Could not find link with text #{text.inspect}")
       end

@@ -8,6 +8,7 @@ init.rb
 install.rb
 lib/webrat.rb
 lib/webrat/core.rb
+lib/webrat/core/assertions.rb
 lib/webrat/core/field.rb
 lib/webrat/core/flunk.rb
 lib/webrat/core/form.rb
@@ -24,13 +25,20 @@ lib/webrat/merb/indifferent_access.rb
 lib/webrat/merb/param_parser.rb
 lib/webrat/merb/support.rb
 lib/webrat/merb/url_encoded_pair_parser.rb
+lib/webrat/rack/rack_session.rb
 lib/webrat/rails.rb
 lib/webrat/rails/rails_session.rb
 lib/webrat/rails/redirect_actions.rb
 lib/webrat/rails/session.rb
 lib/webrat/selenium.rb
+lib/webrat/selenium/location_strategy_javascript/button.js
+lib/webrat/selenium/location_strategy_javascript/label.js
+lib/webrat/selenium/location_strategy_javascript/webrat.js
+lib/webrat/selenium/location_strategy_javascript/webratlink.js
+lib/webrat/selenium/location_strategy_javascript/webratlinkwithin.js
+lib/webrat/selenium/location_strategy_javascript/webratselectwithoption.js
 lib/webrat/selenium/selenium_session.rb
-mechanize_spike.rb
+lib/webrat/sinatra/sinatra_session.rbmechanize_spike.rb
 selenium_spike.rb
 spec/api/attaches_file_spec.rb
 spec/api/checks_spec.rb
@@ -41,6 +49,8 @@ spec/api/fills_in_spec.rb
 spec/api/reloads_spec.rb
 spec/api/save_and_open_spec.rb
 spec/api/selects_spec.rb
+spec/api/should_not_see_spec.rb
+spec/api/should_see_spec.rb
 spec/api/visits_spec.rb
 spec/api/within_spec.rb
 spec/fakes/test_session.rb
@@ -53,3 +63,4 @@ spec/webrat/core/session_spec.rb
 spec/webrat/merb/helper.rb
 spec/webrat/rails/helper.rb
 spec/webrat/rails/rails_session_spec.rb
+webrat.gemspec
