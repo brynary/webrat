@@ -118,10 +118,10 @@ end
 #here because we're only loaded in Test mode. 
 require 'strscan'
 require 'cgi'
-require File.join(File.dirname(__FILE__), "merb_support", "param_parser.rb")
-require File.join(File.dirname(__FILE__), "merb_support", "url_encoded_pair_parser.rb")
-require File.join(File.dirname(__FILE__), "merb_support", "indifferent_access.rb")
-require File.join(File.dirname(__FILE__), "merb_support", "support.rb")
+require File.join(File.dirname(__FILE__), "merb", "param_parser.rb")
+require File.join(File.dirname(__FILE__), "merb", "url_encoded_pair_parser.rb")
+require File.join(File.dirname(__FILE__), "merb", "indifferent_access.rb")
+require File.join(File.dirname(__FILE__), "merb", "support.rb")
 
 
 
