@@ -73,7 +73,7 @@ module Webrat
       end
 
       save_and_open_page if exception_caught?
-      flunk("Page load was not successful (Code: #{response_code.inspect})") unless success_code?
+      flunk("Page load was not successful (Code: #{response_code.inspect}):\n#{formatted_error}") unless success_code?
       
       @scope        = nil
       @current_url  = url
@@ -141,6 +141,11 @@ module Webrat
       response_html.gsub(/"\/(stylesheets|images)/, doc_root + '/\1')
     end
 
+    # Subclasses can override this to show error messages without html
+    def formatted_error
+      response_body
+    end
+    
     def_delegators :current_scope, :fill_in,            :fills_in
     def_delegators :current_scope, :check,              :checks
     def_delegators :current_scope, :uncheck,            :unchecks
