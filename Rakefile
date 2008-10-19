@@ -56,7 +56,7 @@ end
 
 require 'spec/rake/verify_rcov'
 RCov::VerifyTask.new(:verify_rcov => :rcov) do |t|
-  t.threshold = 97.2 # Make sure you have rcov 0.7 or higher!
+  t.threshold = 97.3 # Make sure you have rcov 0.7 or higher!
 end
 
 remove_task "default"
