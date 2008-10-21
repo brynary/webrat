@@ -38,7 +38,8 @@ lib/webrat/selenium/location_strategy_javascript/webratlink.js
 lib/webrat/selenium/location_strategy_javascript/webratlinkwithin.js
 lib/webrat/selenium/location_strategy_javascript/webratselectwithoption.js
 lib/webrat/selenium/selenium_session.rb
-lib/webrat/sinatra/sinatra_session.rbmechanize_spike.rb
+lib/webrat/sinatra/sinatra_session.rb
+mechanize_spike.rb
 selenium_spike.rb
 spec/api/attaches_file_spec.rb
 spec/api/checks_spec.rb
