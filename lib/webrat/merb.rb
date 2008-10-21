@@ -23,7 +23,11 @@ module Webrat
     def response_body
       @response.body.to_s
     end
- 
+    
+    def response_code
+      @response.status
+    end
+
     protected
     def do_request(url, data, headers, method)
       @response = request(url, :params => data, :headers => headers, :method => method)
@@ -38,3 +42,4 @@ class Merb::Test::RspecStory
     @browser ||= Webrat::Session.new
   end
 end
+
