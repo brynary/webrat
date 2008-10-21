@@ -6,3 +6,4 @@ require "rubygems"
 
 require File.dirname(__FILE__) + "/webrat/core"
 require File.dirname(__FILE__) + "/webrat/rails" if defined?(RAILS_ENV)
+require File.dirname(__FILE__) + "/webrat/merb" if defined?(Merb)

@@ -1,5 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
-
+unless ENV["TEST_MODE"] == "merb" #TODO - Rob
 describe "attaches_file" do
   before do
     @session = Webrat::TestSession.new
@@ -69,4 +69,5 @@ describe "attaches_file" do
     @session.attaches_file "Picture", @filename, "image/png"
     @session.clicks_button
   end
+end
 end

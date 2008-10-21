@@ -9,6 +9,8 @@ module Webrat
     def logger # :nodoc:
       if defined? RAILS_DEFAULT_LOGGER
         RAILS_DEFAULT_LOGGER
+      elsif defined? Merb
+        Merb.logger        
       else
         nil
       end
