@@ -1,3 +1,7 @@
+Dir[File.join(File.dirname(__FILE__), "merb", "*.rb")].sort.each do |file|
+  require File.expand_path(file)
+end
+
 module Webrat
   class Session
     include Merb::Test::RequestHelper

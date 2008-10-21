@@ -105,7 +105,7 @@ module Webrat
     def merge_hash_values(a, b) # :nodoc:
       a.keys.each do |k|
         if b.has_key?(k)
-          case [a[k], b[k]].map(&:class)
+          case [a[k], b[k]].map{|value| value.class}
           when [Hash, Hash]
             a[k] = merge_hash_values(a[k], b[k])
             b.delete(k)
