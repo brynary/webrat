@@ -7,7 +7,7 @@ describe Webrat::Session do
     session = Webrat::Session.new
     response = OpenStruct.new
     response.status = 200
-    session.should_receive(:request).with('url', {:params=>{}, :method=>"GET", :headers=>nil}).and_return(response)
+    session.should_receive(:request).with('url', {:params=> nil, :method=>"GET", :headers=>nil}).and_return(response)
     session.get('url', {}, nil)
   end
   
@@ -17,7 +17,7 @@ describe Webrat::Session do
       response = OpenStruct.new
       response.status = 200
       
-      session.should_receive(:request).with('url', {:params=>{}, :method=>request_method.upcase, :headers=>nil}).and_return(response)
+      session.should_receive(:request).with('url', {:params=>nil, :method=>request_method.upcase, :headers=>nil}).and_return(response)
       session.send(request_method, 'url', {}, nil)
     end
   end

@@ -34,7 +34,7 @@ module Webrat
 
     protected
     def do_request(url, data, headers, method)
-      @response = request(url, :params => data, :headers => headers, :method => method)
+      @response = request(url, :params => (data && data.any?) ? data : nil, :headers => headers, :method => method)
       self.get(@response.headers['Location'], nil, @response.headers) if @response.status == 302
     end
 
