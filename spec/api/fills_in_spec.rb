@@ -157,4 +157,17 @@ describe "fills_in" do
     @session.fills_in :email, :with => "foo@example.com"
     @session.clicks_button
   end
+  
+  it "should escape field values" do
+    @session.response_body = <<-EOS
+      <form method="post" action="/users">
+        <label for="user_phone">Phone</label>
+        <input id="user_phone" name="user[phone]" type="text" />
+        <input type="submit" />
+      </form>
+    EOS
+    @session.should_receive(:post).with("/users", "user" => {"phone" => "+1 22 33"})
+    @session.fills_in 'Phone', :with => "+1 22 33"
+    @session.clicks_button
+  end
 end
