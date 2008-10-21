@@ -1,10 +1,2 @@
 require 'merb-core'
-# module Merb
-#   module Test
-#     class RspecStory
-#       def flunk(message)
-#         raise message
-#       end  
-#     end
-#  end
-# end
+require File.expand_path(File.dirname(__FILE__) + "/../../../lib/webrat/merb")

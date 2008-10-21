@@ -59,6 +59,13 @@ tests to break unnecessarily as your application evolves:
 
 A test written with Webrat can handle these changes to these without any modifications.
 
+=== Merb
+To avoid losing sessions, you need this in environments/test.rb:
+
+Merb::Config.use do |c|
+  c[:session_store] = 'memory' 
+end  
+
 === Install
 
 To install the latest release:

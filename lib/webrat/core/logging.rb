@@ -10,7 +10,7 @@ module Webrat
       if defined? RAILS_DEFAULT_LOGGER
         RAILS_DEFAULT_LOGGER
       elsif defined? Merb
-        Merb.logger
+        Merb.logger        
       else
         nil
       end

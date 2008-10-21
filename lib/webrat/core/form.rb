@@ -86,11 +86,13 @@ module Webrat
     def form_action
       @element["action"].blank? ? @session.current_url : @element["action"]
     end
+
+    HASH = [Hash, HashWithIndifferentAccess] rescue [Hash]
     
     def merge(all_params, new_param)
       new_param.each do |key, value|
         case all_params[key]
-        when Hash, HashWithIndifferentAccess
+        when *HASH
           merge_hash_values(all_params[key], value)
         when Array
           all_params[key] += value

@@ -6,7 +6,6 @@ module Webrat
 end
 
 require "rubygems"
-require "active_support"
 
 require File.dirname(__FILE__) + "/webrat/core"
 require File.dirname(__FILE__) + "/webrat/rails" if defined?(RAILS_ENV)
