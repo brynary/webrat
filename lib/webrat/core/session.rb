@@ -151,7 +151,6 @@ module Webrat
     def_delegators :current_scope, :uncheck,            :unchecks
     def_delegators :current_scope, :choose,             :chooses
     def_delegators :current_scope, :select,             :selects
-    def_delegators :current_scope, :select_date,        :selects_date
     def_delegators :current_scope, :attach_file,        :attaches_file
     def_delegators :current_scope, :click_area,         :clicks_area
     def_delegators :current_scope, :click_link,         :clicks_link
