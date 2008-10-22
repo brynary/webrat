@@ -56,10 +56,9 @@ module Webrat
         
     def to_param
       return nil if disabled?
-      value = @value.to_s.gsub('&', '%26')
       param_parser.parse_query_parameters("#{name}=#{value}")
     end
-
+    
     def set(value)
       @value = value
     end
@@ -76,6 +75,10 @@ module Webrat
     
     def name
       @element["name"]
+    end
+    
+    def value
+      CGI.escape(@value.to_s)
     end
     
     def labels
