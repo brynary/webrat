@@ -10,7 +10,8 @@
   * Add support for file fields via #attaches_file method (Kyle Hargraves)
   
 * Minor enhancements
-  
+
+  * Add Webrat.root method for cross-framework support (Krzysztof Zylawy)
   * Add #select_date for quickly filling out Rails-style date fields (Alex Lang)
   * Support selecting options by their values (Alex Lang)
   * Support for clicking areas of an image map (Alex Lang)

@@ -1,5 +1,8 @@
 module Webrat
-  VERSION = '0.2.1'
+  VERSION = '0.2.2'
+  def self.root
+    defined?(RAILS_ROOT) ? RAILS_ROOT : Merb.root
+  end
 end
 
 require "rubygems"

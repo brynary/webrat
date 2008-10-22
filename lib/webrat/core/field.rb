@@ -1,3 +1,5 @@
+require "cgi"
+
 module Webrat
   class Field
     
@@ -6,15 +8,14 @@ module Webrat
         if %w[submit image].include?(element["type"])
           field_class = "button"
         else
-          field_class = element["type"] || "text"
+          field_class = element["type"] || "text" #default type; 'type' attribute is not mandatory
         end
       else
         field_class = element.name
       end
-      
       Webrat.const_get("#{field_class.capitalize}Field")
     rescue NameError
-      raise "Invalid field element: #{element.inspect}"
+     raise "Invalid field element: #{element.inspect}"
     end
     
     def initialize(form, element)
@@ -120,10 +121,10 @@ module Webrat
     def param_parser
       if defined?(CGIMethods)
         CGIMethods
-      else
-        require "action_controller"
-        require "action_controller/integration"
+      elsif defined?(ActionController::AbstractRequest)
         ActionController::AbstractRequest
+      else
+        Webrat::ParamParser #used for Merb
       end
     end
     
@@ -149,10 +150,6 @@ module Webrat
     def matches_text?(text)
       @element.innerHTML =~ /#{Regexp.escape(text.to_s)}/i
     end
-
-    # def matches_id?(id)
-    #   @element["id"] =~ /^\W*#{Regexp.escape(id.to_s)}/i
-    # end
     
     def matches_value?(value)
       @element["value"] =~ /^\W*#{Regexp.escape(value.to_s)}/i || matches_text?(value) || matches_alt?(value)
@@ -183,7 +180,7 @@ module Webrat
       else
         checkbox_with_same_name = @form.find_field(name, CheckboxField)
 
-        if checkbox_with_same_name.to_param.nil?
+        if checkbox_with_same_name.to_param.blank?
           super
         else
           nil

@@ -16,8 +16,6 @@ else
   require File.join(File.dirname(__FILE__), "webrat", "#{ENV["TEST_MODE"]}", "helper.rb")
 end
 
-
-
 Spec::Runner.configure do |config|
   # Nothing to configure yet
 end

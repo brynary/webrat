@@ -1,3 +1,5 @@
+require "cgi"
+
 module Webrat
   class ParamParser
     def self.parse_query_parameters(query_string)

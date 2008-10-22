@@ -1,3 +1,6 @@
+require "cgi"
+require "strscan"
+
 class UrlEncodedPairParser < StringScanner #:nodoc:
     attr_reader :top, :parent, :result
 
