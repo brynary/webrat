@@ -12,6 +12,22 @@ module Webrat
       @selector = selector
     end
     
+    def selects_date(date_string, options = {})
+      id_or_name = options[:from]
+      date = Date.parse date_string
+      
+      year_option = find_select_option(date.year.to_s, /#{id_or_name.to_s}.*1i/)
+      month_option = find_select_option(date.month.to_s, /#{id_or_name.to_s}.*2i/)
+      day_option = find_select_option(date.day.to_s, /#{id_or_name.to_s}.*3i/)
+        
+      flunk("Could not find date picker for #{date_string}") if year_option.nil? || month_option.nil? || day_option.nil?
+      year_option.choose
+      month_option.choose
+      day_option.choose
+    end
+    
+    alias_method :select_date, :selects_date
+    
     # Verifies an input field or textarea exists on the current page, and stores a value for
     # it which will be sent when the form is submitted.
     #
@@ -90,6 +106,12 @@ module Webrat
     end
 
     alias_method :attach_file, :attaches_file
+    
+    def clicks_area(area_name)
+      find_area(area_name).click
+    end
+    
+    alias_method :click_area, :clicks_area
     
     # Issues a request for the URL pointed to by a link on the current page,
     # follows any redirects, and verifies the final page load was successful.
@@ -200,8 +222,17 @@ module Webrat
         button = form.find_button(value)
         return button if button
       end
-      
       flunk("Could not find button #{value.inspect}")
+    end
+    
+    def find_area(area_name)
+      areas.select{|area| area.matches_text?(area_name)}.first || flunk("Could not find area with name #{area_name}")
+    end
+    
+    def areas
+      (dom / "area").map do |element| 
+        Area.new(@session, element)
+      end
     end
     
     def find_link(text, selector = nil)

@@ -17,14 +17,12 @@ module Webrat
       nil
     end
     
-    def find_select_option(option_text)
+    def find_select_option(option_text, field_name_pattern = nil)
       select_fields = fields_by_type([SelectField])
-
-      select_fields.each do |select_field|
+      select_fields.select{|field| field_name_pattern.nil? || field.matches_name?(field_name_pattern) || field.matches_id?(field_name_pattern)}.each do |select_field|
         result = select_field.find_option(option_text)
         return result if result
       end
-
       nil
     end
 
@@ -105,7 +103,7 @@ module Webrat
     def merge_hash_values(a, b) # :nodoc:
       a.keys.each do |k|
         if b.has_key?(k)
-          case [a[k], b[k]].map(&:class)
+          case [a[k], b[k]].map{|value| value.class}
           when [Hash, Hash]
             a[k] = merge_hash_values(a[k], b[k])
             b.delete(k)

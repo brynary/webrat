@@ -1,3 +1,5 @@
+require "cgi"
+
 module Webrat
   class Field
     
@@ -6,15 +8,14 @@ module Webrat
         if %w[submit image].include?(element["type"])
           field_class = "button"
         else
-          field_class = element["type"] || "text"
+          field_class = element["type"] || "text" #default type; 'type' attribute is not mandatory
         end
       else
         field_class = element.name
       end
-      
       Webrat.const_get("#{field_class.capitalize}Field")
     rescue NameError
-      raise "Invalid field element: #{element.inspect}"
+     raise "Invalid field element: #{element.inspect}"
     end
     
     def initialize(form, element)
@@ -30,11 +31,11 @@ module Webrat
     end
     
     def matches_id?(id)
-      @element["id"] == id.to_s
+      matches?(self.id, id)
     end
     
     def matches_name?(name)
-      @element["name"] == name.to_s
+      matches?(self.name, name)
     end
     
     def matches_label?(label_text)
@@ -56,10 +57,9 @@ module Webrat
         
     def to_param
       return nil if disabled?
-      value = @value.to_s.gsub('&', '%26')
-      param_parser.parse_query_parameters("#{name}=#{value}")
+      param_parser.parse_query_parameters("#{name}=#{escaped_value}")
     end
-
+    
     def set(value)
       @value = value
     end
@@ -70,12 +70,24 @@ module Webrat
     
   protected
   
+    def matches?(string, string_or_regex)
+      if string_or_regex.is_a?(Regexp)
+        string_or_regex.match string
+      else
+        string == string_or_regex
+      end
+    end
+  
     def id
       @element["id"]
     end
     
     def name
       @element["name"]
+    end
+    
+    def escaped_value
+      CGI.escape(@value.to_s)
     end
     
     def labels
@@ -109,10 +121,10 @@ module Webrat
     def param_parser
       if defined?(CGIMethods)
         CGIMethods
-      else
-        require "action_controller"
-        require "action_controller/integration"
+      elsif defined?(ActionController::AbstractRequest)
         ActionController::AbstractRequest
+      else
+        Webrat::ParamParser #used for Merb
       end
     end
     
@@ -138,10 +150,6 @@ module Webrat
     def matches_text?(text)
       @element.innerHTML =~ /#{Regexp.escape(text.to_s)}/i
     end
-
-    # def matches_id?(id)
-    #   @element["id"] =~ /^\W*#{Regexp.escape(id.to_s)}/i
-    # end
     
     def matches_value?(value)
       @element["value"] =~ /^\W*#{Regexp.escape(value.to_s)}/i || matches_text?(value) || matches_alt?(value)
@@ -172,7 +180,7 @@ module Webrat
       else
         checkbox_with_same_name = @form.find_field(name, CheckboxField)
 
-        if checkbox_with_same_name.to_param.nil?
+        if checkbox_with_same_name.to_param.blank?
           super
         else
           nil
@@ -300,7 +308,7 @@ module Webrat
   class SelectField < Field
 
     def find_option(text)
-      options.detect { |o| o.matches_text?(text) }
+      options.detect { |o| o.matches_text?(text) || o.matches_value?(text)}
     end
 
   protected

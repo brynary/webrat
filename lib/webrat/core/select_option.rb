@@ -14,6 +14,10 @@ module Webrat
       end
     end
     
+    def matches_value?(value)
+      @element.attributes['value'] == value.to_s
+    end
+    
     def choose
       @select.raise_error_if_disabled
       @select.set(value)
