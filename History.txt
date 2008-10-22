@@ -2,6 +2,7 @@
 
 * Major enhancements
 
+  * Added Merb support (Gwyn Morfey, Jeremy Burks, Rob Kaufman)
   * Added #basic_auth(user, pass) to support HTTP Basic Auth (Aslak Hellesøy)
   * Added support for Sinatra and Rack (Aslak Hellesøy)
   * Added #within for manipulating the current page within a selector scope
