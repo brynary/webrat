@@ -16,6 +16,7 @@
   
 * Minor enhancements
 
+  * Display response body when the page load is not successful (David Leal)
   * CGI escape form field values (Miha Filej)
   * Add support for redirect_to :back by sending HTTP_REFERER headers (Hendrik Volkmer)
   * Expose current DOM (as an Hpricot object) as #current_dom
