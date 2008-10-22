@@ -16,6 +16,7 @@
   
 * Minor enhancements
 
+  * CGI escape form field values (Miha Filej)
   * Add support for redirect_to :back by sending HTTP_REFERER headers (Hendrik Volkmer)
   * Expose current DOM (as an Hpricot object) as #current_dom
   * Add support for disabling JavaScript when clicking a link to enable testing of both JS
@@ -34,6 +35,7 @@
   
 * Bug fixes
 
+  * Fix initialization of WWW::Mechanize (Derek Kastner)
   * Don't open blank pages in the browser (Kyle Hargraves)
   * Support radio buttons with multiple labels (Dan Barry)
   * Fix load order bug on some platforms (Ismael Celis)
@@ -41,7 +43,6 @@
   * Fix regression of not sending default values in password fields
   * Don't explode if encountering inputs with no type attribute (assume text)
   * Fix bug where choosing a radio button in a series with a default submitted the incorrect field value (Luke Melia)
-  * Fix initialization of WWW::Mechanize (Derek Kastner)
   
 == 0.2.0 / 2008-04-04
 
