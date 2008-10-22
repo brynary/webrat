@@ -91,6 +91,12 @@ module Webrat
 
     alias_method :attach_file, :attaches_file
     
+    def clicks_area(area_name)
+      find_area(area_name).click
+    end
+    
+    alias_method :click_area, :clicks_area
+    
     # Issues a request for the URL pointed to by a link on the current page,
     # follows any redirects, and verifies the final page load was successful.
     #
@@ -200,8 +206,17 @@ module Webrat
         button = form.find_button(value)
         return button if button
       end
-      
       flunk("Could not find button #{value.inspect}")
+    end
+    
+    def find_area(area_name)
+      areas.select{|area| area.matches_text?(area_name)}.first || flunk("Could not find area with name #{area_name}")
+    end
+    
+    def areas
+      (dom / "area").map do |element| 
+        Area.new(@session, element)
+      end
     end
     
     def find_link(text, selector = nil)

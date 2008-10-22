@@ -5,17 +5,18 @@
   * Added #basic_auth(user, pass) to support HTTP Basic Auth (Aslak Hellesøy)
   * Added support for Sinatra and Rack (Aslak Hellesøy)
   * Added #within for manipulating the current page within a selector scope
-  * Add should_see and should_not_see for verifying HTML response bodys
   * Add support for simulating SSL requests (Luke Melia)
   * Add support for file fields via #attaches_file method (Kyle Hargraves)
+  
+* Minor enhancements
+  
+  * Add support for clicking areas of an image map (Alex Lang)
+  * Add should_see and should_not_see for verifying HTML response bodys
   * Support relative links, including href="?foo=bar" (Kyle Hargraves)
   * Separated Rails-specific code from the Webrat core to make it easier to use Webrat with other environments
   * Alias visits as visit, clicks_link as click_link, etc. for better readability
   * Raise error when trying to interact with a disabled form element (Luke Melia)
   * Don't send disabled form elements to the server (Nicholas A. Evans)
-  
-* Minor enhancements
-
   * Display response body when the page load is not successful (David Leal)
   * CGI escape form field values (Miha Filej)
   * Add support for redirect_to :back by sending HTTP_REFERER headers (Hendrik Volkmer)
