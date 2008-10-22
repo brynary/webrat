@@ -56,7 +56,7 @@ module Webrat
         
     def to_param
       return nil if disabled?
-      param_parser.parse_query_parameters("#{name}=#{value}")
+      param_parser.parse_query_parameters("#{name}=#{escaped_value}")
     end
     
     def set(value)
@@ -77,7 +77,7 @@ module Webrat
       @element["name"]
     end
     
-    def value
+    def escaped_value
       CGI.escape(@value.to_s)
     end
     
