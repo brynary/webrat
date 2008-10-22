@@ -1,5 +1,5 @@
 module Webrat
-  class MerbSession < Session
+  class Session
     include Merb::Test::RequestHelper
     
     attr_reader :response
@@ -25,24 +25,13 @@ module Webrat
     end
     
     def response_code
-      @response.code
+      @response.status
     end
     
     protected
     def do_request(url, data, headers, method)
-      all = (headers || {})
-      all[:method] = method unless all[:method] || all["REQUEST_METHOD"]
-      
-      unless data.empty?
-        if verb == "post"
-          all[:body_params] = data
-        elsif verb == "get"
-          all[:params] = data
-        end
-      end
-      
-      @response = request(url, all)
-      @response = self.get(@response.headers['Location'], nil, @response.headers) if @response.status == 302
+      @response = request(url, :params => data, :headers => headers, :method => method)
+      self.get(@response.headers['Location'], nil, @response.headers) if @response.status == 302
     end
     
   end
@@ -50,7 +39,7 @@ end
 
 class Merb::Test::RspecStory
   def browser
-    @browser ||= Webrat::MerbSession.new
+    @browser ||= Webrat::Session.new
   end
 end
 
