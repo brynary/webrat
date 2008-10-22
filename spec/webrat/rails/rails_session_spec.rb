@@ -57,10 +57,11 @@ describe Webrat::RailsSession do
   end
   
   context "the URL is https://" do
-    it "should call #https! with true before the request" do
+    it "should call #https! with true before the request and just pass on the path" do
       integration_session = mock("integration session", :get_via_redirect => nil)
       rails_session = Webrat::RailsSession.new(integration_session)
       integration_session.should_receive(:https!).with(true)
+      integration_session.should_receive(:get_via_redirect).with("/url", "data", "headers")
       rails_session.get("https://www.example.com/url", "data", "headers")
     end
   end

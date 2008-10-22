@@ -3,3 +3,5 @@ pkg
 doc
 ri
 email.txt
+.project
+.loadpath
