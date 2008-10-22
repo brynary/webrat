@@ -12,6 +12,22 @@ module Webrat
       @selector = selector
     end
     
+    def selects_date(date_string, options = {})
+      id_or_name = options[:from]
+      date = Date.parse date_string
+      
+      year_option = find_select_option(date.year.to_s, /#{id_or_name.to_s}.*1i/)
+      month_option = find_select_option(date.month.to_s, /#{id_or_name.to_s}.*2i/)
+      day_option = find_select_option(date.day.to_s, /#{id_or_name.to_s}.*3i/)
+        
+      flunk("Could not find date picker for #{date_string}") if year_option.nil? || month_option.nil? || day_option.nil?
+      year_option.choose
+      month_option.choose
+      day_option.choose
+    end
+    
+    alias_method :select_date, :selects_date
+    
     # Verifies an input field or textarea exists on the current page, and stores a value for
     # it which will be sent when the form is submitted.
     #

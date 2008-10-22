@@ -10,6 +10,7 @@
   
 * Minor enhancements
   
+  * Add #select_date for quickly filling out Rails-style date fields (Alex Lang)
   * Support selecting options by their values (Alex Lang)
   * Support for clicking areas of an image map (Alex Lang)
   * Add should_see and should_not_see for verifying HTML response bodys
