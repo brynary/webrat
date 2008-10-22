@@ -2,38 +2,53 @@
 
 * Major enhancements
 
+  * Added Merb support (Gwyn Morfey, Jeremy Burks, Rob Kaufman)
+  * Added #basic_auth(user, pass) to support HTTP Basic Auth (Aslak Hellesøy)
+  * Added support for Sinatra and Rack (Aslak Hellesøy)
   * Added #within for manipulating the current page within a selector scope
   * Add support for simulating SSL requests (Luke Melia)
-  * Add support for file fields via #attaches_file method (Patch from Kyle Hargraves)
-  * Support relative links, including href="?foo=bar" (Patch from Kyle Hargraves)
-  * Separated Rails-specific code from the Webrat core to make it easier to use Webrat with other environments
-  * Alias visits as visit, clicks_link as click_link, etc. for better readability
-  * Raise error when trying to interact with a disabled form element (Luke Melia)
+  * Add support for file fields via #attaches_file method (Kyle Hargraves)
   
 * Minor enhancements
 
-  * Add support for redirect_to :back by sending HTTP_REFERER headers (Patch from Hendrik Volkmer)
+  * Add Webrat.root method for cross-framework support (Krzysztof Zylawy)
+  * Add #select_date for quickly filling out Rails-style date fields (Alex Lang)
+  * Support selecting options by their values (Alex Lang)
+  * Support for clicking areas of an image map (Alex Lang)
+  * Add should_see and should_not_see for verifying HTML response bodys
+  * Support relative links, including href="?foo=bar" (Kyle Hargraves)
+  * Separated Rails-specific code from the Webrat core to make it easier to use Webrat with other environments
+  * Alias visits as visit, clicks_link as click_link, etc. for better readability
+  * Raise error when trying to interact with a disabled form element (Luke Melia)
+  * Don't send disabled form elements to the server (Nicholas A. Evans)
+  * Display response body when the page load is not successful (David Leal)
+  * CGI escape form field values (Miha Filej)
+  * Add support for redirect_to :back by sending HTTP_REFERER headers (Hendrik Volkmer)
   * Expose current DOM (as an Hpricot object) as #current_dom
   * Add support for disabling JavaScript when clicking a link to enable testing of both JS
     and non-JS implementations (Luke Melia and Bryan Helmkamp)
-  * Support &nbsp's as spaces in matching link text (Patch from Luke Melia)
-  * Support button elements (Patch from Nick Sieger)
-  * Support matching select options by regexp (Patch from Kyle Hargraves)
+  * Support &nbsp's as spaces in matching link text (Luke Melia)
+  * Support button elements (Nick Sieger)
+  * Support matching select options by regexp (Kyle Hargraves)
   * save_and_open_page rewrites css and image references to provide a friendlier debugging experience (Luke Melia)
-  * Added support for matching alt attributes in fields (primarly for clicks_button) (Patch from Aaron Quint)
-  * Support '&amp;' in submitted values (Patch from Kyle Hargraves)
-  * Support clicking links by title (Patch from Dan Barry)
-  * Added missing spec for clicking image buttons (Patch from Tim Harper)
+  * Added support for matching alt attributes in fields (primarly for clicks_button) (Aaron Quint)
+  * Support '&amp;' in submitted values (Kyle Hargraves)
+  * Support clicking links by title (Dan Barry)
+  * Added missing spec for clicking image buttons (Tim Harper)
   * Switched tests to specs, and from Mocha to RSpec's mocking library
+  * Add support to click_button for IDs (Gwyn Morfey)
+  * Miscellaneous core refactorings (Jan Suchal)
   
 * Bug fixes
 
-  * Don't open blank pages in the browser (Patch from Kyle Hargraves)
-  * Support radio buttons with multiple labels (Patch from Dan Barry)
-  * Fix load order bug on some platforms (Patch from Ismael Celis)
-  * Fix bug with empty select list option (Patch from Kyle Hargraves)
+  * Fix initialization of WWW::Mechanize (Derek Kastner)
+  * Don't open blank pages in the browser (Kyle Hargraves)
+  * Support radio buttons with multiple labels (Dan Barry)
+  * Fix load order bug on some platforms (Ismael Celis)
+  * Fix bug with empty select list option (Kyle Hargraves)
   * Fix regression of not sending default values in password fields
   * Don't explode if encountering inputs with no type attribute (assume text)
+  * Fix bug where choosing a radio button in a series with a default submitted the incorrect field value (Luke Melia)
   
 == 0.2.0 / 2008-04-04
 
@@ -43,29 +58,29 @@
   * Add radio button support via #chooses method
   * Add basic support for Rails-generated JavaScript link tags
   * Add support for checkboxes (Patches from Kyle Hargraves and Jarkko Laine)
-  * Add support for textarea fields (Patch from Sacha Schlegel)
+  * Add support for textarea fields (Sacha Schlegel)
   
 * 8 Minor enhancements
   
-  * Added reloads method to reload the page (Patch from Kamal Fariz Mahyuddi)
-  * Prevent making a request if clicking on local anchor link (Patch from Kamal Fariz Mahyuddi)
+  * Added reloads method to reload the page (Kamal Fariz Mahyuddi)
+  * Prevent making a request if clicking on local anchor link (Kamal Fariz Mahyuddi)
   * Added clicks_link_within(selector, link_text), allowing restricting link search 
-  to within a given css selector (Patch from Luke Melia)
-  * Allow specifying the input name/label when doing a select (Patch from David Chelimsky)
-  * Raise a specific exception if the developer tries to manipulate form elements before loading a page (Patch from James Deville)
-  * Add support for alternate POST, PUT and DELETE link clicking (Patch from Kyle Hargraves)
-  * Change clicks_link to find the shortest matching link (Patch from Luke Melia)
+  to within a given css selector (Luke Melia)
+  * Allow specifying the input name/label when doing a select (David Chelimsky)
+  * Raise a specific exception if the developer tries to manipulate form elements before loading a page (James Deville)
+  * Add support for alternate POST, PUT and DELETE link clicking (Kyle Hargraves)
+  * Change clicks_link to find the shortest matching link (Luke Melia)
   * Improve matching for labels in potentially ambiguous cases
   
 * 7 Bug fixes
 
-  * Fix incorrect serializing of collection inputs, i.e. name contains [] (Patch from Kamal Fariz Mahyuddi)
-  * Serialize empty text field values just like browsers (Patch from Kamal Fariz Mahyuddi)
-  * Quick fix to avoid @dom not initialized warnings (Patch from Kamal Fariz Mahyuddi)
-  * Docfix: bad reference to #select method in README (Patch from Luke Melia)
+  * Fix incorrect serializing of collection inputs, i.e. name contains [] (Kamal Fariz Mahyuddi)
+  * Serialize empty text field values just like browsers (Kamal Fariz Mahyuddi)
+  * Quick fix to avoid @dom not initialized warnings (Kamal Fariz Mahyuddi)
+  * Docfix: bad reference to #select method in README (Luke Melia)
   * Ensure Rails-style checkboxes work properly (checkboxes followed by a hidden input with the same name)
-  * Fix Edge Rails (a.k.a. 2.0 RC) compatibility (Patch from David Chelimsky)
-  * Support param hashes nested more than one level (Patch from David Chelimsky)
+  * Fix Edge Rails (a.k.a. 2.0 RC) compatibility (David Chelimsky)
+  * Support param hashes nested more than one level (David Chelimsky)
 
 == 0.1.0 / 2007-11-28
 

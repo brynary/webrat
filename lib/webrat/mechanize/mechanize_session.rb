@@ -2,6 +2,7 @@ module Webrat
   class MechanizeSession < Session
     
     def initialize(mechanize = WWW::Mechanize.new)
+      super()
       @mechanize = mechanize
     end
     

@@ -17,39 +17,28 @@ module Webrat
       nil
     end
     
-    def find_select_option(option_text)
+    def find_select_option(option_text, field_name_pattern = nil)
       select_fields = fields_by_type([SelectField])
-
-      select_fields.each do |select_field|
+      select_fields.select{|field| field_name_pattern.nil? || field.matches_name?(field_name_pattern) || field.matches_id?(field_name_pattern)}.each do |select_field|
         result = select_field.find_option(option_text)
         return result if result
       end
-
       nil
     end
 
     def find_button(value = nil)
-      return fields_by_type([ButtonField]).first if value.nil?
-      
+      return fields_by_type([ButtonField]).first if value.nil?      
       possible_buttons = fields_by_type([ButtonField])
-      
-      possible_buttons.each do |possible_button|
-        return possible_button if possible_button.matches_value?(value)
-      end
-      
-      nil
+      possible_buttons.detect { |possible_button| possible_button.matches_id?(value) } ||
+      possible_buttons.detect { |possible_button| possible_button.matches_value?(value) }
     end
 
     def fields
       return @fields if @fields
       
-      @fields = []
-      
-      (@element / "button, input, textarea, select").each do |field_element|
-        @fields << Field.class_for_element(field_element).new(self, field_element)
+      @fields = (@element / "button, input, textarea, select").collect do |field_element|
+        Field.class_for_element(field_element).new(self, field_element)
       end
-      
-      @fields
     end
     
     def submit
@@ -59,29 +48,18 @@ module Webrat
   protected
   
     def find_field_by_id(possible_fields, id)
-      possible_fields.each do |possible_field|
-        return possible_field if possible_field.matches_id?(id)
-      end
-      
-      nil
+      possible_fields.detect { |possible_field| possible_field.matches_id?(id) }
     end
     
     def find_field_by_name(possible_fields, name)
-      possible_fields.each do |possible_field|
-        return possible_field if possible_field.matches_name?(name)
-      end
-      
-      nil
+      possible_fields.detect { |possible_field| possible_field.matches_name?(name) }
     end
     
     def find_field_by_label(possible_fields, label)      
-      matching_fields = []
-      
-      possible_fields.each do |possible_field|
-        matching_fields << possible_field if possible_field.matches_label?(label)
-      end
-      
-      matching_fields.sort_by { |f| f.label_text.length }.first
+      matching_fields = possible_fields.select do |possible_field|
+        possible_field.matches_label?(label)
+      end      
+      matching_fields.min { |a, b| a.label_text.length <=> b.label_text.length }
     end
   
     def fields_by_type(field_types)
@@ -106,11 +84,13 @@ module Webrat
     def form_action
       @element["action"].blank? ? @session.current_url : @element["action"]
     end
+
+    HASH = [Hash, HashWithIndifferentAccess] rescue [Hash]
     
     def merge(all_params, new_param)
       new_param.each do |key, value|
         case all_params[key]
-        when Hash, HashWithIndifferentAccess
+        when *HASH
           merge_hash_values(all_params[key], value)
         when Array
           all_params[key] += value
@@ -123,7 +103,7 @@ module Webrat
     def merge_hash_values(a, b) # :nodoc:
       a.keys.each do |k|
         if b.has_key?(k)
-          case [a[k], b[k]].map(&:class)
+          case [a[k], b[k]].map{|value| value.class}
           when [Hash, Hash]
             a[k] = merge_hash_values(a[k], b[k])
             b.delete(k)
