@@ -30,11 +30,11 @@ module Webrat
     end
     
     def matches_id?(id)
-      @element["id"] == id.to_s
+      matches?(self.id, id)
     end
     
     def matches_name?(name)
-      @element["name"] == name.to_s
+      matches?(self.name, name)
     end
     
     def matches_label?(label_text)
@@ -68,6 +68,14 @@ module Webrat
     end
     
   protected
+  
+    def matches?(string, string_or_regex)
+      if string_or_regex.is_a?(Regexp)
+        string_or_regex.match string
+      else
+        string == string_or_regex
+      end
+    end
   
     def id
       @element["id"]
@@ -303,7 +311,7 @@ module Webrat
   class SelectField < Field
 
     def find_option(text)
-      options.detect { |o| o.matches_text?(text) }
+      options.detect { |o| o.matches_text?(text) || o.matches_value?(text)}
     end
 
   protected
