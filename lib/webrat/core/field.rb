@@ -207,6 +207,10 @@ module Webrat
       raise_error_if_disabled
       set(@element["value"] || "on")
     end
+    
+    def checked?
+      @element["checked"] == "checked"
+    end
 
     def uncheck
       raise_error_if_disabled
