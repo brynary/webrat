@@ -13,6 +13,7 @@ module Webrat
       @http_method     = :get
       @data            = {}
       @default_headers = {}
+      @custom_headers  = {}
     end
 
     # Saves the page out to RAILS_ROOT/tmp/ and opens it in the default
@@ -52,13 +53,42 @@ module Webrat
     def saved_page_dir
       File.expand_path(".")
     end
+
+    def header(key, value)
+      @custom_headers[key] = value
+    end
+
+    def http_accept(mime_type_as_string_or_symbol)
+      if String === mime_type_as_string_or_symbol
+        header('Accept', mime_type_as_string_or_symbol)
+      elsif Symbol === mime_type_as_string_or_symbol
+        mime_type_as_string = case mime_type_as_string_or_symbol
+                              when :text then "text/plain"
+                              when :html then "text/html"
+                              when :js then "text/javascript"
+                              when :css then "text/css"
+                              when :ics then "text/calendar"
+                              when :csv then "text/csv"
+                              when :xml then "application/xml"
+                              when :rss then "application/rss+xml"
+                              when :atom then "application/atom+xml"
+                              when :yaml then "application/x-yaml"
+                              when :multipart_form then "multipart/form-data"
+                              when :url_encoded_form then "application/x-www-form-urlencoded"
+                              when :json then "application/json"
+                              end
+        raise ArgumentError.new("Invalid Mime type: #{mime_type_as_string_or_symbol.inspect}") unless mime_type_as_string
+        header('Accept', mime_type_as_string)
+      end
+    end
     
     def basic_auth(user, pass)
-      @default_headers['HTTP_AUTHORIZATION'] = "Basic " + ["#{user}:#{pass}"].pack("m*")
+      encoded_login = ["#{user}:#{pass}"].pack("m*")
+      header('HTTP_AUTHORIZATION', "Basic #{encoded_login}")
     end
 
     def headers
-      @default_headers.dup
+      @default_headers.dup.merge(@custom_headers.dup)
     end
 
     def request_page(url, http_method, data)
