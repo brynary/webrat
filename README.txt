@@ -24,11 +24,11 @@ Initial development was sponsored by [EastMedia](http://www.eastmedia.com).
 === Synopsis
 
     def test_sign_up
-      visits "/"
-      clicks_link "Sign up"
-      fills_in "Email", :with => "good@example.com"
-      selects "Free account"
-      clicks_button "Register"
+      visit "/"
+      click_link "Sign up"
+      fill_in "Email", :with => "good@example.com"
+      select "Free account"
+      click_button "Register"
       ...
     end
   
@@ -83,7 +83,7 @@ You could also unpack the gem into vendor/plugins.
 - Rails >= 1.2.6
 - Hpricot >= 0.6
 - Rails integration tests in Test::Unit _or_
-- RSpec stories (using an RSpec version >= revision 2997)
+- Cucumber
 
 === Authors
 
