@@ -82,7 +82,7 @@ module Webrat
     end
     
     def success_code?
-      (200..299).include?(response_code)
+      (200..499).include?(response_code)
     end
     
     def exception_caught?

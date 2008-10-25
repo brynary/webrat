@@ -155,8 +155,18 @@ describe "clicks_link" do
     @session.response_body = <<-EOS
       <a href="/page">Link text</a>
     EOS
-    @session.response_code = 404
+    @session.response_code = 501
     lambda { @session.clicks_link "Link text" }.should raise_error
+  end
+  
+  [200, 300, 400, 499].each do |status|
+    it "should consider the status code as success" do
+      @session.response_body = <<-EOS
+        <a href="/page">Link text</a>
+      EOS
+      @session.response_code = status
+      lambda { @session.clicks_link "Link text" }.should_not raise_error
+    end
   end
   
   it "should fail is the link doesn't exist" do
