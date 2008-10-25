@@ -175,7 +175,7 @@ module Webrat
       @dom ||= Hpricot(scoped_html)
     end
     
-    def element_labeled(label)
+    def field_labeled(label)
       find_field(label, TextField, TextareaField, CheckboxField, RadioField, HiddenField)
     end
     

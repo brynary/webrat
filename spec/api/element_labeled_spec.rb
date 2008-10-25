@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
 
 
-describe "element_labeled" do
+describe "field_labeled" do
   
   class << self
     def using_this_html html
@@ -11,27 +11,27 @@ describe "element_labeled" do
       end
     end
     
-    def element_labeled label
+    def field_labeled label
       @label = label
       yield
     end
     
     def should_return_a type, opts
       it "should return a textfield" do
-        @session.element_labeled(opts[:for]).should be_an_instance_of(type)
+        @session.field_labeled(opts[:for]).should be_an_instance_of(type)
       end
     end
     
     def with_an_id_of id, opts
       it "should return an element with the correct id" do
-        @session.element_labeled(opts[:for]).should match_id(id)
+        @session.field_labeled(opts[:for]).should match_id(id)
       end
     end
     
     def should_raise_error_matching regexp, opts
       it "should raise with wrong label" do
         lambda {
-          @session.element_labeled(opts[:for])
+          @session.field_labeled(opts[:for])
         }.should raise_error(regexp)
       end
     end
