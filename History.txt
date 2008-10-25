@@ -11,6 +11,8 @@
   
 * Minor enhancements
 
+  * Add #http_accept for including MIME type HTTP "Accept" headers (Ryan Briones)
+  * Add #header to support inclusion of custom HTTP headers (Ryan Briones)
   * Consider response codes 200-499 as successful enough to not raise a Webrat error (David Leal)
   * Add #field_labeled for looking up form fields by label (David Chelimsky)
   * Add Webrat.root method for cross-framework support (Krzysztof Zylawy)
