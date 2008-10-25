@@ -26,7 +26,7 @@ describe "clicks_area" do
   end
   
   [200, 300, 400, 499].each do |status|
-    it "should consider the status code as success" do
+    it "should consider the #{status} status code as success" do
       @session.response_body = <<-EOS
         <map name="map_de" id="map_de">
         <area href="/page" title="Berlin" id="berlin" shape="poly" alt="Berlin" coords="180,89,180" />

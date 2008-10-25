@@ -17,7 +17,7 @@ describe "visits" do
   end
   
   [200, 300, 400, 499].each do |status|
-    it "should consider the status code as success" do
+    it "should consider the #{status} status code as success" do
       @session.response_code = status
       lambda { @session.visits("/") }.should_not raise_error
     end

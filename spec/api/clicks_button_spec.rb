@@ -55,7 +55,7 @@ describe "clicks_button" do
   end
   
   [200, 300, 400, 499].each do |status|
-    it "should consider the status code as success" do
+    it "should consider the #{status} status code as success" do
       @session.response_body = <<-EOS
       <form action="/login">
         <input type="submit" />
