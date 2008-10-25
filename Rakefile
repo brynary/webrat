@@ -35,42 +35,52 @@ def remove_task(task_name)
   Rake.application.remove_task(task_name)
 end
 
-def set_file_list
-  if ENV['TEST_MODE'] == "merb"
-    list = FileList['spec/**/*_spec.rb']
-    list = list.find_all do |file| !file.match("rails") end
-    return list
-  else
-    return FileList['spec/**/*_spec.rb']
-  end
-end
-
 remove_task "test"
 remove_task "test_deps"
 
-desc "Run all specs in spec directory"
+desc "Run API and Core specs"
 Spec::Rake::SpecTask.new do |t|
   t.spec_opts = ['--options', "\"#{File.dirname(__FILE__)}/spec/spec.opts\""]
-  t.spec_files = set_file_list
+  
+  t.spec_files = FileList['spec/api/*_spec.rb'] + FileList['spec/webrat/core/*_spec.rb']
 end
 
-desc "Run all specs in spec directory with RCov"
-Spec::Rake::SpecTask.new(:rcov) do |t|
-  t.spec_opts = ['--options', "\"#{File.dirname(__FILE__)}/spec/spec.opts\""]
-  t.spec_files = set_file_list
-  t.rcov = true
-  t.rcov_opts = lambda do
-    IO.readlines(File.dirname(__FILE__) + "/spec/rcov.opts").map {|l| l.chomp.split " "}.flatten
+namespace :spec do
+  desc "Run Rails specs"
+  Spec::Rake::SpecTask.new(:rails) do |t|
+    t.spec_opts = ['--options', "\"#{File.dirname(__FILE__)}/spec/spec.opts\""]
+    t.spec_files = FileList['spec/webrat/rails/*_spec.rb']
+  end
+  
+  desc "Run Merb specs"
+  Spec::Rake::SpecTask.new(:merb) do |t|
+    t.spec_opts = ['--options', "\"#{File.dirname(__FILE__)}/spec/spec.opts\""]
+    t.spec_files = FileList['spec/webrat/merb/*_spec.rb']
+  end
+  
+  desc "Run Mechanize specs"
+  Spec::Rake::SpecTask.new(:mechanize) do |t|
+    t.spec_opts = ['--options', "\"#{File.dirname(__FILE__)}/spec/spec.opts\""]
+    t.spec_files = FileList['spec/webrat/mechanize/*_spec.rb']
   end
 end
 
-
-require 'spec/rake/verify_rcov'
-RCov::VerifyTask.new(:verify_rcov => :rcov) do |t|
-  t.threshold = 96.2 # Make sure you have rcov 0.7 or higher!
-end
-
-remove_task "default"
-task :default do
-  Rake::Task["verify_rcov"].invoke
-end
+# desc "Run all specs in spec directory with RCov"
+# Spec::Rake::SpecTask.new(:rcov) do |t|
+#   t.spec_opts = ['--options', "\"#{File.dirname(__FILE__)}/spec/spec.opts\""]
+#   t.spec_files = set_file_list
+#   t.rcov = true
+#   t.rcov_opts = lambda do
+#     IO.readlines(File.dirname(__FILE__) + "/spec/rcov.opts").map {|l| l.chomp.split " "}.flatten
+#   end
+# end
+# 
+# require 'spec/rake/verify_rcov'
+# RCov::VerifyTask.new(:verify_rcov => :rcov) do |t|
+#   t.threshold = 96.2 # Make sure you have rcov 0.7 or higher!
+# end
+# 
+# remove_task "default"
+# task :default do
+#   Rake::Task["verify_rcov"].invoke
+# end

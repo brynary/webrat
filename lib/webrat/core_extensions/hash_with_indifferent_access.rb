@@ -122,4 +122,10 @@ class HashWithIndifferentAccess < Hash
     end
 end
 
-
+class Hash
+  def with_indifferent_access
+    hash = HashWithIndifferentAccess.new(self)
+    hash.default = self.default
+    hash
+  end
+end
