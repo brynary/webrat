@@ -1,5 +1,3 @@
-require "rubygems"
 require "selenium"
-
-require File.dirname(__FILE__) + "/selenium/selenium_session"
+require "webrat/selenium/selenium_session"
 

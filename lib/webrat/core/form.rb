@@ -1,3 +1,6 @@
+require "webrat/core/field"
+require "webrat/core_extensions/blank"
+
 module Webrat
   class Form
     attr_reader :element

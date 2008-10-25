@@ -1,4 +1,6 @@
 require "hpricot"
+require "webrat/core/form"
+require "webrat/core/assertions"
 
 module Webrat
   class Scope

@@ -1,5 +1,6 @@
 require "cgi"
 require "strscan"
+require "webrat/core_extensions/hash_with_indifferent_access"
 
 class UrlEncodedPairParser < StringScanner #:nodoc:
     attr_reader :top, :parent, :result

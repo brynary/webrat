@@ -1,3 +1,5 @@
+require "webrat/core_extensions/blank"
+
 module Webrat
   class Link
     
