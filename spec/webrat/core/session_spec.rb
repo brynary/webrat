@@ -19,7 +19,7 @@ describe Webrat::Session do
   
   it "should open the page in the browser" do
     session = Webrat::Session.new
-    session.should_receive(:`).with("open path") #`)
+    session.should_receive(:`).with("open path")
     session.open_in_browser("path")
   end
   

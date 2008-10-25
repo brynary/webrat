@@ -1,6 +1,8 @@
 require "forwardable"
 require "ostruct"
 
+require "webrat/core/mime"
+
 module Webrat
   class Session
     extend Forwardable
@@ -58,28 +60,8 @@ module Webrat
       @custom_headers[key] = value
     end
 
-    def http_accept(mime_type_as_string_or_symbol)
-      if String === mime_type_as_string_or_symbol
-        header('Accept', mime_type_as_string_or_symbol)
-      elsif Symbol === mime_type_as_string_or_symbol
-        mime_type_as_string = case mime_type_as_string_or_symbol
-                              when :text then "text/plain"
-                              when :html then "text/html"
-                              when :js then "text/javascript"
-                              when :css then "text/css"
-                              when :ics then "text/calendar"
-                              when :csv then "text/csv"
-                              when :xml then "application/xml"
-                              when :rss then "application/rss+xml"
-                              when :atom then "application/atom+xml"
-                              when :yaml then "application/x-yaml"
-                              when :multipart_form then "multipart/form-data"
-                              when :url_encoded_form then "application/x-www-form-urlencoded"
-                              when :json then "application/json"
-                              end
-        raise ArgumentError.new("Invalid Mime type: #{mime_type_as_string_or_symbol.inspect}") unless mime_type_as_string
-        header('Accept', mime_type_as_string)
-      end
+    def http_accept(mime_type)
+      header('Accept', Webrat::MIME.mime_type(mime_type))
     end
     
     def basic_auth(user, pass)
