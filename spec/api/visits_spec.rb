@@ -12,8 +12,15 @@ describe "visits" do
   end
   
   it "should assert valid response" do
-    @session.response_code = 404
+    @session.response_code = 501
     lambda { @session.visits("/") }.should raise_error
+  end
+  
+  [200, 300, 400, 499].each do |status|
+    it "should consider the status code as success" do
+      @session.response_code = status
+      lambda { @session.visits("/") }.should_not raise_error
+    end
   end
   
   it "should require a visit before manipulating page" do
