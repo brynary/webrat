@@ -11,6 +11,7 @@
   
 * Minor enhancements
 
+  * Add #field_labeled for looking up form fields by label (David Chelimsky)
   * Add Webrat.root method for cross-framework support (Krzysztof Zylawy)
   * Add support for clicking areas of an image map (Alex Lang)
   * Add should_see and should_not_see for verifying HTML response bodys
