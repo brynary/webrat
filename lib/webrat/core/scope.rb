@@ -113,7 +113,7 @@ module Webrat
     #
     #   clicks_link "Sign up", :javascript => false
     def clicks_link(link_text, options = {})
-      find_link(link_text).click(nil, options)
+      find_link(link_text).click(options)
     end
 
     alias_method :click_link, :clicks_link
@@ -123,7 +123,7 @@ module Webrat
     # Example:
     #   clicks_get_link "Log out"
     def clicks_get_link(link_text)
-      find_link(link_text).click(:get)
+      clicks_link link_text, :method => :get
     end
 
     alias_method :click_get_link, :clicks_get_link
@@ -133,7 +133,7 @@ module Webrat
     # Example:
     #   clicks_delete_link "Log out"
     def clicks_delete_link(link_text)
-      find_link(link_text).click(:delete)
+      clicks_link link_text, :method => :delete
     end
 
     alias_method :click_delete_link, :clicks_delete_link
@@ -143,7 +143,7 @@ module Webrat
     # Example:
     #   clicks_post_link "Vote"
     def clicks_post_link(link_text)
-      find_link(link_text).click(:post)
+      clicks_link link_text, :method => :post
     end
 
     alias_method :click_post_link, :clicks_post_link
@@ -153,7 +153,7 @@ module Webrat
     # Example:
     #   clicks_put_link "Update profile"
     def clicks_put_link(link_text)
-      find_link(link_text).click(:put)
+      clicks_link link_text, :method => :put
     end
 
     alias_method :click_put_link, :clicks_put_link

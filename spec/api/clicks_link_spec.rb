@@ -18,7 +18,7 @@ describe "clicks_link" do
       <a href="/page">Link text</a>
     EOS
     @session.should_receive(:get).with("/page", {})
-    @session.clicks_get_link "Link text"
+    @session.clicks_link "Link text", :method => :get
   end
   
   it "should click delete links" do
@@ -26,7 +26,7 @@ describe "clicks_link" do
       <a href="/page">Link text</a>
     EOS
     @session.should_receive(:delete).with("/page", {})
-    @session.clicks_delete_link "Link text"
+    @session.clicks_link "Link text", :method => :delete
   end
   
   
@@ -35,7 +35,7 @@ describe "clicks_link" do
       <a href="/page">Link text</a>
     EOS
     @session.should_receive(:post).with("/page", {})
-    @session.clicks_post_link "Link text"
+    @session.clicks_link "Link text", :method => :post
   end
   
   it "should click put links" do
@@ -43,7 +43,7 @@ describe "clicks_link" do
       <a href="/page">Link text</a>
     EOS
     @session.should_receive(:put).with("/page", {})
-    @session.clicks_put_link "Link text"
+    @session.clicks_link "Link text", :method => :put
   end
   
   it "should click rails javascript links with authenticity tokens" do

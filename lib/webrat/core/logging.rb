@@ -1,5 +1,10 @@
 module Webrat
   module Logging
+
+    def warn_log(message) # :nodoc:
+      return unless logger
+      logger.warn message
+    end
     
     def debug_log(message) # :nodoc:
       return unless logger

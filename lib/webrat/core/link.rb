@@ -8,8 +8,8 @@ module Webrat
       @element  = element
     end
     
-    def click(method = nil, options = {})
-      method ||= http_method
+    def click(options = {})
+      method = options[:method] || http_method
       return if href =~ /^#/ && method == :get
       
       options[:javascript] = true if options[:javascript].nil?
