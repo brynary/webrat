@@ -101,58 +101,47 @@ module Webrat
     
     # Issues a request for the URL pointed to by a link on the current page,
     # follows any redirects, and verifies the final page load was successful.
-    #
+    # 
     # clicks_link has very basic support for detecting Rails-generated 
     # JavaScript onclick handlers for PUT, POST and DELETE links, as well as
     # CSRF authenticity tokens if they are present.
     #
     # Javascript imitation can be disabled by passing the option :javascript => false
     #
+    # Passing a :method in the options hash overrides the HTTP method used
+    # for making the link request
+    # 
     # Example:
     #   clicks_link "Sign up"
     #
     #   clicks_link "Sign up", :javascript => false
+    # 
+    #   clicks_link "Sign up", :method => :put
     def clicks_link(link_text, options = {})
       find_link(link_text).click(options)
     end
 
     alias_method :click_link, :clicks_link
-    
-    # Works like clicks_link, but forces a GET request
-    # 
-    # Example:
-    #   clicks_get_link "Log out"
-    def clicks_get_link(link_text)
+
+    def clicks_get_link(link_text) # :nodoc:
       clicks_link link_text, :method => :get
     end
 
     alias_method :click_get_link, :clicks_get_link
-    
-    # Works like clicks_link, but issues a DELETE request instead of a GET
-    # 
-    # Example:
-    #   clicks_delete_link "Log out"
-    def clicks_delete_link(link_text)
+
+    def clicks_delete_link(link_text) # :nodoc:
       clicks_link link_text, :method => :delete
     end
 
     alias_method :click_delete_link, :clicks_delete_link
-    
-    # Works like clicks_link, but issues a POST request instead of a GET
-    # 
-    # Example:
-    #   clicks_post_link "Vote"
-    def clicks_post_link(link_text)
+
+    def clicks_post_link(link_text) # :nodoc:
       clicks_link link_text, :method => :post
     end
 
     alias_method :click_post_link, :clicks_post_link
-    
-    # Works like clicks_link, but issues a PUT request instead of a GET
-    # 
-    # Example:
-    #   clicks_put_link "Update profile"
-    def clicks_put_link(link_text)
+
+    def clicks_put_link(link_text) # :nodoc:
       clicks_link link_text, :method => :put
     end
 
