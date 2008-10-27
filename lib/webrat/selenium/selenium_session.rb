@@ -86,6 +86,14 @@ module Webrat
     def checks(label_text)
       @selenium.check("webrat=#{label_text}")
     end
+    
+    def is_ordered(*args)
+      @selenium.is_ordered(*args)
+    end
+    
+    def dragdrop(*args)
+      @selenium.dragdrop(*args)
+    end
         
   protected
     
