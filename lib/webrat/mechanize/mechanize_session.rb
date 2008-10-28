@@ -6,11 +6,11 @@ module Webrat
       @mechanize = mechanize
     end
     
-    def get(url, data)
+    def get(url, data, headers_argument_not_used = nil)
       @mechanize_page = @mechanize.get(url, data)
     end
 
-    def post(url, data)
+    def post(url, data, headers_argument_not_used = nil)
       @mechanize_page = @mechanize.post(url, data)
     end
 
