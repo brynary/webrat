@@ -29,5 +29,41 @@ describe Webrat::Session do
     current_page.should_not be_nil
     current_page.should respond_to(:url)
   end
+
+  it "should allow custom headers to be set" do
+    session = Webrat::Session.new
+    session.header('Accept', 'application/xml')
+
+    session.instance_variable_get(:@custom_headers)['Accept'].should == 'application/xml'
+  end
+
+  it "should return a copy of the headers to be sent" do
+    session = Webrat::Session.new
+    session.instance_eval { 
+      @default_headers = {'HTTP_X_FORWARDED_FOR' => '192.168.1.1'}
+      @custom_headers = {'Accept' => 'application/xml'}
+    }
+    session.headers.should == {'HTTP_X_FORWARDED_FOR' => '192.168.1.1', 'Accept' => 'application/xml'}
+  end
+
+  describe "#http_accept" do
+    before(:each) do
+      @session = Webrat::Session.new
+    end
+
+    it "should set the Accept header with the string Mime type" do
+      @session.http_accept('application/xml')
+      @session.headers['Accept'].should == 'application/xml'
+    end
+
+    it "should set the Accept head with the string value of the symbol Mime type" do
+      @session.http_accept(:xml)
+      @session.headers['Accept'].should == 'application/xml'
+    end
+
+    it "should raise an error if a symbol Mime type is passed that does not exist" do
+      lambda { @session.http_accept(:oogabooga) }.should raise_error(ArgumentError)
+    end
+  end
   
 end

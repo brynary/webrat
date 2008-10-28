@@ -108,18 +108,6 @@ describe "selects" do
     @session.clicks_button
   end
   
-  it "should send value from option in list specified by value" do
-    @session.response_body = <<-EOS
-      <form method="post" action="/login">
-        <select name="start_month"><option value="s1">January</option></select>
-        <input type="submit" />
-      </form>
-    EOS
-    @session.should_receive(:post).with("/login", "start_month" => "s1")
-    @session.selects "s1", :from => "start_month"
-    @session.clicks_button
-  end
-  
   it "should send value from option in list specified by label" do
     @session.response_body = <<-EOS
       <form method="post" action="/login">

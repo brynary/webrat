@@ -40,6 +40,7 @@ lib/webrat/selenium/location_strategy_javascript/webratlinkwithin.js
 lib/webrat/selenium/location_strategy_javascript/webratselectwithoption.js
 lib/webrat/selenium/selenium_session.rb
 lib/webrat/sinatra/sinatra_session.rb
+manifest.diff
 mechanize_spike.rb
 selenium_spike.rb
 spec/api/attaches_file_spec.rb
@@ -61,12 +62,13 @@ spec/api/within_spec.rb
 spec/fakes/test_session.rb
 spec/integration/rails_spec.rb
 spec/rcov.opts
-spec/spec.opts
 spec/spec_helper.rb
 spec/webrat/core/logging_spec.rb
 spec/webrat/core/session_spec.rb
 spec/webrat/mechanize/mechanize_session_spec.rb
 spec/webrat/merb/helper.rb
+spec/webrat/merb/indifferent_access_spec.rb
+spec/webrat/merb/session_spec.rb
 spec/webrat/rails/helper.rb
 spec/webrat/rails/rails_session_spec.rb
 webrat.gemspec

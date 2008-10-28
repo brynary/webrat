@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
+require File.expand_path(File.dirname(__FILE__) + '/helper')
 
 describe Webrat::RailsSession do
   it "should require a Rails Integration session to be initialized" do

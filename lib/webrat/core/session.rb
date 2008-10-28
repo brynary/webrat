@@ -1,6 +1,8 @@
 require "forwardable"
 require "ostruct"
 
+require "webrat/core/mime"
+
 module Webrat
   class Session
     extend Forwardable
@@ -13,6 +15,7 @@ module Webrat
       @http_method     = :get
       @data            = {}
       @default_headers = {}
+      @custom_headers  = {}
     end
 
     # Saves the page out to RAILS_ROOT/tmp/ and opens it in the default
@@ -52,13 +55,22 @@ module Webrat
     def saved_page_dir
       File.expand_path(".")
     end
+
+    def header(key, value)
+      @custom_headers[key] = value
+    end
+
+    def http_accept(mime_type)
+      header('Accept', Webrat::MIME.mime_type(mime_type))
+    end
     
     def basic_auth(user, pass)
-      @default_headers['HTTP_AUTHORIZATION'] = "Basic " + ["#{user}:#{pass}"].pack("m*")
+      encoded_login = ["#{user}:#{pass}"].pack("m*")
+      header('HTTP_AUTHORIZATION', "Basic #{encoded_login}")
     end
 
     def headers
-      @default_headers.dup
+      @default_headers.dup.merge(@custom_headers.dup)
     end
 
     def request_page(url, http_method, data)
@@ -82,7 +94,7 @@ module Webrat
     end
     
     def success_code?
-      (200..299).include?(response_code)
+      (200..499).include?(response_code)
     end
     
     def exception_caught?
@@ -151,7 +163,6 @@ module Webrat
     def_delegators :current_scope, :uncheck,            :unchecks
     def_delegators :current_scope, :choose,             :chooses
     def_delegators :current_scope, :select,             :selects
-    def_delegators :current_scope, :select_date,        :selects_date
     def_delegators :current_scope, :attach_file,        :attaches_file
     def_delegators :current_scope, :click_area,         :clicks_area
     def_delegators :current_scope, :click_link,         :clicks_link
@@ -162,5 +173,6 @@ module Webrat
     def_delegators :current_scope, :click_button,       :clicks_button
     def_delegators :current_scope, :should_see
     def_delegators :current_scope, :should_not_see
+    def_delegators :current_scope, :field_labeled
   end
 end
