@@ -1,5 +1,6 @@
 require "webrat/core/logging"
 require "webrat/core/flunk"
+require "webrat/core/param_parser"
 require "webrat/core/form"
 require "webrat/core/scope"
 require "webrat/core/link"
