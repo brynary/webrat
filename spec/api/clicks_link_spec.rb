@@ -46,6 +46,14 @@ describe "clicks_link" do
     @session.clicks_link "Link text", :method => :put
   end
   
+  it "should click links by regexp" do
+    @session.response_body = <<-EOS
+      <a href="/page">Link text</a>
+    EOS
+    @session.should_receive(:get).with("/page", {})
+    @session.clicks_link /link [a-z]/i
+  end
+  
   it "should click rails javascript links with authenticity tokens" do
     @session.response_body = <<-EOS
       <a href="/posts" onclick="var f = document.createElement('form');

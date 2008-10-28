@@ -23,7 +23,13 @@ module Webrat
     
     def matches_text?(link_text)
       html = text.gsub('&nbsp;',' ')
-      matcher = /#{Regexp.escape(link_text.to_s)}/i
+      
+      if link_text.is_a?(Regexp)
+        matcher = link_text
+      else
+        matcher = /#{Regexp.escape(link_text.to_s)}/i
+      end
+      
       html =~ matcher || title =~ matcher
     end
     
