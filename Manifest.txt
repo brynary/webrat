@@ -19,6 +19,7 @@ lib/webrat/core/form.rb
 lib/webrat/core/label.rb
 lib/webrat/core/link.rb
 lib/webrat/core/logging.rb
+lib/webrat/core/mime.rb
 lib/webrat/core/param_parser.rb
 lib/webrat/core/scope.rb
 lib/webrat/core/select_option.rb
