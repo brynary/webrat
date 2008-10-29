@@ -1,3 +1,6 @@
+require "webrat/core/field"
+require "webrat/core_extensions/blank"
+
 module Webrat
   class Form
     attr_reader :element
@@ -17,12 +20,14 @@ module Webrat
       nil
     end
     
-    def find_select_option(option_text, field_name_pattern = nil)
+    def find_select_option(option_text)
       select_fields = fields_by_type([SelectField])
-      select_fields.select{|field| field_name_pattern.nil? || field.matches_name?(field_name_pattern) || field.matches_id?(field_name_pattern)}.each do |select_field|
+
+      select_fields.each do |select_field|
         result = select_field.find_option(option_text)
         return result if result
       end
+
       nil
     end
 

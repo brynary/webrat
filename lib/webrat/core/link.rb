@@ -1,3 +1,5 @@
+require "webrat/core_extensions/blank"
+
 module Webrat
   class Link
     
@@ -6,8 +8,8 @@ module Webrat
       @element  = element
     end
     
-    def click(method = nil, options = {})
-      method ||= http_method
+    def click(options = {})
+      method = options[:method] || http_method
       return if href =~ /^#/ && method == :get
       
       options[:javascript] = true if options[:javascript].nil?
@@ -21,7 +23,13 @@ module Webrat
     
     def matches_text?(link_text)
       html = text.gsub('&nbsp;',' ')
-      matcher = /#{Regexp.escape(link_text.to_s)}/i
+      
+      if link_text.is_a?(Regexp)
+        matcher = link_text
+      else
+        matcher = /#{Regexp.escape(link_text.to_s)}/i
+      end
+      
       html =~ matcher || title =~ matcher
     end
     

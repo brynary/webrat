@@ -21,8 +21,20 @@ describe "clicks_area" do
       <area href="/page" title="Berlin" id="berlin" shape="poly" alt="Berlin" coords="180,89,180" />
       </map>
     EOS
-    @session.response_code = 404
+    @session.response_code = 501
     lambda { @session.clicks_area "Berlin" }.should raise_error
+  end
+  
+  [200, 300, 400, 499].each do |status|
+    it "should consider the #{status} status code as success" do
+      @session.response_body = <<-EOS
+        <map name="map_de" id="map_de">
+        <area href="/page" title="Berlin" id="berlin" shape="poly" alt="Berlin" coords="180,89,180" />
+        </map>
+      EOS
+      @session.response_code = status
+      lambda { @session.clicks_area "Berlin" }.should_not raise_error
+    end
   end
   
   it "should fail if the area doesn't exist" do

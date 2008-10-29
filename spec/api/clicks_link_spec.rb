@@ -18,7 +18,7 @@ describe "clicks_link" do
       <a href="/page">Link text</a>
     EOS
     @session.should_receive(:get).with("/page", {})
-    @session.clicks_get_link "Link text"
+    @session.clicks_link "Link text", :method => :get
   end
   
   it "should click delete links" do
@@ -26,7 +26,7 @@ describe "clicks_link" do
       <a href="/page">Link text</a>
     EOS
     @session.should_receive(:delete).with("/page", {})
-    @session.clicks_delete_link "Link text"
+    @session.clicks_link "Link text", :method => :delete
   end
   
   
@@ -35,7 +35,7 @@ describe "clicks_link" do
       <a href="/page">Link text</a>
     EOS
     @session.should_receive(:post).with("/page", {})
-    @session.clicks_post_link "Link text"
+    @session.clicks_link "Link text", :method => :post
   end
   
   it "should click put links" do
@@ -43,7 +43,15 @@ describe "clicks_link" do
       <a href="/page">Link text</a>
     EOS
     @session.should_receive(:put).with("/page", {})
-    @session.clicks_put_link "Link text"
+    @session.clicks_link "Link text", :method => :put
+  end
+  
+  it "should click links by regexp" do
+    @session.response_body = <<-EOS
+      <a href="/page">Link text</a>
+    EOS
+    @session.should_receive(:get).with("/page", {})
+    @session.clicks_link /link [a-z]/i
   end
   
   it "should click rails javascript links with authenticity tokens" do
@@ -155,8 +163,18 @@ describe "clicks_link" do
     @session.response_body = <<-EOS
       <a href="/page">Link text</a>
     EOS
-    @session.response_code = 404
+    @session.response_code = 501
     lambda { @session.clicks_link "Link text" }.should raise_error
+  end
+  
+  [200, 300, 400, 499].each do |status|
+    it "should consider the #{status} status code as success" do
+      @session.response_body = <<-EOS
+        <a href="/page">Link text</a>
+      EOS
+      @session.response_code = status
+      lambda { @session.clicks_link "Link text" }.should_not raise_error
+    end
   end
   
   it "should fail is the link doesn't exist" do

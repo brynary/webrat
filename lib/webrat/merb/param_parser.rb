@@ -1,4 +1,6 @@
 require "cgi"
+require "webrat/core_extensions/blank"
+require "webrat/merb/url_encoded_pair_parser"
 
 module Webrat
   class ParamParser

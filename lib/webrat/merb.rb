@@ -1,6 +1,4 @@
-Dir[File.join(File.dirname(__FILE__), "merb", "*.rb")].sort.each do |file|
-  require File.expand_path(file)
-end
+require "webrat/core"
 
 module Webrat
   class Session
@@ -32,7 +30,8 @@ module Webrat
       @response.status
     end
 
-    protected
+  protected
+    
     def do_request(url, data, headers, method)
       @response = request(url, :params => (data && data.any?) ? data : nil, :headers => headers, :method => method)
       self.get(@response.headers['Location'], nil, @response.headers) if @response.status == 302

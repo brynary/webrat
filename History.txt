@@ -11,10 +11,13 @@
   
 * Minor enhancements
 
+  * Allow clicking links by a regular expression
+  * Add #http_accept for including MIME type HTTP "Accept" headers (Ryan Briones)
+  * Add #header to support inclusion of custom HTTP headers (Ryan Briones)
+  * Consider response codes 200-499 as successful enough to not raise a Webrat error (David Leal)
+  * Add #field_labeled for looking up form fields by label (David Chelimsky)
   * Add Webrat.root method for cross-framework support (Krzysztof Zylawy)
-  * Add #select_date for quickly filling out Rails-style date fields (Alex Lang)
-  * Support selecting options by their values (Alex Lang)
-  * Support for clicking areas of an image map (Alex Lang)
+  * Add support for clicking areas of an image map (Alex Lang)
   * Add should_see and should_not_see for verifying HTML response bodys
   * Support relative links, including href="?foo=bar" (Kyle Hargraves)
   * Separated Rails-specific code from the Webrat core to make it easier to use Webrat with other environments

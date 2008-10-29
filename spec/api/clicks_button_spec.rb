@@ -50,8 +50,20 @@ describe "clicks_button" do
         <input type="submit" />
       </form>
     EOS
-    @session.response_code = 404
+    @session.response_code = 501
     lambda { @session.clicks_button }.should raise_error
+  end
+  
+  [200, 300, 400, 499].each do |status|
+    it "should consider the #{status} status code as success" do
+      @session.response_body = <<-EOS
+      <form action="/login">
+        <input type="submit" />
+      </form>
+    EOS
+      @session.response_code = status
+      lambda { @session.clicks_button }.should_not raise_error
+    end
   end
   
   it "should submit the first form by default" do

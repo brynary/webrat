@@ -1,4 +1,6 @@
-require File.expand_path(File.dirname(__FILE__) + "/../../../lib/webrat/mechanize")
+require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
+require "mechanize"
+require "webrat/mechanize"
 
 describe Webrat::MechanizeSession do
   before(:each) do
