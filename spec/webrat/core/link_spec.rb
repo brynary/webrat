@@ -32,6 +32,12 @@ describe Webrat::Link do
     link.matches_text?("Link Text").should == 0
   end
   
+  it "should matches_text? on substring" do
+    link = Webrat::Link.new(@session, nil)
+    link.should_receive(:text).and_return("Link Text")
+    link.matches_text?("nk Te").should_not be_nil
+  end
+  
   it "should not matches_text? on link_text case insensitive" do
     link = Webrat::Link.new(@session, nil)
     link.should_receive(:text).and_return("Link Text")
