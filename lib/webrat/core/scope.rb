@@ -111,14 +111,22 @@ module Webrat
     # Passing a :method in the options hash overrides the HTTP method used
     # for making the link request
     # 
+    # It will try to find links by (in order of precedence):
+    #   innerHTML, with simple &nbsp; handling
+    #   title
+    #   id
+    #    
+    # innerHTML and title are matchable by text subtring or Regexp
+    # id is matchable by full text equality or Regexp
+    # 
     # Example:
     #   clicks_link "Sign up"
     #
     #   clicks_link "Sign up", :javascript => false
     # 
     #   clicks_link "Sign up", :method => :put
-    def clicks_link(link_text, options = {})
-      find_link(link_text).click(options)
+    def clicks_link(text_or_title_or_id, options = {})
+      find_link(text_or_title_or_id).click(options)
     end
 
     alias_method :click_link, :clicks_link
@@ -214,15 +222,15 @@ module Webrat
       end
     end
     
-    def find_link(text, selector = nil)
+    def find_link(text_or_title_or_id, selector = nil)
       matching_links = links_within(selector).select do |possible_link|
-        possible_link.matches_text?(text)
+        possible_link.matches_text?(text_or_title_or_id) || possible_link.matches_id?(text_or_title_or_id)
       end
       
       if matching_links.any?
         matching_links.min { |a, b| a.text.length <=> b.text.length }
       else
-        flunk("Could not find link with text #{text.inspect}")
+        flunk("Could not find link with text or title or id #{text_or_title_or_id.inspect}")
       end
     end
     
