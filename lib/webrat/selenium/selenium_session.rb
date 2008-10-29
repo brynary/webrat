@@ -4,6 +4,7 @@ module Webrat
     def initialize(selenium_driver)
       super()
       @selenium = selenium_driver
+      extend_selenium
       define_location_strategies
     end
     
@@ -22,16 +23,21 @@ module Webrat
       @selenium.get_html_source
     end
     
-    def clicks_button(button_text = nil, options = {})
-      button_text, options = nil, button_text if button_text.is_a?(Hash) && options == {}
-      button_text ||= '*'
-      @selenium.click("button=#{button_text}")
+    def clicks_button(button_text_or_regexp = nil, options = {})
+      if button_text_or_regexp.is_a?(Hash) && options == {}
+        pattern, options = nil, button_text_or_regexp
+      else
+        pattern = adjust_if_regexp(button_text_or_regexp)
+      end
+      pattern ||= '*'
+      @selenium.click("button=#{pattern}")
       wait_for_result(options[:wait])
     end
     alias_method :click_button, :clicks_button
 
-    def clicks_link(link_text, options = {})
-      @selenium.click("webratlink=#{link_text}")
+    def clicks_link(link_text_or_regexp, options = {})
+      pattern = adjust_if_regexp(link_text_or_regexp)
+      @selenium.click("webratlink=#{pattern}")
       wait_for_result(options[:wait])
     end
     alias_method :click_link, :clicks_link
@@ -96,6 +102,20 @@ module Webrat
     end
         
   protected
+    
+    def adjust_if_regexp(text_or_regexp)
+      if text_or_regexp.is_a?(Regexp)
+        "evalregex:#{text_or_regexp.inspect}"
+      else
+        text_or_regexp
+      end 
+    end
+    
+    def extend_selenium
+      extensions_file = File.join(File.dirname(__FILE__), "selenium_extensions.js")
+      extenions_js = File.read(extensions_file)
+      @selenium.get_eval(extenions_js)
+    end
     
     def define_location_strategies
       Dir[File.join(File.dirname(__FILE__), "location_strategy_javascript", "*.js")].sort.each do |file|
