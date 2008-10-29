@@ -11,6 +11,7 @@
   
 * Minor enhancements
 
+  * Allow clicking links by id and id regexp
   * Allow clicking links by a regular expression
   * Add #http_accept for including MIME type HTTP "Accept" headers (Ryan Briones)
   * Add #header to support inclusion of custom HTTP headers (Ryan Briones)
