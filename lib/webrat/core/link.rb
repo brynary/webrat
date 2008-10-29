@@ -33,11 +33,22 @@ module Webrat
       html =~ matcher || title =~ matcher
     end
     
+    def matches_id?(id_or_regexp)
+      if id_or_regexp.is_a?(Regexp)
+        (id =~ id_or_regexp) ? true : false
+      else
+        (id == id_or_regexp) ? true : false
+      end
+    end
+    
     def text
       @element.innerHTML
     end
     
   protected
+    def id
+      @element['id']
+    end
   
     def data
       authenticity_token.blank? ? {} : {"authenticity_token" => authenticity_token}
