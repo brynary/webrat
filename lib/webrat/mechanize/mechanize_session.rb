@@ -6,6 +6,10 @@ module Webrat
       @mechanize = mechanize
     end
     
+    def page
+      @mechanize_page
+    end
+    
     def get(url, data, headers_argument_not_used = nil)
       @mechanize_page = @mechanize.get(url, data)
     end
