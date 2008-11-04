@@ -16,6 +16,7 @@ lib/webrat/core/form.rb
 lib/webrat/core/label.rb
 lib/webrat/core/link.rb
 lib/webrat/core/logging.rb
+lib/webrat/core/methods.rb
 lib/webrat/core/mime.rb
 lib/webrat/core/scope.rb
 lib/webrat/core/select_option.rb
@@ -27,14 +28,11 @@ lib/webrat/mechanize.rb
 lib/webrat/mechanize/mechanize_session.rb
 lib/webrat/merb.rb
 lib/webrat/merb/param_parser.rb
-lib/webrat/merb/url_encoded_pair_parser.rb
 lib/webrat/rack/rack_session.rb
 lib/webrat/rails.rb
 lib/webrat/rails/rails_session.rb
 lib/webrat/rails/redirect_actions.rb
 lib/webrat/rails/session.rb
-lib/webrat/rake/hoe.rb
-lib/webrat/rake/orig_hoe.rb
 lib/webrat/selenium.rb
 lib/webrat/selenium/location_strategy_javascript/button.js
 lib/webrat/selenium/location_strategy_javascript/label.js
@@ -42,6 +40,7 @@ lib/webrat/selenium/location_strategy_javascript/webrat.js
 lib/webrat/selenium/location_strategy_javascript/webratlink.js
 lib/webrat/selenium/location_strategy_javascript/webratlinkwithin.js
 lib/webrat/selenium/location_strategy_javascript/webratselectwithoption.js
+lib/webrat/selenium/selenium_extensions.js
 lib/webrat/selenium/selenium_session.rb
 lib/webrat/sinatra/sinatra_session.rb
 spec/api/basic_auth_spec.rb
