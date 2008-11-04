@@ -5,29 +5,35 @@ module Webrat
       meths.each do |meth|
         self.class_eval <<-RUBY
           def #{meth}(*args, &blk)
-            with_session do |sess|
-              sess.#{meth}(*args, &blk)
-            end
+            webrat_session.#{meth}(*args, &blk)
           end
         RUBY
       end
     end
-
-    def with_session
-      @session ||= ::Webrat::Session.new
-      yield @session
-      @session.response
+    
+    def self.delegate_to_session_returning_response(*meths)
+      meths.each do |meth|
+        self.class_eval <<-RUBY
+          def #{meth}(*args, &blk)
+            webrat_session.#{meth}(*args, &blk)
+            return webrat_session.response
+          end
+        RUBY
+      end
+    end
+    
+    def webrat_session
+      @webrat_session ||= ::Webrat::Session.new
     end
 
-    # all of these methods delegate to the @session, which should
-    # be created transparently.
-    delegate_to_session :visits, :within, :clicks_link_within,
-                        :reload, :header, :http_accept, :basic_auth,
+    delegate_to_session :within, :header, :http_accept, :basic_auth,
                         :save_and_open_page, :fill_in, :check, 
                         :uncheck, :choose, :select, :attach_file,
-                        :click_area, :click_link, :click_button,
-                        :field_labeled                        
+                        :field_labeled, :cookies, :response, :current_page,
+                        :current_url
 
+    delegate_to_session_returning_response :visits, :click_link, :click_area, :click_button, :reload, :clicks_link_within
+    
     alias reloads reload
     alias visit visits
     
