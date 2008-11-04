@@ -1,7 +1,6 @@
 require "cgi"
 require "webrat/core_extensions/blank"
 require "webrat/core_extensions/nil_to_param"
-require "webrat/merb/param_parser"
 
 module Webrat
   class Field
@@ -119,7 +118,8 @@ module Webrat
       elsif defined?(ActionController::AbstractRequest)
         ActionController::AbstractRequest
       else
-        Webrat::ParamParser #used for Merb
+        require "webrat/merb/param_parser"
+        Webrat::MerbParamParser
       end
     end
     

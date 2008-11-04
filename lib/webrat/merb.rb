@@ -1,5 +1,12 @@
 require "webrat/core"
 
+require "cgi"
+gem "extlib"
+require "extlib"
+require "merb-core"
+
+HashWithIndifferentAccess = Mash
+
 module Webrat
   class Session
     include Merb::Test::MakeRequest
