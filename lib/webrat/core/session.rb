@@ -166,10 +166,6 @@ module Webrat
     def_delegators :current_scope, :attach_file,        :attaches_file
     def_delegators :current_scope, :click_area,         :clicks_area
     def_delegators :current_scope, :click_link,         :clicks_link
-    def_delegators :current_scope, :click_get_link,     :clicks_get_link
-    def_delegators :current_scope, :click_delete_link,  :clicks_delete_link
-    def_delegators :current_scope, :click_post_link,    :clicks_post_link
-    def_delegators :current_scope, :click_put_link,     :clicks_put_link
     def_delegators :current_scope, :click_button,       :clicks_button
     def_delegators :current_scope, :should_see
     def_delegators :current_scope, :should_not_see

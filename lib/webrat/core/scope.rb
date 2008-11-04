@@ -122,30 +122,6 @@ module Webrat
     end
 
     alias_method :click_link, :clicks_link
-
-    def clicks_get_link(link_text) # :nodoc:
-      clicks_link link_text, :method => :get
-    end
-
-    alias_method :click_get_link, :clicks_get_link
-
-    def clicks_delete_link(link_text) # :nodoc:
-      clicks_link link_text, :method => :delete
-    end
-
-    alias_method :click_delete_link, :clicks_delete_link
-
-    def clicks_post_link(link_text) # :nodoc:
-      clicks_link link_text, :method => :post
-    end
-
-    alias_method :click_post_link, :clicks_post_link
-
-    def clicks_put_link(link_text) # :nodoc:
-      clicks_link link_text, :method => :put
-    end
-
-    alias_method :click_put_link, :clicks_put_link
     
     # Verifies that a submit button exists for the form, then submits the form, follows
     # any redirects, and verifies the final page was successful.
