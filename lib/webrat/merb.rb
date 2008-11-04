@@ -2,9 +2,9 @@ require "webrat/core"
 
 module Webrat
   class Session
-    include Merb::Test::RequestHelper
+    include Merb::Test::MakeRequest
     
-    attr_reader :response
+    attr_accessor :response
     
     def get(url, data, headers = nil)
       do_request(url, data, headers, "GET")
@@ -29,14 +29,33 @@ module Webrat
     def response_code
       @response.status
     end
-
-  protected
     
     def do_request(url, data, headers, method)
-      @response = request(url, :params => (data && data.any?) ? data : nil, :headers => headers, :method => method)
+      @response = request(url, 
+        :params => (data && data.any?) ? data : nil, 
+        :headers => headers, :method => method)
+      self.get(@response.headers['Location'], nil, @response.headers) if @response.status == 302
+    end
+    
+    def follow_redirect
       self.get(@response.headers['Location'], nil, @response.headers) if @response.status == 302
     end
 
+  end
+end
+
+module Merb
+  module Test
+    module RequestHelper
+      def request(uri, env = {})
+        @session ||= Webrat::Session.new
+        @session.response = @session.request(uri, env)
+      end
+  
+      def follow_redirect
+        @session.follow_redirect
+      end
+    end
   end
 end
 
