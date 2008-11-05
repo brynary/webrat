@@ -93,11 +93,11 @@ module Webrat
 
     alias_method :attach_file, :attaches_file
     
-    def clicks_area(area_name)
+    def click_area(area_name)
       find_area(area_name).click
     end
     
-    alias_method :click_area, :clicks_area
+    alias_method :clicks_area, :click_area
     
     # Issues a request for the URL pointed to by a link on the current page,
     # follows any redirects, and verifies the final page load was successful.
