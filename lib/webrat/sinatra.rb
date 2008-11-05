@@ -1,4 +1,4 @@
-require 'webrat/rack/rack_session'
+require 'webrat/rack'
 require 'sinatra'
 require 'sinatra/test/methods'
 

@@ -10,9 +10,12 @@ module Webrat
   end
 end
 
-# require "webrat/merb/param_parser"
-# require "webrat/merb/url_encoded_pair_parser"
 require "webrat/core"
 
-require "webrat/rails"  if defined?(RAILS_ENV)
-require "webrat/merb"   if defined?(Merb)
+# TODO: This is probably not a good idea.
+# Probably better for webrat users to require "webrat/rails" etc. directly
+if defined?(RAILS_ENV)
+  require "webrat/rails"
+elsif defined?(Merb)
+  require "webrat/merb"
+end
