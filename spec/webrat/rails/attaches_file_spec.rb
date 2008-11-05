@@ -25,7 +25,7 @@ describe "attaches_file" do
       </form>
     EOS
     @session.should_receive(:post).with("/widgets", { "widget" => { "file" => "" } })
-    @session.clicks_button
+    @session.click_button
   end
 
   it "should submit the attached file" do
@@ -38,7 +38,7 @@ describe "attaches_file" do
     EOS
     @session.should_receive(:post).with("/widgets", { "widget" => { "file" => @uploaded_file } })
     @session.attaches_file "Document", @filename
-    @session.clicks_button
+    @session.click_button
   end
 
   it "should support collections" do
@@ -54,7 +54,7 @@ describe "attaches_file" do
     @session.should_receive(:post).with("/widgets", { "widget" => { "files" => [@uploaded_file, @uploaded_file] } })
     @session.attaches_file "Document", @filename
     @session.attaches_file "Spreadsheet", @filename
-    @session.clicks_button
+    @session.click_button
   end
 
   it "should allow the content type to be specified" do
@@ -67,6 +67,6 @@ describe "attaches_file" do
     EOS
     ActionController::TestUploadedFile.should_receive(:new).with(@filename, "image/png").any_number_of_times
     @session.attaches_file "Picture", @filename, "image/png"
-    @session.clicks_button
+    @session.click_button
   end
 end

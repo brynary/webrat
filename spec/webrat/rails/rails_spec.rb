@@ -7,7 +7,7 @@
 #   EOS
 #   @page.stub!(:url).and_return("/current")
 #   @session.should_receive(:get).with("/current", {})
-#   @session.clicks_button
+#   @session.click_button
 # end
 # 
 # it "should follow fully qualified secure local links" do

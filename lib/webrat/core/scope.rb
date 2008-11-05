@@ -127,16 +127,16 @@ module Webrat
     # any redirects, and verifies the final page was successful.
     #
     # Example:
-    #   clicks_button "Login"
-    #   clicks_button
+    #   click_button "Login"
+    #   click_button
     #
     # The URL and HTTP method for the form submission are automatically read from the
     # <tt>action</tt> and <tt>method</tt> attributes of the <tt><form></tt> element.
-    def clicks_button(value = nil)
+    def click_button(value = nil)
       find_button(value).click
     end
 
-    alias_method :click_button, :clicks_button
+    alias_method :clicks_button, :click_button
     
     def dom # :nodoc:
       @dom ||= Hpricot(scoped_html)

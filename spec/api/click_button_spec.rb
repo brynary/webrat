@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
 
-describe "clicks_button" do
+describe "click_button" do
   before do
     @session = Webrat::TestSession.new
   end
@@ -10,7 +10,7 @@ describe "clicks_button" do
       <form method="get" action="/login"></form>
     EOS
     
-    lambda { @session.clicks_button }.should raise_error
+    lambda { @session.click_button }.should raise_error
   end
   
   it "should fail if input is not a submit button" do
@@ -20,7 +20,7 @@ describe "clicks_button" do
       </form>
     EOS
 
-    lambda { @session.clicks_button }.should raise_error
+    lambda { @session.click_button }.should raise_error
   end
 
   
@@ -31,7 +31,7 @@ describe "clicks_button" do
       </form>
     EOS
 
-    lambda { @session.clicks_button }.should raise_error
+    lambda { @session.click_button }.should raise_error
   end
   
   it "should default to get method" do
@@ -41,7 +41,7 @@ describe "clicks_button" do
       </form>
     EOS
     @session.should_receive(:get)
-    @session.clicks_button
+    @session.click_button
   end
   
   it "should assert valid response" do
@@ -51,7 +51,7 @@ describe "clicks_button" do
       </form>
     EOS
     @session.response_code = 501
-    lambda { @session.clicks_button }.should raise_error
+    lambda { @session.click_button }.should raise_error
   end
   
   [200, 300, 400, 499].each do |status|
@@ -62,7 +62,7 @@ describe "clicks_button" do
       </form>
     EOS
       @session.response_code = status
-      lambda { @session.clicks_button }.should_not raise_error
+      lambda { @session.click_button }.should_not raise_error
     end
   end
   
@@ -76,7 +76,7 @@ describe "clicks_button" do
       </form>
     EOS
     @session.should_receive(:get).with("/form1", {})
-    @session.clicks_button
+    @session.click_button
   end
   
   it "should not explode on file fields" do
@@ -86,7 +86,7 @@ describe "clicks_button" do
         <input type="submit" />
       </form>
     EOS
-    @session.clicks_button
+    @session.click_button
   end
   
   it "should submit the form with the specified button" do
@@ -99,7 +99,7 @@ describe "clicks_button" do
       </form>
     EOS
     @session.should_receive(:get).with("/form2", {})
-    @session.clicks_button "Form2"
+    @session.click_button "Form2"
   end
   
   it "should use action from form" do
@@ -109,7 +109,7 @@ describe "clicks_button" do
       </form>
     EOS
     @session.should_receive(:get).with("/login", {})
-    @session.clicks_button
+    @session.click_button
   end
   
   it "should use method from form" do
@@ -119,7 +119,7 @@ describe "clicks_button" do
       </form>
     EOS
     @session.should_receive(:post)
-    @session.clicks_button
+    @session.click_button
   end
   
   it "should send button as param if it has a name" do
@@ -130,7 +130,7 @@ describe "clicks_button" do
       </form>
     EOS
     @session.should_receive(:post).with("/login", "login" => "Login")
-    @session.clicks_button("Login")
+    @session.click_button("Login")
   end
   
   it "should not send button as param if it has no name" do
@@ -141,7 +141,7 @@ describe "clicks_button" do
       </form>
     EOS
     @session.should_receive(:post).with("/login", {})
-    @session.clicks_button("Login")
+    @session.click_button("Login")
   end
 
   it "should send default password field values" do
@@ -152,7 +152,7 @@ describe "clicks_button" do
       </form>
     EOS
     @session.should_receive(:get).with("/login", "user" => {"password" => "mypass"})
-    @session.clicks_button
+    @session.click_button
   end  
   
   it "should send default hidden field values" do
@@ -163,7 +163,7 @@ describe "clicks_button" do
       </form>
     EOS
     @session.should_receive(:get).with("/login", "user" => {"email" => "test@example.com"})
-    @session.clicks_button
+    @session.click_button
   end
   
   it "should send default text field values" do
@@ -174,7 +174,7 @@ describe "clicks_button" do
       </form>
     EOS
     @session.should_receive(:get).with("/login", "user" => {"email" => "test@example.com"})
-    @session.clicks_button
+    @session.click_button
   end
   
   it "should not send disabled field values" do
@@ -189,7 +189,7 @@ describe "clicks_button" do
       </form>
     EOS
     @session.should_receive(:get).with("/login", {})
-    @session.clicks_button
+    @session.click_button
   end
   
   it "should send default checked fields" do
@@ -200,7 +200,7 @@ describe "clicks_button" do
       </form>
     EOS
     @session.should_receive(:get).with("/login", "user" => {"tos" => "1"})
-    @session.clicks_button
+    @session.click_button
   end
   
   it "should send default radio options" do
@@ -214,7 +214,7 @@ describe "clicks_button" do
       </form>
     EOS
     @session.should_receive(:get).with("/login", "user" => {"gender" => "F"})
-    @session.clicks_button
+    @session.click_button
   end
   
   it "should send correct data for rails style unchecked fields" do
@@ -226,7 +226,7 @@ describe "clicks_button" do
       </form>
     EOS
     @session.should_receive(:get).with("/login", "user" => {"tos" => "0"})
-    @session.clicks_button
+    @session.click_button
   end
   
   it "should send correct data for rails style checked fields" do
@@ -238,7 +238,7 @@ describe "clicks_button" do
       </form>
     EOS
     @session.should_receive(:get).with("/login", "user" => {"tos" => "1"})
-    @session.clicks_button
+    @session.click_button
   end
 
   it "should send default collection fields" do
@@ -260,7 +260,7 @@ describe "clicks_button" do
     @session.should_receive(:post).with("/login",
       "options"  => ["burger", "fries", "soda", "soda", "dessert"],
       "response" => { "choices" => [{"selected" => "one"}, {"selected" => "two"}, {"selected" => "two"}]})
-    @session.clicks_button
+    @session.click_button
   end
   
   it "should not send default unchecked fields" do
@@ -271,7 +271,7 @@ describe "clicks_button" do
       </form>
     EOS
     @session.should_receive(:get).with("/login", {})
-    @session.clicks_button
+    @session.click_button
   end
   
   it "should send default textarea values" do
@@ -282,7 +282,7 @@ describe "clicks_button" do
       </form>
     EOS
     @session.should_receive(:post).with("/posts", "post" => {"body" => "Post body here!"})
-    @session.clicks_button
+    @session.click_button
   end
   
   it "should send default selected option value from select" do
@@ -296,7 +296,7 @@ describe "clicks_button" do
       </form>
     EOS
     @session.should_receive(:get).with("/login", "month" => "2")
-    @session.clicks_button
+    @session.click_button
   end
 
   it "should send default selected option inner html from select when no value attribute" do
@@ -310,7 +310,7 @@ describe "clicks_button" do
       </form>
     EOS
     @session.should_receive(:get).with("/login", "month" => "February")
-    @session.clicks_button
+    @session.click_button
   end
   
   it "should send first select option value when no option selected" do
@@ -324,7 +324,7 @@ describe "clicks_button" do
       </form>
     EOS
     @session.should_receive(:get).with("/login", "month" => "1")
-    @session.clicks_button
+    @session.click_button
   end
   
   it "should handle nested properties" do
@@ -336,7 +336,7 @@ describe "clicks_button" do
       </form>
     EOS
     @session.should_receive(:post).with("/login", "contestant" => {"scores" => {'1' => '2', '3' => '4'}})
-    @session.clicks_button
+    @session.click_button
   end
 
   it "should send default empty text field values" do
@@ -347,7 +347,7 @@ describe "clicks_button" do
       </form>
     EOS
     @session.should_receive(:get).with("/login", "user" => {"email" => ""})
-    @session.clicks_button
+    @session.click_button
   end
 
   it "should recognize button tags" do
@@ -358,7 +358,7 @@ describe "clicks_button" do
       </form>
     EOS
     @session.should_receive(:get).with("/login", "user" => {"email" => ""})
-    @session.clicks_button
+    @session.click_button
   end
 
   it "should recognize image button tags" do
@@ -368,7 +368,7 @@ describe "clicks_button" do
       </form>
     EOS
     @session.should_receive(:get)
-    @session.clicks_button
+    @session.click_button
   end
   
   it "should find buttons by their IDs" do
@@ -378,7 +378,7 @@ describe "clicks_button" do
       </form>
     EOS
     @session.should_receive(:get)
-    @session.clicks_button "my_button"
+    @session.click_button "my_button"
   end
   
   it "should find image buttons by their alt text" do
@@ -388,7 +388,7 @@ describe "clicks_button" do
       </form>
     EOS
     @session.should_receive(:get)
-    @session.clicks_button "Go"
+    @session.click_button "Go"
   end
 
   it "should recognize button tags by content" do
@@ -399,6 +399,6 @@ describe "clicks_button" do
       </form>
     EOS
     @session.should_receive(:get).with("/login", "user" => {"email" => ""})
-    @session.clicks_button "Login"
+    @session.click_button "Login"
   end
 end

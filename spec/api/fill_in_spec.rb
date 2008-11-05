@@ -15,7 +15,7 @@ describe "fill_in" do
     EOS
     @session.should_receive(:post).with("/login", "user" => {"text" => "filling text area"})
     @session.fill_in "User Text", :with => "filling text area"
-    @session.clicks_button
+    @session.click_button
   end
   
   it "should work with password fields" do
@@ -27,7 +27,7 @@ describe "fill_in" do
     EOS
     @session.should_receive(:post).with("/login", "user" => {"text" => "pass"})
     @session.fill_in "user_text", :with => "pass"
-    @session.clicks_button
+    @session.click_button
   end
 
   it "should fail if input not found" do
@@ -61,7 +61,7 @@ describe "fill_in" do
     EOS
     @session.should_receive(:post).with("/login", "user" => {"email" => "foo@example.com"})
     @session.fill_in "user[email]", :with => "foo@example.com"
-    @session.clicks_button
+    @session.click_button
   end
   
   it "should choose the shortest label match" do
@@ -77,7 +77,7 @@ describe "fill_in" do
     
     @session.should_receive(:post).with("/login", "user" => {"mail1" => "", "mail2" => "value"})
     @session.fill_in "Some", :with => "value"
-    @session.clicks_button
+    @session.click_button
   end
   
   it "should choose the first label match if closest is a tie" do
@@ -93,7 +93,7 @@ describe "fill_in" do
     
     @session.should_receive(:post).with("/login", "user" => {"mail1" => "value", "mail2" => ""})
     @session.fill_in "Some mail", :with => "value"
-    @session.clicks_button
+    @session.click_button
   end
   
   it "should anchor label matches to start of label" do
@@ -130,7 +130,7 @@ describe "fill_in" do
     EOS
     @session.should_receive(:post).with("/login", "user" => {"email" => "foo@example.com"})
     @session.fill_in "Email", :with => "foo@example.com"
-    @session.clicks_button
+    @session.click_button
   end
   
   it "should work with full input names" do
@@ -142,7 +142,7 @@ describe "fill_in" do
     EOS
     @session.should_receive(:post).with("/login", "user" => {"email" => "foo@example.com"})
     @session.fill_in "user[email]", :with => "foo@example.com"
-    @session.clicks_button
+    @session.click_button
   end
 
   it "should work if the input type is not set" do
@@ -154,7 +154,7 @@ describe "fill_in" do
     EOS
     @session.should_receive(:post).with("/login", "user" => {"email" => "foo@example.com"})
     @session.fill_in "user[email]", :with => "foo@example.com"
-    @session.clicks_button
+    @session.click_button
   end
   
   it "should work with symbols" do
@@ -167,7 +167,7 @@ describe "fill_in" do
     EOS
     @session.should_receive(:post).with("/login", "user" => {"email" => "foo@example.com"})
     @session.fill_in :email, :with => "foo@example.com"
-    @session.clicks_button
+    @session.click_button
   end
   
   it "should escape field values" do
@@ -180,6 +180,6 @@ describe "fill_in" do
     EOS
     @session.should_receive(:post).with("/users", "user" => {"phone" => "+1 22 33"})
     @session.fill_in 'Phone', :with => "+1 22 33"
-    @session.clicks_button
+    @session.click_button
   end
 end

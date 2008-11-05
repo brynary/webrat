@@ -34,7 +34,7 @@ describe "within" do
     @session.should_receive(:get).with("/form2", "email" => "test@example.com")
     @session.within "#form2" do |scope|
       scope.fill_in "Email", :with => "test@example.com"
-      scope.clicks_button
+      scope.click_button
     end
   end
   
@@ -49,7 +49,7 @@ describe "within" do
     
     @session.within "#form2" do |scope|
       lambda {
-        scope.clicks_button
+        scope.click_button
       }.should raise_error
     end
   end

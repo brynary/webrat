@@ -36,7 +36,7 @@ describe "choose" do
     EOS
     @session.should_receive(:get).with("/login", "user" => {"gender" => "M"})
     @session.choose "Male"
-    @session.clicks_button
+    @session.click_button
   end
   
   it "should only submit last chosen value" do
@@ -52,7 +52,7 @@ describe "choose" do
     @session.should_receive(:get).with("/login", "user" => {"gender" => "M"})
     @session.choose "Female"
     @session.choose "Male"
-    @session.clicks_button
+    @session.click_button
   end
   
   it "should fail if the radio button is disabled" do
@@ -75,7 +75,7 @@ describe "choose" do
     EOS
     @session.should_receive(:post).with("/login", "first_option" => "on")
     @session.choose "first_option"
-    @session.clicks_button
+    @session.click_button
   end
   
   it "should result in the value on being posted if not specified and checked by default" do
@@ -86,7 +86,7 @@ describe "choose" do
       </form>
     EOS
     @session.should_receive(:post).with("/login", "first_option" => "on")
-    @session.clicks_button
+    @session.click_button
   end
   
   it "should result in the value of the selected radio button being posted when a subsequent one is checked by default" do
@@ -101,6 +101,6 @@ describe "choose" do
     EOS
     @session.should_receive(:post).with("/login", "user" => {"gender" => "M"})
     @session.choose "Male"
-    @session.clicks_button
+    @session.click_button
   end
 end

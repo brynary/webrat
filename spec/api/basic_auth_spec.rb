@@ -18,6 +18,6 @@ describe "Basic Auth HTTP headers" do
       </form>
     EOS
     @session.should_receive(:post).with("/form1", {}, {'HTTP_AUTHORIZATION' => "Basic dXNlcjpzZWNyZXQ=\n"})
-    @session.clicks_button
+    @session.click_button
   end
 end

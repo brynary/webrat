@@ -35,7 +35,7 @@ describe "check" do
     EOS
     @session.should_receive(:get).with("/login", "user" => {"tos" => "1"})
     @session.check "TOS"
-    @session.clicks_button
+    @session.click_button
   end
   
   it "should result in the value on being posted if not specified" do
@@ -47,7 +47,7 @@ describe "check" do
     EOS
     @session.should_receive(:post).with("/login", "remember_me" => "on")
     @session.check "remember_me"
-    @session.clicks_button
+    @session.click_button
   end
   
   it "should fail if the checkbox is disabled" do
@@ -69,7 +69,7 @@ describe "check" do
     EOS
     @session.should_receive(:post).with("/login", "remember_me" => "yes")
     @session.check "remember_me"
-    @session.clicks_button
+    @session.click_button
   end
 end
 
@@ -119,7 +119,7 @@ describe "uncheck" do
     @session.should_receive(:get).with("/login", "user" => {"tos" => "0"})
     @session.check "TOS"
     @session.uncheck "TOS"
-    @session.clicks_button
+    @session.click_button
   end
 
   it "should result in value not being posted" do
@@ -131,6 +131,6 @@ describe "uncheck" do
     EOS
     @session.should_receive(:post).with("/login", {})
     @session.uncheck "remember_me"
-    @session.clicks_button
+    @session.click_button
   end
 end
