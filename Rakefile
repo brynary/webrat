@@ -1,24 +1,45 @@
 require 'rubygems'
+require "rake/gempackagetask"
+require "rake/clean"
 require 'spec'
 require 'spec/rake/spectask'
 require 'spec/rake/verify_rcov'
 require './lib/webrat.rb'
 
-# Hoe.new('webrat', Webrat::VERSION) do |p|
-#   p.rubyforge_name = 'webrat'
-#   p.summary = 'Ruby Acceptance Testing for Web applications'
-#   
-#   p.developer "Bryan Helmkamp",   "bryan@brynary.com"
-#   p.developer "Seth Fitzsimmons", "seth@mojodna.net"
-#   
-#   p.description = p.paragraphs_of('README.txt', 4..6).join("\n\n")
-#   p.url = p.paragraphs_of('README.txt', 1).first.split("\n").first.strip
-#   p.changes = p.paragraphs_of('History.txt', 0..3).join("\n\n")
-# 
-#   p.extra_deps << ["hpricot", ">= 0.6"]
-#   
-#   p.remote_rdoc_dir = '' # Release to root
-# end
+##############################################################################
+# Package && release
+##############################################################################
+spec = Gem::Specification.new do |s|
+  s.name         = "webrat"
+  s.version      = Webrat::VERSION
+  s.platform     = Gem::Platform::RUBY
+  s.author       = "Bryan Helmkamp"
+  s.email        = "bryan" + "@" + "brynary.com"
+  s.homepage     = "http://github.com/brynary/webrat"
+  s.summary      = "Webrat. Ruby Acceptance Testing for Web applications"
+  s.bindir       = "bin"
+  s.description  = s.summary
+  s.require_path = "lib"
+  s.files        = %w(History.txt init.rb install.rb MIT-LICENSE.txt README.txt Rakefile TODO.txt) + Dir["lib/**/*"]
+
+  # rdoc
+  s.has_rdoc         = true
+  s.extra_rdoc_files = %w(README.txt MIT-LICENSE.txt)
+
+  # Dependencies
+  s.add_dependency "hpricot", ">= 0.6"
+end
+
+Rake::GemPackageTask.new(spec) do |package|
+  package.gem_spec = spec
+end
+
+desc 'Show information about the gem.'
+task :debug_gem do
+  puts spec.to_ruby
+end
+
+CLEAN.include ["pkg", "*.gem", "doc", "ri", "coverage"]
 
 desc "Upload rdoc to brynary.com"
 task :publish_rdoc => :docs do
