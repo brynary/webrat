@@ -102,7 +102,7 @@ module Webrat
     # Issues a request for the URL pointed to by a link on the current page,
     # follows any redirects, and verifies the final page load was successful.
     # 
-    # clicks_link has very basic support for detecting Rails-generated 
+    # click_link has very basic support for detecting Rails-generated 
     # JavaScript onclick handlers for PUT, POST and DELETE links, as well as
     # CSRF authenticity tokens if they are present.
     #
@@ -112,16 +112,16 @@ module Webrat
     # for making the link request
     # 
     # Example:
-    #   clicks_link "Sign up"
+    #   click_link "Sign up"
     #
-    #   clicks_link "Sign up", :javascript => false
+    #   click_link "Sign up", :javascript => false
     # 
-    #   clicks_link "Sign up", :method => :put
-    def clicks_link(link_text, options = {})
+    #   click_link "Sign up", :method => :put
+    def click_link(link_text, options = {})
       find_link(link_text).click(options)
     end
 
-    alias_method :click_link, :clicks_link
+    alias_method :clicks_link, :click_link
     
     # Verifies that a submit button exists for the form, then submits the form, follows
     # any redirects, and verifies the final page was successful.

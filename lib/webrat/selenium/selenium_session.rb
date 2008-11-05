@@ -37,17 +37,20 @@ module Webrat
     
     alias_method :clicks_button, :click_button
 
-    def clicks_link(link_text_or_regexp, options = {})
+    def click_link(link_text_or_regexp, options = {})
       pattern = adjust_if_regexp(link_text_or_regexp)
       @selenium.click("webratlink=#{pattern}")
       wait_for_result(options[:wait])
     end
-    alias_method :click_link, :clicks_link
     
-    def clicks_link_within(selector, link_text, options = {})
+    alias_method :clicks_link, :click_link
+    
+    def click_link_within(selector, link_text, options = {})
       @selenium.click("webratlinkwithin=#{selector}|#{link_text}")
       wait_for_result(options[:wait])
     end
+    
+    alias_method :clicks_link_within, :click_link_within
 
     def wait_for_result(wait_type)
       if wait_type == :ajax

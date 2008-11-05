@@ -15,7 +15,7 @@ describe "within" do
     
     @session.should_receive(:get).with("/page2", {})
     @session.within "#container" do |scope|
-      scope.clicks_link "Link"
+      scope.click_link "Link"
     end
   end
   

@@ -117,17 +117,17 @@ module Webrat
     alias_method :reload, :reloads
       
     
-    # Works like clicks_link, but only looks for the link text within a given selector
+    # Works like click_link, but only looks for the link text within a given selector
     # 
     # Example:
-    #   clicks_link_within "#user_12", "Vote"
-    def clicks_link_within(selector, link_text)
+    #   click_link_within "#user_12", "Vote"
+    def click_link_within(selector, link_text)
       within(selector) do |scope|
-        scope.clicks_link(link_text)
+        scope.click_link(link_text)
       end
     end
 
-    alias_method :click_link_within, :clicks_link_within
+    alias_method :clicks_link_within, :click_link_within
     
     def within(selector)
       yield Scope.new(self, response_body, selector)

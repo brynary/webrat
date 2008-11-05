@@ -16,5 +16,5 @@
 #   EOS
 #   @session.should_receive(:https!).with(true)
 #   @session.should_receive(:get).with("/page/sub", {})
-#   @session.clicks_link "Jump to sub page"
+#   @session.click_link "Jump to sub page"
 # end
