@@ -91,9 +91,11 @@ module Webrat
       @selenium.click("webrat=#{label_text}")
     end
         
-    def checks(label_text)
+    def check(label_text)
       @selenium.check("webrat=#{label_text}")
     end
+    
+    alias_method :checks, :check
     
     def is_ordered(*args)
       @selenium.is_ordered(*args)

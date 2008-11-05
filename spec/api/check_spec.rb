@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
 
-describe "checks" do
+describe "check" do
   before do
     @session = Webrat::TestSession.new
   end
@@ -11,7 +11,7 @@ describe "checks" do
       </form>
     EOS
     
-    lambda { @session.checks "remember_me" }.should raise_error
+    lambda { @session.check "remember_me" }.should raise_error
   end
 
   it "should fail if input is not a checkbox" do
@@ -21,7 +21,7 @@ describe "checks" do
       </form>
     EOS
     
-    lambda { @session.checks "remember_me" }.should raise_error
+    lambda { @session.check "remember_me" }.should raise_error
   end
   
   it "should check rails style checkboxes" do
@@ -34,7 +34,7 @@ describe "checks" do
       </form>
     EOS
     @session.should_receive(:get).with("/login", "user" => {"tos" => "1"})
-    @session.checks "TOS"
+    @session.check "TOS"
     @session.clicks_button
   end
   
@@ -46,7 +46,7 @@ describe "checks" do
       </form>
     EOS
     @session.should_receive(:post).with("/login", "remember_me" => "on")
-    @session.checks "remember_me"
+    @session.check "remember_me"
     @session.clicks_button
   end
   
@@ -57,7 +57,7 @@ describe "checks" do
         <input type="submit" />
       </form>
     EOS
-    lambda { @session.checks "remember_me" }.should raise_error
+    lambda { @session.check "remember_me" }.should raise_error
   end
   
   it "should result in a custom value being posted" do
@@ -68,12 +68,12 @@ describe "checks" do
       </form>
     EOS
     @session.should_receive(:post).with("/login", "remember_me" => "yes")
-    @session.checks "remember_me"
+    @session.check "remember_me"
     @session.clicks_button
   end
 end
 
-describe "unchecks" do
+describe "uncheck" do
   before do
     @session = Webrat::TestSession.new
   end
@@ -84,7 +84,7 @@ describe "unchecks" do
       </form>
     EOS
 
-    lambda { @session.unchecks "remember_me" }.should raise_error
+    lambda { @session.uncheck "remember_me" }.should raise_error
   end
 
   it "should fail if input is not a checkbox" do
@@ -94,7 +94,7 @@ describe "unchecks" do
       </form>
     EOS
     
-    lambda { @session.unchecks "remember_me" }.should raise_error
+    lambda { @session.uncheck "remember_me" }.should raise_error
   end
   
   it "should fail if the checkbox is disabled" do
@@ -104,7 +104,7 @@ describe "unchecks" do
         <input type="submit" />
       </form>
     EOS
-    lambda { @session.unchecks "remember_me" }.should raise_error
+    lambda { @session.uncheck "remember_me" }.should raise_error
   end
   
   it "should uncheck rails style checkboxes" do
@@ -117,8 +117,8 @@ describe "unchecks" do
       </form>
     EOS
     @session.should_receive(:get).with("/login", "user" => {"tos" => "0"})
-    @session.checks "TOS"
-    @session.unchecks "TOS"
+    @session.check "TOS"
+    @session.uncheck "TOS"
     @session.clicks_button
   end
 
@@ -130,7 +130,7 @@ describe "unchecks" do
       </form>
     EOS
     @session.should_receive(:post).with("/login", {})
-    @session.unchecks "remember_me"
+    @session.uncheck "remember_me"
     @session.clicks_button
   end
 end

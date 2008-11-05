@@ -36,23 +36,23 @@ module Webrat
     # as checked, so that the value will be submitted with the form.
     #
     # Example:
-    #   checks 'Remember Me'
-    def checks(id_or_name_or_label)
+    #   check 'Remember Me'
+    def check(id_or_name_or_label)
       find_field(id_or_name_or_label, CheckboxField).check
     end
 
-    alias_method :check, :checks
+    alias_method :checks, :check
     
     # Verifies that an input checkbox exists on the current page and marks it
     # as unchecked, so that the value will not be submitted with the form.
     #
     # Example:
-    #   unchecks 'Remember Me'
-    def unchecks(id_or_name_or_label)
+    #   uncheck 'Remember Me'
+    def uncheck(id_or_name_or_label)
       find_field(id_or_name_or_label, CheckboxField).uncheck
     end
 
-    alias_method :uncheck, :unchecks
+    alias_method :unchecks, :uncheck
     
     # Verifies that an input radio button exists on the current page and marks it
     # as checked, so that the value will be submitted with the form.
