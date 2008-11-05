@@ -17,23 +17,19 @@ module Webrat
     end
     
     def get(url, data, headers = nil)
-      update_protocol(url)
-      @integration_session.get_via_redirect(remove_protocol(url), data, headers)
+      do_request(:get, url, data, headers)
     end
     
     def post(url, data, headers = nil)
-      update_protocol(url)
-      @integration_session.post_via_redirect(remove_protocol(url), data, headers)
+      do_request(:post, url, data, headers)
     end
     
     def put(url, data, headers = nil)
-      update_protocol(url)
-      @integration_session.put_via_redirect(remove_protocol(url), data, headers)
+      do_request(:delete, url, data, headers)
     end
     
     def delete(url, data, headers = nil)
-      update_protocol(url)
-      @integration_session.delete_via_redirect(remove_protocol(url), data, headers)
+      do_request(:delete, url, data, headers)
     end
     
     def response_body
@@ -45,6 +41,11 @@ module Webrat
     end
     
   protected
+    
+    def do_request(http_method, url, data, headers)
+      update_protocol(url)
+      @integration_session.request_via_redirect(http_method, remove_protocol(url), data, headers)
+    end
   
     def remove_protocol(href)
       if href =~ %r{^https?://www.example.com(/.*)}
