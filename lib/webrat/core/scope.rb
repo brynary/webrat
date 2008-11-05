@@ -58,12 +58,12 @@ module Webrat
     # as checked, so that the value will be submitted with the form.
     #
     # Example:
-    #   chooses 'First Option'
-    def chooses(label)
+    #   choose 'First Option'
+    def choose(label)
       find_field(label, RadioField).choose
     end
 
-    alias_method :choose, :chooses
+    alias_method :chooses, :choose
     
     # Verifies that a an option element exists on the current page with the specified
     # text. You can optionally restrict the search to a specific select list by

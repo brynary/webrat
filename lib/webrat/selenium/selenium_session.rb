@@ -90,9 +90,11 @@ module Webrat
       @selenium.select(select_locator, option_text)
     end
     
-    def chooses(label_text)
+    def choose(label_text)
       @selenium.click("webrat=#{label_text}")
     end
+    
+    alias_method :chooses, :choose
         
     def check(label_text)
       @selenium.check("webrat=#{label_text}")
