@@ -6,9 +6,9 @@ describe "Basic Auth HTTP headers" do
     @session.basic_auth('user', 'secret')
   end
 
-  it "should be present in visits" do
+  it "should be present in visit" do
     @session.should_receive(:get).with("/", {}, {'HTTP_AUTHORIZATION' => "Basic dXNlcjpzZWNyZXQ=\n"})
-    @session.visits("/")
+    @session.visit("/")
   end
   
   it "should be present in form submits" do

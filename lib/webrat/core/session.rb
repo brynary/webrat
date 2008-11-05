@@ -137,12 +137,12 @@ module Webrat
     # load was successful.
     #
     # Example:
-    #   visits "/"
-    def visits(url = nil, http_method = :get, data = {})
+    #   visit "/"
+    def visit(url = nil, http_method = :get, data = {})
       request_page(url, http_method, data)
     end
     
-    alias_method :visit, :visits
+    alias_method :visits, :visit
     
     def open_in_browser(path) # :nodoc
       `open #{path}`

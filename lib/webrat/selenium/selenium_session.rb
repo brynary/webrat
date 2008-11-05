@@ -7,11 +7,11 @@ module Webrat
       define_location_strategies
     end
     
-    def visits(url)
+    def visit(url)
       @selenium.open(url)
     end
     
-    alias_method :visit, :visits
+    alias_method :visits, :visit
     
     def fill_in(field_identifier, options)
       locator = "webrat=#{Regexp.escape(field_identifier)}"

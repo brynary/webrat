@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
 
-describe "visits" do
+describe "visit" do
   before do
     @session = Webrat::TestSession.new
     @session.response_body = "Hello world"
@@ -8,18 +8,18 @@ describe "visits" do
 
   it "should use get" do
     @session.should_receive(:get).with("/", {})
-    @session.visits("/")
+    @session.visit("/")
   end
   
   it "should assert valid response" do
     @session.response_code = 501
-    lambda { @session.visits("/") }.should raise_error
+    lambda { @session.visit("/") }.should raise_error
   end
   
   [200, 300, 400, 499].each do |status|
     it "should consider the #{status} status code as success" do
       @session.response_code = status
-      lambda { @session.visits("/") }.should_not raise_error
+      lambda { @session.visit("/") }.should_not raise_error
     end
   end
   
@@ -28,7 +28,7 @@ describe "visits" do
   end
 end
 
-describe "visits with referer" do
+describe "visit with referer" do
   before do
     @session = Webrat::TestSession.new
     @session.instance_variable_set(:@current_url, "/old_url")
@@ -37,7 +37,7 @@ describe "visits with referer" do
 
   it "should use get with referer header" do
     @session.should_receive(:get).with("/", {}, {"HTTP_REFERER" => "/old_url"})
-    @session.visits("/")
+    @session.visit("/")
   end
   
 end
