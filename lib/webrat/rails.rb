@@ -25,7 +25,7 @@ module Webrat
     end
     
     def put(url, data, headers = nil)
-      do_request(:delete, url, data, headers)
+      do_request(:put, url, data, headers)
     end
     
     def delete(url, data, headers = nil)

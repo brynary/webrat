@@ -13,16 +13,18 @@ module Webrat
     
     alias_method :visit, :visits
     
-    def fills_in(field_identifier, options)
+    def fill_in(field_identifier, options)
       locator = "webrat=#{Regexp.escape(field_identifier)}"
       @selenium.type(locator, "#{options[:with]}")
     end
+    
+    alias_method :fills_in, :fill_in
     
     def response_body
       @selenium.get_html_source
     end
     
-    def clicks_button(button_text_or_regexp = nil, options = {})
+    def click_button(button_text_or_regexp = nil, options = {})
       if button_text_or_regexp.is_a?(Hash) && options == {}
         pattern, options = nil, button_text_or_regexp
       else
@@ -32,7 +34,8 @@ module Webrat
       @selenium.click("button=#{pattern}")
       wait_for_result(options[:wait])
     end
-    alias_method :click_button, :clicks_button
+    
+    alias_method :clicks_button, :click_button
 
     def clicks_link(link_text_or_regexp, options = {})
       pattern = adjust_if_regexp(link_text_or_regexp)

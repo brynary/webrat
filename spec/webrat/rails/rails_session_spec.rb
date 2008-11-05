@@ -19,31 +19,31 @@ describe Webrat::RailsSession do
     Webrat::RailsSession.new(integration_session).response_code.should == 42
   end
   
-  it "should delegate get to get_via_redirect on the integration session" do
+  it "should delegate get to request_via_redirect on the integration session" do
     integration_session = mock("integration session")
     rails_session = Webrat::RailsSession.new(integration_session)
-    integration_session.should_receive(:get_via_redirect).with("url", "data", "headers")
+    integration_session.should_receive(:request_via_redirect).with(:get, "url", "data", "headers")
     rails_session.get("url", "data", "headers")
   end
   
-  it "should delegate post to post_via_redirect on the integration session" do
+  it "should delegate post to request_via_redirect on the integration session" do
     integration_session = mock("integration session")
     rails_session = Webrat::RailsSession.new(integration_session)
-    integration_session.should_receive(:post_via_redirect).with("url", "data", "headers")
+    integration_session.should_receive(:request_via_redirect).with(:post, "url", "data", "headers")
     rails_session.post("url", "data", "headers")
   end
   
-  it "should delegate put to put_via_redirect on the integration session" do
+  it "should delegate put to request_via_redirect on the integration session" do
     integration_session = mock("integration session")
     rails_session = Webrat::RailsSession.new(integration_session)
-    integration_session.should_receive(:put_via_redirect).with("url", "data", "headers")
+    integration_session.should_receive(:request_via_redirect).with(:put, "url", "data", "headers")
     rails_session.put("url", "data", "headers")
   end
   
-  it "should delegate delete to delete_via_redirect on the integration session" do
+  it "should delegate delete to request_via_redirect on the integration session" do
     integration_session = mock("integration session")
     rails_session = Webrat::RailsSession.new(integration_session)
-    integration_session.should_receive(:delete_via_redirect).with("url", "data", "headers")
+    integration_session.should_receive(:request_via_redirect).with(:delete, "url", "data", "headers")
     rails_session.delete("url", "data", "headers")
   end
   
@@ -51,14 +51,14 @@ describe Webrat::RailsSession do
     it "should just pass on the path" do
       integration_session = mock("integration session", :https! => nil)
       rails_session = Webrat::RailsSession.new(integration_session)
-      integration_session.should_receive(:get_via_redirect).with("/url", "data", "headers")
+      integration_session.should_receive(:request_via_redirect).with(:get, "/url", "data", "headers")
       rails_session.get("http://www.example.com/url", "data", "headers")
     end
   end
   
   context "the URL is https://" do
     it "should call #https! with true before the request" do
-      integration_session = mock("integration session", :get_via_redirect => nil)
+      integration_session = mock("integration session", :request_via_redirect => nil)
       rails_session = Webrat::RailsSession.new(integration_session)
       integration_session.should_receive(:https!).with(true)
       rails_session.get("https://www.example.com/url", "data", "headers")
@@ -67,7 +67,7 @@ describe Webrat::RailsSession do
   
   context "the URL is http://" do
     it "should call #https! with true before the request" do
-      integration_session = mock("integration session", :get_via_redirect => nil)
+      integration_session = mock("integration session", :request_via_redirect => nil)
       rails_session = Webrat::RailsSession.new(integration_session)
       integration_session.should_receive(:https!).with(false)
       rails_session.get("http://www.example.com/url", "data", "headers")

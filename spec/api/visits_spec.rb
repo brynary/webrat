@@ -24,7 +24,7 @@ describe "visits" do
   end
   
   it "should require a visit before manipulating page" do
-    lambda { @session.fills_in "foo", :with => "blah" }.should raise_error
+    lambda { @session.fill_in "foo", :with => "blah" }.should raise_error
   end
 end
 

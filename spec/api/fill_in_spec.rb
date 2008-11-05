@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
 
-describe "fills_in" do
+describe "fill_in" do
   before do
     @session = Webrat::TestSession.new
   end
@@ -14,7 +14,7 @@ describe "fills_in" do
       </form>
     EOS
     @session.should_receive(:post).with("/login", "user" => {"text" => "filling text area"})
-    @session.fills_in "User Text", :with => "filling text area"
+    @session.fill_in "User Text", :with => "filling text area"
     @session.clicks_button
   end
   
@@ -26,7 +26,7 @@ describe "fills_in" do
       </form>
     EOS
     @session.should_receive(:post).with("/login", "user" => {"text" => "pass"})
-    @session.fills_in "user_text", :with => "pass"
+    @session.fill_in "user_text", :with => "pass"
     @session.clicks_button
   end
 
@@ -36,7 +36,7 @@ describe "fills_in" do
       </form>
     EOS
     
-    lambda { @session.fills_in "Email", :with => "foo@example.com" }.should raise_error
+    lambda { @session.fill_in "Email", :with => "foo@example.com" }.should raise_error
   end
   
   it "should fail if input is disabled" do
@@ -48,7 +48,7 @@ describe "fills_in" do
       </form>
     EOS
     
-    lambda { @session.fills_in "Email", :with => "foo@example.com" }.should raise_error
+    lambda { @session.fill_in "Email", :with => "foo@example.com" }.should raise_error
   end
   
   it "should allow overriding default form values" do
@@ -60,7 +60,7 @@ describe "fills_in" do
       </form>
     EOS
     @session.should_receive(:post).with("/login", "user" => {"email" => "foo@example.com"})
-    @session.fills_in "user[email]", :with => "foo@example.com"
+    @session.fill_in "user[email]", :with => "foo@example.com"
     @session.clicks_button
   end
   
@@ -76,7 +76,7 @@ describe "fills_in" do
     EOS
     
     @session.should_receive(:post).with("/login", "user" => {"mail1" => "", "mail2" => "value"})
-    @session.fills_in "Some", :with => "value"
+    @session.fill_in "Some", :with => "value"
     @session.clicks_button
   end
   
@@ -92,7 +92,7 @@ describe "fills_in" do
     EOS
     
     @session.should_receive(:post).with("/login", "user" => {"mail1" => "value", "mail2" => ""})
-    @session.fills_in "Some mail", :with => "value"
+    @session.fill_in "Some mail", :with => "value"
     @session.clicks_button
   end
   
@@ -104,7 +104,7 @@ describe "fills_in" do
       </form>
     EOS
     
-    lambda { @session.fills_in "mail", :with => "value" }.should raise_error
+    lambda { @session.fill_in "mail", :with => "value" }.should raise_error
   end
   
   it "should anchor label matches to word boundaries" do
@@ -115,7 +115,7 @@ describe "fills_in" do
       </form>
     EOS
     
-    lambda { @session.fills_in "Email", :with => "value" }.should raise_error
+    lambda { @session.fill_in "Email", :with => "value" }.should raise_error
   end
   
   it "should work with inputs nested in labels" do
@@ -129,7 +129,7 @@ describe "fills_in" do
       </form>
     EOS
     @session.should_receive(:post).with("/login", "user" => {"email" => "foo@example.com"})
-    @session.fills_in "Email", :with => "foo@example.com"
+    @session.fill_in "Email", :with => "foo@example.com"
     @session.clicks_button
   end
   
@@ -141,7 +141,7 @@ describe "fills_in" do
       </form>
     EOS
     @session.should_receive(:post).with("/login", "user" => {"email" => "foo@example.com"})
-    @session.fills_in "user[email]", :with => "foo@example.com"
+    @session.fill_in "user[email]", :with => "foo@example.com"
     @session.clicks_button
   end
 
@@ -153,7 +153,7 @@ describe "fills_in" do
       </form>
     EOS
     @session.should_receive(:post).with("/login", "user" => {"email" => "foo@example.com"})
-    @session.fills_in "user[email]", :with => "foo@example.com"
+    @session.fill_in "user[email]", :with => "foo@example.com"
     @session.clicks_button
   end
   
@@ -166,7 +166,7 @@ describe "fills_in" do
       </form>
     EOS
     @session.should_receive(:post).with("/login", "user" => {"email" => "foo@example.com"})
-    @session.fills_in :email, :with => "foo@example.com"
+    @session.fill_in :email, :with => "foo@example.com"
     @session.clicks_button
   end
   
@@ -179,7 +179,7 @@ describe "fills_in" do
       </form>
     EOS
     @session.should_receive(:post).with("/users", "user" => {"phone" => "+1 22 33"})
-    @session.fills_in 'Phone', :with => "+1 22 33"
+    @session.fill_in 'Phone', :with => "+1 22 33"
     @session.clicks_button
   end
 end
