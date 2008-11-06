@@ -1,3 +1,4 @@
+Switch from Nokogiri::Hpricot to Nokogiri::HTML
 Add tests for locator strategies
 Use Webrat::Methods for Merb and Rails integration
 Get file uploads workign with merb
