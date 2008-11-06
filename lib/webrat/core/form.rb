@@ -11,10 +11,10 @@ module Webrat
       @fields   = nil
     end
 
-    def find_field(locator, *field_types)
-      field_by_id(locator, *field_types)    ||
-      field_by_name(locator, *field_types)  ||
-      field_by_label(locator, *field_types) ||
+    def field(locator, *field_types)
+      field_with_id(locator, *field_types)    ||
+      field_named(locator, *field_types)  ||
+      field_labeled(locator, *field_types) ||
       nil
     end
     
@@ -48,17 +48,17 @@ module Webrat
       @session.request_page(form_action, form_method, params)
     end
 
-    def field_by_id(id, *field_types)
+    def field_with_id(id, *field_types)
       possible_fields = fields_by_type(field_types)
       possible_fields.detect { |possible_field| possible_field.matches_id?(id) }
     end
     
-    def field_by_name(name, *field_types)
+    def field_named(name, *field_types)
       possible_fields = fields_by_type(field_types)
       possible_fields.detect { |possible_field| possible_field.matches_name?(name) }
     end
     
-    def field_by_label(label, *field_types)
+    def field_labeled(label, *field_types)
       possible_fields = fields_by_type(field_types)      
       matching_fields = possible_fields.select do |possible_field|
         possible_field.matches_label?(label)

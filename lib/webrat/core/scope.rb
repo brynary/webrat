@@ -26,8 +26,8 @@ module Webrat
     # The field value is required, and must be specified in <tt>options[:with]</tt>.
     # <tt>field</tt> can be either the value of a name attribute (i.e. <tt>user[email]</tt>)
     # or the text inside a <tt><label></tt> element that points at the <tt><input></tt> field.
-    def fill_in(id_or_name_or_label, options = {})
-      field = find_field(id_or_name_or_label, TextField, TextareaField, PasswordField)
+    def fill_in(field_locator, options = {})
+      field = locate_field(field_locator, TextField, TextareaField, PasswordField)
       field.raise_error_if_disabled
       field.set(options[:with])
     end
@@ -39,8 +39,8 @@ module Webrat
     #
     # Example:
     #   check 'Remember Me'
-    def check(id_or_name_or_label)
-      find_field(id_or_name_or_label, CheckboxField).check
+    def check(field_locator)
+      locate_field(field_locator, CheckboxField).check
     end
 
     alias_method :checks, :check
@@ -50,8 +50,8 @@ module Webrat
     #
     # Example:
     #   uncheck 'Remember Me'
-    def uncheck(id_or_name_or_label)
-      find_field(id_or_name_or_label, CheckboxField).uncheck
+    def uncheck(field_locator)
+      locate_field(field_locator, CheckboxField).uncheck
     end
 
     alias_method :unchecks, :uncheck
@@ -61,8 +61,8 @@ module Webrat
     #
     # Example:
     #   choose 'First Option'
-    def choose(label)
-      find_field(label, RadioField).choose
+    def choose(field_locator)
+      locate_field(field_locator, RadioField).choose
     end
 
     alias_method :chooses, :choose
@@ -89,8 +89,8 @@ module Webrat
     # Example:
     #   attaches_file "Resume", "/path/to/the/resume.txt"
     #   attaches_file "Photo", "/path/to/the/image.png", "image/png"
-    def attaches_file(id_or_name_or_label, path, content_type = nil)
-      find_field(id_or_name_or_label, FileField).set(path, content_type)
+    def attaches_file(field_locator, path, content_type = nil)
+      locate_field(field_locator, FileField).set(path, content_type)
     end
 
     alias_method :attach_file, :attaches_file
@@ -146,6 +146,14 @@ module Webrat
     
   protected
   
+    def locate_field(field_locator, *field_types)
+      if field_locator.is_a?(Field)
+        field_locator
+      else
+        field(field_locator, *field_types)
+      end
+    end
+    
     def scoped_html
       @scoped_html ||= begin
         if @selector
@@ -162,8 +170,8 @@ module Webrat
       end
     end
     
-    def links_within(selector)
-      (dom / selector / "a[@href]").map do |link_element|
+    def links
+      (dom / "a[@href]").map do |link_element|
         Link.new(@session, link_element)
       end
     end

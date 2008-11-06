@@ -1,69 +1,83 @@
+require "webrat/core_extensions/detect_mapped"
+
 module Webrat
   module Locators
 
-    def find_field(*args)
+    def field(*args)
       # This is the default locator strategy
-      
-      field_with_id(*args)    ||
-      field_with_name(*args)  ||
-      field_labeled(*args)
+      find_field_with_id(*args) ||
+      find_field_named(*args)   ||
+      field_labeled(*args)      ||
+      flunk("Could not find field: #{args.inspect}")
     end
     
     def field_labeled(label, *field_types)
-      forms.each do |form|
-        result = form.field_by_label(label, *field_types)
-        return result if result
-      end
-      
-      flunk("Could not find #{field_types.inspect}: #{label.inspect}")
+      find_field_labeled(label, *field_types) ||
+      flunk("Could not find field labeled #{label.inspect}")
+    end
+
+    def field_named(name, *field_types)
+      find_field_named(name, *field_types) ||
+      flunk("Could not find field named #{name.inspect}")
     end
     
     def field_with_id(id, *field_types)
-      forms.each do |form|
-        result = form.field_by_id(id, *field_types)
-        return result if result
-      end
-      
-      return nil
+      find_field_with_id(id, *field_types) ||
+      flunk("Could not find field with id #{id.inspect}")
     end
     
-    def field_with_name(name, *field_types)
-      forms.each do |form|
-        result = form.field_by_name(name, *field_types)
-        return result if result
+    def find_field_labeled(label, *field_types)
+      forms.detect_mapped do |form|
+        form.field_labeled(label, *field_types)
       end
-      
-      return nil
+    end
+    
+    def find_field_named(name, *field_types)
+      forms.detect_mapped do |form|
+        form.field_named(name, *field_types)
+      end
+    end
+    
+    def find_field_with_id(id, *field_types)
+      forms.detect_mapped do |form|
+        form.field_with_id(id, *field_types)
+      end
     end
     
     def find_select_option(option_text, id_or_name_or_label)
       if id_or_name_or_label
-        field = find_field(id_or_name_or_label, SelectField)
+        field = field(id_or_name_or_label, SelectField)
         return field.find_option(option_text)
       else
-        forms.each do |form|
-          result = form.find_select_option(option_text)
-          return result if result
+        select_option = forms.detect_mapped do |form|
+          form.find_select_option(option_text)
         end
+        
+        return select_option if select_option
       end
         
       flunk("Could not find option #{option_text.inspect}")
     end
     
     def find_button(value)
-      forms.each do |form|
-        button = form.find_button(value)
-        return button if button
+      button = forms.detect_mapped do |form|
+        form.find_button(value)
       end
-      flunk("Could not find button #{value.inspect}")
+      
+      if button
+        return button
+      else
+        flunk("Could not find button #{value.inspect}")
+      end
     end
     
     def find_area(area_name)
-      areas.select{|area| area.matches_text?(area_name)}.first || flunk("Could not find area with name #{area_name}")
+      areas.detect { |area| area.matches_text?(area_name) } ||
+      flunk("Could not find area with name #{area_name}")
     end
     
-    def find_link(text, selector = nil)
-      matching_links = links_within(selector).select do |possible_link|
+    def find_link(text)
+      matching_links = links.select do |possible_link|
         possible_link.matches_text?(text)
       end
       
