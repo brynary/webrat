@@ -16,6 +16,4 @@ require "webrat/core"
 # Probably better for webrat users to require "webrat/rails" etc. directly
 if defined?(RAILS_ENV)
   require "webrat/rails"
-elsif defined?(Merb)
-  require "webrat/merb"
 end

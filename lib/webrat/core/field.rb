@@ -59,7 +59,16 @@ module Webrat
         
     def to_param
       return nil if disabled?
-      param_parser.parse_query_parameters("#{name}=#{escaped_value}")
+      
+      key_and_value = "#{name}=#{escaped_value}"
+      
+      if defined?(CGIMethods)
+        CGIMethods.parse_query_parameters(key_and_value)
+      elsif defined?(ActionController::AbstractRequest)
+        ActionController::AbstractRequest.parse_query_parameters(key_and_value)
+      else
+        Merb::Parse.query(key_and_value)
+      end
     end
     
     def set(value)
@@ -110,17 +119,6 @@ module Webrat
     
     def default_value
       @element["value"]
-    end
-    
-    def param_parser
-      if defined?(CGIMethods)
-        CGIMethods
-      elsif defined?(ActionController::AbstractRequest)
-        ActionController::AbstractRequest
-      else
-        require "webrat/merb/param_parser"
-        Webrat::MerbParamParser
-      end
     end
     
     def replace_param_value(params, oval, nval)

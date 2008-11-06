@@ -1,19 +1,22 @@
 module Webrat
   module Methods
-    
+
     def self.delegate_to_session(*meths)
       meths.each do |meth|
         self.class_eval <<-RUBY
           def #{meth}(*args, &blk)
-            webrat_session.#{meth}(*args, &blk)
+            @session ||= ::Webrat::Session.new
+            @session.#{meth}(*args, &blk)
           end
         RUBY
       end
     end
     
-    def webrat_session
-      @webrat_session ||= ::Webrat::Session.new
-    end
+    # all of these methods delegate to the @session, which should
+    # be created transparently.
+    #
+    # Note that when using Webrat, #request also uses @session, so
+    # that #request and webrat native functions behave interchangably
 
     delegate_to_session \
       :visits, :visit,
