@@ -69,3 +69,9 @@ end
 task :default do
   Rake::Task["verify_rcov"].invoke
 end
+
+desc 'Install the package as a gem.'
+task :install_gem => [:clean, :package] do
+  gem = Dir['pkg/*.gem'].first
+  sh "sudo gem install --local #{gem}"
+end
