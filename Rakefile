@@ -28,6 +28,7 @@ spec = Gem::Specification.new do |s|
 
   # Dependencies
   s.add_dependency "hpricot", ">= 0.6"
+  s.add_dependency "nokogiri", ">= 1.0.3"
 end
 
 Rake::GemPackageTask.new(spec) do |package|

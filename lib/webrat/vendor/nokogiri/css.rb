@@ -1,6 +1,0 @@
-require 'merb-core/vendor/nokogiri/css/node'
-require 'merb-core/vendor/nokogiri/css/xpath_visitor'
-require 'merb-core/vendor/nokogiri/css/generated_tokenizer'
-require 'merb-core/vendor/nokogiri/css/generated_parser'
-require 'merb-core/vendor/nokogiri/css/tokenizer'
-require 'merb-core/vendor/nokogiri/css/parser'
