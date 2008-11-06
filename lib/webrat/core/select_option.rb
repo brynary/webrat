@@ -8,9 +8,9 @@ module Webrat
     
     def matches_text?(text)
       if text.is_a?(Regexp)
-        @element.innerHTML =~ text
+        @element.inner_html =~ text
       else
-        @element.innerHTML == text.to_s
+        @element.inner_html == text.to_s
       end
     end
     
@@ -22,7 +22,7 @@ module Webrat
   protected
   
     def value
-      @element["value"] || @element.innerHTML
+      @element["value"] || @element.inner_html
     end
     
   end

@@ -1,4 +1,4 @@
-require "hpricot"
+require "nokogiri"
 require "webrat/core/form"
 require "webrat/core/locators"
 
@@ -139,7 +139,7 @@ module Webrat
     alias_method :clicks_button, :click_button
     
     def dom # :nodoc:
-      @dom ||= Hpricot(scoped_html)
+      @dom ||= Nokogiri::Hpricot(scoped_html)
     end
     
   protected
@@ -155,7 +155,7 @@ module Webrat
     def scoped_html
       @scoped_html ||= begin
         if @selector
-          (Hpricot(@html) / @selector).first.to_html
+          (Nokogiri::Hpricot(@html) / @selector).first.to_html
         else
           @html
         end

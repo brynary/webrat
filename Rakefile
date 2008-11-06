@@ -27,7 +27,6 @@ spec = Gem::Specification.new do |s|
   s.extra_rdoc_files = %w(README.txt MIT-LICENSE.txt)
 
   # Dependencies
-  s.add_dependency "hpricot", ">= 0.6"
   s.add_dependency "nokogiri", ">= 1.0.3"
 end
 

@@ -67,7 +67,7 @@ module Webrat
       elsif defined?(ActionController::AbstractRequest)
         ActionController::AbstractRequest.parse_query_parameters(key_and_value)
       else
-        Merb::Parse.query(key_and_value)
+        ::Merb::Parse.query(key_and_value)
       end
     end
     
@@ -141,7 +141,7 @@ module Webrat
   class ButtonField < Field
 
     def matches_text?(text)
-      @element.innerHTML =~ /#{Regexp.escape(text.to_s)}/i
+      @element.inner_html =~ /#{Regexp.escape(text.to_s)}/i
     end
     
     def matches_value?(value)
@@ -315,7 +315,7 @@ module Webrat
       selected_options = @element / "option:first" if selected_options.empty? 
       selected_options.map do |option|
         return "" if option.nil?
-        option["value"] || option.innerHTML
+        option["value"] || option.inner_html
       end
     end
 

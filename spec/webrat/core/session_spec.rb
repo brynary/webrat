@@ -14,7 +14,7 @@ describe Webrat::Session do
       "<html></html>"
     end
     
-    session.current_dom.should be_an_instance_of(Hpricot::Doc)
+    session.current_dom.should be_an_instance_of(Nokogiri::HTML::Document)
   end
   
   it "should open the page in the browser" do

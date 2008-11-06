@@ -11,7 +11,7 @@ module Webrat
     end
     
     def text
-      @element.innerText
+      @element.inner_text
     end
     
   end
