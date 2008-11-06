@@ -2,6 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
 
 describe Webrat::Matchers do
   include Webrat::Matchers
+  include Webrat::HaveTagMatcher
   
   before(:each) do
     @body = <<-EOF
@@ -64,19 +65,19 @@ describe Webrat::Matchers do
         </div>
       EOF
       
-      @element.stub!(:contains?)
-      @element.stub!(:matches?)
+      @element.stub!(:include?)
+      @element.stub!(:match)
     end
     
     describe "#matches?" do
-      it "should call element#contains? when the argument is a string" do
-        @element.should_receive(:contains?)
+      it "should call element#include? when the argument is a string" do
+        @element.should_receive(:include?)
         
         Webrat::Matchers::HasContent.new("hello, world!").matches?(@element)
       end
       
-      it "should call element#matches? when the argument is a regular expression" do
-        @element.should_receive(:matches?)
+      it "should call element#match when the argument is a regular expression" do
+        @element.should_receive(:match)
         
         Webrat::Matchers::HasContent.new(/hello, world/).matches?(@element)
       end
