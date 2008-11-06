@@ -12,11 +12,9 @@ module Webrat
     end
 
     def find_field(id_or_name_or_label, *field_types)
-      possible_fields = fields_by_type(field_types)
-      
-      find_field_by_id(possible_fields, id_or_name_or_label)    ||
-      find_field_by_name(possible_fields, id_or_name_or_label)  ||
-      find_field_by_label(possible_fields, id_or_name_or_label) ||
+      find_field_by_id(id_or_name_or_label, *field_types)    ||
+      find_field_by_name(id_or_name_or_label, *field_types)  ||
+      find_field_by_label(id_or_name_or_label, *field_types) ||
       nil
     end
     
@@ -50,22 +48,25 @@ module Webrat
       @session.request_page(form_action, form_method, params)
     end
 
-  protected
-  
-    def find_field_by_id(possible_fields, id)
+    def find_field_by_id(id, *field_types)
+      possible_fields = fields_by_type(field_types)
       possible_fields.detect { |possible_field| possible_field.matches_id?(id) }
     end
     
-    def find_field_by_name(possible_fields, name)
+    def find_field_by_name(name, *field_types)
+      possible_fields = fields_by_type(field_types)
       possible_fields.detect { |possible_field| possible_field.matches_name?(name) }
     end
     
-    def find_field_by_label(possible_fields, label)      
+    def find_field_by_label(label, *field_types)
+      possible_fields = fields_by_type(field_types)      
       matching_fields = possible_fields.select do |possible_field|
         possible_field.matches_label?(label)
       end      
       matching_fields.min { |a, b| a.label_text.length <=> b.label_text.length }
     end
+    
+  protected
   
     def fields_by_type(field_types)
       fields.select { |f| field_types.include?(f.class) }

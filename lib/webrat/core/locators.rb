@@ -1,8 +1,51 @@
 module Webrat
   module Locators
+
+    def find_field(*args)
+      # This is the default locator strategy
+      
+      field_with_id(*args)    ||
+      field_with_name(*args)  ||
+      field_labeled(*args)
+    end
     
-    def field_labeled(label)
-      find_field(label, TextField, TextareaField, CheckboxField, RadioField, HiddenField)
+    def field_labeled(label, *field_types)
+      if field_types.empty?
+        field_types = [TextField, TextareaField, CheckboxField, RadioField, HiddenField]
+      end
+      
+      forms.each do |form|
+        result = form.find_field_by_label(label, *field_types)
+        return result if result
+      end
+      
+      flunk("Could not find #{field_types.inspect}: #{label.inspect}")
+    end
+    
+    def field_with_id(id, *field_types)
+      if field_types.empty?
+        field_types = [TextField, TextareaField, CheckboxField, RadioField, HiddenField]
+      end
+      
+      forms.each do |form|
+        result = form.find_field_by_id(id, *field_types)
+        return result if result
+      end
+      
+      return nil
+    end
+    
+    def field_with_name(name, *field_types)
+      if field_types.empty?
+        field_types = [TextField, TextareaField, CheckboxField, RadioField, HiddenField]
+      end
+      
+      forms.each do |form|
+        result = form.find_field_by_name(name, *field_types)
+        return result if result
+      end
+      
+      return nil
     end
     
     def find_select_option(option_text, id_or_name_or_label)
@@ -41,15 +84,6 @@ module Webrat
       else
         flunk("Could not find link with text #{text.inspect}")
       end
-    end
-    
-    def find_field(id_or_name_or_label, *field_types)
-      forms.each do |form|
-        result = form.find_field(id_or_name_or_label, *field_types)
-        return result if result
-      end
-      
-      flunk("Could not find #{field_types.inspect}: #{id_or_name_or_label.inspect}")
     end
     
   end
