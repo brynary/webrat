@@ -91,6 +91,8 @@ module Webrat
       @current_url  = url
       @http_method  = http_method
       @data         = data
+      
+      return response
     end
     
     def success_code?
