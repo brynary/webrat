@@ -6,9 +6,10 @@ module Webrat
         # Require nokogiri and fall back on rexml
         begin
           require "nokogiri"
+          require "webrat/nokogiri"
         rescue LoadError => e
           if require "rexml/document"
-            require "merb-core/vendor/nokogiri/css"
+            require "webrat/vendor/nokogiri/css"
             warn("Standard REXML library is slow. Please consider installing nokogiri.\nUse \"sudo gem install nokogiri\"")
           end
         end
