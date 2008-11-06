@@ -1,13 +1,11 @@
 require "hpricot"
 require "webrat/core/form"
-require "webrat/core/assertions"
 require "webrat/core/locators"
 
 module Webrat
   class Scope
     include Logging
     include Flunk
-    include Assertions
     include Locators
     
     def initialize(session, html, selector = nil)
