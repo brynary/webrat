@@ -10,12 +10,8 @@ module Webrat
     end
     
     def field_labeled(label, *field_types)
-      if field_types.empty?
-        field_types = [TextField, TextareaField, CheckboxField, RadioField, HiddenField]
-      end
-      
       forms.each do |form|
-        result = form.find_field_by_label(label, *field_types)
+        result = form.field_by_label(label, *field_types)
         return result if result
       end
       
@@ -23,12 +19,8 @@ module Webrat
     end
     
     def field_with_id(id, *field_types)
-      if field_types.empty?
-        field_types = [TextField, TextareaField, CheckboxField, RadioField, HiddenField]
-      end
-      
       forms.each do |form|
-        result = form.find_field_by_id(id, *field_types)
+        result = form.field_by_id(id, *field_types)
         return result if result
       end
       
@@ -36,12 +28,8 @@ module Webrat
     end
     
     def field_with_name(name, *field_types)
-      if field_types.empty?
-        field_types = [TextField, TextareaField, CheckboxField, RadioField, HiddenField]
-      end
-      
       forms.each do |form|
-        result = form.find_field_by_name(name, *field_types)
+        result = form.field_by_name(name, *field_types)
         return result if result
       end
       
