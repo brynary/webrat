@@ -2,24 +2,30 @@
 
 * Major enhancements
 
-  * Added Merb support (Gwyn Morfey, Jeremy Burks, Rob Kaufman)
-  * Added #basic_auth(user, pass) to support HTTP Basic Auth (Aslak Hellesøy)
-  * Added support for Sinatra and Rack (Aslak Hellesøy)
-  * Added #within for manipulating the current page within a selector scope
-  * Add support for simulating SSL requests (Luke Melia)
-  * Add support for file fields via #attaches_file method (Kyle Hargraves)
+  * Added Merb support (Gwyn Morfey, Jeremy Burks, Rob Kaufman, Yehuda Katz)
+  * Added experimental Selenium support (Luke Melia)
+  * Add have_selector, have_xpath, have_tag and contain matchers from Merb
+  * Switch from Hpricot to Nokogiri for XML parsing (falls back to REXML)
   
 * Minor enhancements
 
-	* Allow clicking links and buttons by a regular expression in Selenium (Luke Melia)
+  * Added #within for manipulating the current page within a selector scope
+  * Add support for file fields via #attaches_file method (Rails only at the moment) (Kyle Hargraves)
+  * Add support for simulating SSL requests (Luke Melia)
+  * Added #basic_auth(user, pass) to support HTTP Basic Auth (Aslak Hellesøy)
+  * Added support for Sinatra and Rack (Aslak Hellesøy)
+  * Rename visits to visit, fills_in to fill_in, etc.
+  * Add #field_labeled for looking up form fields by label (David Chelimsky)
+  * Add #field_named and #field_with_id locators
+  * Don't depend on hoe anymore
+  * Return responses after sending requests
+  * Allow clicking links and buttons by a regular expression in Selenium (Luke Melia)
   * Allow clicking links by a regular expression
   * Add #http_accept for including MIME type HTTP "Accept" headers (Ryan Briones)
   * Add #header to support inclusion of custom HTTP headers (Ryan Briones)
   * Consider response codes 200-499 as successful enough to not raise a Webrat error (David Leal)
-  * Add #field_labeled for looking up form fields by label (David Chelimsky)
   * Add Webrat.root method for cross-framework support (Krzysztof Zylawy)
   * Add support for clicking areas of an image map (Alex Lang)
-  * Add should_see and should_not_see for verifying HTML response bodys
   * Support relative links, including href="?foo=bar" (Kyle Hargraves)
   * Separated Rails-specific code from the Webrat core to make it easier to use Webrat with other environments
   * Alias visits as visit, clicks_link as click_link, etc. for better readability
