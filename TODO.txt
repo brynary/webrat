@@ -1,7 +1,6 @@
 Add tests for locator strategies
-Use Webrat::Methods for Merb and Rails integration
+Use Webrat::Methods for Rails integration
 Get file uploads workign with merb
-Use a stack for #within to support nested scoping and implicit receivers
 Fix #within scoping for forms that exist outside the scope
 Make current_url work with redirections
 Track the current form based on the location of the last manipulated input, use this as a default for click_button
