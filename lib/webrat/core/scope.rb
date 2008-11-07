@@ -1,7 +1,6 @@
 require "nokogiri"
 require "webrat/core/form"
 require "webrat/core/locators"
-require "webrat/core_extensions/meta_class"
 
 module Webrat
   class Scope
@@ -168,13 +167,8 @@ module Webrat
   
     def page_dom
       return @response.dom if @response.respond_to?(:dom)
-        
       dom = Webrat.nokogiri_document(@response_body)
-      
-      @response.meta_class.send(:define_method, :dom) do
-        dom
-      end
-
+      Webrat.define_dom_method(@response, dom)
       return dom
     end
     
@@ -191,13 +185,13 @@ module Webrat
     end
     
     def areas
-      (dom / "area").map do |element| 
+      dom.search("area").map do |element| 
         Area.new(@session, element)
       end
     end
     
     def links
-      (dom / "a[@href]").map do |link_element|
+      dom.search("a[@href]").map do |link_element|
         Link.new(@session, link_element)
       end
     end
@@ -205,7 +199,7 @@ module Webrat
     def forms
       return @forms if @forms
       
-      @forms = (dom / "form").map do |form_element|
+      @forms = dom.search("form").map do |form_element|
         Form.new(@session, form_element)
       end
     end

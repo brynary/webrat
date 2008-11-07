@@ -1,3 +1,5 @@
+require "webrat/core_extensions/meta_class"
+
 module Webrat
   
   def self.nokogiri_document(stringlike)
@@ -11,6 +13,12 @@ module Webrat
       Nokogiri::HTML(stringlike.body.to_s)
     else
       Nokogiri::HTML(stringlike.to_s)
+    end
+  end
+  
+  def self.define_dom_method(object, dom)
+    object.meta_class.send(:define_method, :dom) do
+      dom
     end
   end
   

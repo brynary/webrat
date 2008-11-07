@@ -311,8 +311,8 @@ module Webrat
   protected
 
     def default_value
-      selected_options = @element / ".//option[@selected='selected']"
-      selected_options = @element / ".//option[position() = 1]" if selected_options.empty? 
+      selected_options = @element.search(".//option[@selected='selected']")
+      selected_options = @element.search(".//option[position() = 1]") if selected_options.empty? 
       
       selected_options.map do |option|
         return "" if option.nil?
@@ -325,7 +325,7 @@ module Webrat
     end
 
     def option_elements
-      (@element / ".//option")
+      @element.search(".//option")
     end
 
   end
