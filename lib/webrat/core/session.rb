@@ -87,7 +87,8 @@ module Webrat
       save_and_open_page if exception_caught?
       flunk("Page load was not successful (Code: #{response_code.inspect}):\n#{formatted_error}") unless success_code?
       
-      @scope        = nil
+      @_scopes      = nil
+      @_page_scope  = nil
       @current_url  = url
       @http_method  = http_method
       @data         = data
@@ -104,7 +105,7 @@ module Webrat
     end
     
     def current_scope
-      @scope ||= Scope.new(self, response_body)
+      scopes.last || page_scope
     end
     
     # Reloads the last page requested. Note that this will resubmit forms
@@ -132,7 +133,10 @@ module Webrat
     alias_method :clicks_link_within, :click_link_within
     
     def within(selector)
-      yield Scope.new(self, response_body, selector)
+      scopes.push(Scope.new(self, response_body, selector))
+      ret = yield(current_scope)
+      scopes.pop
+      return ret
     end
     
     # Issues a GET request for a page, follows any redirects, and verifies the final page
@@ -158,6 +162,14 @@ module Webrat
     # Subclasses can override this to show error messages without html
     def formatted_error
       response_body
+    end
+
+    def scopes
+      @_scopes ||= []
+    end
+
+    def page_scope
+      @_page_scope ||= Scope.new(self, response_body)
     end
     
     def_delegators :current_scope, :fill_in,            :fills_in

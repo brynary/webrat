@@ -14,8 +14,8 @@ describe "within" do
     EOS
     
     @session.should_receive(:get).with("/page2", {})
-    @session.within "#container" do |scope|
-      scope.click_link "Link"
+    @session.within "#container" do
+      @session.click_link "Link"
     end
   end
   
@@ -32,9 +32,9 @@ describe "within" do
     EOS
     
     @session.should_receive(:get).with("/form2", "email" => "test@example.com")
-    @session.within "#form2" do |scope|
-      scope.fill_in "Email", :with => "test@example.com"
-      scope.click_button
+    @session.within "#form2" do
+      @session.fill_in "Email", :with => "test@example.com"
+      @session.click_button
     end
   end
   
@@ -47,9 +47,9 @@ describe "within" do
       </form>
     EOS
     
-    @session.within "#form2" do |scope|
+    @session.within "#form2" do
       lambda {
-        scope.click_button
+        @session.click_button
       }.should raise_error
     end
   end
