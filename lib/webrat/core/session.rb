@@ -125,8 +125,8 @@ module Webrat
     # Example:
     #   click_link_within "#user_12", "Vote"
     def click_link_within(selector, link_text)
-      within(selector) do |scope|
-        scope.click_link(link_text)
+      within(selector) do
+        click_link(link_text)
       end
     end
 
