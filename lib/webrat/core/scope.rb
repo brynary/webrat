@@ -169,8 +169,8 @@ module Webrat
     def page_dom
       return @response.dom if @response.respond_to?(:dom)
         
-      dom = Nokogiri::HTML(@response_body)
-        
+      dom = Webrat.nokogiri_document(@response_body)
+      
       @response.meta_class.send(:define_method, :dom) do
         dom
       end
@@ -179,7 +179,7 @@ module Webrat
     end
     
     def scoped_dom
-      Nokogiri::HTML(@scope.dom.search(@selector).first.to_html)
+      Webrat.nokogiri_document(@scope.dom.search(@selector).first.to_html)
     end
     
     def locate_field(field_locator, *field_types)

@@ -3,15 +3,15 @@ module Webrat
   
     class HasContent
       def initialize(content)
-        # Require nokogiri and fall back on rexml
+        # We need Nokogiri's CSS to XPath support, even if using REXML
+        require "nokogiri/css"
+        
         begin
           require "nokogiri"
-          require "webrat/nokogiri"
+          require "webrat/core/nokogiri"
         rescue LoadError => e
-          if require "rexml/document"
-            require "webrat/vendor/nokogiri/css"
-            warn("Standard REXML library is slow. Please consider installing nokogiri.\nUse \"sudo gem install nokogiri\"")
-          end
+          require "rexml/document"
+          warn("Standard REXML library is slow. Please consider installing nokogiri.\nUse \"sudo gem install nokogiri\"")
         end
         
         @content = content
@@ -38,7 +38,7 @@ module Webrat
       end
     
       def matches_nokogiri?(stringlike)
-        @document = nokogiri_document(stringlike)
+        @document = Webrat.nokogiri_document(stringlike)
         @element = @document.inner_text
       
         case @content
@@ -67,20 +67,6 @@ module Webrat
               raise e
             end
           end
-        end
-      end
-      
-      def nokogiri_document(stringlike)
-        return stringlike.dom if stringlike.respond_to?(:dom)
-        stringlike = stringlike.body.to_s if stringlike.respond_to?(:body)
-        
-        case stringlike
-        when Nokogiri::HTML::Document, Nokogiri::XML::NodeSet
-          stringlike
-        when StringIO
-          Nokogiri::HTML(stringlike.string)
-        else
-          Nokogiri::HTML(stringlike.to_s)
         end
       end
       
