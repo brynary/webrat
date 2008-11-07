@@ -5,7 +5,7 @@
   * Added Merb support (Gwyn Morfey, Jeremy Burks, Rob Kaufman, Yehuda Katz)
   * Added experimental Selenium support (Luke Melia)
   * Add have_selector, have_xpath, have_tag and contain matchers from Merb
-  * Switch from Hpricot to Nokogiri for XML parsing (falls back to REXML)
+  * Switch from Hpricot to Nokogiri for XML parsing (thanks, Aaron Patterson)
   
 * Minor enhancements
 
