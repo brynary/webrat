@@ -3,18 +3,6 @@ module Webrat
     
     class HaveXpath
       def initialize(expected, &block)
-        # We need Nokogiri's CSS to XPath support, even if using REXML
-        require "nokogiri/css"
-        
-        # Require nokogiri and fall back on rexml
-        begin
-          require "nokogiri"
-          require "webrat/core/nokogiri"
-        rescue LoadError => e
-          require "rexml/document"
-          warn("Standard REXML library is slow. Please consider installing nokogiri.\nUse \"sudo gem install nokogiri\"")
-        end
-      
         @expected = expected
         @block    = block
       end
