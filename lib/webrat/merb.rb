@@ -56,12 +56,12 @@ module Merb
   module Test
     module RequestHelper #:nodoc:
       def request(uri, env = {})
-        @session ||= Webrat::MerbSession.new
-        @session.response = @session.request(uri, env)
+        @_webrat_session ||= Webrat::MerbSession.new
+        @_webrat_session.response = @_webrat_session.request(uri, env)
       end
   
       def follow_redirect
-        @session.follow_redirect
+        @_webrat_session.follow_redirect
       end
     end
   end

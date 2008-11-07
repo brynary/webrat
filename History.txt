@@ -1,3 +1,9 @@
+== Trunk
+
+  * Minor enhancements
+
+    * Use @_webrat_session instance variable instead of @session for Merb integration to avoid collisions
+
 == 0.3.0 / 2008-11-07
 
 * Major enhancements

@@ -5,8 +5,8 @@ module Webrat
       meths.each do |meth|
         self.class_eval <<-RUBY
           def #{meth}(*args, &blk)
-            @session ||= ::Webrat::MerbSession.new
-            @session.#{meth}(*args, &blk)
+            @_webrat_session ||= ::Webrat::MerbSession.new
+            @_webrat_session.#{meth}(*args, &blk)
           end
         RUBY
       end
