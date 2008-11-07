@@ -1,4 +1,4 @@
-== Trunk
+== 0.3.0 / 2008-11-07
 
 * Major enhancements
 
