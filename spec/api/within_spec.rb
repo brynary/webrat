@@ -5,6 +5,24 @@ describe "within" do
     @session = Webrat::TestSession.new
   end
   
+  it "should work when nested" do
+    @session.response_body = <<-EOS
+      <div>
+        <a href="/page1">Link</a>
+      </div>
+      <div id="container">
+        <div><a href="/page2">Link</a></div>
+      </div>
+    EOS
+    
+    @session.should_receive(:get).with("/page2", {})
+    @session.within "#container" do
+      @session.within "div" do
+        @session.click_link "Link"
+      end
+    end
+  end
+  
   it "should click links within a scope" do
     @session.response_body = <<-EOS
       <a href="/page1">Link</a>

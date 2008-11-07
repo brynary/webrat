@@ -9,11 +9,23 @@ module Webrat
     include Flunk
     include Locators
     
-    def initialize(session, response, response_body, selector = nil)
-      @session        = session
-      @response       = response
-      @response_body  = response_body
-      @selector       = selector
+    def self.from_page(session, response, response_body)
+      new(session) do
+        @response = response
+        @response_body = response_body
+      end
+    end
+    
+    def self.from_scope(session, scope, selector)
+      new(session) do
+        @scope = scope
+        @selector = selector
+      end
+    end
+    
+    def initialize(session, &block)
+      @session = session
+      instance_eval(&block) if block_given?
     end
     
     # Verifies an input field or textarea exists on the current page, and stores a value for
@@ -143,18 +155,8 @@ module Webrat
     def dom # :nodoc:
       return @dom if @dom
       
-      if @response.respond_to?(:dom)
-        page_dom = @response.dom
-      else
-        page_dom = Nokogiri::HTML(@response_body)
-        
-        @response.meta_class.send(:define_method, :dom) do
-          page_dom
-        end
-      end
-
       if @selector
-        @dom = Nokogiri::HTML(page_dom.search(@selector).first.to_html)
+        @dom = scoped_dom
       else
         @dom = page_dom
       end
@@ -164,6 +166,22 @@ module Webrat
     
   protected
   
+    def page_dom
+      return @response.dom if @response.respond_to?(:dom)
+        
+      dom = Nokogiri::HTML(@response_body)
+        
+      @response.meta_class.send(:define_method, :dom) do
+        dom
+      end
+
+      return dom
+    end
+    
+    def scoped_dom
+      Nokogiri::HTML(@scope.dom.search(@selector).first.to_html)
+    end
+    
     def locate_field(field_locator, *field_types)
       if field_locator.is_a?(Field)
         field_locator
