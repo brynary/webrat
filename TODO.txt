@@ -1,3 +1,6 @@
+Run tests in separate processes to eliminate constant-level dependencies
+Add rake tasks for selenium runs
+Add tests for selenium
 Add tests for locator strategies
 Use Webrat::Methods for Rails integration
 Get file uploads workign with merb
