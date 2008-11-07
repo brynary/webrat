@@ -40,8 +40,9 @@ module Webrat
     def do_request(url, data, headers, method)
       @response = request(url, 
         :params => (data && data.any?) ? data : nil, 
-        :headers => headers, :method => method)
-      self.get(@response.headers['Location'], nil, @response.headers) if @response.status == 302
+        :headers => headers,
+        :method => method)
+      follow_redirect
     end
     
     def follow_redirect
