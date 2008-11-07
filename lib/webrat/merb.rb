@@ -8,7 +8,7 @@ require "merb-core"
 HashWithIndifferentAccess = Mash
 
 module Webrat
-  class Session
+  class MerbSession < Session
     include Merb::Test::MakeRequest
     
     attr_accessor :response
@@ -55,7 +55,7 @@ module Merb
   module Test
     module RequestHelper
       def request(uri, env = {})
-        @session ||= Webrat::Session.new
+        @session ||= Webrat::MerbSession.new
         @session.response = @session.request(uri, env)
       end
   
@@ -68,7 +68,7 @@ end
 
 class Merb::Test::RspecStory
   def browser
-    @browser ||= Webrat::Session.new
+    @browser ||= Webrat::MerbSession.new
   end
 end
 
