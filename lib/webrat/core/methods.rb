@@ -1,5 +1,5 @@
 module Webrat
-  module Methods
+  module Methods #:nodoc:
 
     def self.delegate_to_session(*meths)
       meths.each do |meth|

@@ -1,5 +1,5 @@
 module Webrat
-  class SelectOption
+  class SelectOption #:nodoc:
     
     def initialize(select, element)
       @select = select

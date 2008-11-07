@@ -1,7 +1,7 @@
 module Webrat
   module Matchers
     
-    class HaveSelector < HaveXpath
+    class HaveSelector < HaveXpath #:nodoc:
 
       # ==== Returns
       # String:: The failure message.

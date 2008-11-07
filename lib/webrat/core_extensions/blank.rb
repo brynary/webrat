@@ -1,4 +1,4 @@
-class Object
+class Object #:nodoc:
   # An object is blank if it's false, empty, or a whitespace string.
   # For example, "", "   ", +nil+, [], and {} are blank.
   #

@@ -8,21 +8,21 @@ module Webrat
     include Flunk
     include Locators
     
-    def self.from_page(session, response, response_body)
+    def self.from_page(session, response, response_body) #:nodoc:
       new(session) do
         @response = response
         @response_body = response_body
       end
     end
     
-    def self.from_scope(session, scope, selector)
+    def self.from_scope(session, scope, selector) #:nodoc:
       new(session) do
         @scope = scope
         @selector = selector
       end
     end
     
-    def initialize(session, &block)
+    def initialize(session, &block) #:nodoc:
       @session = session
       instance_eval(&block) if block_given?
     end
@@ -100,11 +100,11 @@ module Webrat
     # Example:
     #   attaches_file "Resume", "/path/to/the/resume.txt"
     #   attaches_file "Photo", "/path/to/the/image.png", "image/png"
-    def attaches_file(field_locator, path, content_type = nil)
+    def attach_file(field_locator, path, content_type = nil)
       locate_field(field_locator, FileField).set(path, content_type)
     end
 
-    alias_method :attach_file, :attaches_file
+    alias_method :attaches_file, :attach_file
     
     def click_area(area_name)
       find_area(area_name).click
@@ -165,18 +165,18 @@ module Webrat
     
   protected
   
-    def page_dom
+    def page_dom #:nodoc:
       return @response.dom if @response.respond_to?(:dom)
       dom = Webrat.nokogiri_document(@response_body)
       Webrat.define_dom_method(@response, dom)
       return dom
     end
     
-    def scoped_dom
+    def scoped_dom #:nodoc:
       Webrat.nokogiri_document(@scope.dom.search(@selector).first.to_html)
     end
     
-    def locate_field(field_locator, *field_types)
+    def locate_field(field_locator, *field_types) #:nodoc:
       if field_locator.is_a?(Field)
         field_locator
       else
@@ -184,19 +184,19 @@ module Webrat
       end
     end
     
-    def areas
+    def areas #:nodoc:
       dom.search("area").map do |element| 
         Area.new(@session, element)
       end
     end
     
-    def links
+    def links #:nodoc:
       dom.search("a[@href]").map do |link_element|
         Link.new(@session, link_element)
       end
     end
     
-    def forms
+    def forms #:nodoc:
       return @forms if @forms
       
       @forms = dom.search("form").map do |form_element|

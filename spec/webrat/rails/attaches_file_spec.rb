@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/helper')
 
-describe "attaches_file" do
+describe "attach_file" do
   before do
     @session = Webrat::TestSession.new
 
@@ -14,7 +14,7 @@ describe "attaches_file" do
       <form method="post" action="/widgets">
       </form>
     EOS
-    lambda { @session.attaches_file("Doc", "/some/path") }.should raise_error
+    lambda { @session.attach_file("Doc", "/some/path") }.should raise_error
   end
 
   it "should submit empty strings for blank file fields" do
@@ -37,7 +37,7 @@ describe "attaches_file" do
       </form>
     EOS
     @session.should_receive(:post).with("/widgets", { "widget" => { "file" => @uploaded_file } })
-    @session.attaches_file "Document", @filename
+    @session.attach_file "Document", @filename
     @session.click_button
   end
 
@@ -52,8 +52,8 @@ describe "attaches_file" do
       </form>
     EOS
     @session.should_receive(:post).with("/widgets", { "widget" => { "files" => [@uploaded_file, @uploaded_file] } })
-    @session.attaches_file "Document", @filename
-    @session.attaches_file "Spreadsheet", @filename
+    @session.attach_file "Document", @filename
+    @session.attach_file "Spreadsheet", @filename
     @session.click_button
   end
 
@@ -66,7 +66,7 @@ describe "attaches_file" do
       </form>
     EOS
     ActionController::TestUploadedFile.should_receive(:new).with(@filename, "image/png").any_number_of_times
-    @session.attaches_file "Picture", @filename, "image/png"
+    @session.attach_file "Picture", @filename, "image/png"
     @session.click_button
   end
 end

@@ -1,5 +1,5 @@
 module Webrat
-  class Label
+  class Label #:nodoc:
     
     def initialize(field, element)
       @field    = field

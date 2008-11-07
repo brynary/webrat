@@ -1,6 +1,6 @@
 module Flunk
   
-  def flunk(message)
+  def flunk(message) #:nodoc:
     raise message
   end
   

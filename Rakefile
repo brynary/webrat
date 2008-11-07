@@ -1,5 +1,6 @@
 require 'rubygems'
 require "rake/gempackagetask"
+require 'rake/rdoctask'
 require "rake/clean"
 require 'spec'
 require 'spec/rake/spectask'
@@ -74,4 +75,15 @@ desc 'Install the package as a gem.'
 task :install_gem => [:clean, :package] do
   gem = Dir['pkg/*.gem'].first
   sh "sudo gem install --local #{gem}"
+end
+
+Rake::RDocTask.new(:docs) do |rd|
+  rd.main = "README.txt"
+  rd.rdoc_dir = 'doc'
+  files = spec.files.grep(/^(lib|bin|ext)|txt$/)
+  files -= ["TODO.txt"]
+  files -= files.grep(/\.js$/)
+  rd.rdoc_files = files.uniq
+  title = "webrat-#{Webrat::VERSION} Documentation"
+  rd.options << "-t #{title}"
 end

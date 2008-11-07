@@ -5,7 +5,7 @@ $LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__))) unless $LOAD_PATH.i
 module Webrat
   VERSION = '0.3.0'
   
-  def self.root
+  def self.root #:nodoc:
     defined?(RAILS_ROOT) ? RAILS_ROOT : Merb.root
   end
 end

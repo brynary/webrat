@@ -1,7 +1,7 @@
 module Webrat
   class SeleniumSession
     
-    def initialize(selenium_driver)
+    def initialize(selenium_driver) #:nodoc:
       @selenium = selenium_driver
       extend_selenium
       define_location_strategies
@@ -20,7 +20,7 @@ module Webrat
     
     alias_method :fills_in, :fill_in
     
-    def response_body
+    def response_body #:nodoc:
       @selenium.get_html_source
     end
     
@@ -102,17 +102,17 @@ module Webrat
     
     alias_method :checks, :check
     
-    def is_ordered(*args)
+    def is_ordered(*args) #:nodoc:
       @selenium.is_ordered(*args)
     end
     
-    def dragdrop(*args)
+    def dragdrop(*args) #:nodoc:
       @selenium.dragdrop(*args)
     end
         
   protected
     
-    def adjust_if_regexp(text_or_regexp)
+    def adjust_if_regexp(text_or_regexp) #:nodoc:
       if text_or_regexp.is_a?(Regexp)
         "evalregex:#{text_or_regexp.inspect}"
       else
@@ -120,13 +120,13 @@ module Webrat
       end 
     end
     
-    def extend_selenium
+    def extend_selenium #:nodoc:
       extensions_file = File.join(File.dirname(__FILE__), "selenium_extensions.js")
       extenions_js = File.read(extensions_file)
       @selenium.get_eval(extenions_js)
     end
     
-    def define_location_strategies
+    def define_location_strategies #:nodoc:
       Dir[File.join(File.dirname(__FILE__), "location_strategy_javascript", "*.js")].sort.each do |file|
         strategy_js = File.read(file)
         strategy_name = File.basename(file, '.js')

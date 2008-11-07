@@ -1,7 +1,7 @@
 require "webrat/core_extensions/blank"
 
 module Webrat
-  class Link
+  class Link #:nodoc:
     
     def initialize(session, element)
       @session  = session

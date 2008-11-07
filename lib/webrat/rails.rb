@@ -1,7 +1,7 @@
 require "webrat"
 
 module Webrat
-  class RailsSession < Session
+  class RailsSession < Session #:nodoc:
     
     def initialize(integration_session)
       super()
@@ -42,12 +42,12 @@ module Webrat
     
   protected
     
-    def do_request(http_method, url, data, headers)
+    def do_request(http_method, url, data, headers) #:nodoc:
       update_protocol(url)
       @integration_session.request_via_redirect(http_method, remove_protocol(url), data, headers)
     end
   
-    def remove_protocol(href)
+    def remove_protocol(href) #:nodoc:
       if href =~ %r{^https?://www.example.com(/.*)}
         $LAST_MATCH_INFO.captures.first
       else
@@ -55,7 +55,7 @@ module Webrat
       end
     end
     
-    def update_protocol(href)
+    def update_protocol(href) #:nodoc:
       if href =~ /^https:/
         @integration_session.https!(true)
       elsif href =~ /^http:/
@@ -63,7 +63,7 @@ module Webrat
       end
     end
     
-    def response
+    def response #:nodoc:
       @integration_session.response
     end
     
@@ -72,7 +72,7 @@ end
 
 module ActionController
   module Integration
-    class Session
+    class Session #:nodoc:
       
       unless instance_methods.include?("put_via_redirect")
         require "webrat/rails/redirect_actions"

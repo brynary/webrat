@@ -11,7 +11,7 @@ module Webrat
     
     attr_reader :current_url
     
-    def initialize
+    def initialize #:nodoc:
       @http_method     = :get
       @data            = {}
       @default_headers = {}
@@ -35,12 +35,12 @@ module Webrat
       open_in_browser(filename)
     end
     
-    def current_dom
+    def current_dom #:nodoc:
       current_scope.dom
     end
     
     # For backwards compatibility -- removing in 1.0
-    def current_page
+    def current_page #:nodoc:
       page = OpenStruct.new
       page.url = @current_url
       page.http_method = @http_method
@@ -48,11 +48,11 @@ module Webrat
       page
     end
     
-    def doc_root
+    def doc_root #:nodoc:
       nil
     end
     
-    def saved_page_dir
+    def saved_page_dir #:nodoc:
       File.expand_path(".")
     end
 
@@ -69,11 +69,11 @@ module Webrat
       header('HTTP_AUTHORIZATION', "Basic #{encoded_login}")
     end
 
-    def headers
+    def headers #:nodoc:
       @default_headers.dup.merge(@custom_headers.dup)
     end
 
-    def request_page(url, http_method, data)
+    def request_page(url, http_method, data) #:nodoc:
       h = headers
       h['HTTP_REFERER'] = @current_url if @current_url
 
@@ -96,15 +96,15 @@ module Webrat
       return response
     end
     
-    def success_code?
+    def success_code? #:nodoc:
       (200..499).include?(response_code)
     end
     
-    def exception_caught?
+    def exception_caught? #:nodoc:
       response_body =~ /Exception caught/
     end
     
-    def current_scope
+    def current_scope #:nodoc:
       scopes.last || page_scope
     end
     
@@ -150,25 +150,25 @@ module Webrat
     
     alias_method :visits, :visit
     
-    def open_in_browser(path) # :nodoc
+    def open_in_browser(path) #:nodoc
       `open #{path}`
     end
     
-    def rewrite_css_and_image_references(response_html) # :nodoc
+    def rewrite_css_and_image_references(response_html) #:nodoc
       return response_html unless doc_root
       response_html.gsub(/"\/(stylesheets|images)/, doc_root + '/\1')
     end
 
     # Subclasses can override this to show error messages without html
-    def formatted_error
+    def formatted_error #:nodoc:
       response_body
     end
 
-    def scopes
+    def scopes #:nodoc:
       @_scopes ||= []
     end
 
-    def page_scope
+    def page_scope #:nodoc:
       @_page_scope ||= Scope.from_page(self, response, response_body)
     end
     

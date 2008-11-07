@@ -2,7 +2,7 @@ module Webrat
   
   module HaveTagMatcher
 
-    class HaveTag < ::Webrat::Matchers::HaveSelector
+    class HaveTag < ::Webrat::Matchers::HaveSelector #:nodoc:
 
       # ==== Returns
       # String:: The failure message.

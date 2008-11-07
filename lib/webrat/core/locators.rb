@@ -26,25 +26,25 @@ module Webrat
       flunk("Could not find field with id #{id.inspect}")
     end
     
-    def find_field_labeled(label, *field_types)
+    def find_field_labeled(label, *field_types) #:nodoc:
       forms.detect_mapped do |form|
         form.field_labeled(label, *field_types)
       end
     end
     
-    def find_field_named(name, *field_types)
+    def find_field_named(name, *field_types) #:nodoc:
       forms.detect_mapped do |form|
         form.field_named(name, *field_types)
       end
     end
     
-    def find_field_with_id(id, *field_types)
+    def find_field_with_id(id, *field_types) #:nodoc:
       forms.detect_mapped do |form|
         form.field_with_id(id, *field_types)
       end
     end
     
-    def find_select_option(option_text, id_or_name_or_label)
+    def find_select_option(option_text, id_or_name_or_label) #:nodoc:
       if id_or_name_or_label
         field = field(id_or_name_or_label, SelectField)
         return field.find_option(option_text)
@@ -59,7 +59,7 @@ module Webrat
       flunk("Could not find option #{option_text.inspect}")
     end
     
-    def find_button(value)
+    def find_button(value) #:nodoc:
       button = forms.detect_mapped do |form|
         form.find_button(value)
       end
@@ -71,12 +71,12 @@ module Webrat
       end
     end
     
-    def find_area(area_name)
+    def find_area(area_name) #:nodoc:
       areas.detect { |area| area.matches_text?(area_name) } ||
       flunk("Could not find area with name #{area_name}")
     end
     
-    def find_link(text)
+    def find_link(text) #:nodoc:
       matching_links = links.select do |possible_link|
         possible_link.matches_text?(text)
       end

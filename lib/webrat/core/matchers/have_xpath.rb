@@ -1,7 +1,7 @@
 module Webrat
   module Matchers
     
-    class HaveXpath
+    class HaveXpath #:nodoc:
       def initialize(expected, &block)
         @expected = expected
         @block    = block

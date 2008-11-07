@@ -3,7 +3,7 @@ require 'sinatra'
 require 'sinatra/test/methods'
 
 module Webrat
-  class SinatraSession < RackSession
+  class SinatraSession < RackSession #:nodoc:
     include Sinatra::Test::Methods
 
     %w(get head post put delete).each do |verb|

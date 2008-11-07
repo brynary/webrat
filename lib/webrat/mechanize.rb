@@ -1,7 +1,7 @@
 require "mechanize"
 
 module Webrat
-  class MechanizeSession < Session
+  class MechanizeSession < Session #:nodoc:
     
     def initialize(mechanize = WWW::Mechanize.new)
       super()

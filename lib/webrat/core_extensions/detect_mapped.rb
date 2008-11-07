@@ -1,4 +1,4 @@
-class Array
+class Array #:nodoc:
   
   def detect_mapped
     each do |element|

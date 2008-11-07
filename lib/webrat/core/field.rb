@@ -3,7 +3,7 @@ require "webrat/core_extensions/blank"
 require "webrat/core_extensions/nil_to_param"
 
 module Webrat
-  class Field
+  class Field #:nodoc:
     
     def self.class_for_element(element)
       if element.name == "input"
@@ -138,7 +138,7 @@ module Webrat
     end
   end
   
-  class ButtonField < Field
+  class ButtonField < Field #:nodoc:
 
     def matches_text?(text)
       @element.inner_html =~ /#{Regexp.escape(text.to_s)}/i
@@ -165,7 +165,7 @@ module Webrat
 
   end
 
-  class HiddenField < Field
+  class HiddenField < Field #:nodoc:
 
     def to_param
       if collection_name?
@@ -189,7 +189,7 @@ module Webrat
 
   end
 
-  class CheckboxField < Field
+  class CheckboxField < Field #:nodoc:
 
     def to_param
       return nil if @value.nil?
@@ -222,10 +222,10 @@ module Webrat
 
   end
 
-  class PasswordField < Field
+  class PasswordField < Field #:nodoc:
   end
 
-  class RadioField < Field
+  class RadioField < Field #:nodoc:
 
     def to_param
       return nil if @value.nil?
@@ -257,7 +257,7 @@ module Webrat
 
   end
 
-  class TextareaField < Field
+  class TextareaField < Field #:nodoc:
 
   protected
 
@@ -267,7 +267,7 @@ module Webrat
 
   end
   
-  class FileField < Field
+  class FileField < Field #:nodoc:
 
     attr_accessor :content_type
 
@@ -296,13 +296,13 @@ module Webrat
 
   end
 
-  class TextField < Field
+  class TextField < Field #:nodoc:
   end
 
-  class ResetField < Field
+  class ResetField < Field #:nodoc:
   end
 
-  class SelectField < Field
+  class SelectField < Field #:nodoc:
 
     def find_option(text)
       options.detect { |o| o.matches_text?(text) }

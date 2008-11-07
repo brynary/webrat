@@ -2,7 +2,7 @@ require "webrat/core_extensions/meta_class"
 
 module Webrat
   
-  def self.nokogiri_document(stringlike)
+  def self.nokogiri_document(stringlike) #:nodoc:
     return stringlike.dom if stringlike.respond_to?(:dom)
     
     if stringlike === Nokogiri::HTML::Document || stringlike === Nokogiri::XML::NodeSet
@@ -16,7 +16,7 @@ module Webrat
     end
   end
   
-  def self.define_dom_method(object, dom)
+  def self.define_dom_method(object, dom) #:nodoc:
     object.meta_class.send(:define_method, :dom) do
       dom
     end
@@ -29,11 +29,11 @@ module Nokogiri
   module CSS
     class XPathVisitor
       
-      def visit_pseudo_class_text(node)
+      def visit_pseudo_class_text(node) #:nodoc:
         "@type='text'"
       end
 
-      def visit_pseudo_class_password(node)
+      def visit_pseudo_class_password(node) #:nodoc:
         "@type='password'"
       end
       

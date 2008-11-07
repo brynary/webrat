@@ -2,7 +2,7 @@ require "webrat/core/field"
 require "webrat/core_extensions/blank"
 
 module Webrat
-  class Form
+  class Form #:nodoc:
     attr_reader :element
     
     def initialize(session, element)

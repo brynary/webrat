@@ -1,5 +1,5 @@
 module Webrat
-  class Area
+  class Area #:nodoc:
     
     def initialize(session, element)
       @session  = session
