@@ -58,31 +58,23 @@ describe Webrat::Matchers do
     include Webrat::Matchers
     
     before(:each) do
-      @element = stub(:element)
-      @element.stub!(:inner_text).and_return <<-EOF
+      @body = <<-EOF
         <div id='main'>
           <div class='inner'>hello, world!</div>
         </div>
       EOF
-      
-      @element.stub!(:include?)
-      @element.stub!(:match)
     end
     
     describe "#matches?" do
       it "should call element#include? when the argument is a string" do
-        @element.should_receive(:include?)
-        
-        Webrat::Matchers::HasContent.new("hello, world!").matches?(@element)
+        @body.should contain("hello, world!")
       end
       
       it "should call element#match when the argument is a regular expression" do
-        @element.should_receive(:match)
-        
-        Webrat::Matchers::HasContent.new(/hello, world/).matches?(@element)
+        @body.should contain(/hello, world/)
       end
     end
-  
+      
     describe "#failure_message" do
       it "should include the content string" do
         hc = Webrat::Matchers::HasContent.new("hello, world!")
@@ -100,9 +92,9 @@ describe Webrat::Matchers do
       
       it "should include the element's inner content" do
         hc = Webrat::Matchers::HasContent.new(/hello,\sworld!/)
-        hc.matches?(@element)
+        hc.matches?(@body)
         
-        hc.failure_message.should include(@element.inner_text)
+        hc.failure_message.should include("hello, world!")
       end
     end
   end
