@@ -139,7 +139,7 @@ module Webrat
     alias_method :clicks_button, :click_button
     
     def dom # :nodoc:
-      @dom ||= Nokogiri::Hpricot(scoped_html)
+      @dom ||= Nokogiri::HTML(scoped_html)
     end
     
   protected
@@ -155,7 +155,7 @@ module Webrat
     def scoped_html
       @scoped_html ||= begin
         if @selector
-          (Nokogiri::Hpricot(@html) / @selector).first.to_html
+          (Nokogiri::HTML(@html) / @selector).first.to_html
         else
           @html
         end

@@ -111,7 +111,7 @@ module Webrat
       end
 
       unless id.blank?
-        @label_elements += @form.element / "label[@for=#{id}]"
+        @label_elements += @form.element.search("label[@for='#{id}']")
       end
 
       @label_elements
@@ -311,8 +311,9 @@ module Webrat
   protected
 
     def default_value
-      selected_options = @element / "option[@selected='selected']"
-      selected_options = @element / "option:first" if selected_options.empty? 
+      selected_options = @element / ".//option[@selected='selected']"
+      selected_options = @element / ".//option[position() = 1]" if selected_options.empty? 
+      
       selected_options.map do |option|
         return "" if option.nil?
         option["value"] || option.inner_html
@@ -324,7 +325,7 @@ module Webrat
     end
 
     def option_elements
-      (@element / "option")
+      (@element / ".//option")
     end
 
   end
