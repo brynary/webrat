@@ -10,6 +10,10 @@ describe Webrat::Session do
   it "should expose the current_dom" do
     session = Webrat::Session.new
     
+    def session.response
+      Object.new
+    end
+    
     def session.response_body
       "<html></html>"
     end

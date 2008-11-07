@@ -1,6 +1,7 @@
 require "nokogiri"
 require "webrat/core/form"
 require "webrat/core/locators"
+require "webrat/core_extensions/meta_class"
 
 module Webrat
   class Scope
@@ -8,10 +9,11 @@ module Webrat
     include Flunk
     include Locators
     
-    def initialize(session, html, selector = nil)
-      @session  = session
-      @html     = html
-      @selector = selector
+    def initialize(session, response, response_body, selector = nil)
+      @session        = session
+      @response       = response
+      @response_body  = response_body
+      @selector       = selector
     end
     
     # Verifies an input field or textarea exists on the current page, and stores a value for
@@ -139,7 +141,25 @@ module Webrat
     alias_method :clicks_button, :click_button
     
     def dom # :nodoc:
-      @dom ||= Nokogiri::HTML(scoped_html)
+      return @dom if @dom
+      
+      if @response.respond_to?(:dom)
+        page_dom = @response.dom
+      else
+        page_dom = Nokogiri::HTML(@response_body)
+        
+        @response.meta_class.send(:define_method, :dom) do
+          page_dom
+        end
+      end
+
+      if @selector
+        @dom = Nokogiri::HTML(page_dom.search(@selector).first.to_html)
+      else
+        @dom = page_dom
+      end
+      
+      return @dom
     end
     
   protected
@@ -149,16 +169,6 @@ module Webrat
         field_locator
       else
         field(field_locator, *field_types)
-      end
-    end
-    
-    def scoped_html
-      @scoped_html ||= begin
-        if @selector
-          (Nokogiri::HTML(@html) / @selector).first.to_html
-        else
-          @html
-        end
       end
     end
     

@@ -133,7 +133,7 @@ module Webrat
     alias_method :clicks_link_within, :click_link_within
     
     def within(selector)
-      scopes.push(Scope.new(self, response_body, selector))
+      scopes.push(Scope.new(self, response, response_body, selector))
       ret = yield(current_scope)
       scopes.pop
       return ret
@@ -169,7 +169,7 @@ module Webrat
     end
 
     def page_scope
-      @_page_scope ||= Scope.new(self, response_body)
+      @_page_scope ||= Scope.new(self, response, response_body)
     end
     
     def_delegators :current_scope, :fill_in,            :fills_in

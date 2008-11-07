@@ -7,6 +7,10 @@ module Webrat
       File.expand_path(File.join(".", "public"))
     end
     
+    def response
+      @response ||= Object.new
+    end
+    
     def response_code
       @response_code || 200
     end
