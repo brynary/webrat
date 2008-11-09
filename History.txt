@@ -1,4 +1,10 @@
-== Trunk
+== 0.3.2 / 2008-11-08
+
+* Minor enhancements
+
+  * Fixes behavior or have_tag when a block is passed. It passes the matched node(s) to the block for further specs again. (Carl Lerche)
+  
+== 0.3.1 / 2008-11-07
 
   * Minor enhancements
 
