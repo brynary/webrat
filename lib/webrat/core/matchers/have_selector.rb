@@ -30,8 +30,8 @@ module Webrat
     # HaveSelector:: A new have selector matcher.
     # ---
     # @api public
-    def have_selector(expected)
-      HaveSelector.new(expected)
+    def have_selector(expected, &block)
+      HaveSelector.new(expected, &block)
     end
     alias_method :match_selector, :have_selector
     

@@ -5,9 +5,11 @@ module Webrat
   def self.nokogiri_document(stringlike) #:nodoc:
     return stringlike.dom if stringlike.respond_to?(:dom)
     
-    if stringlike === Nokogiri::HTML::Document || stringlike === Nokogiri::XML::NodeSet
+    if Nokogiri::HTML::Document === stringlike
       stringlike
-    elsif stringlike === StringIO
+    elsif Nokogiri::XML::NodeSet === stringlike
+      stringlike
+    elsif StringIO === stringlike
       Nokogiri::HTML(stringlike.string)
     elsif stringlike.respond_to?(:body)
       Nokogiri::HTML(stringlike.body.to_s)

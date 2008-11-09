@@ -49,8 +49,8 @@ module Webrat
 
     end
 
-    def have_tag(name, attributes = {})
-      HaveTag.new([name, attributes])
+    def have_tag(name, attributes = {}, &block)
+      HaveTag.new([name, attributes], &block)
     end
     alias_method :match_tag, :have_tag
 

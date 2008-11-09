@@ -16,17 +16,31 @@ module Webrat
       end
     
       def matches_rexml?(stringlike)
+        @query = query
+
         @document = rexml_document(stringlike)
-      
-        query.all? do |q|
-          matched = REXML::XPath.match(@document, q)
-          matched.any? && (!block_given? || matched.all?(&@block))
-        end
+
+        matched = @query.map do |q|
+          if @document.is_a?(Array)
+            @document.map { |d| REXML::XPath.match(d, q) }
+          else
+            REXML::XPath.match(@document, q)
+          end
+        end.flatten.compact
+
+        matched.any? && (!@block || @block.call(matched))
       end
     
       def matches_nokogiri?(stringlike)
+        if Nokogiri::XML::NodeSet === stringlike
+          @query = query.map { |q| q.gsub(%r'//', './') }
+        else
+          @query = query
+        end
+        
         @document = Webrat.nokogiri_document(stringlike)
-        @document.xpath(*query).any?
+        matched = @document.xpath(*@query)
+        matched.any? && (!@block || @block.call(matched))
       end
     
       def rexml_document(stringlike)
@@ -35,9 +49,10 @@ module Webrat
         case stringlike
         when REXML::Document
           stringlike.root
-        when REXML::Node
+        when REXML::Node, Array
+          @query = query.map { |q| q.gsub(%r'//', './') }
           stringlike
-        when StringIO, String
+        else
           begin
             REXML::Document.new(stringlike.to_s).root
           rescue REXML::ParseException => e
@@ -76,8 +91,8 @@ module Webrat
     # HaveXpath:: A new have xpath matcher.
     # ---
     # @api public
-    def have_xpath(expected)
-      HaveXpath.new(expected)
+    def have_xpath(expected, &block)
+      HaveXpath.new(expected, &block)
     end
     alias_method :match_xpath, :have_xpath
     
