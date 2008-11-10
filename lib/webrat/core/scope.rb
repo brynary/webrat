@@ -1,4 +1,3 @@
-require "nokogiri"
 require "webrat/core/form"
 require "webrat/core/locators"
 
