@@ -8,6 +8,9 @@ module Webrat
   def self.root #:nodoc:
     defined?(RAILS_ROOT) ? RAILS_ROOT : Merb.root
   end
+  
+  class WebratError < StandardError
+  end
 end
 
 # We need Nokogiri's CSS to XPath support, even if using REXML

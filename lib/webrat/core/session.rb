@@ -4,10 +4,12 @@ require "ostruct"
 require "webrat/core/mime"
 
 module Webrat
+  class PageLoadError < WebratError
+  end
+  
   class Session
     extend Forwardable
     include Logging
-    include Flunk
     
     attr_reader :current_url
     
@@ -85,7 +87,7 @@ module Webrat
       end
 
       save_and_open_page if exception_caught?
-      flunk("Page load was not successful (Code: #{response_code.inspect}):\n#{formatted_error}") unless success_code?
+      raise PageLoadError.new("Page load was not successful (Code: #{response_code.inspect}):\n#{formatted_error}") unless success_code?
       
       @_scopes      = nil
       @_page_scope  = nil
