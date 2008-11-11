@@ -18,7 +18,7 @@ describe Webrat::Session do
       "<html></html>"
     end
     
-    session.current_dom.should be_an_instance_of(Nokogiri::HTML::Document)
+    session.current_dom.should respond_to(:search)
   end
   
   it "should open the page in the browser" do

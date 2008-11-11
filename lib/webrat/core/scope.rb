@@ -166,13 +166,13 @@ module Webrat
   
     def page_dom #:nodoc:
       return @response.dom if @response.respond_to?(:dom)
-      dom = Webrat.nokogiri_document(@response_body)
+      dom = Webrat::XML.document(@response_body)
       Webrat.define_dom_method(@response, dom)
       return dom
     end
     
     def scoped_dom #:nodoc:
-      Webrat.nokogiri_document(@scope.dom.search(@selector).first.to_html)
+      Webrat::XML.document(@scope.dom.search(@selector).first.to_html)
     end
     
     def locate_field(field_locator, *field_types) #:nodoc:
@@ -184,13 +184,13 @@ module Webrat
     end
     
     def areas #:nodoc:
-      dom.search("area").map do |element| 
+      Webrat::XML.css_search(dom, "area").map do |element| 
         Area.new(@session, element)
       end
     end
     
     def links #:nodoc:
-      dom.search("a[@href]").map do |link_element|
+      Webrat::XML.css_search(dom, "a[@href]").map do |link_element|
         Link.new(@session, link_element)
       end
     end
@@ -198,7 +198,7 @@ module Webrat
     def forms #:nodoc:
       return @forms if @forms
       
-      @forms = dom.search("form").map do |form_element|
+      @forms = Webrat::XML.css_search(dom, "form").map do |form_element|
         Form.new(@session, form_element)
       end
     end

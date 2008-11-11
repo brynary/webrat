@@ -45,7 +45,7 @@ module Webrat
           @query = query
         end
         
-        @document = Webrat.nokogiri_document(stringlike)
+        @document = Webrat::XML.document(stringlike)
         matched = @document.xpath(*@query)
         matched.any? && (!@block || @block.call(matched))
       end

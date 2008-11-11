@@ -22,7 +22,7 @@ module Webrat
     end
     
     def matches_text?(link_text)
-      html = text.gsub('&#xA0;',' ')
+      html = text.gsub('&#xA0;',' ').gsub('&nbsp;', ' ')
       
       if link_text.is_a?(Regexp)
         matcher = link_text

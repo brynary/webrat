@@ -39,7 +39,7 @@ module Webrat
     def fields
       return @fields if @fields
       
-      @fields = (@element.search(".//button", ".//input", ".//textarea", ".//select")).collect do |field_element|
+      @fields = Webrat::XML.css_search(@element, "button", "input", "textarea", "select").collect do |field_element|
         Field.class_for_element(field_element).new(self, field_element)
       end
     end
