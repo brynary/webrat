@@ -1,7 +1,7 @@
 require "webrat/core_extensions/blank"
 
 module Webrat
-  class Link
+  class Link #:nodoc:
     
     def initialize(session, element)
       @session  = session
@@ -22,13 +22,19 @@ module Webrat
     end
     
     def matches_text?(link_text)
-      html = text.gsub('&nbsp;',' ')
-      matcher = /#{Regexp.escape(link_text.to_s)}/i
+      html = text.gsub('&#xA0;',' ')
+      
+      if link_text.is_a?(Regexp)
+        matcher = link_text
+      else
+        matcher = /#{Regexp.escape(link_text.to_s)}/i
+      end
+      
       html =~ matcher || title =~ matcher
     end
     
     def text
-      @element.innerHTML
+      @element.inner_html
     end
     
   protected

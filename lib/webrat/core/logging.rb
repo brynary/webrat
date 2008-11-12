@@ -1,5 +1,5 @@
 module Webrat
-  module Logging
+  module Logging #:nodoc:
 
     def warn_log(message) # :nodoc:
       return unless logger

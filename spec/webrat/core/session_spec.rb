@@ -10,11 +10,15 @@ describe Webrat::Session do
   it "should expose the current_dom" do
     session = Webrat::Session.new
     
+    def session.response
+      Object.new
+    end
+    
     def session.response_body
       "<html></html>"
     end
     
-    session.current_dom.should be_an_instance_of(Hpricot::Doc)
+    session.current_dom.should be_an_instance_of(Nokogiri::HTML::Document)
   end
   
   it "should open the page in the browser" do
@@ -65,5 +69,20 @@ describe Webrat::Session do
       lambda { @session.http_accept(:oogabooga) }.should raise_error(ArgumentError)
     end
   end
+
+  describe "#request_page" do
+    before(:each) do
+      @session = Webrat::Session.new
+    end
   
+    it "should raise an error if the request is not a success" do
+      @session.stub!(:get)
+      @session.stub!(:response_body).and_return("Exception caught")
+      @session.stub!(:response_code).and_return(500)
+      @session.stub!(:formatted_error).and_return("application error")
+      @session.stub!(:save_and_open_page)
+  
+      lambda { @session.request_page('some url', :get, {}) }.should raise_error(Webrat::PageLoadError)
+    end
+  end
 end

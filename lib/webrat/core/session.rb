@@ -4,14 +4,16 @@ require "ostruct"
 require "webrat/core/mime"
 
 module Webrat
+  class PageLoadError < WebratError
+  end
+  
   class Session
     extend Forwardable
     include Logging
-    include Flunk
     
     attr_reader :current_url
     
-    def initialize
+    def initialize #:nodoc:
       @http_method     = :get
       @data            = {}
       @default_headers = {}
@@ -35,12 +37,12 @@ module Webrat
       open_in_browser(filename)
     end
     
-    def current_dom
+    def current_dom #:nodoc:
       current_scope.dom
     end
     
     # For backwards compatibility -- removing in 1.0
-    def current_page
+    def current_page #:nodoc:
       page = OpenStruct.new
       page.url = @current_url
       page.http_method = @http_method
@@ -48,11 +50,11 @@ module Webrat
       page
     end
     
-    def doc_root
+    def doc_root #:nodoc:
       nil
     end
     
-    def saved_page_dir
+    def saved_page_dir #:nodoc:
       File.expand_path(".")
     end
 
@@ -69,11 +71,11 @@ module Webrat
       header('HTTP_AUTHORIZATION', "Basic #{encoded_login}")
     end
 
-    def headers
+    def headers #:nodoc:
       @default_headers.dup.merge(@custom_headers.dup)
     end
 
-    def request_page(url, http_method, data)
+    def request_page(url, http_method, data) #:nodoc:
       h = headers
       h['HTTP_REFERER'] = @current_url if @current_url
 
@@ -85,24 +87,27 @@ module Webrat
       end
 
       save_and_open_page if exception_caught?
-      flunk("Page load was not successful (Code: #{response_code.inspect}):\n#{formatted_error}") unless success_code?
+      raise PageLoadError.new("Page load was not successful (Code: #{response_code.inspect}):\n#{formatted_error}") unless success_code?
       
-      @scope        = nil
+      @_scopes      = nil
+      @_page_scope  = nil
       @current_url  = url
       @http_method  = http_method
       @data         = data
+      
+      return response
     end
     
-    def success_code?
+    def success_code? #:nodoc:
       (200..499).include?(response_code)
     end
     
-    def exception_caught?
+    def exception_caught? #:nodoc:
       response_body =~ /Exception caught/
     end
     
-    def current_scope
-      @scope ||= Scope.new(self, response_body)
+    def current_scope #:nodoc:
+      scopes.last || page_scope
     end
     
     # Reloads the last page requested. Note that this will resubmit forms
@@ -117,45 +122,56 @@ module Webrat
     alias_method :reload, :reloads
       
     
-    # Works like clicks_link, but only looks for the link text within a given selector
+    # Works like click_link, but only looks for the link text within a given selector
     # 
     # Example:
-    #   clicks_link_within "#user_12", "Vote"
-    def clicks_link_within(selector, link_text)
-      within(selector) do |scope|
-        scope.clicks_link(link_text)
+    #   click_link_within "#user_12", "Vote"
+    def click_link_within(selector, link_text)
+      within(selector) do
+        click_link(link_text)
       end
     end
 
-    alias_method :click_link_within, :clicks_link_within
+    alias_method :clicks_link_within, :click_link_within
     
     def within(selector)
-      yield Scope.new(self, response_body, selector)
+      scopes.push(Scope.from_scope(self, current_scope, selector))
+      ret = yield(current_scope)
+      scopes.pop
+      return ret
     end
     
     # Issues a GET request for a page, follows any redirects, and verifies the final page
     # load was successful.
     #
     # Example:
-    #   visits "/"
-    def visits(url = nil, http_method = :get, data = {})
+    #   visit "/"
+    def visit(url = nil, http_method = :get, data = {})
       request_page(url, http_method, data)
     end
     
-    alias_method :visit, :visits
+    alias_method :visits, :visit
     
-    def open_in_browser(path) # :nodoc
+    def open_in_browser(path) #:nodoc
       `open #{path}`
     end
     
-    def rewrite_css_and_image_references(response_html) # :nodoc
+    def rewrite_css_and_image_references(response_html) #:nodoc
       return response_html unless doc_root
       response_html.gsub(/"\/(stylesheets|images)/, doc_root + '/\1')
     end
 
     # Subclasses can override this to show error messages without html
-    def formatted_error
+    def formatted_error #:nodoc:
       response_body
+    end
+
+    def scopes #:nodoc:
+      @_scopes ||= []
+    end
+
+    def page_scope #:nodoc:
+      @_page_scope ||= Scope.from_page(self, response, response_body)
     end
     
     def_delegators :current_scope, :fill_in,            :fills_in
@@ -166,10 +182,6 @@ module Webrat
     def_delegators :current_scope, :attach_file,        :attaches_file
     def_delegators :current_scope, :click_area,         :clicks_area
     def_delegators :current_scope, :click_link,         :clicks_link
-    def_delegators :current_scope, :click_get_link,     :clicks_get_link
-    def_delegators :current_scope, :click_delete_link,  :clicks_delete_link
-    def_delegators :current_scope, :click_post_link,    :clicks_post_link
-    def_delegators :current_scope, :click_put_link,     :clicks_put_link
     def_delegators :current_scope, :click_button,       :clicks_button
     def_delegators :current_scope, :should_see
     def_delegators :current_scope, :should_not_see

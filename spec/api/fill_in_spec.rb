@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
 
-describe "fills_in" do
+describe "fill_in" do
   before do
     @session = Webrat::TestSession.new
   end
@@ -14,8 +14,8 @@ describe "fills_in" do
       </form>
     EOS
     @session.should_receive(:post).with("/login", "user" => {"text" => "filling text area"})
-    @session.fills_in "User Text", :with => "filling text area"
-    @session.clicks_button
+    @session.fill_in "User Text", :with => "filling text area"
+    @session.click_button
   end
   
   it "should work with password fields" do
@@ -26,8 +26,8 @@ describe "fills_in" do
       </form>
     EOS
     @session.should_receive(:post).with("/login", "user" => {"text" => "pass"})
-    @session.fills_in "user_text", :with => "pass"
-    @session.clicks_button
+    @session.fill_in "user_text", :with => "pass"
+    @session.click_button
   end
 
   it "should fail if input not found" do
@@ -36,7 +36,7 @@ describe "fills_in" do
       </form>
     EOS
     
-    lambda { @session.fills_in "Email", :with => "foo@example.com" }.should raise_error
+    lambda { @session.fill_in "Email", :with => "foo@example.com" }.should raise_error
   end
   
   it "should fail if input is disabled" do
@@ -48,7 +48,7 @@ describe "fills_in" do
       </form>
     EOS
     
-    lambda { @session.fills_in "Email", :with => "foo@example.com" }.should raise_error
+    lambda { @session.fill_in "Email", :with => "foo@example.com" }.should raise_error
   end
   
   it "should allow overriding default form values" do
@@ -60,8 +60,8 @@ describe "fills_in" do
       </form>
     EOS
     @session.should_receive(:post).with("/login", "user" => {"email" => "foo@example.com"})
-    @session.fills_in "user[email]", :with => "foo@example.com"
-    @session.clicks_button
+    @session.fill_in "user[email]", :with => "foo@example.com"
+    @session.click_button
   end
   
   it "should choose the shortest label match" do
@@ -76,8 +76,8 @@ describe "fills_in" do
     EOS
     
     @session.should_receive(:post).with("/login", "user" => {"mail1" => "", "mail2" => "value"})
-    @session.fills_in "Some", :with => "value"
-    @session.clicks_button
+    @session.fill_in "Some", :with => "value"
+    @session.click_button
   end
   
   it "should choose the first label match if closest is a tie" do
@@ -92,8 +92,8 @@ describe "fills_in" do
     EOS
     
     @session.should_receive(:post).with("/login", "user" => {"mail1" => "value", "mail2" => ""})
-    @session.fills_in "Some mail", :with => "value"
-    @session.clicks_button
+    @session.fill_in "Some mail", :with => "value"
+    @session.click_button
   end
   
   it "should anchor label matches to start of label" do
@@ -104,7 +104,7 @@ describe "fills_in" do
       </form>
     EOS
     
-    lambda { @session.fills_in "mail", :with => "value" }.should raise_error
+    lambda { @session.fill_in "mail", :with => "value" }.should raise_error
   end
   
   it "should anchor label matches to word boundaries" do
@@ -115,7 +115,7 @@ describe "fills_in" do
       </form>
     EOS
     
-    lambda { @session.fills_in "Email", :with => "value" }.should raise_error
+    lambda { @session.fill_in "Email", :with => "value" }.should raise_error
   end
   
   it "should work with inputs nested in labels" do
@@ -129,8 +129,8 @@ describe "fills_in" do
       </form>
     EOS
     @session.should_receive(:post).with("/login", "user" => {"email" => "foo@example.com"})
-    @session.fills_in "Email", :with => "foo@example.com"
-    @session.clicks_button
+    @session.fill_in "Email", :with => "foo@example.com"
+    @session.click_button
   end
   
   it "should work with full input names" do
@@ -141,8 +141,8 @@ describe "fills_in" do
       </form>
     EOS
     @session.should_receive(:post).with("/login", "user" => {"email" => "foo@example.com"})
-    @session.fills_in "user[email]", :with => "foo@example.com"
-    @session.clicks_button
+    @session.fill_in "user[email]", :with => "foo@example.com"
+    @session.click_button
   end
 
   it "should work if the input type is not set" do
@@ -153,8 +153,8 @@ describe "fills_in" do
       </form>
     EOS
     @session.should_receive(:post).with("/login", "user" => {"email" => "foo@example.com"})
-    @session.fills_in "user[email]", :with => "foo@example.com"
-    @session.clicks_button
+    @session.fill_in "user[email]", :with => "foo@example.com"
+    @session.click_button
   end
   
   it "should work with symbols" do
@@ -166,8 +166,8 @@ describe "fills_in" do
       </form>
     EOS
     @session.should_receive(:post).with("/login", "user" => {"email" => "foo@example.com"})
-    @session.fills_in :email, :with => "foo@example.com"
-    @session.clicks_button
+    @session.fill_in :email, :with => "foo@example.com"
+    @session.click_button
   end
   
   it "should escape field values" do
@@ -179,7 +179,7 @@ describe "fills_in" do
       </form>
     EOS
     @session.should_receive(:post).with("/users", "user" => {"phone" => "+1 22 33"})
-    @session.fills_in 'Phone', :with => "+1 22 33"
-    @session.clicks_button
+    @session.fill_in 'Phone', :with => "+1 22 33"
+    @session.click_button
   end
 end

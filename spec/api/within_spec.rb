@@ -5,6 +5,24 @@ describe "within" do
     @session = Webrat::TestSession.new
   end
   
+  it "should work when nested" do
+    @session.response_body = <<-EOS
+      <div>
+        <a href="/page1">Link</a>
+      </div>
+      <div id="container">
+        <div><a href="/page2">Link</a></div>
+      </div>
+    EOS
+    
+    @session.should_receive(:get).with("/page2", {})
+    @session.within "#container" do
+      @session.within "div" do
+        @session.click_link "Link"
+      end
+    end
+  end
+  
   it "should click links within a scope" do
     @session.response_body = <<-EOS
       <a href="/page1">Link</a>
@@ -14,8 +32,8 @@ describe "within" do
     EOS
     
     @session.should_receive(:get).with("/page2", {})
-    @session.within "#container" do |scope|
-      scope.clicks_link "Link"
+    @session.within "#container" do
+      @session.click_link "Link"
     end
   end
   
@@ -32,9 +50,9 @@ describe "within" do
     EOS
     
     @session.should_receive(:get).with("/form2", "email" => "test@example.com")
-    @session.within "#form2" do |scope|
-      scope.fill_in "Email", :with => "test@example.com"
-      scope.clicks_button
+    @session.within "#form2" do
+      @session.fill_in "Email", :with => "test@example.com"
+      @session.click_button
     end
   end
   
@@ -47,9 +65,9 @@ describe "within" do
       </form>
     EOS
     
-    @session.within "#form2" do |scope|
+    @session.within "#form2" do
       lambda {
-        scope.clicks_button
+        @session.click_button
       }.should raise_error
     end
   end

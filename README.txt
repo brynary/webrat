@@ -78,13 +78,6 @@ In your stories/helper.rb:
   
 You could also unpack the gem into vendor/plugins.
 
-=== Requirements
-
-- Rails >= 1.2.6
-- Hpricot >= 0.6
-- Rails integration tests in Test::Unit _or_
-- Cucumber
-
 === Authors
 
 - Maintained by [Bryan Helmkamp](mailto:bryan@brynary.com)

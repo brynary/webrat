@@ -3,7 +3,7 @@ require "webrat/core_extensions/blank"
 require "webrat/core_extensions/nil_to_param"
 
 module Webrat
-  class Field
+  class Field #:nodoc:
     
     def self.class_for_element(element)
       if element.name == "input"
@@ -59,7 +59,16 @@ module Webrat
         
     def to_param
       return nil if disabled?
-      param_parser.parse_query_parameters("#{name}=#{escaped_value}")
+      
+      key_and_value = "#{name}=#{escaped_value}"
+      
+      if defined?(CGIMethods)
+        CGIMethods.parse_query_parameters(key_and_value)
+      elsif defined?(ActionController::AbstractRequest)
+        ActionController::AbstractRequest.parse_query_parameters(key_and_value)
+      else
+        ::Merb::Parse.query(key_and_value)
+      end
     end
     
     def set(value)
@@ -102,7 +111,7 @@ module Webrat
       end
 
       unless id.blank?
-        @label_elements += @form.element / "label[@for=#{id}]"
+        @label_elements += @form.element.search("label[@for='#{id}']")
       end
 
       @label_elements
@@ -110,16 +119,6 @@ module Webrat
     
     def default_value
       @element["value"]
-    end
-    
-    def param_parser
-      if defined?(CGIMethods)
-        CGIMethods
-      elsif defined?(ActionController::AbstractRequest)
-        ActionController::AbstractRequest
-      else
-        Webrat::ParamParser #used for Merb
-      end
     end
     
     def replace_param_value(params, oval, nval)
@@ -139,10 +138,10 @@ module Webrat
     end
   end
   
-  class ButtonField < Field
+  class ButtonField < Field #:nodoc:
 
     def matches_text?(text)
-      @element.innerHTML =~ /#{Regexp.escape(text.to_s)}/i
+      @element.inner_html =~ /#{Regexp.escape(text.to_s)}/i
     end
     
     def matches_value?(value)
@@ -166,13 +165,13 @@ module Webrat
 
   end
 
-  class HiddenField < Field
+  class HiddenField < Field #:nodoc:
 
     def to_param
       if collection_name?
         super
       else
-        checkbox_with_same_name = @form.find_field(name, CheckboxField)
+        checkbox_with_same_name = @form.field(name, CheckboxField)
 
         if checkbox_with_same_name.to_param.blank?
           super
@@ -190,7 +189,7 @@ module Webrat
 
   end
 
-  class CheckboxField < Field
+  class CheckboxField < Field #:nodoc:
 
     def to_param
       return nil if @value.nil?
@@ -223,10 +222,10 @@ module Webrat
 
   end
 
-  class PasswordField < Field
+  class PasswordField < Field #:nodoc:
   end
 
-  class RadioField < Field
+  class RadioField < Field #:nodoc:
 
     def to_param
       return nil if @value.nil?
@@ -258,7 +257,7 @@ module Webrat
 
   end
 
-  class TextareaField < Field
+  class TextareaField < Field #:nodoc:
 
   protected
 
@@ -268,7 +267,7 @@ module Webrat
 
   end
   
-  class FileField < Field
+  class FileField < Field #:nodoc:
 
     attr_accessor :content_type
 
@@ -297,13 +296,13 @@ module Webrat
 
   end
 
-  class TextField < Field
+  class TextField < Field #:nodoc:
   end
 
-  class ResetField < Field
+  class ResetField < Field #:nodoc:
   end
 
-  class SelectField < Field
+  class SelectField < Field #:nodoc:
 
     def find_option(text)
       options.detect { |o| o.matches_text?(text) }
@@ -312,11 +311,12 @@ module Webrat
   protected
 
     def default_value
-      selected_options = @element / "option[@selected='selected']"
-      selected_options = @element / "option:first" if selected_options.empty? 
+      selected_options = @element.search(".//option[@selected='selected']")
+      selected_options = @element.search(".//option[position() = 1]") if selected_options.empty? 
+      
       selected_options.map do |option|
         return "" if option.nil?
-        option["value"] || option.innerHTML
+        option["value"] || option.inner_html
       end
     end
 
@@ -325,7 +325,7 @@ module Webrat
     end
 
     def option_elements
-      (@element / "option")
+      @element.search(".//option")
     end
 
   end

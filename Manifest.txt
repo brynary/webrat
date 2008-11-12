@@ -26,7 +26,6 @@ lib/webrat/core/select_option.rb
 lib/webrat/core/session.rb
 lib/webrat/core/url_encoded_pair_parser.rb
 lib/webrat/mechanize.rb
-lib/webrat/mechanize/mechanize_session.rb
 lib/webrat/merb.rb
 lib/webrat/rack/rack_session.rb
 lib/webrat/rails.rb

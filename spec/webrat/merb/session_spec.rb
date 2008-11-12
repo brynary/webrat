@@ -4,7 +4,7 @@ require File.expand_path(File.dirname(__FILE__) + "/helper")
 describe Webrat::Session do
   
   it "should not pass empty params if data is and empty hash" do
-    session = Webrat::Session.new
+    session = Webrat::MerbSession.new
     response = OpenStruct.new
     response.status = 200
     session.should_receive(:request).with('url', {:params=> nil, :method=>"GET", :headers=>nil}).and_return(response)
@@ -13,7 +13,7 @@ describe Webrat::Session do
   
   %w{post put delete}.each do |request_method|
     it "should call do request with method #{request_method.upcase} for a #{request_method} call" do
-      session = Webrat::Session.new
+      session = Webrat::MerbSession.new
       response = OpenStruct.new
       response.status = 200
       
@@ -25,7 +25,7 @@ describe Webrat::Session do
   context "a session with a response" do
     
     setup do
-      @session = Webrat::Session.new
+      @session = Webrat::MerbSession.new
       @response = OpenStruct.new
       @response.status = 200
       @response.body = 'test response'

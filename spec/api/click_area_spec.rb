@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
 
-describe "clicks_area" do
+describe "click_area" do
   before do
     @session = Webrat::TestSession.new
   end
@@ -12,7 +12,7 @@ describe "clicks_area" do
       </map>
     EOS
     @session.should_receive(:get).with("/page", {})
-    @session.clicks_area "Berlin"
+    @session.click_area "Berlin"
   end
 
   it "should assert valid response" do
@@ -22,7 +22,7 @@ describe "clicks_area" do
       </map>
     EOS
     @session.response_code = 501
-    lambda { @session.clicks_area "Berlin" }.should raise_error
+    lambda { @session.click_area "Berlin" }.should raise_error
   end
   
   [200, 300, 400, 499].each do |status|
@@ -33,7 +33,7 @@ describe "clicks_area" do
         </map>
       EOS
       @session.response_code = status
-      lambda { @session.clicks_area "Berlin" }.should_not raise_error
+      lambda { @session.click_area "Berlin" }.should_not raise_error
     end
   end
   
@@ -45,7 +45,7 @@ describe "clicks_area" do
     EOS
     
     lambda {
-      @session.clicks_area "Missing area"
+      @session.click_area "Missing area"
     }.should raise_error
   end
   
@@ -56,7 +56,7 @@ describe "clicks_area" do
       </map>
     EOS
     @session.should_receive(:get).with("/page", {})
-    @session.clicks_area "berlin"
+    @session.click_area "berlin"
   end
   
 
@@ -68,7 +68,7 @@ describe "clicks_area" do
       </map>
     EOS
     @session.should_receive(:get).with("/page/sub", {})
-    @session.clicks_area "Berlin"
+    @session.click_area "Berlin"
   end
   
   it "should follow fully qualified local links" do
@@ -78,7 +78,7 @@ describe "clicks_area" do
       </map>
     EOS
     @session.should_receive(:get).with("http://www.example.com/page", {})
-    @session.clicks_area "Berlin"
+    @session.click_area "Berlin"
   end
 
   it "should follow query parameters" do
@@ -88,6 +88,6 @@ describe "clicks_area" do
       </map>
     EOS
     @session.should_receive(:get).with("/page?foo=bar", {})
-    @session.clicks_area "Berlin"
+    @session.click_area "Berlin"
   end
 end
