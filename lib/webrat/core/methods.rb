@@ -37,7 +37,7 @@ module Webrat
       :clicks_area, :click_area,
       :clicks_button, :click_button,
       :reload, :reloads,
-      :clicks_link_within,
+      :clicks_link_within, :click_link_within,
       :field_labeled
     
   end
