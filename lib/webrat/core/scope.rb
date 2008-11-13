@@ -1,64 +1,81 @@
-require "hpricot"
+require "webrat/core/form"
+require "webrat/core/locators"
 
 module Webrat
   class Scope
     include Logging
     include Flunk
+    include Locators
     
-    def initialize(session, html, selector = nil)
-      @session  = session
-      @html     = html
-      @selector = selector
+    def self.from_page(session, response, response_body) #:nodoc:
+      new(session) do
+        @response = response
+        @response_body = response_body
+      end
+    end
+    
+    def self.from_scope(session, scope, selector) #:nodoc:
+      new(session) do
+        @scope = scope
+        @selector = selector
+      end
+    end
+    
+    def initialize(session, &block) #:nodoc:
+      @session = session
+      instance_eval(&block) if block_given?
     end
     
     # Verifies an input field or textarea exists on the current page, and stores a value for
     # it which will be sent when the form is submitted.
     #
     # Examples:
-    #   fills_in "Email", :with => "user@example.com"
-    #   fills_in "user[email]", :with => "user@example.com"
+    #   fill_in "Email", :with => "user@example.com"
+    #   fill_in "user[email]", :with => "user@example.com"
     #
     # The field value is required, and must be specified in <tt>options[:with]</tt>.
     # <tt>field</tt> can be either the value of a name attribute (i.e. <tt>user[email]</tt>)
     # or the text inside a <tt><label></tt> element that points at the <tt><input></tt> field.
-    def fills_in(id_or_name_or_label, options = {})
-      find_field(id_or_name_or_label, TextField, TextareaField, PasswordField).set(options[:with])
+    def fill_in(field_locator, options = {})
+      field = locate_field(field_locator, TextField, TextareaField, PasswordField)
+      field.raise_error_if_disabled
+      field.set(options[:with])
     end
 
-    alias_method :fill_in, :fills_in
+    alias_method :fills_in, :fill_in
     
     # Verifies that an input checkbox exists on the current page and marks it
     # as checked, so that the value will be submitted with the form.
     #
     # Example:
-    #   checks 'Remember Me'
-    def checks(id_or_name_or_label)
-      find_field(id_or_name_or_label, CheckboxField).check
+    #   check 'Remember Me'
+    def check(field_locator)
+      locate_field(field_locator, CheckboxField).check
     end
 
-    alias_method :check, :checks
+    alias_method :checks, :check
     
     # Verifies that an input checkbox exists on the current page and marks it
     # as unchecked, so that the value will not be submitted with the form.
     #
     # Example:
-    #   unchecks 'Remember Me'
-    def unchecks(id_or_name_or_label)
-      find_field(id_or_name_or_label, CheckboxField).uncheck
+    #   uncheck 'Remember Me'
+    def uncheck(field_locator)
+      locate_field(field_locator, CheckboxField).uncheck
     end
 
-    alias_method :uncheck, :unchecks
+    alias_method :unchecks, :uncheck
     
     # Verifies that an input radio button exists on the current page and marks it
     # as checked, so that the value will be submitted with the form.
     #
     # Example:
-    #   chooses 'First Option'
-    def chooses(label)
-      find_field(label, RadioField).choose
+    #   choose 'First Option'
+    def choose(field_locator)
+      locate_field(field_locator, RadioField).choose
     end
 
-    alias_method :choose, :chooses
+    alias_method :chooses, :choose
     
     # Verifies that a an option element exists on the current page with the specified
     # text. You can optionally restrict the search to a specific select list by
@@ -82,93 +99,64 @@ module Webrat
     # Example:
     #   attaches_file "Resume", "/path/to/the/resume.txt"
     #   attaches_file "Photo", "/path/to/the/image.png", "image/png"
-    def attaches_file(id_or_name_or_label, path, content_type = nil)
-      find_field(id_or_name_or_label, FileField).set(path, content_type)
+    def attach_file(field_locator, path, content_type = nil)
+      locate_field(field_locator, FileField).set(path, content_type)
     end
 
-    alias_method :attach_file, :attaches_file
+    alias_method :attaches_file, :attach_file
+    
+    def click_area(area_name)
+      find_area(area_name).click
+    end
+    
+    alias_method :clicks_area, :click_area
     
     # Issues a request for the URL pointed to by a link on the current page,
     # follows any redirects, and verifies the final page load was successful.
-    #
-    # clicks_link has very basic support for detecting Rails-generated 
+    # 
+    # click_link has very basic support for detecting Rails-generated 
     # JavaScript onclick handlers for PUT, POST and DELETE links, as well as
     # CSRF authenticity tokens if they are present.
     #
     # Javascript imitation can be disabled by passing the option :javascript => false
     #
+    # Passing a :method in the options hash overrides the HTTP method used
+    # for making the link request
+    # 
     # Example:
-    #   clicks_link "Sign up"
+    #   click_link "Sign up"
     #
-    #   clicks_link "Sign up", :javascript => false
-    def clicks_link(link_text, options = {})
-      find_link(link_text).click(nil, options)
-    end
-
-    alias_method :click_link, :clicks_link
-    
-    # Works like clicks_link, but forces a GET request
+    #   click_link "Sign up", :javascript => false
     # 
-    # Example:
-    #   clicks_get_link "Log out"
-    def clicks_get_link(link_text)
-      find_link(link_text).click(:get)
+    #   click_link "Sign up", :method => :put
+    def click_link(link_text, options = {})
+      find_link(link_text).click(options)
     end
 
-    alias_method :click_get_link, :clicks_get_link
-    
-    # Works like clicks_link, but issues a DELETE request instead of a GET
-    # 
-    # Example:
-    #   clicks_delete_link "Log out"
-    def clicks_delete_link(link_text)
-      find_link(link_text).click(:delete)
-    end
-
-    alias_method :click_delete_link, :clicks_delete_link
-    
-    # Works like clicks_link, but issues a POST request instead of a GET
-    # 
-    # Example:
-    #   clicks_post_link "Vote"
-    def clicks_post_link(link_text)
-      find_link(link_text).click(:post)
-    end
-
-    alias_method :click_post_link, :clicks_post_link
-    
-    # Works like clicks_link, but issues a PUT request instead of a GET
-    # 
-    # Example:
-    #   clicks_put_link "Update profile"
-    def clicks_put_link(link_text)
-      find_link(link_text).click(:put)
-    end
-
-    alias_method :click_put_link, :clicks_put_link
+    alias_method :clicks_link, :click_link
     
     # Verifies that a submit button exists for the form, then submits the form, follows
     # any redirects, and verifies the final page was successful.
     #
     # Example:
-    #   clicks_button "Login"
-    #   clicks_button
+    #   click_button "Login"
+    #   click_button
     #
     # The URL and HTTP method for the form submission are automatically read from the
     # <tt>action</tt> and <tt>method</tt> attributes of the <tt><form></tt> element.
-    def clicks_button(value = nil)
+    def click_button(value = nil)
       find_button(value).click
     end
 
-    alias_method :click_button, :clicks_button
+    alias_method :clicks_button, :click_button
     
     def dom # :nodoc:
-      return @dom if defined?(@dom) && @dom
-      @dom = Hpricot(@html)
+      return @dom if @dom
       
       if @selector
-        html = (@dom / @selector).first.to_html
-        @dom = Hpricot(html)
+        @dom = scoped_dom
+      else
+        @dom = page_dom
       end
       
       return @dom
@@ -176,62 +164,41 @@ module Webrat
     
   protected
   
-    def find_select_option(option_text, id_or_name_or_label)
-      if id_or_name_or_label
-        field = find_field(id_or_name_or_label, SelectField)
-        return field.find_option(option_text)
+    def page_dom #:nodoc:
+      return @response.dom if @response.respond_to?(:dom)
+      dom = Webrat.nokogiri_document(@response_body)
+      Webrat.define_dom_method(@response, dom)
+      return dom
+    end
+    
+    def scoped_dom #:nodoc:
+      Webrat.nokogiri_document(@scope.dom.search(@selector).first.to_html)
+    end
+    
+    def locate_field(field_locator, *field_types) #:nodoc:
+      if field_locator.is_a?(Field)
+        field_locator
       else
-        forms.each do |form|
-          result = form.find_select_option(option_text)
-          return result if result
-        end
-      end
-        
-      flunk("Could not find option #{option_text.inspect}")
-    end
-    
-    def find_button(value)
-      forms.each do |form|
-        button = form.find_button(value)
-        return button if button
-      end
-      
-      flunk("Could not find button #{value.inspect}")
-    end
-    
-    def find_link(text, selector = nil)
-      matching_links = []
-      
-      links_within(selector).each do |possible_link|
-        matching_links << possible_link if possible_link.matches_text?(text)
-      end
-      
-      if matching_links.any?
-        matching_links.sort_by { |l| l.text.length }.first
-      else
-        flunk("Could not find link with text #{text.inspect}")
+        field(field_locator, *field_types)
       end
     end
     
-    def find_field(id_or_name_or_label, *field_types)
-      forms.each do |form|
-        result = form.find_field(id_or_name_or_label, *field_types)
-        return result if result
+    def areas #:nodoc:
+      dom.search("area").map do |element| 
+        Area.new(@session, element)
       end
-      
-      flunk("Could not find #{field_types.inspect}: #{id_or_name_or_label.inspect}")
     end
     
-    def links_within(selector)
-      (dom / selector / "a[@href]").map do |link_element|
+    def links #:nodoc:
+      dom.search("a[@href]").map do |link_element|
         Link.new(@session, link_element)
       end
     end
     
-    def forms
+    def forms #:nodoc:
       return @forms if @forms
       
-      @forms = (dom / "form").map do |form_element|
+      @forms = dom.search("form").map do |form_element|
         Form.new(@session, form_element)
       end
     end

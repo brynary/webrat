@@ -1,5 +1,5 @@
 module Webrat
-  class SelectOption
+  class SelectOption #:nodoc:
     
     def initialize(select, element)
       @select = select
@@ -8,20 +8,21 @@ module Webrat
     
     def matches_text?(text)
       if text.is_a?(Regexp)
-        @element.innerHTML =~ text
+        @element.inner_html =~ text
       else
-        @element.innerHTML == text.to_s
+        @element.inner_html == text.to_s
       end
     end
     
     def choose
+      @select.raise_error_if_disabled
       @select.set(value)
     end
     
   protected
   
     def value
-      @element["value"] || @element.innerHTML
+      @element["value"] || @element.inner_html
     end
     
   end

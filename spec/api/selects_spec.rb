@@ -35,6 +35,18 @@ describe "selects" do
 
     lambda { @session.selects "February", :from => "year" }.should raise_error
   end
+
+  
+  it "should fail if the select is disabled" do
+    @session.response_body = <<-EOS
+      <form method="post" action="/login">
+        <select name="month" disabled="disabled"><option value="1">January</option></select>
+        <input type="submit" />
+      </form>
+    EOS
+
+    lambda { @session.selects "January", :from => "month" }.should raise_error
+  end
   
   it "should send value from option" do
     @session.response_body = <<-EOS
@@ -45,7 +57,7 @@ describe "selects" do
     EOS
     @session.should_receive(:post).with("/login", "month" => "1")
     @session.selects "January", :from => "month"
-    @session.clicks_button
+    @session.click_button
   end
 
   it "should send values with HTML encoded ampersands" do
@@ -57,7 +69,7 @@ describe "selects" do
     EOS
     @session.should_receive(:post).with("/login", "encoded" => "A & B")
     @session.selects "Encoded", :from => "encoded"
-    @session.clicks_button
+    @session.click_button
   end
 
   it "should work with empty select lists" do
@@ -68,7 +80,7 @@ describe "selects" do
       </form>
     EOS
     @session.should_receive(:post).with("/login", 'month' => '')
-    @session.clicks_button
+    @session.click_button
   end
   
   it "should work without specifying the field name or label" do
@@ -80,7 +92,7 @@ describe "selects" do
     EOS
     @session.should_receive(:post).with("/login", "month" => "1")
     @session.selects "January"
-    @session.clicks_button
+    @session.click_button
   end
   
   it "should send value from option in list specified by name" do
@@ -93,7 +105,7 @@ describe "selects" do
     EOS
     @session.should_receive(:post).with("/login", "start_month" => "s1", "end_month" => "e1")
     @session.selects "January", :from => "end_month"
-    @session.clicks_button
+    @session.click_button
   end
   
   it "should send value from option in list specified by label" do
@@ -108,7 +120,7 @@ describe "selects" do
     EOS
     @session.should_receive(:post).with("/login", "start_month" => "s1", "end_month" => "e1")
     @session.selects "January", :from => "End Month"
-    @session.clicks_button
+    @session.click_button
   end
   
   it "should use option text if no value" do
@@ -120,7 +132,7 @@ describe "selects" do
     EOS
     @session.should_receive(:post).with("/login", "month" => "January")
     @session.selects "January", :from => "month"
-    @session.clicks_button
+    @session.click_button
   end
 
   it "should find option by regexp" do
@@ -132,7 +144,7 @@ describe "selects" do
     EOS
     @session.should_receive(:post).with("/login", "month" => "January")
     @session.selects(/jan/i)
-    @session.clicks_button
+    @session.click_button
   end
   
   it "should fail if no option matching the regexp exists" do
@@ -160,6 +172,6 @@ describe "selects" do
     EOS
     @session.should_receive(:post).with("/login", "start_month" => "s1", "end_month" => "e1")
     @session.selects(/jan/i, :from => "End Month")
-    @session.clicks_button
+    @session.click_button
   end
 end

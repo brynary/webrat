@@ -1,6 +1,6 @@
 # For Rails before http://dev.rubyonrails.org/ticket/10497 was committed
 module Webrat
-  module RedirectActions
+  module RedirectActions #:nodoc:
     
     def put_via_redirect(path, parameters = {}, headers = {})
       put path, parameters, headers

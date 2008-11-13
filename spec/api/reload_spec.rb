@@ -9,7 +9,7 @@ describe "reloads" do
   it "should reload the page with http referer" do
     @session.should_receive(:get).with("/", {})
     @session.should_receive(:get).with("/", {}, {"HTTP_REFERER"=>"/"})
-    @session.visits("/")
+    @session.visit("/")
     @session.reloads
   end
 end

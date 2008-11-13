@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
 
-describe "clicks_link" do
+describe "click_link" do
   before do
     @session = Webrat::TestSession.new
   end
@@ -10,7 +10,7 @@ describe "clicks_link" do
       <a href="/page">Link text</a>
     EOS
     @session.should_receive(:get).with("/page", {})
-    @session.clicks_link "Link text"
+    @session.click_link "Link text"
   end
 
   it "should click get links" do
@@ -18,7 +18,7 @@ describe "clicks_link" do
       <a href="/page">Link text</a>
     EOS
     @session.should_receive(:get).with("/page", {})
-    @session.clicks_get_link "Link text"
+    @session.click_link "Link text", :method => :get
   end
   
   it "should click delete links" do
@@ -26,7 +26,7 @@ describe "clicks_link" do
       <a href="/page">Link text</a>
     EOS
     @session.should_receive(:delete).with("/page", {})
-    @session.clicks_delete_link "Link text"
+    @session.click_link "Link text", :method => :delete
   end
   
   
@@ -35,7 +35,7 @@ describe "clicks_link" do
       <a href="/page">Link text</a>
     EOS
     @session.should_receive(:post).with("/page", {})
-    @session.clicks_post_link "Link text"
+    @session.click_link "Link text", :method => :post
   end
   
   it "should click put links" do
@@ -43,7 +43,15 @@ describe "clicks_link" do
       <a href="/page">Link text</a>
     EOS
     @session.should_receive(:put).with("/page", {})
-    @session.clicks_put_link "Link text"
+    @session.click_link "Link text", :method => :put
+  end
+  
+  it "should click links by regexp" do
+    @session.response_body = <<-EOS
+      <a href="/page">Link text</a>
+    EOS
+    @session.should_receive(:get).with("/page", {})
+    @session.click_link /link [a-z]/i
   end
   
   it "should click rails javascript links with authenticity tokens" do
@@ -62,7 +70,7 @@ describe "clicks_link" do
         return false;">Posts</a>
     EOS
     @session.should_receive(:post).with("/posts", "authenticity_token" => "aa79cb354597a60a3786e7e291ed4f74d77d3a62")
-    @session.clicks_link "Posts"
+    @session.click_link "Posts"
   end
   
   it "should click rails javascript delete links" do
@@ -81,7 +89,7 @@ describe "clicks_link" do
         return false;">Delete</a>
     EOS
     @session.should_receive(:delete).with("/posts/1", {})
-    @session.clicks_link "Delete"
+    @session.click_link "Delete"
   end
   
   it "should click rails javascript post links" do
@@ -95,7 +103,7 @@ describe "clicks_link" do
         return false;">Posts</a>
     EOS
     @session.should_receive(:post).with("/posts", {})
-    @session.clicks_link "Posts"
+    @session.click_link "Posts"
   end
   
   it "should click rails javascript post links without javascript" do
@@ -109,7 +117,7 @@ describe "clicks_link" do
         return false;">Posts</a>
     EOS
     @session.should_receive(:get).with("/posts", {})
-    @session.clicks_link "Posts", :javascript => false
+    @session.click_link "Posts", :javascript => false
   end
   
   it "should click rails javascript put links" do
@@ -128,7 +136,7 @@ describe "clicks_link" do
         return false;">Put</a></h2>
     EOS
     @session.should_receive(:put).with("/posts", {})
-    @session.clicks_link "Put"
+    @session.click_link "Put"
   end
   
   it "should fail if the javascript link doesn't have a value for the _method input" do
@@ -147,7 +155,7 @@ describe "clicks_link" do
     EOS
     
     lambda {
-      @session.clicks_link "Link"
+      @session.click_link "Link"
     }.should raise_error
   end
   
@@ -155,8 +163,18 @@ describe "clicks_link" do
     @session.response_body = <<-EOS
       <a href="/page">Link text</a>
     EOS
-    @session.response_code = 404
-    lambda { @session.clicks_link "Link text" }.should raise_error
+    @session.response_code = 501
+    lambda { @session.click_link "Link text" }.should raise_error
+  end
+  
+  [200, 300, 400, 499].each do |status|
+    it "should consider the #{status} status code as success" do
+      @session.response_body = <<-EOS
+        <a href="/page">Link text</a>
+      EOS
+      @session.response_code = status
+      lambda { @session.click_link "Link text" }.should_not raise_error
+    end
   end
   
   it "should fail is the link doesn't exist" do
@@ -165,7 +183,7 @@ describe "clicks_link" do
     EOS
     
     lambda {
-      @session.clicks_link "Missing link"
+      @session.click_link "Missing link"
     }.should raise_error
   end
   
@@ -174,7 +192,7 @@ describe "clicks_link" do
       <a href="/page">Link text</a>
     EOS
     @session.should_receive(:get).with("/page", {})
-    @session.clicks_link "LINK TEXT"
+    @session.click_link "LINK TEXT"
   end
   
   it "should match link substrings" do
@@ -182,7 +200,7 @@ describe "clicks_link" do
       <a href="/page">This is some cool link text, isn't it?</a>
     EOS
     @session.should_receive(:get).with("/page", {})
-    @session.clicks_link "Link text"
+    @session.click_link "Link text"
   end
   
   it "should work with elements in the link" do
@@ -190,7 +208,7 @@ describe "clicks_link" do
       <a href="/page"><span>Link text</span></a>
     EOS
     @session.should_receive(:get).with("/page", {})
-    @session.clicks_link "Link text"
+    @session.click_link "Link text"
   end
   
   it "should match the first matching link" do
@@ -199,7 +217,7 @@ describe "clicks_link" do
       <a href="/page2">Link text</a>
     EOS
     @session.should_receive(:get).with("/page1", {})
-    @session.clicks_link "Link text"
+    @session.click_link "Link text"
   end
   
   it "should choose the shortest link text match" do
@@ -209,7 +227,7 @@ describe "clicks_link" do
     EOS
     
     @session.should_receive(:get).with("/page2", {})
-    @session.clicks_link "Link"
+    @session.click_link "Link"
   end
   
   it "should treat non-breaking spaces as spaces" do
@@ -218,7 +236,7 @@ describe "clicks_link" do
     EOS
     
     @session.should_receive(:get).with("/page1", {})
-    @session.clicks_link "This is a link"
+    @session.click_link "This is a link"
   end
   
   it "should click link within a selector" do
@@ -230,7 +248,7 @@ describe "clicks_link" do
     EOS
     
     @session.should_receive(:get).with("/page2", {})
-    @session.clicks_link_within "#container", "Link"
+    @session.click_link_within "#container", "Link"
   end
 
   it "should not make request when link is local anchor" do
@@ -239,7 +257,7 @@ describe "clicks_link" do
     EOS
     # Don't know why @session.should_receive(:get).never doesn't work here
     @session.should_receive(:send).with('get_via_redirect', '#section-1', {}).never
-    @session.clicks_link "Jump to Section 1"
+    @session.click_link "Jump to Section 1"
   end
 
   it "should follow relative links" do
@@ -248,7 +266,7 @@ describe "clicks_link" do
       <a href="sub">Jump to sub page</a>
     EOS
     @session.should_receive(:get).with("/page/sub", {})
-    @session.clicks_link "Jump to sub page"
+    @session.click_link "Jump to sub page"
   end
   
   it "should follow fully qualified local links" do
@@ -256,7 +274,7 @@ describe "clicks_link" do
       <a href="http://www.example.com/page/sub">Jump to sub page</a>
     EOS
     @session.should_receive(:get).with("http://www.example.com/page/sub", {})
-    @session.clicks_link "Jump to sub page"
+    @session.click_link "Jump to sub page"
   end
 
   it "should follow query parameters" do
@@ -265,6 +283,6 @@ describe "clicks_link" do
       <a href="?foo=bar">Jump to foo bar</a>
     EOS
     @session.should_receive(:get).with("/page?foo=bar", {})
-    @session.clicks_link "Jump to foo bar"
+    @session.click_link "Jump to foo bar"
   end
 end

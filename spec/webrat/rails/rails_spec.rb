@@ -7,7 +7,7 @@
 #   EOS
 #   @page.stub!(:url).and_return("/current")
 #   @session.should_receive(:get).with("/current", {})
-#   @session.clicks_button
+#   @session.click_button
 # end
 # 
 # it "should follow fully qualified secure local links" do
@@ -16,5 +16,5 @@
 #   EOS
 #   @session.should_receive(:https!).with(true)
 #   @session.should_receive(:get).with("/page/sub", {})
-#   @session.clicks_link "Jump to sub page"
+#   @session.click_link "Jump to sub page"
 # end
