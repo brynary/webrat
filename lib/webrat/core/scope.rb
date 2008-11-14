@@ -123,14 +123,22 @@ module Webrat
     # Passing a :method in the options hash overrides the HTTP method used
     # for making the link request
     # 
+    # It will try to find links by (in order of precedence):
+    #   innerHTML, with simple &nbsp; handling
+    #   title
+    #   id
+    #    
+    # innerHTML and title are matchable by text subtring or Regexp
+    # id is matchable by full text equality or Regexp
+    # 
     # Example:
     #   click_link "Sign up"
     #
     #   click_link "Sign up", :javascript => false
     # 
     #   click_link "Sign up", :method => :put
-    def click_link(link_text, options = {})
-      find_link(link_text).click(options)
+    def click_link(text_or_title_or_id, options = {})
+      find_link(text_or_title_or_id).click(options)
     end
 
     alias_method :clicks_link, :click_link

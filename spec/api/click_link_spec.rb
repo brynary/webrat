@@ -21,6 +21,14 @@ describe "click_link" do
     @session.click_link "Link text", :method => :get
   end
   
+  it "should click link on substring" do
+    @session.response_body = <<-EOS
+      <a href="/page">Link text</a>
+    EOS
+    @session.should_receive(:get).with("/page", {})
+    @session.clicks_link "ink tex", :method => :get
+  end
+  
   it "should click delete links" do
     @session.response_body = <<-EOS
       <a href="/page">Link text</a>
@@ -52,6 +60,22 @@ describe "click_link" do
     EOS
     @session.should_receive(:get).with("/page", {})
     @session.click_link /link [a-z]/i
+  end
+  
+  it "should click links by id" do 
+    @session.response_body = <<-EOS
+      <a id="link_text_link" href="/page">Link text</a>
+    EOS
+    @session.should_receive(:get).with("/page", {})
+    @session.clicks_link "link_text_link"
+  end
+  
+  it "should click links by id regexp" do 
+    @session.response_body = <<-EOS
+      <a id="link_text_link" href="/page">Link text</a>
+    EOS
+    @session.should_receive(:get).with("/page", {})
+    @session.clicks_link /_text_/
   end
   
   it "should click rails javascript links with authenticity tokens" do
