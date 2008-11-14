@@ -86,7 +86,7 @@ module Webrat
         send "#{http_method}", url, data || {}, h
       end
 
-      save_and_open_page if exception_caught?
+      save_and_open_page if exception_caught? && !Webrat::Core::Configuration.configuration.open_error_files
       raise PageLoadError.new("Page load was not successful (Code: #{response_code.inspect}):\n#{formatted_error}") unless success_code?
       
       @_scopes      = nil

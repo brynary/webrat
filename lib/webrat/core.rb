@@ -1,3 +1,4 @@
+require "webrat/core/configuration"
 require "webrat/core/nokogiri"
 require "webrat/core/logging"
 require "webrat/core/flunk"
