@@ -11,7 +11,11 @@ module Webrat
     end
     
     def text
-      @element.inner_text
+      str = @element.inner_text
+      str.gsub!("\n","")
+      str.strip!
+      str.squeeze!(" ")
+      str
     end
     
   end
