@@ -270,6 +270,15 @@ describe "click_link" do
   end
   
   it "should follow fully qualified local links" do
+    @session.stub!(:current_url).and_return("/page")
+    @session.response_body = <<-EOS
+      <a href="http://subdomain.example.com/page/sub">Jump to sub page</a>
+    EOS
+    @session.should_receive(:get).with("http://subdomain.example.com/page/sub", {})
+    @session.click_link "Jump to sub page"
+  end
+  
+  it "should follow fully qualified local links to example.com" do
     @session.response_body = <<-EOS
       <a href="http://www.example.com/page/sub">Jump to sub page</a>
     EOS
