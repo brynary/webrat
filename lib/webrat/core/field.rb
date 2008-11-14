@@ -20,6 +20,8 @@ module Webrat
      raise "Invalid field element: #{element.inspect}"
     end
     
+    attr_reader :value
+    
     def initialize(form, element)
       @form     = form
       @element  = element
