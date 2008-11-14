@@ -76,15 +76,15 @@ module Webrat
       flunk("Could not find area with name #{area_name}")
     end
     
-    def find_link(text) #:nodoc:
+    def find_link(text_or_title_or_id) #:nodoc:
       matching_links = links.select do |possible_link|
-        possible_link.matches_text?(text)
+        possible_link.matches_text?(text_or_title_or_id) || possible_link.matches_id?(text_or_title_or_id)
       end
-      
+
       if matching_links.any?
         matching_links.min { |a, b| a.text.length <=> b.text.length }
       else
-        flunk("Could not find link with text #{text.inspect}")
+        flunk("Could not find link with text or title or id #{text_or_title_or_id.inspect}")
       end
     end
     

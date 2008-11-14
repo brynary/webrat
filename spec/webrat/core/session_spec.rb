@@ -18,13 +18,28 @@ describe Webrat::Session do
       "<html></html>"
     end
     
-    session.current_dom.should be_an_instance_of(Nokogiri::HTML::Document)
+    session.current_dom.should respond_to(:search)
   end
   
-  it "should open the page in the browser" do
+  it "should open the page in the browser in MacOSX" do
     session = Webrat::Session.new
+    session.should_receive(:ruby_platform).and_return 'darwin'
     session.should_receive(:`).with("open path")
     session.open_in_browser("path")
+  end
+  
+  it "should open the page in the browser in cygwin" do
+    session = Webrat::Session.new
+    session.should_receive(:ruby_platform).and_return 'i386-cygwin'
+    session.should_receive(:`).with("rundll32 url.dll,FileProtocolHandler path\\to\\file")
+    session.open_in_browser("path/to/file")
+  end
+  
+  it "should open the page in the browser in Win32" do
+    session = Webrat::Session.new
+    session.should_receive(:ruby_platform).and_return 'win32'
+    session.should_receive(:`).with("rundll32 url.dll,FileProtocolHandler path\\to\\file")
+    session.open_in_browser("path/to/file")
   end
   
   it "should provide a current_page for backwards compatibility" do

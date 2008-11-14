@@ -2,6 +2,7 @@
 
 * Minor enhancements
 
+  * Allow clicking links by id and id regexp (gaffo)
   * Raise Webrat::PageLoadError when a failure occurs so that application exceptions can be more accurately tested (Ryan Briones)
 
 == 0.3.2 / 2008-11-08

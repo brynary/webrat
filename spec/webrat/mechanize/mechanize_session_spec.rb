@@ -12,4 +12,25 @@ describe Webrat::MechanizeSession do
       @mech.headers.should == {}
     end
   end
+  
+  describe "post" do
+    def url
+      'http://test.host/users'
+    end
+    
+    def data
+      {:user => {:first_name => 'Nancy', :last_name => 'Callahan'}}
+    end
+    
+    def flattened_data
+      {'user[first_name]' => 'Nancy', 'user[last_name]' => 'Callahan'}
+    end
+    
+    it "should flatten model post data" do
+      mechanize = mock :mechanize
+      mechanize.should_receive(:post).with(url, flattened_data)
+      
+      Webrat::MechanizeSession.new(mechanize).post(url, data)
+    end
+  end
 end

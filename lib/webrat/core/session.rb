@@ -152,8 +152,13 @@ module Webrat
     
     alias_method :visits, :visit
     
-    def open_in_browser(path) #:nodoc
-      `open #{path}`
+    def open_in_browser(path) # :nodoc
+      platform = ruby_platform
+      if platform =~ /cygwin/ || platform =~ /win32/
+        `rundll32 url.dll,FileProtocolHandler #{path.gsub("/", "\\\\")}`
+      elsif platform =~ /darwin/
+        `open #{path}`
+      end
     end
     
     def rewrite_css_and_image_references(response_html) #:nodoc
@@ -186,5 +191,11 @@ module Webrat
     def_delegators :current_scope, :should_see
     def_delegators :current_scope, :should_not_see
     def_delegators :current_scope, :field_labeled
+    
+    private
+    # accessor for testing
+    def ruby_platform
+      RUBY_PLATFORM
+    end
   end
 end

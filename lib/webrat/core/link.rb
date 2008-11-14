@@ -22,7 +22,7 @@ module Webrat
     end
     
     def matches_text?(link_text)
-      html = text.gsub('&#xA0;',' ')
+      html = text.gsub('&#xA0;',' ').gsub('&nbsp;', ' ')
       
       if link_text.is_a?(Regexp)
         matcher = link_text
@@ -33,11 +33,22 @@ module Webrat
       html =~ matcher || title =~ matcher
     end
     
+    def matches_id?(id_or_regexp)
+      if id_or_regexp.is_a?(Regexp)
+        (id =~ id_or_regexp) ? true : false
+      else
+        (id == id_or_regexp) ? true : false
+      end
+    end
+    
     def text
       @element.inner_html
     end
     
   protected
+    def id
+      @element['id']
+    end
   
     def data
       authenticity_token.blank? ? {} : {"authenticity_token" => authenticity_token}
@@ -54,7 +65,7 @@ module Webrat
     def absolute_href
       if href =~ /^\?/
         "#{@session.current_url}#{href}"
-      elsif href !~ %r{^https?://www.example.com(/.*)} && (href !~ /^\//)
+      elsif href !~ %r{^https?://} && (href !~ /^\//)
         "#{@session.current_url}/#{href}"
       else
         href

@@ -123,14 +123,22 @@ module Webrat
     # Passing a :method in the options hash overrides the HTTP method used
     # for making the link request
     # 
+    # It will try to find links by (in order of precedence):
+    #   innerHTML, with simple &nbsp; handling
+    #   title
+    #   id
+    #    
+    # innerHTML and title are matchable by text subtring or Regexp
+    # id is matchable by full text equality or Regexp
+    # 
     # Example:
     #   click_link "Sign up"
     #
     #   click_link "Sign up", :javascript => false
     # 
     #   click_link "Sign up", :method => :put
-    def click_link(link_text, options = {})
-      find_link(link_text).click(options)
+    def click_link(text_or_title_or_id, options = {})
+      find_link(text_or_title_or_id).click(options)
     end
 
     alias_method :clicks_link, :click_link
@@ -166,13 +174,13 @@ module Webrat
   
     def page_dom #:nodoc:
       return @response.dom if @response.respond_to?(:dom)
-      dom = Webrat.nokogiri_document(@response_body)
+      dom = Webrat::XML.document(@response_body)
       Webrat.define_dom_method(@response, dom)
       return dom
     end
     
     def scoped_dom #:nodoc:
-      Webrat.nokogiri_document(@scope.dom.search(@selector).first.to_html)
+      Webrat::XML.document(@scope.dom.search(@selector).first.to_html)
     end
     
     def locate_field(field_locator, *field_types) #:nodoc:
@@ -184,13 +192,13 @@ module Webrat
     end
     
     def areas #:nodoc:
-      dom.search("area").map do |element| 
+      Webrat::XML.css_search(dom, "area").map do |element| 
         Area.new(@session, element)
       end
     end
     
     def links #:nodoc:
-      dom.search("a[@href]").map do |link_element|
+      Webrat::XML.css_search(dom, "a[@href]").map do |link_element|
         Link.new(@session, link_element)
       end
     end
@@ -198,7 +206,7 @@ module Webrat
     def forms #:nodoc:
       return @forms if @forms
       
-      @forms = dom.search("form").map do |form_element|
+      @forms = Webrat::XML.css_search(dom, "form").map do |form_element|
         Form.new(@session, form_element)
       end
     end
