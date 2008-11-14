@@ -1,5 +1,9 @@
 == Trunk
 
+* Major enhancements
+
+  * Added selects_time, selects_date, and selects_datetime to API. (Ben Mabey, Ticket #36)
+
 * Minor enhancements
 
   * Allow clicking links by id and id regexp (gaffo)
