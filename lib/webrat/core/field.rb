@@ -241,6 +241,10 @@ module Webrat
       set(@element["value"] || "on")
     end
     
+    def checked?
+      @element["checked"] == "checked"
+    end
+    
   protected
 
     def other_options
