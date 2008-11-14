@@ -12,11 +12,11 @@ Spec::Runner.configure do |config|
 end
 
 
-class Webrat::Core::Configuration
+class Webrat::Core
   @@previous_config = nil
   
   def self.cache_config_for_test
-    @@configuration = Webrat::Core::Configuration.configuration
+    @@configuration = Webrat::Core.configuration
   end
   
   def self.reset_for_test
