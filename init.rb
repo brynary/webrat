@@ -1,3 +1,3 @@
-unless (RAILS_ENV =~ /^test/).nil? and RAILS_ENV != "selenium"
+if (RAILS_ENV =~ /^test/) || RAILS_ENV == "selenium"
   require File.join(File.dirname(__FILE__), "lib", "webrat")
 end
