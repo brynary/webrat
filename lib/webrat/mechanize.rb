@@ -35,6 +35,8 @@ module Webrat
     def response_code
       @response.code.to_i
     end
+
+    def_delegators :@mechanize, :basic_auth
       
   end
 end
