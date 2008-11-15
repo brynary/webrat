@@ -7,14 +7,15 @@ describe "selects" do
     @session = Webrat::TestSession.new
   end
 
-  it "should fail if option not found" do
+  it "should fail with a helpful message when option not found" do
     @session.response_body = <<-EOS
       <form method="get" action="/login">
         <select name="month"><option value="1">January</option></select>
       </form>
     EOS
     
-    lambda { @session.selects "February", :from => "month" }.should raise_error
+    lambda { @session.selects "February", :from => "month" }.should raise_error(
+          Exception, "The 'February' option was not found in the 'month' select box") 
   end
   
   it "should fail if option not found in list specified by element name" do

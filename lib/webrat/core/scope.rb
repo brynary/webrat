@@ -87,7 +87,12 @@ module Webrat
     #   selects "February", :from => "event_month"
     #   selects "February", :from => "Event Month"
     def selects(option_text, options = {})
-      find_select_option(option_text, options[:from]).choose
+      if option = find_select_option(option_text, options[:from])
+        option.choose
+      else
+        select_box_text = options[:from] ? " in the '#{options[:from]}' select box" : '' 
+        flunk("The '#{option_text}' option was not found#{select_box_text}") 
+       end
     end
 
     alias_method :select, :selects
