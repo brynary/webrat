@@ -1,7 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
 
-require "merb"
-
 describe "selects" do
   before do
     @session = Webrat::TestSession.new
