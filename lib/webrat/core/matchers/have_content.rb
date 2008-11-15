@@ -7,15 +7,7 @@ module Webrat
       end
       
       def matches?(stringlike)
-        if defined?(Nokogiri::XML)
-          matches_nokogiri?(stringlike)
-        else
-          matches_rexml?(stringlike)
-        end
-      end
-    
-      def matches_rexml?(stringlike)
-        @document = rexml_document(stringlike)
+        @document = Webrat::XML.document(stringlike)
         @element = @document.inner_text
       
         case @content
@@ -23,39 +15,6 @@ module Webrat
           @element.include?(@content)
         when Regexp
           @element.match(@content)
-        end
-      end
-    
-      def matches_nokogiri?(stringlike)
-        @document = Webrat.nokogiri_document(stringlike)
-        @element = @document.inner_text
-      
-        case @content
-        when String
-          @element.include?(@content)
-        when Regexp
-          @element.match(@content)
-        end
-      end
-    
-      def rexml_document(stringlike)
-        stringlike = stringlike.body.to_s if stringlike.respond_to?(:body)
-        
-        case stringlike
-        when REXML::Document
-          stringlike.root
-        when REXML::Node
-          stringlike
-        when StringIO, String
-          begin
-            REXML::Document.new(stringlike.to_s).root
-          rescue REXML::ParseException => e
-            if e.message.include?("second root element")
-              REXML::Document.new("<fake-root-element>#{stringlike}</fake-root-element>").root
-            else
-              raise e
-            end
-          end
         end
       end
       

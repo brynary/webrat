@@ -20,6 +20,8 @@ module Webrat
      raise "Invalid field element: #{element.inspect}"
     end
     
+    attr_reader :value
+    
     def initialize(form, element)
       @form     = form
       @element  = element
@@ -111,7 +113,7 @@ module Webrat
       end
 
       unless id.blank?
-        @label_elements += @form.element.search("label[@for='#{id}']")
+        @label_elements += Webrat::XML.css_search(@form.element, "label[@for='#{id}']")
       end
 
       @label_elements
@@ -241,6 +243,10 @@ module Webrat
       set(@element["value"] || "on")
     end
     
+    def checked?
+      @element["checked"] == "checked"
+    end
+    
   protected
 
     def other_options
@@ -311,8 +317,8 @@ module Webrat
   protected
 
     def default_value
-      selected_options = @element.search(".//option[@selected='selected']")
-      selected_options = @element.search(".//option[position() = 1]") if selected_options.empty? 
+      selected_options = Webrat::XML.css_search(@element, "option[@selected='selected']")
+      selected_options = Webrat::XML.css_search(@element, "option:first") if selected_options.empty? 
       
       selected_options.map do |option|
         return "" if option.nil?
@@ -325,7 +331,7 @@ module Webrat
     end
 
     def option_elements
-      @element.search(".//option")
+      Webrat::XML.css_search(@element, "option")
     end
 
   end

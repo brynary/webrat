@@ -13,16 +13,16 @@ module Webrat
   end
 end
 
-# We need Nokogiri's CSS to XPath support, even if using REXML
+# We need Nokogiri's CSS to XPath support, even if using REXML and Hpricot for parsing and searching
 require "nokogiri/css"
 
-# Require nokogiri and fall back on rexml
+# Require nokogiri and fall back on rexml+Hpricot
 begin
   require "nokogiri"
   require "webrat/core/nokogiri"
 rescue LoadError => e
+  require "hpricot"
   require "rexml/document"
-  warn("Standard REXML library is slow. Please consider installing nokogiri.\nUse \"sudo gem install nokogiri\"")
 end
 
 require "webrat/core"
