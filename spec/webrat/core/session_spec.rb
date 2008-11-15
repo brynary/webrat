@@ -87,11 +87,11 @@ describe Webrat::Session do
 
   describe "#request_page" do
     before(:each) do
-      Webrat::Core::Configuration.cache_config_for_test
+      Webrat.cache_config_for_test
       @session = Webrat::Session.new
     end
     after(:each) do
-      Webrat::Core::Configuration.reset_for_test
+      Webrat.reset_for_test
     end
   
     it "should raise an error if the request is not a success" do
@@ -105,6 +105,9 @@ describe Webrat::Session do
     end
     
     it "should raise an error but not open if the request is not a success and config quashes save_and_open" do
+      Webrat.configure do |config|
+        config.open_error_files = false
+      end
       @session.stub!(:get)
       @session.stub!(:response_body).and_return("Exception caught")
       @session.stub!(:response_code).and_return(500)
