@@ -3,14 +3,31 @@ require "rubygems"
 $LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__))) unless $LOAD_PATH.include?(File.expand_path(File.dirname(__FILE__)))
 
 module Webrat
+  class WebratError < StandardError
+  end
+
   VERSION = '0.3.2'
   
   def self.root #:nodoc:
     defined?(RAILS_ROOT) ? RAILS_ROOT : Merb.root
   end
   
-  class WebratError < StandardError
+
+  # Configures Webrat. If this is not done, Webrat will be created
+  # with all of the default settings. 
+  def self.configure(configuration = Webrat::Core::Configuration.new)
+    yield configuration if block_given?
+    @@configuration = configuration
   end
+      
+  def self.configuration
+    @@configuration = Webrat::Core::Configuration.new unless @@configuration
+    @@configuration
+  end
+
+  private
+  @@configuration = nil
+
 end
 
 # We need Nokogiri's CSS to XPath support, even if using REXML and Hpricot for parsing and searching

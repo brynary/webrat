@@ -10,3 +10,16 @@ require File.expand_path(File.dirname(__FILE__) + "/fakes/test_session")
 Spec::Runner.configure do |config|
   # Nothing to configure yet
 end
+
+
+module Webrat
+  @@previous_config = nil
+  
+  def self.cache_config_for_test
+    @@configuration = Webrat.configuration
+  end
+  
+  def self.reset_for_test
+    @@configuration = @@previous_config if @@previous_config
+  end
+end
