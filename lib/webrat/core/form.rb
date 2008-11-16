@@ -44,6 +44,10 @@ module Webrat
       end
     end
     
+    def labels
+      @labels ||= element.search("label").map { |element| Label.new(nil, element) }
+    end
+    
     def submit
       @session.request_page(form_action, form_method, params)
     end
@@ -64,6 +68,10 @@ module Webrat
         possible_field.matches_label?(label)
       end      
       matching_fields.min { |a, b| a.label_text.length <=> b.label_text.length }
+    end
+
+    def label_matching(label_text)
+      labels.detect { |label| label.matches_text?(label_text) }
     end
     
   protected

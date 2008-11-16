@@ -87,6 +87,15 @@ module Webrat
         flunk("Could not find link with text or title or id #{text_or_title_or_id.inspect}")
       end
     end
+
+    def find_field_id_for_label(label_text)
+      label = forms.detect_mapped { |form| form.label_matching(label_text) } 
+      if label
+        label.for_id
+      else
+        flunk("Could not find the label with text #{label_text}")
+      end
+    end
     
   end
 end

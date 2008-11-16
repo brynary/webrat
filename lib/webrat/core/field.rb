@@ -34,8 +34,16 @@ module Webrat
       labels.first.text
     end
     
+    def id
+      @element["id"]
+    end
+    
     def matches_id?(id)
-      @element["id"] == id.to_s
+      if id.is_a?(Regexp)
+        @element["id"] =~ id
+      else
+        @element["id"] == id.to_s
+      end
     end
     
     def matches_name?(name)
@@ -83,10 +91,6 @@ module Webrat
     
   protected
   
-    def id
-      @element["id"]
-    end
-    
     def name
       @element["name"]
     end

@@ -17,6 +17,10 @@ module Webrat
       str.squeeze!(" ")
       str
     end
+
+    def for_id
+      @element['for']
+    end
     
   end
 end
