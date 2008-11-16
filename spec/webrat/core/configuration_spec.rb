@@ -1,7 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + "/../../spec_helper")
 
-describe Webrat::Core::Configuration do
-  
+describe Webrat::Configuration do
   before do
     Webrat.cache_config_for_test
   end
@@ -11,7 +10,7 @@ describe Webrat::Core::Configuration do
   end
   
   it "should have a default config" do
-    Webrat.configuration.should be_an_instance_of(Webrat::Core::Configuration)
+    Webrat.configuration.should be_an_instance_of(Webrat::Configuration)
   end
   
   it "should set default values" do
@@ -26,5 +25,4 @@ describe Webrat::Core::Configuration do
     config = Webrat.configuration
     config.open_error_files.should == false
   end
-  
 end

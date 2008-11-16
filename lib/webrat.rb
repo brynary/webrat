@@ -11,22 +11,6 @@ module Webrat
   def self.root #:nodoc:
     defined?(RAILS_ROOT) ? RAILS_ROOT : Merb.root
   end
-  
-
-  # Configures Webrat. If this is not done, Webrat will be created
-  # with all of the default settings. 
-  def self.configure(configuration = Webrat::Core::Configuration.new)
-    yield configuration if block_given?
-    @@configuration = configuration
-  end
-      
-  def self.configuration
-    @@configuration = Webrat::Core::Configuration.new unless @@configuration
-    @@configuration
-  end
-
-  private
-  @@configuration = nil
 
 end
 

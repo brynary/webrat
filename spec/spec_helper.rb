@@ -11,7 +11,6 @@ Spec::Runner.configure do |config|
   # Nothing to configure yet
 end
 
-
 module Webrat
   @@previous_config = nil
   
