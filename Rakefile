@@ -5,7 +5,7 @@ require "rake/clean"
 require 'spec'
 require 'spec/rake/spectask'
 require 'spec/rake/verify_rcov'
-require './lib/webrat.rb'
+require File.expand_path('./lib/webrat.rb')
 
 ##############################################################################
 # Package && release
