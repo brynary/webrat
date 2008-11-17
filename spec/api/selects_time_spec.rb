@@ -23,45 +23,6 @@ describe "select_time" do
     @session.selects_time "9:30AM", :from => "Time"
     @session.click_button
   end
-
-  it "should select time components with the suffix convention provided" do
-    @session.response_body = <<-EOS
-      <form action="/appointments" method="post">
-        <label for="appointment_time">Time</label><br />
-        <select id="appointment_time_hour" name="appointment[hour]">
-          <option value="09">09</option>
-        </select>
-     : <select id="appointment_time_minute" name="appointment[minute]">
-          <option value="30">30</option>
-        </select>
-        <input type="submit" />
-      </form>
-    EOS
-    @session.should_receive(:post).with("/appointments", 
-      "appointment" => {"hour" => "09", "minute" => "30"})
-    @session.selects_time "9:30", :from => "Time", :suffix_convention => :full_words
-    @session.click_button
-  end
-
-  it "should select the time components with the suffixes provided" do
-    @session.response_body = <<-EOS
-      <form action="/appointments" method="post">
-        <label for="appointment_time">Time</label><br />
-        <select id="appointment_time_h" name="appointment[h]">
-          <option value="09">09</option>
-        </select>
-     : <select id="appointment_time_mi" name="appointment[mi]">
-          <option value="30">30</option>
-        </select>
-        <input type="submit" />
-      </form>
-    EOS
-    @session.should_receive(:post).with("/appointments", 
-      "appointment" => {"h" => "09", "mi" => "30"})
-    @session.selects_time "9:30", :from => "Time", 
-                              :suffixes => {:hour => 'h', :minute => 'mi'}
-    @session.click_button
-  end
   
   it "should accept a time object" do
     @session.response_body = <<-EOS

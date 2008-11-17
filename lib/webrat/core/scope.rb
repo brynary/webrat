@@ -97,11 +97,13 @@ module Webrat
 
     alias_method :select, :selects
     
-    DATE_TIME_SUFFIXES = {:rails      => {:year => '1i', :month => '2i', :day => '3i',
-                                          :hour => '4i', :minute => '5i'},
-                          :full_words => {:year => 'year', :month => 'month', :day => 'day', 
-                                          :hour => 'hour', :minute => 'minute'}
-                          }
+    DATE_TIME_SUFFIXES = {
+      :year   => '1i',
+      :month  => '2i',
+      :day    => '3i',
+      :hour   => '4i',
+      :minute => '5i'
+    }
 
     # Verifies that date elements (year, month, day) exist on the current page 
     # with the specified values. You can optionally restrict the search to a specific
@@ -109,35 +111,28 @@ module Webrat
     # label. Selects all the date elements with date provided.  The date provided may
     # be a string or a Date/Time object.
     #
-    # By default Rail's convention is used for detecting the date elements, but this
-    # may be overriden by assinging a <tt>options[:suffix_convention]</tt> or 
-    # <tt>options[:suffixes]</tt>. In all cases all elements are assumed to have a 
-    # shared prefix. For example, a birthday date on a form might have the following:
-    # 'birthday_Year', 'birthday_Month', 'birthday_Day'. You may also specify the
-    # prefix by assigning <tt>options[:id_prefix]</tt>.
+    # Rail's convention is used for detecting the date elements. All elements
+    # are assumed to have a shared prefix.  You may also specify the prefix
+    # by assigning <tt>options[:id_prefix]</tt>.
     #
     # Examples:
     #   selects_date "January 23, 2004"
     #   selects_date "April 26, 1982", :from => "Birthday"
     #   selects_date Date.parse("December 25, 2000"), :from => "Event"
-    #   selects_date "April 26, 1982", :suffix_convention => :full_words
-    #   selects_date "April 26, 1982", :id_prefix => 'birthday',  
-    #            :suffixes => {:year => 'Year', :month => 'Mon', :day => 'Day'}
+    #   selects_date "April 26, 1982", :id_prefix => 'birthday'
     def selects_date(date_to_select, options ={})
       date = date_to_select.is_a?(Date) || date_to_select.is_a?(Time) ? 
                 date_to_select : Date.parse(date_to_select) 
-
-      suffixes = extract_date_time_suffixes(options)
       
       id_prefix = locate_id_prefix(options) do
-        year_field = find_field_with_id(/(.*?)_#{suffixes[:year]}$/)
+        year_field = find_field_with_id(/(.*?)_#{DATE_TIME_SUFFIXES[:year]}$/)
         flunk("No date fields were found") unless year_field && year_field.id =~ /(.*?)_1i/
         $1
       end
         
-      selects date.year, :from => "#{id_prefix}_#{suffixes[:year]}"
-      selects date.strftime('%B'), :from => "#{id_prefix}_#{suffixes[:month]}"
-      selects date.day, :from => "#{id_prefix}_#{suffixes[:day]}"
+      selects date.year, :from => "#{id_prefix}_#{DATE_TIME_SUFFIXES[:year]}"
+      selects date.strftime('%B'), :from => "#{id_prefix}_#{DATE_TIME_SUFFIXES[:month]}"
+      selects date.day, :from => "#{id_prefix}_#{DATE_TIME_SUFFIXES[:day]}"
     end
 
     alias_method :select_date, :selects_date
@@ -148,12 +143,9 @@ module Webrat
     # label. Selects all the time elements with date provided.  The time provided may
     # be a string or a Time object.
     #
-    # By default Rail's convention is used for detecting the time elements, but this
-    # may be overriden by assinging a <tt>options[:suffix_convention]</tt> or 
-    # <tt>options[:suffixes]</tt>. In all cases all elements are assumed to have a 
-    # shared prefix. For example, an appointment time on a form might have the 
-    # following: 'appt_time_hour', 'appt_time_min'. You may also specify the
-    # prefix by assigning <tt>options[:id_prefix]</tt>.
+    # Rail's convention is used for detecting the time elements. All elements are
+    # assumed to have a shared prefix. You may specify the prefix by assigning
+    # <tt>options[:id_prefix]</tt>.
     #
     # Note: Just like Rails' time_select helper this assumes the form is using
     # 24 hour select boxes, and not 12 hours with AM/PM.
@@ -162,22 +154,18 @@ module Webrat
     #   selects_time "9:30"
     #   selects_date "3:30PM", :from => "Party Time"
     #   selects_date Time.parse("10:00PM"), :from => "Event"
-    #   selects_date "8:30", :suffix_convention => :full_words
-    #   selects_date "10:30AM", :id_prefix => 'meeting',  
-    #            :suffixes => {:hour => 'Hour', :min => 'Min'}
+    #   selects_date "10:30AM", :id_prefix => 'meeting'
     def selects_time(time_to_select, options ={})
       time = time_to_select.is_a?(Time) ? time_to_select : Time.parse(time_to_select) 
 
-      suffixes = extract_date_time_suffixes(options)
-
       id_prefix = locate_id_prefix(options) do
-        hour_field = find_field_with_id(/(.*?)_#{suffixes[:hour]}$/)
+        hour_field = find_field_with_id(/(.*?)_#{DATE_TIME_SUFFIXES[:hour]}$/)
         flunk("No time fields were found") unless hour_field && hour_field.id =~ /(.*?)_4i/
         $1
       end
         
-      selects time.hour.to_s.rjust(2,'0'), :from => "#{id_prefix}_#{suffixes[:hour]}"
-      selects time.min.to_s.rjust(2,'0'), :from => "#{id_prefix}_#{suffixes[:minute]}"
+      selects time.hour.to_s.rjust(2,'0'), :from => "#{id_prefix}_#{DATE_TIME_SUFFIXES[:hour]}"
+      selects time.min.to_s.rjust(2,'0'), :from => "#{id_prefix}_#{DATE_TIME_SUFFIXES[:minute]}"
     end
 
 
@@ -190,10 +178,7 @@ module Webrat
     #   selects_datetime "January 23, 2004 10:30AM"
     #   selects_datetime "April 26, 1982 7:00PM", :from => "Birthday"
     #   selects_datetime Time.parse("December 25, 2000 15:30"), :from => "Event"
-    #   selects_datetime "April 26, 1982 5:50PM", :suffix_convention => :full_words
-    #   selects_datetime "April 26, 1982 5:50PM", :id_prefix => 'birthday',  
-    #            :suffixes => {:year => 'Year', :month => 'Mon', :day => 'Day',
-    #                          :hour => 'Hour', :minute => 'Min'}
+    #   selects_datetime "April 26, 1982 5:50PM", :id_prefix => 'birthday'
     def selects_datetime(time_to_select, options ={})
       time = time_to_select.is_a?(Time) ? time_to_select : Time.parse(time_to_select) 
       
@@ -307,12 +292,6 @@ module Webrat
     def locate_id_prefix(options, &location_strategy) #:nodoc:
       return options[:id_prefix] if options[:id_prefix]
       id_prefix = options[:from] ? find_field_id_for_label(options[:from]) : yield
-    end
-
-    def extract_date_time_suffixes(options) #:nodoc:
-      options[:suffixes] || 
-      DATE_TIME_SUFFIXES[options[:suffix_convention]] || 
-      DATE_TIME_SUFFIXES[:rails] 
     end
     
     def areas #:nodoc:

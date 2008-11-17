@@ -26,52 +26,6 @@ describe "selects_date" do
     @session.selects_date "December 25, 2003", :from => "Date"
     @session.click_button
   end
-
-  it "should select the date components with the suffix convention provided" do
-    @session.response_body = <<-EOS
-      <form action="/appointments" method="post">
-        <label for="appointment_date">Date</label><br />
-        <select id="appointment_date_year" name="appointment[year]">
-          <option value="2003">2003</option>
-        </select>
-        <select id="appointment_date_month" name="appointment[month]">
-          <option value="12">December</option>
-        </select>
-        <select id="appointment_date_day" name="appointment[day]">
-          <option value="25">25</option>
-        </select>
-        <input type="submit" />
-      </form>
-    EOS
-    @session.should_receive(:post).with("/appointments", 
-      "appointment" => {"year" => '2003', "month" => "12", "day" => "25"})
-    @session.selects_date "December 25, 2003 9:30", :from => "Date", :suffix_convention => :full_words
-    @session.click_button
-  end
-
-  it "should select the date components with the suffixes provided" do
-    @session.response_body = <<-EOS
-      <form action="/appointments" method="post">
-        <label for="appointment_date">Date</label><br />
-        <select id="appointment_date_y" name="appointment[y]">
-          <option value="2003">2003</option>
-        </select>
-        <select id="appointment_date_mo" name="appointment[mo]">
-          <option value="12">December</option>
-        </select>
-        <select id="appointment_date_d" name="appointment[d]">
-          <option value="25">25</option>
-        </select>
-        <input type="submit" />
-      </form>
-    EOS
-    @session.should_receive(:post).with("/appointments", 
-      "appointment" => {"y" => '2003', "mo" => "12", "d" => "25"})
-    @session.selects_date "December 25, 2003 9:30", :from => "Date", 
-                              :suffixes => {:year => 'y', :month => 'mo', :day => 'd'}
-    @session.click_button
-  end
- 
   
   it "should accept a date object" do
     @session.response_body = <<-EOS
