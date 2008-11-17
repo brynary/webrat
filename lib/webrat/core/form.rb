@@ -110,7 +110,7 @@ module Webrat
     def merge(all_params, new_param)
       new_param.each do |key, value|
         case all_params[key]
-        when *HASH
+        when *hash_classes
           merge_hash_values(all_params[key], value)
         when Array
           all_params[key] += value
@@ -124,7 +124,7 @@ module Webrat
       a.keys.each do |k|
         if b.has_key?(k)
           case [a[k], b[k]].map{|value| value.class}
-          when *HASH.zip(HASH)
+          when *hash_classes.zip(hash_classes)
             a[k] = merge_hash_values(a[k], b[k])
             b.delete(k)
           when [Array, Array]
@@ -134,6 +134,13 @@ module Webrat
         end
       end
       a.merge!(b)
+    end
+    
+    def hash_classes
+      klasses = [Hash]
+      klasses << HashWithIndifferentAccess  if defined?(HashWithIndifferentAccess) # Rails
+      klasses << Mash                       if defined?(Mash)                      # Merb
+      klasses
     end
     
   end
