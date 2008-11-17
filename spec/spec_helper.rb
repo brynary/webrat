@@ -18,11 +18,11 @@ end
 
 module Webrat
   @@previous_config = nil
-  
+
   def self.cache_config_for_test
-    @@configuration = Webrat.configuration
+    @@previous_config = Webrat.configuration.clone
   end
-  
+
   def self.reset_for_test
     @@configuration = @@previous_config if @@previous_config
   end
