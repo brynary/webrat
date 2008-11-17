@@ -74,6 +74,10 @@ module Webrat
       labels.detect { |label| label.matches_text?(label_text) }
     end
     
+    def matches_id?(id)
+      @element["id"] == id.to_s
+    end
+    
   protected
   
     def fields_by_type(field_types)

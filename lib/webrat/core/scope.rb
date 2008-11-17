@@ -44,6 +44,11 @@ module Webrat
 
     alias_method :fills_in, :fill_in
     
+    def set_hidden_field(field_locator, options = {})
+      field = locate_field(field_locator, HiddenField)
+      field.set(options[:to])
+    end
+    
     # Verifies that an input checkbox exists on the current page and marks it
     # as checked, so that the value will be submitted with the form.
     #
@@ -255,6 +260,11 @@ module Webrat
     end
 
     alias_method :clicks_button, :click_button
+    
+    def submit_form(id)
+      form = forms.detect { |f| f.matches_id?(id) }
+      form.submit
+    end
     
     def dom # :nodoc:
       return @dom if @dom
