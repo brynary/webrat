@@ -14,16 +14,14 @@ module Webrat
 
 end
 
-# We need Nokogiri's CSS to XPath support, even if using REXML and Hpricot for parsing and searching
-require "nokogiri/css"
-
-# Require nokogiri and fall back on rexml+Hpricot
-begin
-  require "nokogiri"
-  require "webrat/core/nokogiri"
-rescue LoadError => e
+if RUBY_PLATFORM =~ /java/
+  # We need Nokogiri's CSS to XPath support, even if using REXML and Hpricot for parsing and searching
+  require "nokogiri/css"
   require "hpricot"
   require "rexml/document"
+else
+  require "nokogiri"
+  require "webrat/core/nokogiri"
 end
 
 require "webrat/core"
