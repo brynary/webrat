@@ -22,17 +22,15 @@ module Webrat
     end
     
     def matches_text?(link_text)
-      html = text.gsub('&#xA0;',' ').gsub('&nbsp;', ' ')
-      
       if link_text.is_a?(Regexp)
         matcher = link_text
       else
         matcher = /#{Regexp.escape(link_text.to_s)}/i
       end
-      
-      html =~ matcher || title =~ matcher
+
+      replace_nbsp(text) =~ matcher || replace_nbsp_ref(inner_html) =~ matcher || title =~ matcher
     end
-    
+
     def matches_id?(id_or_regexp)
       if id_or_regexp.is_a?(Regexp)
         (id =~ id_or_regexp) ? true : false
@@ -40,9 +38,13 @@ module Webrat
         (id == id_or_regexp) ? true : false
       end
     end
+
+    def inner_html
+      @element.inner_html
+    end
     
     def text
-      @element.inner_html
+      @element.text
     end
     
   protected
@@ -108,5 +110,13 @@ module Webrat
       end
     end
 
+  private
+    def replace_nbsp(str)
+      str.gsub([0xA0].pack('U'), ' ')
+    end
+
+    def replace_nbsp_ref(str)
+      str.gsub('&#xA0;',' ').gsub('&nbsp;', ' ')
+    end
   end
 end
