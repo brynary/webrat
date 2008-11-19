@@ -76,8 +76,10 @@ module Webrat
         CGIMethods.parse_query_parameters(key_and_value)
       elsif defined?(ActionController::AbstractRequest)
         ActionController::AbstractRequest.parse_query_parameters(key_and_value)
-      else
+      elsif defined?(::Merb)
         ::Merb::Parse.query(key_and_value)
+      else
+        { name => escaped_value } # For mechanize
       end
     end
     
