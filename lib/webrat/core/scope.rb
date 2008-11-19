@@ -2,9 +2,11 @@ require "webrat/core/form"
 require "webrat/core/locators"
 
 module Webrat
+  class NotFoundError < WebratError
+  end
+  
   class Scope
     include Logging
-    include Flunk
     include Locators
     
     def self.from_page(session, response, response_body) #:nodoc:
@@ -96,7 +98,7 @@ module Webrat
         option.choose
       else
         select_box_text = options[:from] ? " in the '#{options[:from]}' select box" : '' 
-        flunk("The '#{option_text}' option was not found#{select_box_text}") 
+        raise NotFoundError.new("The '#{option_text}' option was not found#{select_box_text}") 
        end
     end
 
@@ -131,7 +133,7 @@ module Webrat
       
       id_prefix = locate_id_prefix(options) do
         year_field = find_field_with_id(/(.*?)_#{DATE_TIME_SUFFIXES[:year]}$/)
-        flunk("No date fields were found") unless year_field && year_field.id =~ /(.*?)_1i/
+        raise NotFoundError.new("No date fields were found") unless year_field && year_field.id =~ /(.*?)_1i/
         $1
       end
         
@@ -165,7 +167,7 @@ module Webrat
 
       id_prefix = locate_id_prefix(options) do
         hour_field = find_field_with_id(/(.*?)_#{DATE_TIME_SUFFIXES[:hour]}$/)
-        flunk("No time fields were found") unless hour_field && hour_field.id =~ /(.*?)_4i/
+        raise NotFoundError.new("No time fields were found") unless hour_field && hour_field.id =~ /(.*?)_4i/
         $1
       end
         

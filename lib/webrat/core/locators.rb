@@ -8,22 +8,22 @@ module Webrat
       find_field_with_id(*args) ||
       find_field_named(*args)   ||
       field_labeled(*args)      ||
-      flunk("Could not find field: #{args.inspect}")
+      raise(NotFoundError.new("Could not find field: #{args.inspect}"))
     end
     
     def field_labeled(label, *field_types)
       find_field_labeled(label, *field_types) ||
-      flunk("Could not find field labeled #{label.inspect}")
+      raise(NotFoundError.new("Could not find field labeled #{label.inspect}"))
     end
 
     def field_named(name, *field_types)
       find_field_named(name, *field_types) ||
-      flunk("Could not find field named #{name.inspect}")
+      raise(NotFoundError.new("Could not find field named #{name.inspect}"))
     end
     
     def field_with_id(id, *field_types)
       find_field_with_id(id, *field_types) ||
-      flunk("Could not find field with id #{id.inspect}")
+      raise(NotFoundError.new("Could not find field with id #{id.inspect}"))
     end
     
     def find_field_labeled(label, *field_types) #:nodoc:
@@ -56,7 +56,7 @@ module Webrat
         return select_option if select_option
       end
         
-      flunk("Could not find option #{option_text.inspect}")
+      raise NotFoundError.new("Could not find option #{option_text.inspect}")
     end
     
     def find_button(value) #:nodoc:
@@ -67,13 +67,13 @@ module Webrat
       if button
         return button
       else
-        flunk("Could not find button #{value.inspect}")
+        raise NotFoundError.new("Could not find button #{value.inspect}")
       end
     end
     
     def find_area(area_name) #:nodoc:
       areas.detect { |area| area.matches_text?(area_name) } ||
-      flunk("Could not find area with name #{area_name}")
+      raise(NotFoundError.new("Could not find area with name #{area_name}"))
     end
     
     def find_link(text_or_title_or_id) #:nodoc:
@@ -84,7 +84,7 @@ module Webrat
       if matching_links.any?
         matching_links.min { |a, b| a.text.length <=> b.text.length }
       else
-        flunk("Could not find link with text or title or id #{text_or_title_or_id.inspect}")
+        raise NotFoundError.new("Could not find link with text or title or id #{text_or_title_or_id.inspect}")
       end
     end
 
@@ -93,7 +93,7 @@ module Webrat
       if label
         label.for_id
       else
-        flunk("Could not find the label with text #{label_text}")
+        raise NotFoundError.new("Could not find the label with text #{label_text}")
       end
     end
     
