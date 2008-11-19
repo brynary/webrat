@@ -28,6 +28,10 @@ module Webrat
       @response = @mechanize.post(url, post_data)
     end
 
+    def response
+      @response
+    end
+    
     def response_body
       @response.content
     end
