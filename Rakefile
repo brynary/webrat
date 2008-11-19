@@ -21,7 +21,7 @@ spec = Gem::Specification.new do |s|
   s.bindir       = "bin"
   s.description  = s.summary
   s.require_path = "lib"
-  s.files        = %w(History.txt init.rb install.rb MIT-LICENSE.txt README.txt Rakefile TODO.txt) + Dir["lib/**/*"]
+  s.files        = %w(History.txt init.rb install.rb MIT-LICENSE.txt README.txt Rakefile) + Dir["lib/**/*"]
 
   # rdoc
   s.has_rdoc         = true
@@ -81,7 +81,6 @@ Rake::RDocTask.new(:docs) do |rd|
   rd.main = "README.txt"
   rd.rdoc_dir = 'doc'
   files = spec.files.grep(/^(lib|bin|ext)|txt$/)
-  files -= ["TODO.txt"]
   files -= files.grep(/\.js$/)
   rd.rdoc_files = files.uniq
   title = "webrat-#{Webrat::VERSION} Documentation"
