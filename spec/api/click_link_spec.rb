@@ -5,6 +5,14 @@ describe "click_link" do
     @session = Webrat::TestSession.new
   end
 
+  it "should click links with ampertands" do
+    @session.response_body = <<-EOS
+      <a href="/page">Save &amp; go back</a>
+    EOS
+    @session.should_receive(:get).with("/page", {})
+    @session.click_link "Save & go back"
+  end
+  
   it "should use get by default" do
     @session.response_body = <<-EOS
       <a href="/page">Link text</a>
