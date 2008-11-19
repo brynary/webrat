@@ -44,7 +44,7 @@ module Webrat
     end
     
     def text
-      @element.text
+      @element.inner_text
     end
     
   protected

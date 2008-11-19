@@ -84,13 +84,7 @@ require File.dirname(__FILE__) / "run_spec"
 
 # Runs specs in all files matching the file pattern.
 #
-# ==== Parameters
-# globs<String, Array[String]>:: File patterns to look for.
-# spec_cmd<~to_s>:: The spec command. Defaults to "spec".
-# run_opts<String>:: Options to pass to spec commands, for instance,
-#                    if you want to use profiling formatter.
-# except<Array[String]>:: File paths to skip.
-def run_specs(globs, spec_cmd='spec', run_opts = "-c", except = [])
+def run_specs(globs)
   require "optparse"
   require "spec"
   globs = globs.is_a?(Array) ? globs : [globs]

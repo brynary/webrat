@@ -88,8 +88,7 @@ Rake::RDocTask.new(:docs) do |rd|
   rd.options << "-t #{title}"
 end
 
-desc "Run all specs"
-task "spec2" do
-  require "lib/webrat/test/run_specs"
-  run_specs(Dir["#{Dir.pwd}/spec//**/*_spec.rb"])
+desc "Run specs using jruby"
+task "spec:jruby" do
+  system "jruby -S rake spec"
 end
