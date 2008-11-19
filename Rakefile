@@ -67,10 +67,6 @@ RCov::VerifyTask.new(:verify_rcov => :rcov) do |t|
   t.threshold = 96.2 # Make sure you have rcov 0.7 or higher!
 end
 
-task :default do
-  Rake::Task["verify_rcov"].invoke
-end
-
 desc 'Install the package as a gem.'
 task :install_gem => [:clean, :package] do
   gem = Dir['pkg/*.gem'].first
@@ -91,3 +87,5 @@ desc "Run specs using jruby"
 task "spec:jruby" do
   system "jruby -S rake spec"
 end
+
+task :default => :spec
