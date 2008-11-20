@@ -271,6 +271,17 @@ describe "click_link" do
     @session.click_link "This is a link"
   end
   
+  it "should not match on non-text contents" do
+    pending "needs fix"
+    @session.response_body = <<-EOS
+    <a href="/page1"><span class="location">My house</span></a>
+    <a href="/page2">Location</a>
+    EOS
+    
+    @session.should_receive(:get).with("/page2", {})
+    @session.click_link "Location"
+  end
+  
   it "should click link within a selector" do
     @session.response_body = <<-EOS
     <a href="/page1">Link</a>
