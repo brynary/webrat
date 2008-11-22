@@ -7,12 +7,14 @@ describe "within" do
   
   it "should work when nested" do
     @session.response_body = <<-EOS
+      <html>
       <div>
         <a href="/page1">Link</a>
       </div>
       <div id="container">
         <div><a href="/page2">Link</a></div>
       </div>
+      </html>
     EOS
     
     @session.should_receive(:get).with("/page2", {})
@@ -25,10 +27,12 @@ describe "within" do
   
   it "should click links within a scope" do
     @session.response_body = <<-EOS
+      <html>
       <a href="/page1">Link</a>
       <div id="container">
         <a href="/page2">Link</a>
       </div>
+      </html>
     EOS
     
     @session.should_receive(:get).with("/page2", {})
@@ -39,6 +43,7 @@ describe "within" do
   
   it "should submit forms within a scope" do
     @session.response_body = <<-EOS
+      <html>
       <form id="form1" action="/form1">
         <label>Email: <input type="text" name="email" />
         <input type="submit" value="Add" />
@@ -47,6 +52,7 @@ describe "within" do
         <label>Email: <input type="text" name="email" />
         <input type="submit" value="Add" />
       </form>
+      </html>
     EOS
     
     @session.should_receive(:get).with("/form2", "email" => "test@example.com")
@@ -58,11 +64,13 @@ describe "within" do
   
   it "should not find buttons outside of the scope" do
     @session.response_body = <<-EOS
+      <html>
       <form action="/form1">
         <input type="submit" value="Add" />
       </form>
       <form id="form2" action="/form2">
       </form>
+      </html>
     EOS
     
     @session.within "#form2" do

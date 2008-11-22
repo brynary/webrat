@@ -254,8 +254,10 @@ describe "click_link" do
   
   it "should choose the shortest link text match" do
     @session.response_body = <<-EOS
-    <a href="/page1">Linkerama</a>
-    <a href="/page2">Link</a>
+    <html>
+      <a href="/page1">Linkerama</a>
+      <a href="/page2">Link</a>
+    </html>
     EOS
     
     @session.should_receive(:get).with("/page2", {})
@@ -264,7 +266,9 @@ describe "click_link" do
   
   it "should treat non-breaking spaces as spaces" do
     @session.response_body = <<-EOS
-    <a href="/page1">This&nbsp;is&nbsp;a&nbsp;link</a>
+    <html>
+      <a href="/page1">This&nbsp;is&nbsp;a&nbsp;link</a>
+    </html>
     EOS
     
     @session.should_receive(:get).with("/page1", {})
@@ -284,10 +288,12 @@ describe "click_link" do
   
   it "should click link within a selector" do
     @session.response_body = <<-EOS
+    <html>
     <a href="/page1">Link</a>
     <div id="container">
       <a href="/page2">Link</a>
     </div>
+    </html>
     EOS
     
     @session.should_receive(:get).with("/page2", {})

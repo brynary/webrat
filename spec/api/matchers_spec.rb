@@ -18,7 +18,6 @@ describe Webrat::Matchers do
   
   describe "#have_xpath" do
     it "should work with non-HTML documents" do
-      pending "Bugfix"
       xml = '<foo bar="baz"></foo>'
       xml.should have_xpath('/foo[@bar="baz"]')
     end

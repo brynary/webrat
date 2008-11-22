@@ -91,12 +91,14 @@ describe "click_button" do
   
   it "should submit the form with the specified button" do
     @session.response_body = <<-EOS
-      <form method="get" action="/form1">
-        <input type="submit" />
-      </form>
-      <form method="get" action="/form2">
-        <input type="submit" value="Form2" />
-      </form>
+      <html>
+        <form method="get" action="/form1">
+          <input type="submit" />
+        </form>
+        <form method="get" action="/form2">
+          <input type="submit" value="Form2" />
+        </form>
+      </html>
     EOS
     @session.should_receive(:get).with("/form2", {})
     @session.click_button "Form2"
