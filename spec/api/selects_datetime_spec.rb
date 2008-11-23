@@ -92,7 +92,7 @@ describe "select_datetime" do
       </form>
     HTML
     
-    lambda { select_datetime "December 25, 2003 9:30", :from => "Time" }.should raise_error
+    lambda { select_datetime "December 25, 2003 9:30", :from => "Time" }.should raise_error(Webrat::NotFoundError)
   end
 
 end

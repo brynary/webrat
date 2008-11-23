@@ -184,7 +184,7 @@ describe "click_link" do
     
     lambda {
       click_link "Link"
-    }.should raise_error
+    }.should raise_error(Webrat::WebratError)
   end
   
   it "should assert valid response" do
@@ -212,7 +212,7 @@ describe "click_link" do
     
     lambda {
       click_link "Missing link"
-    }.should raise_error
+    }.should raise_error(Webrat::NotFoundError)
   end
   
   it "should not be case sensitive" do

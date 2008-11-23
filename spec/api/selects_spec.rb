@@ -30,7 +30,7 @@ describe "select" do
       </form>
     HTML
 
-    lambda { select "February", :from => "year" }.should raise_error
+    lambda { select "February", :from => "year" }.should raise_error(Webrat::NotFoundError)
   end
 
   
@@ -42,7 +42,7 @@ describe "select" do
       </form>
     HTML
 
-    lambda { select "January", :from => "month" }.should raise_error
+    lambda { select "January", :from => "month" }.should raise_error(Webrat::DisabledFieldError)
   end
   
   it "should send value from option" do

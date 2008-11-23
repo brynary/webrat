@@ -100,7 +100,7 @@ describe "fill_in" do
       </form>
     HTML
     
-    lambda { fill_in "mail", :with => "value" }.should raise_error
+    lambda { fill_in "mail", :with => "value" }.should raise_error(Webrat::NotFoundError)
   end
   
   it "should anchor label matches to word boundaries" do
@@ -111,7 +111,7 @@ describe "fill_in" do
       </form>
     HTML
     
-    lambda { fill_in "Email", :with => "value" }.should raise_error
+    lambda { fill_in "Email", :with => "value" }.should raise_error(Webrat::NotFoundError)
   end
   
   it "should work with inputs nested in labels" do

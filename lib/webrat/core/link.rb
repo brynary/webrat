@@ -106,7 +106,7 @@ module Webrat
       elsif onclick.include?("m.setAttribute('value', 'put')")
         :put
       else
-        raise "No HTTP method for _method param in #{onclick.inspect}"
+        raise Webrat::WebratError.new("No HTTP method for _method param in #{onclick.inspect}")
       end
     end
 

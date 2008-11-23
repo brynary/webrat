@@ -14,7 +14,7 @@ describe "visit" do
   
   it "should assert valid response" do
     webrat_session.response_code = 501
-    lambda { visit("/") }.should raise_error
+    lambda { visit("/") }.should raise_error(Webrat::PageLoadError)
   end
   
   [200, 300, 400, 499].each do |status|
@@ -25,7 +25,7 @@ describe "visit" do
   end
   
   it "should require a visit before manipulating page" do
-    lambda { fill_in "foo", :with => "blah" }.should raise_error
+    lambda { fill_in "foo", :with => "blah" }.should raise_error(Webrat::WebratError)
   end
 end
 

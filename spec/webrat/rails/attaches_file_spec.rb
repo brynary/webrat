@@ -12,7 +12,7 @@ describe "attach_file" do
       <form method="post" action="/widgets">
       </form>
     HTML
-    lambda { attach_file("Doc", "/some/path") }.should raise_error
+    lambda { attach_file("Doc", "/some/path") }.should raise_error(Webrat::NotFoundError)
   end
 
   it "should submit empty strings for blank file fields" do

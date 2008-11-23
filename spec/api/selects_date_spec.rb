@@ -74,7 +74,7 @@ describe "select_date" do
       </form>
     HTML
     
-    lambda { select_date "December 25, 2003", :from => "date" }.should raise_error
+    lambda { select_date "December 25, 2003", :from => "date" }.should raise_error(Webrat::NotFoundError)
   end
 
 end

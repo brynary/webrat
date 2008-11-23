@@ -65,7 +65,7 @@ describe "select_time" do
       </form>
     HTML
     
-    lambda { select_time "9:30", :from => "Time" }.should raise_error
+    lambda { select_time "9:30", :from => "Time" }.should raise_error(Webrat::NotFoundError)
   end
 
 end
