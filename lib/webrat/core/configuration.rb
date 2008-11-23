@@ -21,7 +21,7 @@ module Webrat
     
     def initialize
       self.open_error_files = true
-      self.parse_with_nokogiri = true
+      self.parse_with_nokogiri = !Webrat.on_java?
     end
     
   end

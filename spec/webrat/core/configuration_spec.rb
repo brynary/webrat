@@ -14,12 +14,19 @@ describe Webrat::Configuration do
   end
   
   it "should use Nokogiri as the parser by default" do
-    config = Webrat.configuration
+    Webrat.stub!(:on_java? => false)
+    config = Webrat::Configuration.new
     config.parse_with_nokogiri.should == true
   end
   
+  it "should not use Nokogiri as the parser when on JRuby" do
+    Webrat.stub!(:on_java? => true)
+    config = Webrat::Configuration.new
+    config.parse_with_nokogiri.should == false
+  end
+  
   it "should open error files by default" do
-    config = Webrat.configuration
+    config = Webrat::Configuration.new
     config.open_error_files.should == true
   end
   
