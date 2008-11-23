@@ -13,7 +13,11 @@ require File.expand_path(File.dirname(__FILE__) + "/fakes/test_session")
 require "merb-core"
 
 Spec::Runner.configure do |config|
-  # Nothing to configure yet
+  include Webrat::Methods
+
+  def with_html(html)
+    webrat_session.response_body = html
+  end
 end
 
 module Webrat

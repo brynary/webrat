@@ -1,4 +1,8 @@
 module Webrat
+  def self.session_class
+    TestSession
+  end
+  
   class TestSession < Session
     attr_accessor :response_body
     attr_writer :response_code

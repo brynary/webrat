@@ -2,9 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
 
 describe "save_and_open_page" do
   before do
-    @session = Webrat::TestSession.new
-
-    @session.response_body = <<-HTML
+    with_html <<-HTML
       <html>
         <head>
           <link href="/stylesheets/foo.css" media="screen" rel="stylesheet" type="text/css" />
@@ -16,9 +14,9 @@ describe "save_and_open_page" do
       </html>
     HTML
 
-    File.stub!(:exist?).and_return(true)
-    Time.stub!(:now).and_return(1234)
-    @session.stub!(:open_in_browser)
+    File.stub!(:exist? => true)
+    Time.stub!(:now => 1234)
+    webrat_session.stub!(:open_in_browser)
     
     @file_handle = mock("file handle")
     File.stub!(:open).with(filename, 'w').and_yield(@file_handle)
@@ -27,23 +25,23 @@ describe "save_and_open_page" do
 
   it "should rewrite css rules" do
     @file_handle.should_receive(:write) do |html|
-      html.should =~ %r|#{@session.doc_root}/stylesheets/foo.css|s
+      html.should =~ %r|#{webrat_session.doc_root}/stylesheets/foo.css|s
     end
     
-    @session.save_and_open_page
+    save_and_open_page
   end
   
   it "should rewrite image paths" do
     @file_handle.should_receive(:write) do |html|
-      html.should =~ %r|#{@session.doc_root}/images/bar.png|s
+      html.should =~ %r|#{webrat_session.doc_root}/images/bar.png|s
     end
     
-    @session.save_and_open_page
+    save_and_open_page
   end
   
   it "should open the temp file in a browser" do
-    @session.should_receive(:open_in_browser).with(filename)
-    @session.save_and_open_page
+    webrat_session.should_receive(:open_in_browser).with(filename)
+    save_and_open_page
   end
   
   def filename

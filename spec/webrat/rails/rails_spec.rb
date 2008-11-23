@@ -1,20 +1,20 @@
 # it "should default to current url" do
-# # @session.current_page.stub!(:url).and_return("/page")
-#   @session.response_body = <<-EOS
+# # current_page.stub!(:url => "/page")
+#   response_body = <<-HTML
 #     <form method="get">
 #       <input type="submit" />
 #     </form>
-#   EOS
-#   @page.stub!(:url).and_return("/current")
-#   @session.should_receive(:get).with("/current", {})
-#   @session.click_button
+#   HTML
+#   @page.stub!(:url => "/current")
+#   webrat_session.should_receive(:get).with("/current", {})
+#   click_button
 # end
 # 
 # it "should follow fully qualified secure local links" do
-#   @session.response_body = <<-EOS
+#   response_body = <<-HTML
 #     <a href="https://www.example.com/page/sub">Jump to sub page</a>
-#   EOS
-#   @session.should_receive(:https!).with(true)
-#   @session.should_receive(:get).with("/page/sub", {})
-#   @session.click_link "Jump to sub page"
+#   HTML
+#   webrat_session.should_receive(:https!).with(true)
+#   webrat_session.should_receive(:get).with("/page/sub", {})
+#   click_link "Jump to sub page"
 # end

@@ -1,12 +1,8 @@
 require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
 
 describe "select_time" do
-  before do
-    @session = Webrat::TestSession.new
-  end
-
   it "should send the values for each individual time component" do
-    @session.response_body = <<-EOS
+    with_html <<-HTML
       <form action="/appointments" method="post">
         <label for="appointment_time">Time</label><br />
         <select id="appointment_time_4i" name="appointment[time(4i)]">
@@ -17,15 +13,15 @@ describe "select_time" do
         </select>
         <input type="submit" />
       </form>
-    EOS
-    @session.should_receive(:post).with("/appointments", 
+    HTML
+    webrat_session.should_receive(:post).with("/appointments", 
       "appointment" => {"time(4i)" => "09", "time(5i)" => "30"})
-    @session.selects_time "9:30AM", :from => "Time"
-    @session.click_button
+    selects_time "9:30AM", :from => "Time"
+    click_button
   end
   
   it "should accept a time object" do
-    @session.response_body = <<-EOS
+    with_html <<-HTML
       <form action="/appointments" method="post">
         <label for="appointment_time">Time</label><br />
         <select id="appointment_time_4i" name="appointment[time(4i)]">
@@ -36,15 +32,15 @@ describe "select_time" do
         </select>
         <input type="submit" />
       </form>
-    EOS
-    @session.should_receive(:post).with("/appointments", 
+    HTML
+    webrat_session.should_receive(:post).with("/appointments", 
       "appointment" => {"time(4i)" => "09", "time(5i)" => "30"})
-    @session.select_time Time.parse("9:30AM"), :from => "Time"
-    @session.click_button
+    select_time Time.parse("9:30AM"), :from => "Time"
+    click_button
   end
 
   it "should work when no label is specified" do
-    @session.response_body = <<-EOS
+    with_html <<-HTML
       <form action="/appointments" method="post">
         <select id="appointment_time_4i" name="appointment[time(4i)]">
           <option value="09">09</option>
@@ -54,22 +50,22 @@ describe "select_time" do
         </select>
         <input type="submit" />
       </form>
-    EOS
-    @session.should_receive(:post).with("/appointments", 
+    HTML
+    webrat_session.should_receive(:post).with("/appointments", 
       "appointment" => {"time(4i)" => "09", "time(5i)" => "30"})
-    @session.select_time "9:30"
-    @session.click_button
+    select_time "9:30"
+    click_button
   end
 
   it "should fail if the specified label is not found" do
-    @session.response_body = <<-EOS
+    with_html <<-HTML
       <form method="post" action="/appointments">
         <select name="month"><option>January</option></select>
         <input type="submit" />
       </form>
-    EOS
+    HTML
     
-    lambda { @session.select_time "9:30", :from => "Time" }.should raise_error
+    lambda { select_time "9:30", :from => "Time" }.should raise_error
   end
 
 end

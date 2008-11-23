@@ -3,6 +3,9 @@ require "webrat/core_extensions/blank"
 require "webrat/core_extensions/nil_to_param"
 
 module Webrat
+  class DisabledFieldError < WebratError
+  end
+  
   class Field #:nodoc:
     
     def self.class_for_element(element)
@@ -64,7 +67,8 @@ module Webrat
     end
     
     def raise_error_if_disabled
-      raise "Cannot interact with disabled form element (#{self})" if disabled?
+      return unless disabled?
+      raise DisabledFieldError.new("Cannot interact with disabled form element (#{self})")
     end
         
     def to_param

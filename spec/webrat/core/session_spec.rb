@@ -23,21 +23,21 @@ describe Webrat::Session do
   
   it "should open the page in the browser in MacOSX" do
     session = Webrat::Session.new
-    session.should_receive(:ruby_platform).and_return 'darwin'
+    session.stub!(:ruby_platform => 'darwin')
     session.should_receive(:`).with("open path")
     session.open_in_browser("path")
   end
   
   it "should open the page in the browser in cygwin" do
     session = Webrat::Session.new
-    session.should_receive(:ruby_platform).and_return 'i386-cygwin'
+    session.stub!(:ruby_platform => 'i386-cygwin')
     session.should_receive(:`).with("rundll32 url.dll,FileProtocolHandler path\\to\\file")
     session.open_in_browser("path/to/file")
   end
   
   it "should open the page in the browser in Win32" do
     session = Webrat::Session.new
-    session.should_receive(:ruby_platform).and_return 'win32'
+    session.stub!(:ruby_platform => 'win32')
     session.should_receive(:`).with("rundll32 url.dll,FileProtocolHandler path\\to\\file")
     session.open_in_browser("path/to/file")
   end
@@ -67,54 +67,54 @@ describe Webrat::Session do
 
   describe "#http_accept" do
     before(:each) do
-      @session = Webrat::Session.new
+      webrat_session = Webrat::Session.new
     end
 
     it "should set the Accept header with the string Mime type" do
-      @session.http_accept('application/xml')
-      @session.headers['Accept'].should == 'application/xml'
+      webrat_session.http_accept('application/xml')
+      webrat_session.headers['Accept'].should == 'application/xml'
     end
 
     it "should set the Accept head with the string value of the symbol Mime type" do
-      @session.http_accept(:xml)
-      @session.headers['Accept'].should == 'application/xml'
+      webrat_session.http_accept(:xml)
+      webrat_session.headers['Accept'].should == 'application/xml'
     end
 
     it "should raise an error if a symbol Mime type is passed that does not exist" do
-      lambda { @session.http_accept(:oogabooga) }.should raise_error(ArgumentError)
+      lambda { webrat_session.http_accept(:oogabooga) }.should raise_error(ArgumentError)
     end
   end
 
   describe "#request_page" do
     before(:each) do
       Webrat.cache_config_for_test
-      @session = Webrat::Session.new
+      webrat_session = Webrat::Session.new
     end
     after(:each) do
       Webrat.reset_for_test
     end
   
     it "should raise an error if the request is not a success" do
-      @session.stub!(:get)
-      @session.stub!(:response_body).and_return("Exception caught")
-      @session.stub!(:response_code).and_return(500)
-      @session.stub!(:formatted_error).and_return("application error")
-      @session.stub!(:save_and_open_page)
+      webrat_session.stub!(:get)
+      webrat_session.stub!(:response_body => "Exception caught")
+      webrat_session.stub!(:response_code => 500)
+      webrat_session.stub!(:formatted_error => "application error")
+      webrat_session.stub!(:save_and_open_page)
   
-      lambda { @session.request_page('some url', :get, {}) }.should raise_error(Webrat::PageLoadError)
+      lambda { webrat_session.request_page('some url', :get, {}) }.should raise_error(Webrat::PageLoadError)
     end
     
     it "should raise an error but not open if the request is not a success and config quashes save_and_open" do
       Webrat.configure do |config|
         config.open_error_files = false
       end
-      @session.stub!(:get)
-      @session.stub!(:response_body).and_return("Exception caught")
-      @session.stub!(:response_code).and_return(500)
-      @session.stub!(:formatted_error).and_return("application error")
-      @session.should_not_receive(:save_and_open_page)
+      webrat_session.stub!(:get)
+      webrat_session.stub!(:response_body => "Exception caught")
+      webrat_session.stub!(:response_code => 500)
+      webrat_session.stub!(:formatted_error => "application error")
+      webrat_session.should_not_receive(:save_and_open_page)
   
-      lambda { @session.request_page('some url', :get, {}) }.should raise_error(Webrat::PageLoadError)
+      lambda { webrat_session.request_page('some url', :get, {}) }.should raise_error(Webrat::PageLoadError)
     end
   end
 end

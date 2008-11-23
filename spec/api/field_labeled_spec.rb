@@ -2,36 +2,34 @@ require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
 
 
 describe "field_labeled" do
-  
   class << self
     def using_this_html html
       before(:each) do
-        @session = Webrat::TestSession.new
-        @session.response_body = html
+        with_html(html)
       end
     end
     
-    def field_labeled label
+    def field_labeled(label)
       @label = label
       yield
     end
     
     def should_return_a type, opts
       it "should return a textfield" do
-        @session.field_labeled(opts[:for]).should be_an_instance_of(type)
+        field_labeled(opts[:for]).should be_an_instance_of(type)
       end
     end
     
     def with_an_id_of id, opts
       it "should return an element with the correct id" do
-        @session.field_labeled(opts[:for]).should match_id(id)
+        field_labeled(opts[:for]).should match_id(id)
       end
     end
     
     def should_raise_error_matching regexp, opts
       it "should raise with wrong label" do
         lambda {
-          @session.field_labeled(opts[:for])
+          field_labeled(opts[:for])
         }.should raise_error(regexp)
       end
     end
