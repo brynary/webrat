@@ -1,6 +1,9 @@
 require File.expand_path(File.dirname(__FILE__) + "/../../spec_helper")
 
 describe Webrat::Configuration do
+  predicate_matchers[:parse_with_nokogiri]  = :parse_with_nokogiri?
+  predicate_matchers[:open_error_files]     = :open_error_files?
+  
   before do
     Webrat.cache_config_for_test
   end
@@ -16,18 +19,18 @@ describe Webrat::Configuration do
   it "should use Nokogiri as the parser by default" do
     Webrat.stub!(:on_java? => false)
     config = Webrat::Configuration.new
-    config.parse_with_nokogiri.should == true
+    config.should parse_with_nokogiri
   end
   
   it "should not use Nokogiri as the parser when on JRuby" do
     Webrat.stub!(:on_java? => true)
     config = Webrat::Configuration.new
-    config.parse_with_nokogiri.should == false
+    config.should_not parse_with_nokogiri
   end
   
   it "should open error files by default" do
     config = Webrat::Configuration.new
-    config.open_error_files.should == true
+    config.should open_error_files
   end
   
   it "should be configurable with a block" do
@@ -36,6 +39,6 @@ describe Webrat::Configuration do
     end
     
     config = Webrat.configuration
-    config.open_error_files.should == false
+    config.should_not open_error_files
   end
 end

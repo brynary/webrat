@@ -74,16 +74,13 @@ module Webrat
     def to_param
       return nil if disabled?
       
-      key_and_value = "#{name}=#{escaped_value}"
-      
-      if defined?(CGIMethods)
-        CGIMethods.parse_query_parameters(key_and_value)
-      elsif defined?(ActionController::AbstractRequest)
-        ActionController::AbstractRequest.parse_query_parameters(key_and_value)
-      elsif defined?(::Merb)
-        ::Merb::Parse.query(key_and_value)
+      case Webrat.configuration.mode
+      when :rails
+        ActionController::AbstractRequest.parse_query_parameters("#{name}=#{escaped_value}")
+      when :merb
+        ::Merb::Parse.query("#{name}=#{escaped_value}")
       else
-        { name => escaped_value } # For mechanize
+        { name => escaped_value }
       end
     end
     

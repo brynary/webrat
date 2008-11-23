@@ -12,16 +12,24 @@ module Webrat
   end
   
   class Configuration
-    attr_accessor :parse_with_nokogiri
+    attr_writer :parse_with_nokogiri
     
     attr_accessor :mode
     
     # Sets whether to save and open pages with error status codes in a browser
-    attr_accessor :open_error_files
+    attr_writer :open_error_files
     
     def initialize
       self.open_error_files = true
       self.parse_with_nokogiri = !Webrat.on_java?
+    end
+    
+    def parse_with_nokogiri?
+      @parse_with_nokogiri ? true : false
+    end
+    
+    def open_error_files?
+      @open_error_files ? true : false
     end
     
   end

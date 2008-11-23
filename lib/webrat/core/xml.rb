@@ -2,7 +2,7 @@ module Webrat
   module XML
     
     def self.document(stringlike)
-      if defined?(Nokogiri::XML)
+      if Webrat.configuration.parse_with_nokogiri?
         Webrat.nokogiri_document(stringlike)
       else
         return stringlike.dom if stringlike.respond_to?(:dom)
@@ -22,7 +22,7 @@ module Webrat
     end
     
     def self.css_search(element, *searches)
-      if defined?(Nokogiri::XML)
+      if Webrat.configuration.parse_with_nokogiri?
         element.css(*searches)
       else
         searches.map do |search|

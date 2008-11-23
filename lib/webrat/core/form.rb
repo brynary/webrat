@@ -106,10 +106,6 @@ module Webrat
     def form_action
       @element["action"].blank? ? @session.current_url : @element["action"]
     end
-
-    HASH = [Hash]
-    HASH << HashWithIndifferentAccess rescue nil  # Rails
-    HASH << Mash rescue nil                       # Merb
     
     def merge(all_params, new_param)
       new_param.each do |key, value|
@@ -142,8 +138,14 @@ module Webrat
     
     def hash_classes
       klasses = [Hash]
-      klasses << HashWithIndifferentAccess  if defined?(HashWithIndifferentAccess) # Rails
-      klasses << Mash                       if defined?(Mash)                      # Merb
+      
+      case Webrat.configuration.mode
+      when :rails
+        klasses << HashWithIndifferentAccess
+      when :merb
+        klasses << Mash
+      end
+      
       klasses
     end
     

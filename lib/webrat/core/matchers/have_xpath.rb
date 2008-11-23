@@ -11,7 +11,7 @@ module Webrat
       end
     
       def matches?(stringlike)
-        if defined?(Nokogiri::XML)
+        if Webrat.configuration.parse_with_nokogiri?
           matches_nokogiri?(stringlike)
         else
           matches_rexml?(stringlike)
