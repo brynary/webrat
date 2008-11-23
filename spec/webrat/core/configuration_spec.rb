@@ -8,6 +8,15 @@ describe Webrat::Configuration do
   after do
     Webrat.reset_for_test
   end
+
+  it "should have a mode" do
+    Webrat.configuration.should respond_to(:mode)
+  end
+  
+  it "should use Nokogiri as the parser by default" do
+    config = Webrat.configuration
+    config.parse_with_nokogiri.should == true
+  end
   
   it "should open error files by default" do
     config = Webrat.configuration

@@ -12,6 +12,7 @@ module Webrat
   end
   
   class Configuration
+    attr_accessor :parse_with_nokogiri
     
     attr_accessor :mode
     
@@ -20,6 +21,7 @@ module Webrat
     
     def initialize
       self.open_error_files = true
+      self.parse_with_nokogiri = true
     end
     
   end
