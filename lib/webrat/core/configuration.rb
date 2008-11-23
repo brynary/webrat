@@ -19,7 +19,6 @@ module Webrat
     attr_accessor :open_error_files
     
     def initialize
-      self.mode = :rails
       self.open_error_files = true
     end
     
