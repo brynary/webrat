@@ -17,3 +17,5 @@ module Webrat
     
   end
 end
+
+Webrat.configuration.mode = :sinatra

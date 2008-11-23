@@ -5,7 +5,7 @@ module Webrat
       meths.each do |meth|
         self.class_eval <<-RUBY
           def #{meth}(*args, &blk)
-            @_webrat_session ||= ::Webrat::MerbSession.new
+            @_webrat_session ||= ::Webrat.session_class.new(self)
             @_webrat_session.#{meth}(*args, &blk)
           end
         RUBY
@@ -38,7 +38,12 @@ module Webrat
       :clicks_button, :click_button,
       :reload, :reloads,
       :clicks_link_within, :click_link_within,
-      :field_labeled
+      :field_labeled,
+      :set_hidden_field, :submit_form,
+      :request_page, :current_dom,
+      :selects_date, :selects_time, :selects_datetime,
+      :select_date, :select_time, :select_datetime
+      
     
   end
 end

@@ -7,17 +7,37 @@ module Webrat
   class PageLoadError < WebratError
   end
   
+  def self.session_class
+    case Webrat.configuration.mode
+    when :rails
+      RailsSession
+    when :merb
+      MerbSession
+    when :selenium
+      SeleniumSession
+    when :rack
+      RackSession
+    when :sinatra
+      SinatraSession
+    when :mechanize
+      MechanizeSession
+    else
+      raise WebratError.new("Unknown Webrat mode: #{Webrat.configuration.mode.inspect}")
+    end
+  end
+  
   class Session
     extend Forwardable
     include Logging
     
     attr_reader :current_url
     
-    def initialize #:nodoc:
+    def initialize(context = nil) #:nodoc:
       @http_method     = :get
       @data            = {}
       @default_headers = {}
       @custom_headers  = {}
+      @context         = context
     end
 
     # Saves the page out to RAILS_ROOT/tmp/ and opens it in the default

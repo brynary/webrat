@@ -22,3 +22,5 @@ module Webrat
     end
   end
 end
+
+Webrat.configuration.mode = :rack

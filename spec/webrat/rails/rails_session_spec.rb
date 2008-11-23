@@ -1,12 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/helper')
 
 describe Webrat::RailsSession do
-  it "should require a Rails Integration session to be initialized" do
-    lambda {
-      Webrat::RailsSession.new
-    }.should raise_error
-  end
-      
   it "should delegate response_body to the session response body" do
     response = mock("response", :body => "<html>")
     integration_session = mock("integration session", :response => response)

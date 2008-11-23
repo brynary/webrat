@@ -1,10 +1,5 @@
 module Webrat
   class RailsSession < Session #:nodoc:
-    
-    def initialize(integration_session)
-      super()
-      @integration_session = integration_session
-    end
 
     def doc_root
       File.expand_path(File.join(RAILS_ROOT, 'public'))
@@ -40,9 +35,13 @@ module Webrat
     
   protected
     
+    def integration_session
+      @context
+    end
+    
     def do_request(http_method, url, data, headers) #:nodoc:
       update_protocol(url)
-      @integration_session.request_via_redirect(http_method, remove_protocol(url), data, headers)
+      integration_session.request_via_redirect(http_method, remove_protocol(url), data, headers)
     end
   
     def remove_protocol(href) #:nodoc:
@@ -55,14 +54,14 @@ module Webrat
     
     def update_protocol(href) #:nodoc:
       if href =~ /^https:/
-        @integration_session.https!(true)
+        integration_session.https!(true)
       elsif href =~ /^http:/
-        @integration_session.https!(false)
+        integration_session.https!(false)
       end
     end
     
     def response #:nodoc:
-      @integration_session.response
+      integration_session.response
     end
     
   end
@@ -71,30 +70,14 @@ end
 module ActionController
   module Integration
     class Session #:nodoc:
-      
       unless instance_methods.include?("put_via_redirect")
         require "webrat/rails/redirect_actions"
         include Webrat::RedirectActions
       end
 
-      def respond_to?(name)
-        super || webrat_session.respond_to?(name)
-      end
-      
-      def method_missing(name, *args, &block)
-        if webrat_session.respond_to?(name)
-          webrat_session.send(name, *args, &block)
-        else
-          super
-        end
-      end
-      
-    protected
-    
-      def webrat_session
-        @webrat_session ||= Webrat::RailsSession.new(self)
-      end
-      
+      include Webrat::Methods
     end
   end
 end
+
+Webrat.configuration.mode = :rails

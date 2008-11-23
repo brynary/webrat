@@ -73,3 +73,5 @@ class Merb::Test::RspecStory #:nodoc:
   end
 end
 
+Webrat.configuration.mode = :merb
+

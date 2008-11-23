@@ -27,10 +27,10 @@ describe Webrat::MechanizeSession do
     end
     
     it "should flatten model post data" do
-      mechanize = mock :mechanize
+      mechanize = mock(:mechanize)
+      WWW::Mechanize.stub!(:new => mechanize)
       mechanize.should_receive(:post).with(url, flattened_data)
-      
-      Webrat::MechanizeSession.new(mechanize).post(url, data)
+      Webrat::MechanizeSession.new.post(url, data)
     end
   end
 end

@@ -6,13 +6,8 @@ module Webrat
     attr_accessor :response
     alias :page :response
     
-    def initialize(mechanize = WWW::Mechanize.new)
-      super()
-      @mechanize = mechanize
-    end
-    
     def get(url, data, headers_argument_not_used = nil)
-      @response = @mechanize.get(url, data)
+      @response = mechanize.get(url, data)
     end
 
     def post(url, data, headers_argument_not_used = nil)
@@ -25,11 +20,7 @@ module Webrat
         end
         memo
       end
-      @response = @mechanize.post(url, post_data)
-    end
-
-    def response
-      @response
+      @response = mechanize.post(url, post_data)
     end
     
     def response_body
@@ -39,8 +30,14 @@ module Webrat
     def response_code
       @response.code.to_i
     end
+    
+    def mechanize
+      @mechanize = WWW::Mechanize.new
+    end
 
-    def_delegators :@mechanize, :basic_auth
+    def_delegators :mechanize, :basic_auth
       
   end
 end
+
+Webrat.configuration.mode = :mechanize

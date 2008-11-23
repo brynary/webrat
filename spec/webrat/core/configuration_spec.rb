@@ -9,11 +9,12 @@ describe Webrat::Configuration do
     Webrat.reset_for_test
   end
   
-  it "should have a default config" do
-    Webrat.configuration.should be_an_instance_of(Webrat::Configuration)
+  it "should default to Rails mode" do
+    config = Webrat.configuration
+    config.mode.should == :rails
   end
   
-  it "should set default values" do
+  it "should open error files by default" do
     config = Webrat.configuration
     config.open_error_files.should == true
   end
@@ -22,6 +23,7 @@ describe Webrat::Configuration do
     Webrat.configure do |config|
       config.open_error_files = false
     end
+    
     config = Webrat.configuration
     config.open_error_files.should == false
   end
