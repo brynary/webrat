@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
 
-describe "selects_date" do
+describe "select_date" do
   it "should send the values for each individual date component" do
     with_html <<-HTML
       <form action="/appointments" method="post">
@@ -19,7 +19,7 @@ describe "selects_date" do
     HTML
     webrat_session.should_receive(:post).with("/appointments", 
       "appointment" => {"date(1i)" => '2003', "date(2i)" => "12", "date(3i)" => "25"})
-    selects_date "December 25, 2003", :from => "Date"
+    select_date "December 25, 2003", :from => "Date"
     click_button
   end
   
@@ -41,7 +41,7 @@ describe "selects_date" do
     HTML
     webrat_session.should_receive(:post).with("/appointments", 
       "appointment" => {"date(1i)" => '2003', "date(2i)" => "12", "date(3i)" => "25"})
-    selects_date Date.parse("December 25, 2003"), :from => "date"
+    select_date Date.parse("December 25, 2003"), :from => "date"
     click_button
   end
 
@@ -62,7 +62,7 @@ describe "selects_date" do
     HTML
     webrat_session.should_receive(:post).with("/appointments", 
       "appointment" => {"date(1i)" => '2003', "date(2i)" => "12", "date(3i)" => "25"})
-    selects_date "December 25, 2003"
+    select_date "December 25, 2003"
     click_button
   end
 
@@ -74,7 +74,7 @@ describe "selects_date" do
       </form>
     HTML
     
-    lambda { selects_date "December 25, 2003", :from => "date" }.should raise_error
+    lambda { select_date "December 25, 2003", :from => "date" }.should raise_error
   end
 
 end

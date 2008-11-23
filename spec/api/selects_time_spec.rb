@@ -16,7 +16,7 @@ describe "select_time" do
     HTML
     webrat_session.should_receive(:post).with("/appointments", 
       "appointment" => {"time(4i)" => "09", "time(5i)" => "30"})
-    selects_time "9:30AM", :from => "Time"
+    select_time "9:30AM", :from => "Time"
     click_button
   end
   

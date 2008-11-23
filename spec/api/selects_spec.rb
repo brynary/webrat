@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
 
-describe "selects" do
+describe "select" do
   it "should fail with a helpful message when option not found" do
     with_html <<-HTML
       <form method="get" action="/login">
@@ -8,8 +8,8 @@ describe "selects" do
       </form>
     HTML
     
-    lambda { selects "February", :from => "month" }.should raise_error(
-          Exception, "The 'February' option was not found in the 'month' select box") 
+    lambda { select "February", :from => "month" }.should raise_error(Webrat::NotFoundError,
+      "The 'February' option was not found in the 'month' select box") 
   end
   
   it "should fail if option not found in list specified by element name" do
@@ -20,7 +20,7 @@ describe "selects" do
       </form>
     HTML
 
-    lambda { selects "February", :from => "year" }.should raise_error
+    lambda { select "February", :from => "year" }.should raise_error(Webrat::NotFoundError)
   end
   
   it "should fail if specified list not found" do
@@ -30,7 +30,7 @@ describe "selects" do
       </form>
     HTML
 
-    lambda { selects "February", :from => "year" }.should raise_error
+    lambda { select "February", :from => "year" }.should raise_error
   end
 
   
@@ -42,7 +42,7 @@ describe "selects" do
       </form>
     HTML
 
-    lambda { selects "January", :from => "month" }.should raise_error
+    lambda { select "January", :from => "month" }.should raise_error
   end
   
   it "should send value from option" do
@@ -53,7 +53,7 @@ describe "selects" do
       </form>
     HTML
     webrat_session.should_receive(:post).with("/login", "month" => "1")
-    selects "January", :from => "month"
+    select "January", :from => "month"
     click_button
   end
 
@@ -65,7 +65,7 @@ describe "selects" do
       </form>
     HTML
     webrat_session.should_receive(:post).with("/login", "encoded" => "A & B")
-    selects "Encoded", :from => "encoded"
+    select "Encoded", :from => "encoded"
     click_button
   end
 
@@ -88,7 +88,7 @@ describe "selects" do
       </form>
     HTML
     webrat_session.should_receive(:post).with("/login", "month" => "1")
-    selects "January"
+    select "January"
     click_button
   end
   
@@ -101,7 +101,7 @@ describe "selects" do
       </form>
     HTML
     webrat_session.should_receive(:post).with("/login", "start_month" => "s1", "end_month" => "e1")
-    selects "January", :from => "end_month"
+    select "January", :from => "end_month"
     click_button
   end
   
@@ -116,7 +116,7 @@ describe "selects" do
       </form>
     HTML
     webrat_session.should_receive(:post).with("/login", "start_month" => "s1", "end_month" => "e1")
-    selects "January", :from => "End Month"
+    select "January", :from => "End Month"
     click_button
   end
   
@@ -128,7 +128,7 @@ describe "selects" do
       </form>
     HTML
     webrat_session.should_receive(:post).with("/login", "month" => "January")
-    selects "January", :from => "month"
+    select "January", :from => "month"
     click_button
   end
 
@@ -140,7 +140,7 @@ describe "selects" do
       </form>
     HTML
     webrat_session.should_receive(:post).with("/login", "month" => "January")
-    selects(/jan/i)
+    select /jan/i
     click_button
   end
   
@@ -153,8 +153,8 @@ describe "selects" do
     HTML
     
     lambda {
-      selects(/feb/i)
-    }.should raise_error
+      select /feb/i
+    }.should raise_error(Webrat::NotFoundError)
   end
 
   it "should find option by regexp in list specified by label" do
@@ -168,7 +168,7 @@ describe "selects" do
       </form>
     HTML
     webrat_session.should_receive(:post).with("/login", "start_month" => "s1", "end_month" => "e1")
-    selects(/jan/i, :from => "End Month")
+    select /jan/i, :from => "End Month"
     click_button
   end
 end

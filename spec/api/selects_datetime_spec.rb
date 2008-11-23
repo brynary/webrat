@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
 
-describe "selects_datetime" do
+describe "select_datetime" do
   it "should send the values for each individual date and time components" do
     with_html <<-HTML
       <form action="/appointments" method="post">
@@ -25,7 +25,7 @@ describe "selects_datetime" do
     HTML
     webrat_session.should_receive(:post).with("/appointments", 
       "appointment" => {"time(1i)" => '2003', "time(2i)" => "12", "time(3i)" => "25", "time(4i)" => "09", "time(5i)" => "30"})
-    selects_datetime "December 25, 2003 9:30", :from => "Time"
+    select_datetime "December 25, 2003 9:30", :from => "Time"
     click_button
   end
   
@@ -80,7 +80,7 @@ describe "selects_datetime" do
     HTML
     webrat_session.should_receive(:post).with("/appointments", 
       "appointment" => {"time(1i)" => '2003', "time(2i)" => "12", "time(3i)" => "25", "time(4i)" => "09", "time(5i)" => "30"})
-    selects_datetime "December 25, 2003 9:30"
+    select_datetime "December 25, 2003 9:30"
     click_button
   end
 
@@ -92,7 +92,7 @@ describe "selects_datetime" do
       </form>
     HTML
     
-    lambda { selects_datetime "December 25, 2003 9:30", :from => "Time" }.should raise_error
+    lambda { select_datetime "December 25, 2003 9:30", :from => "Time" }.should raise_error
   end
 
 end

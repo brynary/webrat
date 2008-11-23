@@ -90,10 +90,10 @@ module Webrat
     # a label. Stores the option's value to be sent when the form is submitted.
     #
     # Examples:
-    #   selects "January"
-    #   selects "February", :from => "event_month"
-    #   selects "February", :from => "Event Month"
-    def selects(option_text, options = {})
+    #   select "January"
+    #   select "February", :from => "event_month"
+    #   select "February", :from => "Event Month"
+    def select(option_text, options = {})
       if option = find_select_option(option_text, options[:from])
         option.choose
       else
@@ -102,7 +102,7 @@ module Webrat
        end
     end
 
-    alias_method :select, :selects
+    alias_method :selects, :select
     
     DATE_TIME_SUFFIXES = {
       :year   => '1i',
@@ -123,11 +123,11 @@ module Webrat
     # by assigning <tt>options[:id_prefix]</tt>.
     #
     # Examples:
-    #   selects_date "January 23, 2004"
-    #   selects_date "April 26, 1982", :from => "Birthday"
-    #   selects_date Date.parse("December 25, 2000"), :from => "Event"
-    #   selects_date "April 26, 1982", :id_prefix => 'birthday'
-    def selects_date(date_to_select, options ={})
+    #   select_date "January 23, 2004"
+    #   select_date "April 26, 1982", :from => "Birthday"
+    #   select_date Date.parse("December 25, 2000"), :from => "Event"
+    #   select_date "April 26, 1982", :id_prefix => 'birthday'
+    def select_date(date_to_select, options ={})
       date = date_to_select.is_a?(Date) || date_to_select.is_a?(Time) ? 
                 date_to_select : Date.parse(date_to_select) 
       
@@ -137,12 +137,12 @@ module Webrat
         $1
       end
         
-      selects date.year, :from => "#{id_prefix}_#{DATE_TIME_SUFFIXES[:year]}"
-      selects date.strftime('%B'), :from => "#{id_prefix}_#{DATE_TIME_SUFFIXES[:month]}"
-      selects date.day, :from => "#{id_prefix}_#{DATE_TIME_SUFFIXES[:day]}"
+      select date.year, :from => "#{id_prefix}_#{DATE_TIME_SUFFIXES[:year]}"
+      select date.strftime('%B'), :from => "#{id_prefix}_#{DATE_TIME_SUFFIXES[:month]}"
+      select date.day, :from => "#{id_prefix}_#{DATE_TIME_SUFFIXES[:day]}"
     end
 
-    alias_method :select_date, :selects_date
+    alias_method :selects_date, :select_date
 
     # Verifies that time elements (hour, minute) exist on the current page 
     # with the specified values. You can optionally restrict the search to a specific
@@ -158,11 +158,11 @@ module Webrat
     # 24 hour select boxes, and not 12 hours with AM/PM.
     # 
     # Examples:
-    #   selects_time "9:30"
-    #   selects_date "3:30PM", :from => "Party Time"
-    #   selects_date Time.parse("10:00PM"), :from => "Event"
-    #   selects_date "10:30AM", :id_prefix => 'meeting'
-    def selects_time(time_to_select, options ={})
+    #   select_time "9:30"
+    #   select_date "3:30PM", :from => "Party Time"
+    #   select_date Time.parse("10:00PM"), :from => "Event"
+    #   select_date "10:30AM", :id_prefix => 'meeting'
+    def select_time(time_to_select, options ={})
       time = time_to_select.is_a?(Time) ? time_to_select : Time.parse(time_to_select) 
 
       id_prefix = locate_id_prefix(options) do
@@ -171,31 +171,31 @@ module Webrat
         $1
       end
         
-      selects time.hour.to_s.rjust(2,'0'), :from => "#{id_prefix}_#{DATE_TIME_SUFFIXES[:hour]}"
-      selects time.min.to_s.rjust(2,'0'), :from => "#{id_prefix}_#{DATE_TIME_SUFFIXES[:minute]}"
+      select time.hour.to_s.rjust(2,'0'), :from => "#{id_prefix}_#{DATE_TIME_SUFFIXES[:hour]}"
+      select time.min.to_s.rjust(2,'0'), :from => "#{id_prefix}_#{DATE_TIME_SUFFIXES[:minute]}"
     end
 
 
-    alias_method :select_time, :selects_time
+    alias_method :selects_time, :select_time
    
     # Verifies and selects all the date and time elements on the current page. 
-    # See #selects_time and #selects_date for more details and available options.
+    # See #select_time and #select_date for more details and available options.
     #
     # Examples:
-    #   selects_datetime "January 23, 2004 10:30AM"
-    #   selects_datetime "April 26, 1982 7:00PM", :from => "Birthday"
-    #   selects_datetime Time.parse("December 25, 2000 15:30"), :from => "Event"
-    #   selects_datetime "April 26, 1982 5:50PM", :id_prefix => 'birthday'
-    def selects_datetime(time_to_select, options ={})
+    #   select_datetime "January 23, 2004 10:30AM"
+    #   select_datetime "April 26, 1982 7:00PM", :from => "Birthday"
+    #   select_datetime Time.parse("December 25, 2000 15:30"), :from => "Event"
+    #   select_datetime "April 26, 1982 5:50PM", :id_prefix => 'birthday'
+    def select_datetime(time_to_select, options ={})
       time = time_to_select.is_a?(Time) ? time_to_select : Time.parse(time_to_select) 
       
       options[:id_prefix] ||= (options[:from] ? find_field_with_id(options[:from]) : nil)
       
-      selects_date time, options
-      selects_time time, options
+      select_date time, options
+      select_time time, options
     end
 
-    alias_method :select_datetime, :selects_datetime
+    alias_method :selects_datetime, :select_datetime
     
     # Verifies that an input file field exists on the current page and sets
     # its value to the given +file+, so that the file will be uploaded

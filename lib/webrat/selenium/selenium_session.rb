@@ -79,7 +79,7 @@ module Webrat
       wait_for_effects
     end    
     
-    def selects(option_text, options = {})
+    def select(option_text, options = {})
       id_or_name_or_label = options[:from]
       
       if id_or_name_or_label
@@ -89,6 +89,8 @@ module Webrat
       end
       @selenium.select(select_locator, option_text)
     end
+    
+    alias_method :selects, :select
     
     def choose(label_text)
       @selenium.click("webrat=#{label_text}")
