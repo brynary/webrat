@@ -7,10 +7,6 @@ module Webrat
   end
 
   VERSION = '0.3.2'
-  
-  def self.root #:nodoc:
-    defined?(RAILS_ROOT) ? RAILS_ROOT : Merb.root
-  end
 
   def self.require_xml
     if on_java?

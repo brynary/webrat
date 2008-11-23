@@ -48,7 +48,6 @@
   * Add #http_accept for including MIME type HTTP "Accept" headers (Ryan Briones)
   * Add #header to support inclusion of custom HTTP headers (Ryan Briones)
   * Consider response codes 200-499 as successful enough to not raise a Webrat error (David Leal)
-  * Add Webrat.root method for cross-framework support (Krzysztof Zylawy)
   * Add support for clicking areas of an image map (Alex Lang)
   * Support relative links, including href="?foo=bar" (Kyle Hargraves)
   * Separated Rails-specific code from the Webrat core to make it easier to use Webrat with other environments
