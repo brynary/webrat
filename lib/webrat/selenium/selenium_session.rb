@@ -1,27 +1,26 @@
 module Webrat
   class SeleniumSession
     
-    def initialize(selenium_driver) #:nodoc:
-      @selenium = selenium_driver
+    def initialize(*args) # :nodoc:
       extend_selenium
       define_location_strategies
     end
     
     def visit(url)
-      @selenium.open(url)
+      selenium.open(url)
     end
     
     alias_method :visits, :visit
     
     def fill_in(field_identifier, options)
       locator = "webrat=#{Regexp.escape(field_identifier)}"
-      @selenium.type(locator, "#{options[:with]}")
+      selenium.type(locator, "#{options[:with]}")
     end
     
     alias_method :fills_in, :fill_in
     
     def response_body #:nodoc:
-      @selenium.get_html_source
+      selenium.get_html_source
     end
     
     def click_button(button_text_or_regexp = nil, options = {})
@@ -31,7 +30,7 @@ module Webrat
         pattern = adjust_if_regexp(button_text_or_regexp)
       end
       pattern ||= '*'
-      @selenium.click("button=#{pattern}")
+      selenium.click("button=#{pattern}")
       wait_for_result(options[:wait])
     end
     
@@ -39,14 +38,14 @@ module Webrat
 
     def click_link(link_text_or_regexp, options = {})
       pattern = adjust_if_regexp(link_text_or_regexp)
-      @selenium.click("webratlink=#{pattern}")
+      selenium.click("webratlink=#{pattern}")
       wait_for_result(options[:wait])
     end
     
     alias_method :clicks_link, :click_link
     
     def click_link_within(selector, link_text, options = {})
-      @selenium.click("webratlinkwithin=#{selector}|#{link_text}")
+      selenium.click("webratlinkwithin=#{selector}|#{link_text}")
       wait_for_result(options[:wait])
     end
     
@@ -63,15 +62,15 @@ module Webrat
     end
 
     def wait_for_page_to_load(timeout = 15000)
-      @selenium.wait_for_page_to_load(timeout)
+      selenium.wait_for_page_to_load(timeout)
     end
 
     def wait_for_ajax(timeout = 15000)
-      @selenium.wait_for_condition "Ajax.activeRequestCount == 0", timeout
+      selenium.wait_for_condition "Ajax.activeRequestCount == 0", timeout
     end
 
     def wait_for_effects(timeout = 15000)
-      @selenium.wait_for_condition "window.Effect.Queue.size() == 0", timeout
+      selenium.wait_for_condition "window.Effect.Queue.size() == 0", timeout
     end
 
     def wait_for_ajax_and_effects
@@ -87,47 +86,80 @@ module Webrat
       else
         select_locator = "webratselectwithoption=#{option_text}"
       end
-      @selenium.select(select_locator, option_text)
+      selenium.select(select_locator, option_text)
     end
     
     alias_method :selects, :select
     
     def choose(label_text)
-      @selenium.click("webrat=#{label_text}")
+      selenium.click("webrat=#{label_text}")
     end
     
     alias_method :chooses, :choose
         
     def check(label_text)
-      @selenium.check("webrat=#{label_text}")
+      selenium.check("webrat=#{label_text}")
     end
     
     alias_method :checks, :check
     
     def is_ordered(*args) #:nodoc:
-      @selenium.is_ordered(*args)
+      selenium.is_ordered(*args)
     end
     
     def dragdrop(*args) #:nodoc:
-      @selenium.dragdrop(*args)
+      selenium.dragdrop(*args)
     end
 
     def fire_event(field_identifier, event)
       locator = "webrat=#{Regexp.escape(field_identifier)}"
-      @selenium.fire_event(locator, "#{event}")
+      selenium.fire_event(locator, "#{event}")
     end
     
     def key_down(field_identifier, key_code)
       locator = "webrat=#{Regexp.escape(field_identifier)}"
-      @selenium.key_down(locator, key_code)
+      selenium.key_down(locator, key_code)
     end
 
     def key_up(field_identifier, key_code)
       locator = "webrat=#{Regexp.escape(field_identifier)}"
-      @selenium.key_up(locator, key_code)
+      selenium.key_up(locator, key_code)
+    end
+    
+    def browser
+      return $browser if $browser
+      setup
+      $browser
     end
     
   protected
+    
+    def setup
+      silence_stream(STDOUT) do
+        Webrat.start_selenium_server
+        Webrat.start_app_server
+      end
+      
+      
+      $browser = ::Selenium::Client::Driver.new("localhost", 4444, "*firefox", "http://0.0.0.0:3001")
+      $browser.set_speed(0)
+      $browser.start
+      teardown_at_exit
+    end
+    
+    def selenium
+      browser
+    end
+    
+    def teardown_at_exit
+      at_exit do
+        silence_stream(STDOUT) do
+          $browser.stop
+          Webrat.stop_app_server
+          Webrat.stop_selenium_server
+        end
+      end
+    end
     
     def adjust_if_regexp(text_or_regexp) #:nodoc:
       if text_or_regexp.is_a?(Regexp)
@@ -140,14 +172,14 @@ module Webrat
     def extend_selenium #:nodoc:
       extensions_file = File.join(File.dirname(__FILE__), "selenium_extensions.js")
       extenions_js = File.read(extensions_file)
-      @selenium.get_eval(extenions_js)
+      selenium.get_eval(extenions_js)
     end
     
     def define_location_strategies #:nodoc:
       Dir[File.join(File.dirname(__FILE__), "location_strategy_javascript", "*.js")].sort.each do |file|
         strategy_js = File.read(file)
         strategy_name = File.basename(file, '.js')
-        @selenium.add_location_strategy(strategy_name, strategy_js)
+        selenium.add_location_strategy(strategy_name, strategy_js)
       end
     end
   end

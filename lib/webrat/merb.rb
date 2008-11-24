@@ -1,4 +1,4 @@
-require "webrat/core"
+require "webrat"
 
 require "cgi"
 gem "extlib"

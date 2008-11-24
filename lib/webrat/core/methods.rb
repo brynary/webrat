@@ -45,7 +45,8 @@ module Webrat
       :set_hidden_field, :submit_form,
       :request_page, :current_dom,
       :selects_date, :selects_time, :selects_datetime,
-      :select_date, :select_time, :select_datetime
+      :select_date, :select_time, :select_datetime,
+      :wait_for_page_to_load
       
     
   end

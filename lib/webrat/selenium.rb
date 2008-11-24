@@ -1,3 +1,4 @@
+require "webrat"
 gem "selenium-client", ">=1.2.9"
 require "selenium/client"
 require "webrat/selenium/selenium_session"
@@ -13,19 +14,46 @@ module Webrat
   end
   
   def self.start_selenium_server
-    remote_control = Selenium::RemoteControl::RemoteControl.new("0.0.0.0", 4444, 5)
+    remote_control = ::Selenium::RemoteControl::RemoteControl.new("0.0.0.0", 4444, 5)
     remote_control.jar_file = File.expand_path(__FILE__ + "../../../../vendor/selenium-server.jar")
     remote_control.start :background => true
-    puts "Waiting for Remote Control to be up and running..."
     TCPSocket.wait_for_service :host => "0.0.0.0", :port => 4444
-    puts "Selenium Remote Control at 0.0.0.0:4444 ready"
   end
   
   def self.stop_selenium_server
-    puts "Stopping Selenium Remote Control running at 0.0.0.0:4444..."
-    remote_control = Selenium::RemoteControl::RemoteControl.new("0.0.0.0", 4444, 5)
+    remote_control = ::Selenium::RemoteControl::RemoteControl.new("0.0.0.0", 4444, 5)
     remote_control.stop
-    puts "Stopped Selenium Remote Control running at 0.0.0.0:4444"
   end
   
+  def self.start_app_server
+    pid_file = File.expand_path(RAILS_ROOT + "/tmp/pids/mongrel_selenium.pid")
+    system("mongrel_rails start -d --chdir=#{RAILS_ROOT} --port=3001 --environment=selenium --pid #{pid_file} &")
+    TCPSocket.wait_for_service :host => "0.0.0.0", :port => 3001
+  end
+  
+  def self.stop_app_server
+    pid_file = File.expand_path(RAILS_ROOT + "/tmp/pids/mongrel_selenium.pid")
+    system "mongrel_rails stop -c #{RAILS_ROOT} --pid #{pid_file}"
+  end
+  
+  module Selenium
+    module Rails
+      class World < ::ActionController::IntegrationTest
+        
+        def initialize #:nodoc:
+          @_result = Test::Unit::TestResult.new
+        end
+        
+      end
+    end
+  end
+    
+end
+
+module ::ActionController
+  module Integration
+    class Session #:nodoc:
+      include Webrat::Methods
+    end
+  end
 end

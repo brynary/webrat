@@ -1,3 +1,5 @@
+require "webrat"
+
 module Webrat
   class RailsSession < Session #:nodoc:
 

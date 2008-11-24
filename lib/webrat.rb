@@ -29,7 +29,3 @@ end
 Webrat.require_xml
 
 require "webrat/core"
-
-# TODO: This is probably not a good idea.
-# Probably better for webrat users to require "webrat/rails" etc. directly
-require "webrat/rails" if defined?(RAILS_ENV)
