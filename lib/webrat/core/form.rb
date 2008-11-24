@@ -18,6 +18,10 @@ module Webrat
       nil
     end
     
+    def field_by_element(element)
+      fields.detect { |possible_field| possible_field.path == element.path }
+    end
+    
     def find_select_option(option_text)
       select_fields = fields_by_type([SelectField])
 

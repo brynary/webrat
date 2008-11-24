@@ -41,6 +41,10 @@ module Webrat
       @element["id"]
     end
     
+    def path
+      @element.path
+    end
+    
     def matches_id?(id)
       if id.is_a?(Regexp)
         @element["id"] =~ id

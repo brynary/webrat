@@ -216,6 +216,7 @@ module Webrat
     def_delegators :current_scope, :should_see
     def_delegators :current_scope, :should_not_see
     def_delegators :current_scope, :field_labeled
+    def_delegators :current_scope, :field_by_xpath
     
     private
     # accessor for testing

@@ -3,6 +3,14 @@ require "webrat/core_extensions/detect_mapped"
 module Webrat
   module Locators
 
+    def field_by_xpath(xpath)
+      element = dom.at(xpath)
+      
+      forms.detect_mapped do |form|
+        form.field_by_element(element)
+      end
+    end
+    
     def field(*args)
       # This is the default locator strategy
       find_field_with_id(*args) ||
