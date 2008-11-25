@@ -18,8 +18,8 @@ module Webrat
       nil
     end
     
-    def field_by_element(element)
-      fields.detect { |possible_field| possible_field.path == element.path }
+    def field_by_element(element, *field_types)
+      fields_by_type(field_types).detect { |possible_field| possible_field.path == element.path }
     end
     
     def find_select_option(option_text)
