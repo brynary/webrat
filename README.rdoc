@@ -1,9 +1,9 @@
 = Webrat - Ruby Acceptance Testing for Web applications
 
-- {API Documentation}[http://brynary.com/uploads/webrat/rdoc/]
-- {Mailing List}[http://groups.google.com/group/webrat]
-- {Tickets on Lighthouse}[http://webrat.lighthouseapp.com/]
-- {Code on GitHub}[http://github.com/brynary/webrat]
+- http://brynary.com/uploads/webrat/rdoc/
+- http://groups.google.com/group/webrat
+- http://webrat.lighthouseapp.com/
+- http://github.com/brynary/webrat
 
 == Description
 
