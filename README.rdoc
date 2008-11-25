@@ -4,6 +4,7 @@
 - http://groups.google.com/group/webrat
 - http://webrat.lighthouseapp.com/
 - http://github.com/brynary/webrat
+- #webrat on Freenode
 
 == Description
 
