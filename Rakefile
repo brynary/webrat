@@ -73,14 +73,9 @@ task :install_gem => [:clean, :package] do
   sh "sudo gem install --local #{gem}"
 end
 
-Rake::RDocTask.new(:docs) do |rd|
-  rd.main = "README.txt"
-  rd.rdoc_dir = 'doc'
-  files = spec.files.grep(/^(lib|bin|ext)|txt$/)
-  files -= files.grep(/\.js$/)
-  rd.rdoc_files = files.uniq
-  title = "webrat-#{Webrat::VERSION} Documentation"
-  rd.options << "-t #{title}"
+desc "Generate RDoc"
+task :docs do
+  system "hanna -x Rakefile -x spec --title 'Webrat #{Webrat::VERSION} API Documentation'"
 end
 
 desc "Run specs using jruby"
