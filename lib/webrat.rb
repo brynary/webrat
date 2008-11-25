@@ -3,6 +3,7 @@ require "rubygems"
 $LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__))) unless $LOAD_PATH.include?(File.expand_path(File.dirname(__FILE__)))
 
 module Webrat
+  # The common base class for all exceptions raised by Webrat.
   class WebratError < StandardError
   end
 

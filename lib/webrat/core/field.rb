@@ -3,6 +3,7 @@ require "webrat/core_extensions/blank"
 require "webrat/core_extensions/nil_to_param"
 
 module Webrat
+  # Raised when Webrat is asked to manipulate a disabled form field
   class DisabledFieldError < WebratError
   end
   

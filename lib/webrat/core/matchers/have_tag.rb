@@ -3,7 +3,6 @@ module Webrat
   module HaveTagMatcher
 
     class HaveTag < ::Webrat::Matchers::HaveSelector #:nodoc:
-
       # ==== Returns
       # String:: The failure message.
       def failure_message
@@ -46,12 +45,12 @@ module Webrat
 
         Nokogiri::CSS::Parser.parse(selector).map { |ast| ast.to_xpath }
       end
-
     end
 
     def have_tag(name, attributes = {}, &block)
       HaveTag.new([name, attributes], &block)
     end
+    
     alias_method :match_tag, :have_tag
 
   end

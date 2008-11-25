@@ -4,6 +4,7 @@ require "ostruct"
 require "webrat/core/mime"
 
 module Webrat
+  # A page load or form submission returned an unsuccessful response code (500-599)
   class PageLoadError < WebratError
   end
   
@@ -132,9 +133,6 @@ module Webrat
     
     # Reloads the last page requested. Note that this will resubmit forms
     # and their data.
-    #
-    # Example:
-    #   reloads
     def reloads
       request_page(@current_url, @http_method, @data)
     end

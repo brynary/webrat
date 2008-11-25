@@ -3,6 +3,7 @@ require "webrat/core/locators"
 require "webrat/core_extensions/deprecate"
 
 module Webrat
+  # An HTML element (link, button, field, etc.) that Webrat expected was not found on the page
   class NotFoundError < WebratError
   end
   
@@ -238,9 +239,7 @@ module Webrat
     # 
     # Example:
     #   click_link "Sign up"
-    #
     #   click_link "Sign up", :javascript => false
-    # 
     #   click_link "Sign up", :method => :put
     def click_link(text_or_title_or_id, options = {})
       find_link(text_or_title_or_id).click(options)
