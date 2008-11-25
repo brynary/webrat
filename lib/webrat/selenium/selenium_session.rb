@@ -10,14 +10,14 @@ module Webrat
       selenium.open(url)
     end
     
-    alias_method :visits, :visit
+    webrat_deprecate :visits, :visit
     
     def fill_in(field_identifier, options)
       locator = "webrat=#{Regexp.escape(field_identifier)}"
       selenium.type(locator, "#{options[:with]}")
     end
     
-    alias_method :fills_in, :fill_in
+    webrat_deprecate :fills_in, :fill_in
     
     def response_body #:nodoc:
       selenium.get_html_source
@@ -34,7 +34,7 @@ module Webrat
       wait_for_result(options[:wait])
     end
     
-    alias_method :clicks_button, :click_button
+    webrat_deprecate :clicks_button, :click_button
 
     def click_link(link_text_or_regexp, options = {})
       pattern = adjust_if_regexp(link_text_or_regexp)
@@ -42,14 +42,14 @@ module Webrat
       wait_for_result(options[:wait])
     end
     
-    alias_method :clicks_link, :click_link
+    webrat_deprecate :clicks_link, :click_link
     
     def click_link_within(selector, link_text, options = {})
       selenium.click("webratlinkwithin=#{selector}|#{link_text}")
       wait_for_result(options[:wait])
     end
     
-    alias_method :clicks_link_within, :click_link_within
+    webrat_deprecate :clicks_link_within, :click_link_within
 
     def wait_for_result(wait_type)
       if wait_type == :ajax
@@ -89,19 +89,19 @@ module Webrat
       selenium.select(select_locator, option_text)
     end
     
-    alias_method :selects, :select
+    webrat_deprecate :selects, :select
     
     def choose(label_text)
       selenium.click("webrat=#{label_text}")
     end
     
-    alias_method :chooses, :choose
+    webrat_deprecate :chooses, :choose
         
     def check(label_text)
       selenium.check("webrat=#{label_text}")
     end
     
-    alias_method :checks, :check
+    webrat_deprecate :checks, :check
     
     def is_ordered(*args) #:nodoc:
       selenium.is_ordered(*args)
