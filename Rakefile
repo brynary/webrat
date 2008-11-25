@@ -21,14 +21,16 @@ spec = Gem::Specification.new do |s|
   s.bindir       = "bin"
   s.description  = s.summary
   s.require_path = "lib"
-  s.files        = %w(History.txt init.rb install.rb MIT-LICENSE.txt README.txt Rakefile) + Dir["lib/**/*"]
+  s.files        = %w(History.txt init.rb install.rb MIT-LICENSE.txt README.rdoc Rakefile) + Dir["lib/**/*"]
 
   # rdoc
   s.has_rdoc         = true
-  s.extra_rdoc_files = %w(README.txt MIT-LICENSE.txt)
+  s.extra_rdoc_files = %w(README.rdoc MIT-LICENSE.txt)
 
   # Dependencies
   s.add_dependency "nokogiri", ">= 1.0.3"
+  
+  s.rubyforge_project = "webrat"
 end
 
 Rake::GemPackageTask.new(spec) do |package|

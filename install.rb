@@ -1,1 +1,1 @@
-puts IO.read(File.join(File.dirname(__FILE__), 'README.txt'))
+puts IO.read(File.join(File.dirname(__FILE__), 'README.rdoc'))
