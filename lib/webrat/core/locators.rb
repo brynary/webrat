@@ -11,7 +11,7 @@ module Webrat
       end
     end
     
-    def field(*args)
+    def field(*args) # :nodoc:
       # This is the default locator strategy
       find_field_with_id(*args) ||
       find_field_named(*args)   ||
@@ -96,7 +96,7 @@ module Webrat
       end
     end
 
-    def find_field_id_for_label(label_text)
+    def find_field_id_for_label(label_text) #:nodoc:
       label = forms.detect_mapped { |form| form.label_matching(label_text) } 
       if label
         label.for_id

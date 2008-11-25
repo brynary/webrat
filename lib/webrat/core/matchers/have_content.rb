@@ -42,9 +42,6 @@ module Webrat
     
     # Matches the contents of an HTML document with
     # whatever string is supplied
-    #
-    # ---
-    # @api public
     def contain(content)
       HasContent.new(content)
     end

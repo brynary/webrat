@@ -1,7 +1,7 @@
 require "mechanize"
 
-module Webrat
-  class MechanizeSession < Session
+module Webrat #:nodoc:
+  class MechanizeSession < Session #:nodoc:
     
     attr_accessor :response
     alias :page :response

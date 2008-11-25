@@ -24,11 +24,11 @@ module Webrat
       self.parse_with_nokogiri = !Webrat.on_java?
     end
     
-    def parse_with_nokogiri?
+    def parse_with_nokogiri? #:nodoc:
       @parse_with_nokogiri ? true : false
     end
     
-    def open_error_files?
+    def open_error_files? #:nodoc:
       @open_error_files ? true : false
     end
     

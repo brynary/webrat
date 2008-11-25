@@ -1,9 +1,9 @@
-module Webrat
-  def self.session_class
+module Webrat #:nodoc:
+  def self.session_class #:nodoc:
     TestSession
   end
   
-  class TestSession < Session
+  class TestSession < Session #:nodoc:
     attr_accessor :response_body
     attr_writer :response_code
     

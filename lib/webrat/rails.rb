@@ -69,8 +69,8 @@ module Webrat
   end
 end
 
-module ActionController
-  module Integration
+module ActionController #:nodoc:
+  module Integration #:nodoc:
     class Session #:nodoc:
       unless instance_methods.include?("put_via_redirect")
         require "webrat/rails/redirect_actions"

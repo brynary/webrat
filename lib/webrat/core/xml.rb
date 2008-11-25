@@ -1,7 +1,7 @@
-module Webrat
-  module XML
+module Webrat #:nodoc:
+  module XML #:nodoc:
     
-    def self.document(stringlike)
+    def self.document(stringlike) #:nodoc:
       if Webrat.configuration.parse_with_nokogiri?
         Webrat.nokogiri_document(stringlike)
       else
@@ -21,7 +21,7 @@ module Webrat
       end
     end
     
-    def self.css_search(element, *searches)
+    def self.css_search(element, *searches) #:nodoc:
       if Webrat.configuration.parse_with_nokogiri?
         element.css(*searches)
       else

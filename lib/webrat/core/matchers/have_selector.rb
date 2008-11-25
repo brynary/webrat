@@ -28,8 +28,6 @@ module Webrat
     #
     # ==== Returns
     # HaveSelector:: A new have selector matcher.
-    # ---
-    # @api public
     def have_selector(expected, &block)
       HaveSelector.new(expected, &block)
     end

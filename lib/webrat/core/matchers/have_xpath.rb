@@ -74,8 +74,6 @@ module Webrat
     #
     # ==== Returns
     # HaveXpath:: A new have xpath matcher.
-    # ---
-    # @api public
     def have_xpath(expected, &block)
       HaveXpath.new(expected, &block)
     end

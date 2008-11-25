@@ -134,7 +134,7 @@ module Webrat
     
   protected
     
-    def setup
+    def setup #:nodoc:
       silence_stream(STDOUT) do
         Webrat.start_selenium_server
         Webrat.start_app_server
@@ -147,11 +147,11 @@ module Webrat
       teardown_at_exit
     end
     
-    def selenium
+    def selenium #:nodoc:
       browser
     end
     
-    def teardown_at_exit
+    def teardown_at_exit #:nodoc:
       at_exit do
         silence_stream(STDOUT) do
           $browser.stop

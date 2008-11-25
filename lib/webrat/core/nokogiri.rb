@@ -27,9 +27,9 @@ module Webrat
 end
 
 
-module Nokogiri
-  module CSS
-    class XPathVisitor
+module Nokogiri #:nodoc:
+  module CSS #:nodoc:
+    class XPathVisitor #:nodoc:
       
       def visit_pseudo_class_text(node) #:nodoc:
         "@type='text'"
