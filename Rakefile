@@ -77,7 +77,7 @@ end
 
 desc "Generate RDoc"
 task :docs do
-  system "hanna -x Rakefile -x spec --title 'Webrat #{Webrat::VERSION} API Documentation'"
+  system "hanna -x Rakefile -x spec -x '.js' --title 'Webrat #{Webrat::VERSION} API Documentation'"
 end
 
 desc "Run specs using jruby"
