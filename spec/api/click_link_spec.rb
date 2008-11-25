@@ -30,7 +30,7 @@ describe "click_link" do
       <a href="/page">Link text</a>
     HTML
     webrat_session.should_receive(:get).with("/page", {})
-    clicks_link "ink tex", :method => :get
+    click_link "ink tex", :method => :get
   end
   
   it "should click delete links" do
@@ -71,7 +71,7 @@ describe "click_link" do
       <a id="link_text_link" href="/page">Link text</a>
     HTML
     webrat_session.should_receive(:get).with("/page", {})
-    clicks_link "link_text_link"
+    click_link "link_text_link"
   end
   
   it "should click links by id regexp" do 
@@ -79,7 +79,7 @@ describe "click_link" do
       <a id="link_text_link" href="/page">Link text</a>
     HTML
     webrat_session.should_receive(:get).with("/page", {})
-    clicks_link /_text_/
+    click_link /_text_/
   end
   
   it "should click rails javascript links with authenticity tokens" do

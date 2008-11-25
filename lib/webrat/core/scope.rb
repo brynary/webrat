@@ -1,5 +1,6 @@
 require "webrat/core/form"
 require "webrat/core/locators"
+require "webrat/core_extensions/deprecate"
 
 module Webrat
   class NotFoundError < WebratError
@@ -44,7 +45,7 @@ module Webrat
       field.set(options[:with])
     end
 
-    alias_method :fills_in, :fill_in
+    webrat_deprecate :fills_in, :fill_in
     
     def set_hidden_field(field_locator, options = {})
       field = locate_field(field_locator, HiddenField)
@@ -60,7 +61,7 @@ module Webrat
       locate_field(field_locator, CheckboxField).check
     end
 
-    alias_method :checks, :check
+    webrat_deprecate :checks, :check
     
     # Verifies that an input checkbox exists on the current page and marks it
     # as unchecked, so that the value will not be submitted with the form.
@@ -71,7 +72,7 @@ module Webrat
       locate_field(field_locator, CheckboxField).uncheck
     end
 
-    alias_method :unchecks, :uncheck
+    webrat_deprecate :unchecks, :uncheck
     
     # Verifies that an input radio button exists on the current page and marks it
     # as checked, so that the value will be submitted with the form.
@@ -82,7 +83,7 @@ module Webrat
       locate_field(field_locator, RadioField).choose
     end
 
-    alias_method :chooses, :choose
+    webrat_deprecate :chooses, :choose
     
     # Verifies that a an option element exists on the current page with the specified
     # text. You can optionally restrict the search to a specific select list by
@@ -102,7 +103,7 @@ module Webrat
        end
     end
 
-    alias_method :selects, :select
+    webrat_deprecate :selects, :select
     
     DATE_TIME_SUFFIXES = {
       :year   => '1i',
@@ -142,7 +143,7 @@ module Webrat
       select date.day, :from => "#{id_prefix}_#{DATE_TIME_SUFFIXES[:day]}"
     end
 
-    alias_method :selects_date, :select_date
+    webrat_deprecate :selects_date, :select_date
 
     # Verifies that time elements (hour, minute) exist on the current page 
     # with the specified values. You can optionally restrict the search to a specific
@@ -175,8 +176,7 @@ module Webrat
       select time.min.to_s.rjust(2,'0'), :from => "#{id_prefix}_#{DATE_TIME_SUFFIXES[:minute]}"
     end
 
-
-    alias_method :selects_time, :select_time
+    webrat_deprecate :selects_time, :select_time
    
     # Verifies and selects all the date and time elements on the current page. 
     # See #select_time and #select_date for more details and available options.
@@ -195,7 +195,7 @@ module Webrat
       select_time time, options
     end
 
-    alias_method :selects_datetime, :select_datetime
+    webrat_deprecate :selects_datetime, :select_datetime
     
     # Verifies that an input file field exists on the current page and sets
     # its value to the given +file+, so that the file will be uploaded
@@ -208,13 +208,13 @@ module Webrat
       locate_field(field_locator, FileField).set(path, content_type)
     end
 
-    alias_method :attaches_file, :attach_file
+    webrat_deprecate :attaches_file, :attach_file
     
     def click_area(area_name)
       find_area(area_name).click
     end
     
-    alias_method :clicks_area, :click_area
+    webrat_deprecate :clicks_area, :click_area
     
     # Issues a request for the URL pointed to by a link on the current page,
     # follows any redirects, and verifies the final page load was successful.
@@ -246,7 +246,7 @@ module Webrat
       find_link(text_or_title_or_id).click(options)
     end
 
-    alias_method :clicks_link, :click_link
+    webrat_deprecate :clicks_link, :click_link
     
     # Verifies that a submit button exists for the form, then submits the form, follows
     # any redirects, and verifies the final page was successful.
@@ -261,7 +261,7 @@ module Webrat
       find_button(value).click
     end
 
-    alias_method :clicks_button, :click_button
+    webrat_deprecate :clicks_button, :click_button
     
     def submit_form(id)
       form = forms.detect { |f| f.matches_id?(id) }

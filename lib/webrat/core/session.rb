@@ -139,7 +139,7 @@ module Webrat
       request_page(@current_url, @http_method, @data)
     end
 
-    alias_method :reload, :reloads
+    webrat_deprecate :reload, :reloads
       
     
     # Works like click_link, but only looks for the link text within a given selector
@@ -152,7 +152,7 @@ module Webrat
       end
     end
 
-    alias_method :clicks_link_within, :click_link_within
+    webrat_deprecate :clicks_link_within, :click_link_within
     
     def within(selector)
       scopes.push(Scope.from_scope(self, current_scope, selector))
@@ -170,7 +170,7 @@ module Webrat
       request_page(url, http_method, data)
     end
     
-    alias_method :visits, :visit
+    webrat_deprecate :visits, :visit
     
     def open_in_browser(path) # :nodoc
       platform = ruby_platform
