@@ -32,8 +32,6 @@ module Webrat
       :chooses, :choose,
       :selects, :select,
       :attaches_file, :attach_file,
-      :cookies,
-      :response,
       :current_page,
       :current_url,
       :clicks_link, :click_link,
@@ -47,7 +45,8 @@ module Webrat
       :selects_date, :selects_time, :selects_datetime,
       :select_date, :select_time, :select_datetime,
       :wait_for_page_to_load,
-      :field_by_xpath
+      :field_by_xpath,
+      :field_with_id
       
     
   end

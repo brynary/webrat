@@ -76,9 +76,11 @@ module ActionController #:nodoc:
         require "webrat/rails/redirect_actions"
         include Webrat::RedirectActions
       end
-
-      include Webrat::Methods
     end
+  end
+  
+  class IntegrationTest
+    include Webrat::Methods
   end
 end
 
