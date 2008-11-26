@@ -43,7 +43,11 @@ module Webrat
     end
     
     def path
-      @element.path
+      if Webrat.configuration.parse_with_nokogiri?
+        @element.path
+      else
+        @element.xpath
+      end
     end
     
     def matches_id?(id)

@@ -19,7 +19,15 @@ module Webrat
     end
     
     def field_by_element(element, *field_types)
-      fields_by_type(field_types).detect { |possible_field| possible_field.path == element.path }
+      if Webrat.configuration.parse_with_nokogiri?
+        expected_path = element.path
+      else
+        expected_path = element.xpath
+      end
+      
+      fields_by_type(field_types).detect do |possible_field|
+        possible_field.path == element.xpath
+      end
     end
     
     def find_select_option(option_text)
