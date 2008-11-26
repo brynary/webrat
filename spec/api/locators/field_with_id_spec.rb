@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + "/../../spec_helper")
 
 
-describe "field_by_xpath" do
+describe "field_with_id" do
   it "should work when there is a single quote in the ID" do
     pending "needs bug fix" do
       with_html <<-HTML
