@@ -11,10 +11,10 @@ module Webrat
     
     def self.class_for_element(element)
       if element.name == "input"
-        if %w[submit image].include?(element["type"])
+        if %w[submit image].include?(Webrat::XML.attribute(element, "type"))
           field_class = "button"
         else
-          field_class = element["type"] || "text" #default type; 'type' attribute is not mandatory
+          field_class = Webrat::XML.attribute(element, "type") || "text" #default type; 'type' attribute is not mandatory
         end
       else
         field_class = element.name
@@ -39,7 +39,7 @@ module Webrat
     end
     
     def id
-      @element["id"]
+      Webrat::XML.attribute(@element, "id")
     end
     
     def path
@@ -50,16 +50,16 @@ module Webrat
       end
     end
     
-    def matches_id?(id)
-      if id.is_a?(Regexp)
-        @element["id"] =~ id
+    def matches_id?(expected_id)
+      if expected_id.is_a?(Regexp)
+        id =~ expected_id
       else
-        @element["id"] == id.to_s
+        id == expected_id.to_s
       end
     end
     
     def matches_name?(name)
-      @element["name"] == name.to_s
+      Webrat::XML.attribute(@element, "name") == name.to_s
     end
     
     def matches_label?(label_text)
@@ -68,11 +68,11 @@ module Webrat
     end
     
     def matches_alt?(alt)
-      @element["alt"] =~ /^\W*#{Regexp.escape(alt.to_s)}/i
+      Webrat::XML.attribute(@element, "alt") =~ /^\W*#{Regexp.escape(alt.to_s)}/i
     end
 
     def disabled?
-      @element.attributes.has_key?("disabled") && @element["disabled"] != 'false'
+      @element.attributes.has_key?("disabled") && Webrat::XML.attribute(@element, "disabled") != 'false'
     end
     
     def raise_error_if_disabled
@@ -104,7 +104,7 @@ module Webrat
   protected
   
     def name
-      @element["name"]
+      Webrat::XML.attribute(@element, "name")
     end
     
     def escaped_value
@@ -136,7 +136,7 @@ module Webrat
     end
     
     def default_value
-      @element["value"]
+      Webrat::XML.attribute(@element, "value")
     end
     
     def replace_param_value(params, oval, nval)
@@ -163,7 +163,7 @@ module Webrat
     end
     
     def matches_value?(value)
-      @element["value"] =~ /^\W*#{Regexp.escape(value.to_s)}/i || matches_text?(value) || matches_alt?(value)
+      Webrat::XML.attribute(@element, "value") =~ /^\W*#{Regexp.escape(value.to_s)}/i || matches_text?(value) || matches_alt?(value)
     end
 
     def to_param
@@ -177,7 +177,7 @@ module Webrat
 
     def click
       raise_error_if_disabled
-      set(@element["value"]) unless @element["name"].blank?
+      set(Webrat::XML.attribute(@element, "value")) unless Webrat::XML.attribute(@element, "name").blank?
       @form.submit
     end
 
@@ -216,11 +216,11 @@ module Webrat
 
     def check
       raise_error_if_disabled
-      set(@element["value"] || "on")
+      set(Webrat::XML.attribute(@element, "value") || "on")
     end
     
     def checked?
-      @element["checked"] == "checked"
+      Webrat::XML.attribute(@element, "checked") == "checked"
     end
 
     def uncheck
@@ -231,8 +231,8 @@ module Webrat
   protected
 
     def default_value
-      if @element["checked"] == "checked"
-        @element["value"] || "on"
+      if Webrat::XML.attribute(@element, "checked") == "checked"
+        Webrat::XML.attribute(@element, "value") || "on"
       else
         nil
       end
@@ -256,11 +256,11 @@ module Webrat
         option.set(nil)
       end
       
-      set(@element["value"] || "on")
+      set(Webrat::XML.attribute(@element, "value") || "on")
     end
     
     def checked?
-      @element["checked"] == "checked"
+      Webrat::XML.attribute(@element, "checked") == "checked"
     end
     
   protected
@@ -270,8 +270,8 @@ module Webrat
     end
     
     def default_value
-      if @element["checked"] == "checked"
-        @element["value"] || "on"
+      if Webrat::XML.attribute(@element, "checked") == "checked"
+        Webrat::XML.attribute(@element, "value") || "on"
       else
         nil
       end
@@ -338,7 +338,7 @@ module Webrat
       
       selected_options.map do |option|
         return "" if option.nil?
-        option["value"] || option.inner_html
+        Webrat::XML.attribute(option, "value") || option.inner_html
       end
     end
 

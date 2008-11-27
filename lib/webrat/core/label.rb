@@ -19,7 +19,7 @@ module Webrat
     end
 
     def for_id
-      @element['for']
+      Webrat::XML.attribute(@element, "for")
     end
     
   end

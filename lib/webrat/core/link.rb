@@ -49,7 +49,7 @@ module Webrat
     
   protected
     def id
-      @element['id']
+      Webrat::XML.attribute(@element, "id")
     end
   
     def data
@@ -57,11 +57,11 @@ module Webrat
     end
 
     def title
-      @element['title']
+      Webrat::XML.attribute(@element, "title")
     end
 
     def href
-      @element["href"]
+      Webrat::XML.attribute(@element, "href")
     end
 
     def absolute_href
@@ -81,7 +81,7 @@ module Webrat
     end
     
     def onclick
-      @element["onclick"]
+      Webrat::XML.attribute(@element, "onclick")
     end
     
     def http_method

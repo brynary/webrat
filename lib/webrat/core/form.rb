@@ -87,7 +87,7 @@ module Webrat
     end
     
     def matches_id?(id)
-      @element["id"] == id.to_s
+      Webrat::XML.attribute(@element, "id") == id.to_s
     end
     
   protected
@@ -112,11 +112,11 @@ module Webrat
     end
     
     def form_method
-      @element["method"].blank? ? :get : @element["method"].downcase
+      Webrat::XML.attribute(@element, "method").blank? ? :get : Webrat::XML.attribute(@element, "method").downcase
     end
     
     def form_action
-      @element["action"].blank? ? @session.current_url : @element["action"]
+      Webrat::XML.attribute(@element, "action").blank? ? @session.current_url : Webrat::XML.attribute(@element, "action")
     end
     
     def merge(all_params, new_param)

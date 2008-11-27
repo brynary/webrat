@@ -22,7 +22,7 @@ module Webrat
   protected
   
     def value
-      @element["value"] || @element.inner_html
+      Webrat::XML.attribute(@element, "value") || @element.inner_html
     end
     
   end

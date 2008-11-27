@@ -24,6 +24,10 @@ module Webrat #:nodoc:
         Hpricot(stringlike.to_s)
       end
     end
+
+    def self.attribute(element, attribute_name)
+      element[attribute_name]
+    end    
     
     def self.xpath_search(element, *searches)
       searches.flatten.map do |search|

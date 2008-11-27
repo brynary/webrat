@@ -18,15 +18,15 @@ module Webrat
     protected
     
     def href
-      @element["href"]
+      Webrat::XML.attribute(@element, "href")
     end
     
     def title
-      @element["title"]
+      Webrat::XML.attribute(@element, "title")
     end
     
     def id
-      @element["id"]
+      Webrat::XML.attribute(@element, "id")
     end
    
    
