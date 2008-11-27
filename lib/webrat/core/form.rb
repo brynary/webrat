@@ -26,7 +26,7 @@ module Webrat
       end
       
       fields_by_type(field_types).detect do |possible_field|
-        possible_field.path == element.xpath
+        possible_field.path == expected_path
       end
     end
     
