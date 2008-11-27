@@ -5,19 +5,23 @@ module Webrat #:nodoc:
       if Webrat.configuration.parse_with_nokogiri?
         Webrat.nokogiri_document(stringlike)
       else
-        return stringlike.dom if stringlike.respond_to?(:dom)
+        Webrat::XML.hpricot_document(stringlike)
+      end
+    end
+    
+    def self.hpricot_document(stringlike)
+      return stringlike.dom if stringlike.respond_to?(:dom)
 
-        if Hpricot::Doc === stringlike
-          stringlike
-        elsif Hpricot::Elements === stringlike
-          stringlike
-        elsif StringIO === stringlike
-          Hpricot(stringlike.string)
-        elsif stringlike.respond_to?(:body)
-          Hpricot(stringlike.body.to_s)
-        else
-          Hpricot(stringlike.to_s)
-        end
+      if Hpricot::Doc === stringlike
+        stringlike
+      elsif Hpricot::Elements === stringlike
+        stringlike
+      elsif StringIO === stringlike
+        Hpricot(stringlike.string)
+      elsif stringlike.respond_to?(:body)
+        Hpricot(stringlike.body.to_s)
+      else
+        Hpricot(stringlike.to_s)
       end
     end
     
