@@ -3,14 +3,20 @@ require "webrat/core_extensions/detect_mapped"
 module Webrat
   module Locators
 
-    def field_by_xpath(xpath, *field_types)
+    def field_by_xpath(xpath)
       element = dom.at(xpath)
       
-      return nil unless element
-      
       forms.detect_mapped do |form|
-        form.field_by_element(element, *field_types)
+        form.field_by_element(element)
       end
+    end
+    
+    def field(*args) # :nodoc:
+      # This is the default locator strategy
+      find_field_with_id(*args) ||
+      find_field_named(*args)   ||
+      field_labeled(*args)      ||
+      raise(NotFoundError.new("Could not find field: #{args.inspect}"))
     end
     
     def field_labeled(label, *field_types)
@@ -19,26 +25,30 @@ module Webrat
     end
 
     def field_named(name, *field_types)
-      field_by_xpath("//*[@name='#{id}']", *field_types) ||
+      find_field_named(name, *field_types) ||
       raise(NotFoundError.new("Could not find field named #{name.inspect}"))
     end
     
     def field_with_id(id, *field_types)
-      field_by_xpath("//*[@id='#{id}']", *field_types) ||
+      find_field_with_id(id, *field_types) ||
       raise(NotFoundError.new("Could not find field with id #{id.inspect}"))
-    end
-    
-    def field(id, *field_types) # :nodoc:
-      # This is the default locator strategy
-      field_by_xpath("//*[@id='#{id}']", *field_types)    ||
-      field_by_xpath("//*[@name='#{id}']", *field_types)  ||
-      field_labeled(id, *field_types)                     ||
-      raise(NotFoundError.new("Could not find field: #{args.inspect}"))
     end
     
     def find_field_labeled(label, *field_types) #:nodoc:
       forms.detect_mapped do |form|
         form.field_labeled(label, *field_types)
+      end
+    end
+    
+    def find_field_named(name, *field_types) #:nodoc:
+      forms.detect_mapped do |form|
+        form.field_named(name, *field_types)
+      end
+    end
+    
+    def find_field_with_id(id, *field_types) #:nodoc:
+      forms.detect_mapped do |form|
+        form.field_with_id(id, *field_types)
       end
     end
     

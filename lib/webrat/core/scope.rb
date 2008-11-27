@@ -134,7 +134,7 @@ module Webrat
                 date_to_select : Date.parse(date_to_select) 
       
       id_prefix = locate_id_prefix(options) do
-        year_field = field_by_xpath("//*[contains(@id, '_#{DATE_TIME_SUFFIXES[:year]}')]")
+        year_field = find_field_with_id(/(.*?)_#{DATE_TIME_SUFFIXES[:year]}$/)
         raise NotFoundError.new("No date fields were found") unless year_field && year_field.id =~ /(.*?)_1i/
         $1
       end
@@ -168,7 +168,7 @@ module Webrat
       time = time_to_select.is_a?(Time) ? time_to_select : Time.parse(time_to_select) 
 
       id_prefix = locate_id_prefix(options) do
-        hour_field = field_by_xpath("//*[contains(@id, '_#{DATE_TIME_SUFFIXES[:hour]}')]")
+        hour_field = find_field_with_id(/(.*?)_#{DATE_TIME_SUFFIXES[:hour]}$/)
         raise NotFoundError.new("No time fields were found") unless hour_field && hour_field.id =~ /(.*?)_4i/
         $1
       end
@@ -190,7 +190,7 @@ module Webrat
     def select_datetime(time_to_select, options ={})
       time = time_to_select.is_a?(Time) ? time_to_select : Time.parse(time_to_select) 
       
-      options[:id_prefix] ||= (options[:from] ? field_by_xpath("//*[@id='#{options[:from]}']") : nil)
+      options[:id_prefix] ||= (options[:from] ? find_field_with_id(options[:from]) : nil)
       
       select_date time, options
       select_time time, options
