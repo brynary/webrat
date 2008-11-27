@@ -289,7 +289,7 @@ module Webrat
     end
     
     def scoped_dom #:nodoc:
-      Webrat::XML.document(@scope.dom.search(@selector).first.to_html)
+      Webrat::XML.document(Webrat::XML.css_search(@scope.dom, @selector).first.to_html)
     end
     
     def locate_field(field_locator, *field_types) #:nodoc:

@@ -57,7 +57,7 @@ module Webrat
     end
     
     def labels
-      @labels ||= element.search("label").map { |element| Label.new(nil, element) }
+      @labels ||= Webrat::XML.css_search(element, "label").map { |element| Label.new(nil, element) }
     end
     
     def submit
