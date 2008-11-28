@@ -85,6 +85,15 @@ task "spec:jruby" do
   system "jruby -S rake spec"
 end
 
+desc "Run each spec in isolation to test for dependency issues"
+task :spec_deps do
+  Dir["spec/**/*_spec.rb"].each do |test|
+    if !system("spec #{test} &> /dev/null")
+      puts "Dependency Issues: #{test}"
+    end
+  end
+end
+
 task :default => :spec
 
 task :precommit => ["spec", "spec:jruby"]
