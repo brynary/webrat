@@ -36,13 +36,6 @@ module Webrat
       nil
     end
 
-    def find_button(value = nil)
-      return fields_by_type([ButtonField]).first if value.nil?      
-      possible_buttons = fields_by_type([ButtonField])
-      possible_buttons.detect { |possible_button| possible_button.matches_id?(value) } ||
-      possible_buttons.detect { |possible_button| possible_button.matches_value?(value) }
-    end
-
     def fields
       return @fields if @fields
       

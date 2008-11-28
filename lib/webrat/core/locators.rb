@@ -82,9 +82,18 @@ module Webrat
     end
     
     def find_button(value) #:nodoc:
-      button = forms.detect_mapped do |form|
-        form.find_button(value)
+      field_elements = Webrat::XML.css_search(dom, "button", "input[type=submit]", "input[type=image]")
+      
+      field_element = field_elements.detect do |field_element|
+        value.nil? ||
+        (value.is_a?(Regexp) && Webrat::XML.attribute(field_element, "id") =~ value) ||
+        (!value.is_a?(Regexp) && Webrat::XML.attribute(field_element, "id") == value.to_s) ||
+        Webrat::XML.attribute(field_element, "value") =~ /^\W*#{Regexp.escape(value.to_s)}/i ||
+        Webrat::XML.inner_html(field_element) =~ /#{Regexp.escape(value.to_s)}/i ||
+        Webrat::XML.attribute(field_element, "alt") =~ /^\W*#{Regexp.escape(value.to_s)}/i
       end
+      
+      button = field_by_element(field_element)
       
       if button
         return button

@@ -37,7 +37,11 @@ describe "field_labeled" do
   
   def match_id(id)
     simple_matcher "element with id #{id.inspect}" do |element, matcher|
-      element.matches_id? id
+      if id.is_a?(Regexp)
+        element.id =~ id
+      else
+        element.id == id.to_s
+      end
     end
   end
   

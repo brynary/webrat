@@ -50,14 +50,6 @@ module Webrat
       end
     end
     
-    def matches_id?(expected_id)
-      if expected_id.is_a?(Regexp)
-        id =~ expected_id
-      else
-        id == expected_id.to_s
-      end
-    end
-    
     def matches_name?(name)
       Webrat::XML.attribute(@element, "name") == name.to_s
     end
@@ -65,10 +57,6 @@ module Webrat
     def matches_label?(label_text)
       return false if labels.empty?
       labels.any? { |label| label.matches_text?(label_text) }
-    end
-    
-    def matches_alt?(alt)
-      Webrat::XML.attribute(@element, "alt") =~ /^\W*#{Regexp.escape(alt.to_s)}/i
     end
 
     def disabled?
@@ -157,14 +145,6 @@ module Webrat
   end
   
   class ButtonField < Field #:nodoc:
-
-    def matches_text?(text)
-      Webrat::XML.inner_html(@element) =~ /#{Regexp.escape(text.to_s)}/i
-    end
-    
-    def matches_value?(value)
-      Webrat::XML.attribute(@element, "value") =~ /^\W*#{Regexp.escape(value.to_s)}/i || matches_text?(value) || matches_alt?(value)
-    end
 
     def to_param
       return nil if @value.nil?
