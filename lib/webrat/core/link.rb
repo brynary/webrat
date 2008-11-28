@@ -44,7 +44,7 @@ module Webrat
     end
     
     def text
-      Webrat::XML.inner_text(@element)
+      Webrat::XML.all_inner_text(@element)
     end
     
   protected

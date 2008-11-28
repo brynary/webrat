@@ -5,8 +5,8 @@ module Webrat #:nodoc:
       if Webrat.configuration.parse_with_nokogiri?
         Webrat.nokogiri_document(stringlike)
       else
-        Webrat::XML.hpricot_document(stringlike)
-        # Webrat.rexml_document(Webrat::XML.hpricot_document(stringlike).to_html)
+        # Webrat::XML.hpricot_document(stringlike)
+        Webrat.rexml_document(Webrat::XML.hpricot_document(stringlike).to_html)
       end
     end
     
@@ -26,39 +26,71 @@ module Webrat #:nodoc:
       end
     end
 
+    def self.to_html(element)
+      if Webrat.configuration.parse_with_nokogiri?
+        element.to_html
+      else
+        element.to_s
+      end
+    end
+    
     def self.inner_html(element)
-      element.inner_html
+      if Webrat.configuration.parse_with_nokogiri?
+        element.inner_html
+      else
+        element.text
+      end
+    end
+    
+    def self.all_inner_text(element)
+      if Webrat.configuration.parse_with_nokogiri?
+        element.inner_text
+      else
+        Hpricot(element.to_s).children.first.inner_text
+      end
     end
     
     def self.inner_text(element)
-      element.inner_text
+      if Webrat.configuration.parse_with_nokogiri?
+        element.inner_text
+      else
+        if defined?(Hpricot::Doc) && element.is_a?(Hpricot::Doc)
+          element.inner_text
+        else
+          element.text
+        end
+      end
     end
     
     def self.attribute(element, attribute_name)
-      # case element
-      # when Nokogiri::XML::Element, Hash
+      return element[attribute_name] if element.is_a?(Hash)
+      
+      if Webrat.configuration.parse_with_nokogiri?
         element[attribute_name]
-      # else
-      #   element.attributes[attribute_name]
-      # end
+      else
+        element.attributes[attribute_name]
+      end
     end    
     
     def self.xpath_search(element, *searches)
       searches.flatten.map do |search|
-        # REXML::XPath.match(element, search)
-        element.xpath(search)
+        if Webrat.configuration.parse_with_nokogiri?
+          element.xpath(search)
+        else
+          REXML::XPath.match(element, search)
+        end
       end.flatten.compact
     end
     
     def self.css_search(element, *searches) #:nodoc:
-      if Webrat.configuration.parse_with_nokogiri?
+      # if Webrat.configuration.parse_with_nokogiri?
         xpath_search(element, css_to_xpath(*searches))
         # element.css(*searches)
-      else
-        searches.map do |search|
-          element.search(search)
-        end.flatten.compact
-      end
+      # else
+      #   searches.map do |search|
+      #     element.search(search)
+      #   end.flatten.compact
+      # end
     end
     
     def self.css_to_xpath(*selectors)

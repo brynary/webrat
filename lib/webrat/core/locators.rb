@@ -4,7 +4,7 @@ module Webrat
   module Locators
 
     def field_by_xpath(xpath)
-      element = dom.at(xpath)
+      element = Webrat::XML.xpath_search(dom, xpath).first
       
       forms.detect_mapped do |form|
         form.field_by_element(element)

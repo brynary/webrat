@@ -12,6 +12,10 @@ require File.expand_path(File.dirname(__FILE__) + "/fakes/test_session")
 
 require "merb-core"
 
+Webrat.configure do |config|
+  config.parse_with_nokogiri = false
+end
+
 Spec::Runner.configure do |config|
   include Webrat::Methods
 
