@@ -10,15 +10,10 @@ module Webrat
       @element  = element
       @fields   = nil
     end
-
-    def field(locator, *field_types)
-      field_with_id(locator, *field_types)    ||
-      field_named(locator, *field_types)  ||
-      field_labeled(locator, *field_types) ||
-      nil
-    end
     
     def field_by_element(element, *field_types)
+      return nil if element.nil?
+      
       if Webrat.configuration.parse_with_nokogiri?
         expected_path = element.path
       else
@@ -62,11 +57,6 @@ module Webrat
     
     def submit
       @session.request_page(form_action, form_method, params)
-    end
-
-    def field_with_id(id, *field_types)
-      possible_fields = fields_by_type(field_types)
-      possible_fields.detect { |possible_field| possible_field.matches_id?(id) }
     end
     
     def field_named(name, *field_types)

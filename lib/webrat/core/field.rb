@@ -189,7 +189,7 @@ module Webrat
       if collection_name?
         super
       else
-        checkbox_with_same_name = @form.field(name, CheckboxField)
+        checkbox_with_same_name = @form.field_named(name, CheckboxField)
 
         if checkbox_with_same_name.to_param.blank?
           super

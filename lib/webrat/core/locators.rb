@@ -46,10 +46,24 @@ module Webrat
       end
     end
     
-    def find_field_with_id(id, *field_types) #:nodoc:
+    def field_by_element(element, *field_types)
       forms.detect_mapped do |form|
-        form.field_with_id(id, *field_types)
+        form.field_by_element(element, *field_types)
       end
+    end
+    
+    def find_field_with_id(id, *field_types) #:nodoc:
+      field_elements = Webrat::XML.css_search(dom, "button", "input", "textarea", "select")
+      
+      field_element = field_elements.detect do |field_element|
+        if id.is_a?(Regexp)
+          Webrat::XML.attribute(field_element, "id") =~ id
+        else
+          Webrat::XML.attribute(field_element, "id") == id.to_s
+        end
+      end
+      
+      field_by_element(field_element)
     end
     
     def find_select_option(option_text, id_or_name_or_label) #:nodoc:
