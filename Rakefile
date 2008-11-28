@@ -86,3 +86,5 @@ task "spec:jruby" do
 end
 
 task :default => :spec
+
+task :precommit => ["spec", "spec:jruby"]
