@@ -209,10 +209,10 @@ describe "click_button" do
     with_html <<-HTML
       <html>
       <form method="get" action="/login">
-        <input disabled id="user_email" name="user[email]" value="test@example.com" type="text" />
-        <input disabled id="user_gender_male" name="user[gender]" type="radio" value="M" />
+        <input disabled="disabled" id="user_email" name="user[email]" value="test@example.com" type="text" />
+        <input disabled="disabled" id="user_gender_male" name="user[gender]" type="radio" value="M" />
         <label for="user_gender_male">Male</label>
-        <input disabled id="user_gender_female" name="user[gender]" type="radio" value="F" checked="checked" />
+        <input disabled="disabled" id="user_gender_female" name="user[gender]" type="radio" value="F" checked="checked" />
         <label for="user_gender_female">Female</label>
         <input type="submit" />
       </form>

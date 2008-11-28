@@ -18,7 +18,7 @@ describe Webrat::Session do
       "<html></html>"
     end
     
-    session.current_dom.should respond_to(:search)
+    session.should respond_to(:current_dom)
   end
   
   it "should open the page in the browser in MacOSX" do

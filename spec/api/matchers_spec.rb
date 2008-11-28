@@ -6,7 +6,6 @@ describe Webrat::Matchers do
   
   before(:each) do
     @body = <<-HTML
-      <html>
       <div id='main'>
         <div class='inner'>hello, world!</div>
         <ul>
@@ -14,7 +13,6 @@ describe Webrat::Matchers do
           <li>Second</li>
         </ul>
       </div>
-      </html>
     HTML
   end
   

@@ -12,6 +12,8 @@ describe "field_by_xpath" do
       </html>
     HTML
     
-    field_by_xpath(".//input").id.should == "element_42"
+    field = field_by_xpath(".//input")
+    field.should_not be_nil
+    field.id.should == "element_42"
   end
 end
