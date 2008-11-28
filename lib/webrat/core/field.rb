@@ -159,7 +159,7 @@ module Webrat
   class ButtonField < Field #:nodoc:
 
     def matches_text?(text)
-      @element.inner_html =~ /#{Regexp.escape(text.to_s)}/i
+      Webrat::XML.inner_html(@element) =~ /#{Regexp.escape(text.to_s)}/i
     end
     
     def matches_value?(value)
@@ -284,7 +284,7 @@ module Webrat
   protected
 
     def default_value
-      @element.inner_html
+      Webrat::XML.inner_html(@element)
     end
 
   end
@@ -338,7 +338,7 @@ module Webrat
       
       selected_options.map do |option|
         return "" if option.nil?
-        Webrat::XML.attribute(option, "value") || option.inner_html
+        Webrat::XML.attribute(option, "value") || Webrat::XML.inner_html(option)
       end
     end
 

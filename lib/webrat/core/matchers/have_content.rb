@@ -8,7 +8,7 @@ module Webrat
       
       def matches?(stringlike)
         @document = Webrat::XML.document(stringlike)
-        @element = @document.inner_text
+        @element = Webrat::XML.inner_text(@document)
       
         case @content
         when String

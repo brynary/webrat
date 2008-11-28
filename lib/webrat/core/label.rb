@@ -11,7 +11,7 @@ module Webrat
     end
     
     def text
-      str = @element.inner_text
+      str = Webrat::XML.inner_text(@element)
       str.gsub!("\n","")
       str.strip!
       str.squeeze!(" ")

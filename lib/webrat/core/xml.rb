@@ -6,6 +6,7 @@ module Webrat #:nodoc:
         Webrat.nokogiri_document(stringlike)
       else
         Webrat::XML.hpricot_document(stringlike)
+        # Webrat.rexml_document(Webrat::XML.hpricot_document(stringlike).to_html)
       end
     end
     
@@ -25,12 +26,26 @@ module Webrat #:nodoc:
       end
     end
 
+    def self.inner_html(element)
+      element.inner_html
+    end
+    
+    def self.inner_text(element)
+      element.inner_text
+    end
+    
     def self.attribute(element, attribute_name)
-      element[attribute_name]
+      # case element
+      # when Nokogiri::XML::Element, Hash
+        element[attribute_name]
+      # else
+      #   element.attributes[attribute_name]
+      # end
     end    
     
     def self.xpath_search(element, *searches)
       searches.flatten.map do |search|
+        # REXML::XPath.match(element, search)
         element.xpath(search)
       end.flatten.compact
     end

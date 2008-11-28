@@ -40,11 +40,11 @@ module Webrat
     end
 
     def inner_html
-      @element.inner_html
+      Webrat::XML.inner_html(@element)
     end
     
     def text
-      @element.inner_text
+      Webrat::XML.inner_text(@element)
     end
     
   protected
