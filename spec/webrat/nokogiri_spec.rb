@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
 
-if defined?(Nokogiri::XML)
+if defined?(Nokogiri::XML) && Webrat.configuration.parse_with_nokogiri?
   describe "Nokogiri Extension" do
     include Webrat::Matchers
 
