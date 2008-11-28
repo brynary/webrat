@@ -16,8 +16,15 @@ Spec::Runner.configure do |config|
   include Webrat::Methods
 
   def with_html(html)
+    raise "This doesn't look like HTML. Wrap it in a <html> tag" unless html =~ /^\s*<[^Hh>]*html/i
     webrat_session.response_body = html
   end
+  
+  def with_xml(xml)
+    raise "This looks like HTML" if xml =~ /^\s*<[^Hh>]*html/i
+    webrat_session.response_body = xml
+  end
+  
 end
 
 module Webrat

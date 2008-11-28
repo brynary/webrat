@@ -5,15 +5,17 @@ describe Webrat::Matchers do
   include Webrat::HaveTagMatcher
   
   before(:each) do
-    @body = <<-EOF
-    <div id='main'>
-      <div class='inner'>hello, world!</div>
-      <ul>
-        <li>First</li>
-        <li>Second</li>
-      </ul>
-    </div>
-    EOF
+    @body = <<-HTML
+      <html>
+      <div id='main'>
+        <div class='inner'>hello, world!</div>
+        <ul>
+          <li>First</li>
+          <li>Second</li>
+        </ul>
+      </div>
+      </html>
+    HTML
   end
   
   describe "#have_xpath" do

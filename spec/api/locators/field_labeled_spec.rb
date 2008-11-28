@@ -43,10 +43,12 @@ describe "field_labeled" do
   
   describe "finding a text field" do
     using_this_html <<-HTML
+      <html>
       <form>
       <label for="element_42">The Label</label>
       <input type="text" id="element_42">
       </form>
+      </html>
     HTML
 
     should_return_a Webrat::TextField, :for => "The Label"
@@ -56,10 +58,12 @@ describe "field_labeled" do
 
   describe "finding a hidden field" do
     using_this_html <<-HTML
+      <html>
       <form>
       <label for="element_42">The Label</label>
       <input type="hidden" id="element_42">
       </form>
+      </html>
     HTML
 
     should_return_a Webrat::HiddenField, :for => "The Label"
@@ -69,10 +73,12 @@ describe "field_labeled" do
 
   describe "finding a checkbox" do
     using_this_html <<-HTML
+      <html>
       <form>
       <label for="element_42">The Label</label>
       <input type="checkbox" id="element_42">
       </form>
+      </html>
     HTML
 
     should_return_a Webrat::CheckboxField, :for => "The Label"
@@ -82,10 +88,12 @@ describe "field_labeled" do
 
   describe "finding a radio button" do
     using_this_html <<-HTML
+      <html>
       <form>
       <label for="element_42">The Label</label>
       <input type="radio" id="element_42">
       </form>
+      </html>
     HTML
 
     should_return_a Webrat::RadioField, :for => "The Label"
@@ -96,10 +104,12 @@ describe "field_labeled" do
 
   describe "finding a text area" do
     using_this_html <<-HTML
+      <html>
       <form>
       <label for="element_42">The Label</label>
       <textarea id="element_42"></textarea>
       </form>
+      </html>
     HTML
 
     should_return_a Webrat::TextareaField, :for => "The Label"
@@ -109,6 +119,7 @@ describe "field_labeled" do
   
   describe "finding a field with it's label containing newlines" do
     using_this_html <<-HTML
+      <html>
       <form>
       <label for="element_42">
         A label with
@@ -116,6 +127,7 @@ describe "field_labeled" do
       </label>
       <input type="text" id="element_42">
       </form>
+      </html>
     HTML
 
     should_return_a Webrat::TextField, :for => "A label with a link on it's own line"
