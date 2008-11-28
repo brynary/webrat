@@ -12,6 +12,7 @@
 
 * Minor enhancements
 
+  * Include the Selenium server jar file in the gem (Bryan Helmkamp, Ben Schwarz)
   * Added key_down, key_up and fire_event to Selenium session (Fernando Garcia)
   * Fix outputing README during Rails plugin install (Fernando Garcia)
   * Strip newlines when matching label text (Miha Filej)

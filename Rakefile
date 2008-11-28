@@ -21,7 +21,7 @@ spec = Gem::Specification.new do |s|
   s.bindir       = "bin"
   s.description  = s.summary
   s.require_path = "lib"
-  s.files        = %w(History.txt init.rb install.rb MIT-LICENSE.txt README.rdoc Rakefile) + Dir["lib/**/*"]
+  s.files        = %w(History.txt init.rb install.rb MIT-LICENSE.txt README.rdoc Rakefile) + Dir["lib/**/*"] + Dir["vendor/**/*"]
 
   # rdoc
   s.has_rdoc         = true
