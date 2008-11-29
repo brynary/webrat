@@ -68,17 +68,9 @@ module Webrat
     end
     
     def find_field_with_id(id, *field_types) #:nodoc:
-      field_elements = Webrat::XML.xpath_search(dom, *Field.xpath_search)
+      require "webrat/core/locators/field_by_id_locator"
       
-      field_element = field_elements.detect do |field_element|
-        if id.is_a?(Regexp)
-          Webrat::XML.attribute(field_element, "id") =~ id
-        else
-          Webrat::XML.attribute(field_element, "id") == id.to_s
-        end
-      end
-      
-      field_by_element(field_element)
+      FieldByIdLocator.new(self, id).locate
     end
     
     def find_select_option(option_text, id_or_name_or_label) #:nodoc:
