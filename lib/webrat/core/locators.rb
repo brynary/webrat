@@ -94,24 +94,10 @@ module Webrat
     end
     
     def find_button(value) #:nodoc:
-      field_elements = Webrat::XML.xpath_search(dom, *ButtonField.xpath_search)
+      require "webrat/core/locators/button_locator"
       
-      field_element = field_elements.detect do |field_element|
-        value.nil? ||
-        (value.is_a?(Regexp) && Webrat::XML.attribute(field_element, "id") =~ value) ||
-        (!value.is_a?(Regexp) && Webrat::XML.attribute(field_element, "id") == value.to_s) ||
-        Webrat::XML.attribute(field_element, "value") =~ /^\W*#{Regexp.escape(value.to_s)}/i ||
-        Webrat::XML.inner_html(field_element) =~ /#{Regexp.escape(value.to_s)}/i ||
-        Webrat::XML.attribute(field_element, "alt") =~ /^\W*#{Regexp.escape(value.to_s)}/i
-      end
-      
-      button = field_by_element(field_element)
-      
-      if button
-        return button
-      else
-        raise NotFoundError.new("Could not find button #{value.inspect}")
-      end
+      ButtonLocator.new(self, value).locate ||
+      raise(NotFoundError.new("Could not find button #{value.inspect}"))
     end
     
     def find_area(id_or_title) #:nodoc:
