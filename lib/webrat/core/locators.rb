@@ -31,6 +31,7 @@ module Webrat
     end
     
     def find_field_labeled(label, *field_types) #:nodoc:
+      # TODO - Convert to using elements
       forms.detect_mapped do |form|
         form.field_labeled(label, *field_types)
       end
@@ -51,7 +52,7 @@ module Webrat
       field_by_element(field_element)
     end
     
-    def field_by_element(element, *field_types)
+    def field_by_element(element)
       return nil if element.nil?
       @session.elements[Webrat::XML.xpath_to(element)]
     end
@@ -76,6 +77,8 @@ module Webrat
     end
     
     def find_select_option(option_text, id_or_name_or_label) #:nodoc:
+      # TODO - Convert to using elements
+      
       if id_or_name_or_label
         field = field(id_or_name_or_label, SelectField)
         return field.find_option(option_text)
@@ -91,7 +94,7 @@ module Webrat
     end
     
     def find_button(value) #:nodoc:
-      field_elements = Webrat::XML.css_search(dom, "button", "input[type=submit]", "input[type=image]")
+      field_elements = Webrat::XML.xpath_search(dom, *ButtonField.xpath_search)
       
       field_element = field_elements.detect do |field_element|
         value.nil? ||
@@ -126,6 +129,8 @@ module Webrat
     end
     
     def find_link(text_or_title_or_id) #:nodoc:
+      # TODO - Convert to using elements
+      
       matching_links = links.select do |possible_link|
         possible_link.matches_text?(text_or_title_or_id) || possible_link.matches_id?(text_or_title_or_id)
       end
@@ -138,6 +143,8 @@ module Webrat
     end
 
     def find_field_id_for_label(label_text) #:nodoc:
+      # TODO - Convert to using elements
+      
       label = forms.detect_mapped { |form| form.label_matching(label_text) } 
       if label
         label.for_id
