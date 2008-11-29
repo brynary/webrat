@@ -31,10 +31,9 @@ module Webrat
     end
     
     def find_field_labeled(label, *field_types) #:nodoc:
-      # TODO - Convert to using elements
-      forms.detect_mapped do |form|
-        form.field_labeled(label, *field_types)
-      end
+      require "webrat/core/locators/field_labeled_locator"
+      
+      FieldLabeledLocator.new(self, label, *field_types).locate
     end
     
     def find_field_named(name, *field_types) #:nodoc:
