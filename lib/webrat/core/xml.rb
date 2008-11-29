@@ -95,14 +95,7 @@ module Webrat #:nodoc:
     end
     
     def self.css_search(element, *searches) #:nodoc:
-      # if Webrat.configuration.parse_with_nokogiri?
-        xpath_search(element, css_to_xpath(*searches))
-        # element.css(*searches)
-      # else
-      #   searches.map do |search|
-      #     element.search(search)
-      #   end.flatten.compact
-      # end
+      xpath_search(element, css_to_xpath(*searches))
     end
     
     def self.css_to_xpath(*selectors)
