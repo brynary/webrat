@@ -116,13 +116,14 @@ module Webrat
     
     def find_link(text_or_title_or_id) #:nodoc:
       # TODO - Convert to using elements
+      # 
+      # matching_links = links.select do |possible_link|
+      #   possible_link.matches_text?(text_or_title_or_id) || possible_link.matches_id?(text_or_title_or_id)
+      # end
+      require "webrat/core/locators/link_locator"
       
-      matching_links = links.select do |possible_link|
-        possible_link.matches_text?(text_or_title_or_id) || possible_link.matches_id?(text_or_title_or_id)
-      end
-
-      if matching_links.any?
-        matching_links.min { |a, b| a.text.length <=> b.text.length }
+      if link = LinkLocator.new(self, text_or_title_or_id).locate
+        link
       else
         raise NotFoundError.new("Could not find link with text or title or id #{text_or_title_or_id.inspect}")
       end
