@@ -62,6 +62,14 @@ module Webrat #:nodoc:
       end
     end
     
+    def self.xpath_to(element)
+      if Webrat.configuration.parse_with_nokogiri?
+        element.path
+      else
+        element.xpath
+      end
+    end
+    
     def self.attribute(element, attribute_name)
       return element[attribute_name] if element.is_a?(Hash)
       

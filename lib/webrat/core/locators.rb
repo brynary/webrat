@@ -55,11 +55,7 @@ module Webrat
     def area_by_element(element)
       return nil if element.nil?
       
-      if Webrat.configuration.parse_with_nokogiri?
-        expected_path = element.path
-      else
-        expected_path = element.xpath
-      end
+      expected_path = Webrat::XML.xpath_to(element)
       
       areas.detect do |possible_area|
         possible_area.path == expected_path

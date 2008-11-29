@@ -27,11 +27,7 @@ module Webrat
     end
     
     def path
-      if Webrat.configuration.parse_with_nokogiri?
-        @element.path
-      else
-        @element.xpath
-      end
+      Webrat::XML.xpath_to(@element)
     end
     
     def matches_name?(name)

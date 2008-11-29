@@ -38,6 +38,7 @@ module Webrat
       @data            = {}
       @default_headers = {}
       @custom_headers  = {}
+      @elements        = {}
       @context         = context
     end
 
@@ -110,6 +111,7 @@ module Webrat
       save_and_open_page if exception_caught? && Webrat.configuration.open_error_files?
       raise PageLoadError.new("Page load was not successful (Code: #{response_code.inspect}):\n#{formatted_error}") unless success_code?
       
+      @elements     = {}
       @_scopes      = nil
       @_page_scope  = nil
       @current_url  = url

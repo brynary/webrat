@@ -18,11 +18,7 @@ module Webrat
     def field_by_element(element, *field_types)
       return nil if element.nil?
       
-      if Webrat.configuration.parse_with_nokogiri?
-        expected_path = element.path
-      else
-        expected_path = element.xpath
-      end
+      expected_path = Webrat::XML.xpath_to(element)
       
       fields_by_type(field_types).detect do |possible_field|
         possible_field.path == expected_path
