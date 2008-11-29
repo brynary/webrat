@@ -10,7 +10,7 @@ module Webrat
       end
   
       def link_element
-        matching_links.min { |a, b| Webrat::XML.inner_text(a).length <=> Webrat::XML.inner_text(b).length }
+        matching_links.min { |a, b| Webrat::XML.all_inner_text(a).length <=> Webrat::XML.all_inner_text(b).length }
       end
   
       def matching_links
@@ -27,7 +27,7 @@ module Webrat
           matcher = /#{Regexp.escape(@value.to_s)}/i
         end
 
-        replace_nbsp(Webrat::XML.inner_text(link)) =~ matcher ||
+        replace_nbsp(Webrat::XML.all_inner_text(link)) =~ matcher ||
         replace_nbsp_ref(Webrat::XML.inner_html(link)) =~ matcher ||
         Webrat::XML.attribute(link, "title")=~ matcher
       end

@@ -100,12 +100,8 @@ module Webrat
     #   select "February", :from => "event_month"
     #   select "February", :from => "Event Month"
     def select(option_text, options = {})
-      if option = find_select_option(option_text, options[:from])
-        option.choose
-      else
-        select_box_text = options[:from] ? " in the '#{options[:from]}' select box" : '' 
-        raise NotFoundError.new("The '#{option_text}' option was not found#{select_box_text}") 
-       end
+      option = find_select_option(option_text, options[:from])
+      option.choose
     end
 
     webrat_deprecate :selects, :select

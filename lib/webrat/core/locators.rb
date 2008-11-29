@@ -65,20 +65,17 @@ module Webrat
     end
     
     def find_select_option(option_text, id_or_name_or_label) #:nodoc:
-      # TODO - Convert to using elements
+      require "webrat/core/locators/select_option_locator"
+      
+      option = SelectOptionLocator.new(self, option_text, id_or_name_or_label).locate
+      return option if option
       
       if id_or_name_or_label
-        field = field(id_or_name_or_label, SelectField)
-        return field.find_option(option_text)
+        select_box_text = " in the #{id_or_name_or_label.inspect} select box"
+        raise NotFoundError.new("The '#{option_text}' option was not found#{select_box_text}") 
       else
-        select_option = forms.detect_mapped do |form|
-          form.find_select_option(option_text)
-        end
-        
-        return select_option if select_option
+        raise NotFoundError.new("Could not find option #{option_text.inspect}")
       end
-        
-      raise NotFoundError.new("Could not find option #{option_text.inspect}")
     end
     
     def find_button(value) #:nodoc:

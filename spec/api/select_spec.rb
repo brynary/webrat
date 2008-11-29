@@ -11,7 +11,7 @@ describe "select" do
     HTML
     
     lambda { select "February", :from => "month" }.should raise_error(Webrat::NotFoundError,
-      "The 'February' option was not found in the 'month' select box") 
+      "The 'February' option was not found in the \"month\" select box") 
   end
   
   it "should fail if option not found in list specified by element name" do
