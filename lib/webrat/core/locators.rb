@@ -53,7 +53,7 @@ module Webrat
     end
     
     def find_field_with_id(id, *field_types) #:nodoc:
-      field_elements = Webrat::XML.css_search(dom, "button", "input", "textarea", "select")
+      field_elements = Webrat::XML.xpath_search(dom, *Field.xpath_search)
       
       field_element = field_elements.detect do |field_element|
         if id.is_a?(Regexp)

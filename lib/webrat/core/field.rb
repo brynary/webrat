@@ -10,6 +10,10 @@ module Webrat
   class Field #:nodoc:
     attr_reader :value
     
+    def self.xpath_search
+      [".//button", ".//input", ".//textarea", ".//select"]
+    end
+    
     def initialize(form, element)
       @form     = form
       @element  = element
