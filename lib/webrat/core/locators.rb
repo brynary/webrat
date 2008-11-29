@@ -38,18 +38,9 @@ module Webrat
     end
     
     def find_field_named(name, *field_types) #:nodoc:
-      if field_types.any?
-        xpath_searches = field_types.map { |field_type| field_type.xpath_search }.flatten
-        field_elements = Webrat::XML.xpath_search(dom, xpath_searches)
-      else
-        field_elements = Webrat::XML.xpath_search(dom, *Field.xpath_search)
-      end
+      require "webrat/core/locators/field_named_locator"
       
-      field_element = field_elements.detect do |field_element|
-        Webrat::XML.attribute(field_element, "name") == name.to_s
-      end
-      
-      field_by_element(field_element)
+      FieldNamedLocator.new(self, name, *field_types).locate
     end
     
     def field_by_element(element)
