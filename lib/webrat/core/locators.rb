@@ -106,16 +106,9 @@ module Webrat
     end
     
     def find_area(id_or_title) #:nodoc:
-      area_elements = Webrat::XML.css_search(dom, "area")
+      require "webrat/core/locators/area_locator"
       
-      matcher = /#{Regexp.escape(id_or_title.to_s)}/i
-      
-      area_element = area_elements.detect do |area_element|
-        Webrat::XML.attribute(area_element, "title") =~ matcher ||
-        Webrat::XML.attribute(area_element, "id") =~ matcher
-      end
-      
-      area_by_element(area_element) ||
+      AreaLocator.new(self, id_or_title).locate ||
       raise(NotFoundError.new("Could not find area with name #{id_or_title}"))
     end
     
