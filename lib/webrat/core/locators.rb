@@ -52,6 +52,20 @@ module Webrat
       end
     end
     
+    def area_by_element(element)
+      return nil if element.nil?
+      
+      if Webrat.configuration.parse_with_nokogiri?
+        expected_path = element.path
+      else
+        expected_path = element.xpath
+      end
+      
+      areas.detect do |possible_area|
+        possible_area.path == expected_path
+      end
+    end
+    
     def find_field_with_id(id, *field_types) #:nodoc:
       field_elements = Webrat::XML.css_search(dom, "button", "input", "textarea", "select")
       
@@ -102,9 +116,18 @@ module Webrat
       end
     end
     
-    def find_area(area_name) #:nodoc:
-      areas.detect { |area| area.matches_text?(area_name) } ||
-      raise(NotFoundError.new("Could not find area with name #{area_name}"))
+    def find_area(id_or_title) #:nodoc:
+      area_elements = Webrat::XML.css_search(dom, "area")
+      
+      matcher = /#{Regexp.escape(id_or_title.to_s)}/i
+      
+      area_element = area_elements.detect do |area_element|
+        Webrat::XML.attribute(area_element, "title") =~ matcher ||
+        Webrat::XML.attribute(area_element, "id") =~ matcher
+      end
+      
+      area_by_element(area_element) ||
+      raise(NotFoundError.new("Could not find area with name #{id_or_title}"))
     end
     
     def find_link(text_or_title_or_id) #:nodoc:

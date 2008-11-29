@@ -10,25 +10,19 @@ module Webrat
       @session.request_page(absolute_href, :get, {})
     end
     
-    def matches_text?(id_or_title)
-      matcher = /#{Regexp.escape(id_or_title.to_s)}/i
-      title =~ matcher || id =~ matcher
+    def path
+      if Webrat.configuration.parse_with_nokogiri?
+        @element.path
+      else
+        @element.xpath
+      end
     end
     
-    protected
+  protected
     
     def href
       Webrat::XML.attribute(@element, "href")
     end
-    
-    def title
-      Webrat::XML.attribute(@element, "title")
-    end
-    
-    def id
-      Webrat::XML.attribute(@element, "id")
-    end
-   
    
     def absolute_href
       if href =~ /^\?/
