@@ -28,6 +28,8 @@ module Webrat
     def initialize(session, &block) #:nodoc:
       @session = session
       instance_eval(&block) if block_given?
+      
+      areas # preload
     end
     
     # Verifies an input field or textarea exists on the current page, and stores a value for
@@ -307,7 +309,9 @@ module Webrat
     
     def areas #:nodoc:
       Webrat::XML.css_search(dom, Area.css_search).map do |element| 
-        Area.new(@session, element)
+        area = Area.new(@session, element)
+        @session.elements[Webrat::XML.xpath_to(element)] = area
+        area
       end
     end
     

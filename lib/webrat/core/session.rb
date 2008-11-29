@@ -32,6 +32,7 @@ module Webrat
     include Logging
     
     attr_reader :current_url
+    attr_reader :elements
     
     def initialize(context = nil) #:nodoc:
       @http_method     = :get

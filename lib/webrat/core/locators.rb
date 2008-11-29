@@ -54,12 +54,7 @@ module Webrat
     
     def area_by_element(element)
       return nil if element.nil?
-      
-      expected_path = Webrat::XML.xpath_to(element)
-      
-      areas.detect do |possible_area|
-        possible_area.path == expected_path
-      end
+      @session.elements[Webrat::XML.xpath_to(element)]
     end
     
     def find_field_with_id(id, *field_types) #:nodoc:
