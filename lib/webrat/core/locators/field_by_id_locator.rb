@@ -1,9 +1,6 @@
-class FieldByIdLocator
-  
-  def initialize(scope, value)
-    @scope = scope
-    @value = value
-  end
+require "webrat/core/locators/locator"
+
+class FieldByIdLocator < Locator
   
   def locate
     @scope.field_by_element(field_element)

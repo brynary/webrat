@@ -2,7 +2,7 @@ require "webrat/core_extensions/detect_mapped"
 
 module Webrat
   module Locators
-
+    
     def field_by_xpath(xpath)
       field_by_element(Webrat::XML.xpath_at(dom, xpath))
     end

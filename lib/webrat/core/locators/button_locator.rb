@@ -1,9 +1,6 @@
-class ButtonLocator
-  
-  def initialize(scope, value)
-    @scope = scope
-    @value = value
-  end
+require "webrat/core/locators/locator"
+
+class ButtonLocator < Locator
   
   def locate
     @scope.field_by_element(button_element)

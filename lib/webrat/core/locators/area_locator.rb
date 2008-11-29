@@ -1,9 +1,6 @@
-class AreaLocator
-  
-  def initialize(scope, value)
-    @scope = scope
-    @value = value
-  end
+require "webrat/core/locators/locator"
+
+class AreaLocator < Locator
   
   def locate
     @scope.area_by_element(area_element)

@@ -1,23 +1,19 @@
-class LinkLocator
-  
-  def initialize(scope, value)
-    @scope = scope
-    @value = value
-  end
+require "webrat/core/locators/locator"
+
+class LinkLocator < Locator
   
   def locate
-    # TODO - Convert to using elements
-    
-    matching_links = link_elements.select do |link_element|
+    @scope.link_by_element(link_element)
+  end
+  
+  def link_element
+    matching_links.min { |a, b| Webrat::XML.inner_text(a).length <=> Webrat::XML.inner_text(b).length }
+  end
+  
+  def matching_links
+    @matching_links ||= link_elements.select do |link_element|
       matches_text?(link_element) ||
       matches_id?(link_element)
-    end
-
-    if matching_links.any?
-      link_element = matching_links.min { |a, b| Webrat::XML.inner_text(a).length <=> Webrat::XML.inner_text(b).length }
-      @scope.link_by_element(link_element)
-    else
-      nil
     end
   end
   
