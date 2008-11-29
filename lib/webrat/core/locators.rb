@@ -4,11 +4,7 @@ module Webrat
   module Locators
 
     def field_by_xpath(xpath)
-      element = Webrat::XML.xpath_search(dom, xpath).first
-      
-      forms.detect_mapped do |form|
-        form.field_by_element(element)
-      end
+      field_by_element(Webrat::XML.xpath_at(dom, xpath))
     end
     
     def field(*args) # :nodoc:
@@ -47,9 +43,8 @@ module Webrat
     end
     
     def field_by_element(element, *field_types)
-      forms.detect_mapped do |form|
-        form.field_by_element(element, *field_types)
-      end
+      return nil if element.nil?
+      @session.elements[Webrat::XML.xpath_to(element)]
     end
     
     def area_by_element(element)

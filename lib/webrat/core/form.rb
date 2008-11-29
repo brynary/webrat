@@ -13,16 +13,8 @@ module Webrat
       @session  = session
       @element  = element
       @fields   = nil
-    end
-    
-    def field_by_element(element, *field_types)
-      return nil if element.nil?
       
-      expected_path = Webrat::XML.xpath_to(element)
-      
-      fields_by_type(field_types).detect do |possible_field|
-        possible_field.path == expected_path
-      end
+      fields # preload
     end
     
     def find_select_option(option_text)
@@ -44,7 +36,9 @@ module Webrat
       [SelectField, TextareaField, ButtonField, CheckboxField, PasswordField,
        RadioField, FileField, ResetField, TextField, HiddenField].each do |field_class|
         @fields += Webrat::XML.xpath_search(@element, *field_class.xpath_search).map do |element| 
-          field_class.new(self, element)
+          field = field_class.new(self, element)
+          @session.elements[Webrat::XML.xpath_to(element)] = field
+          field
         end
       end
       

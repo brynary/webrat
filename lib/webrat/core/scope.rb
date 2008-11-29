@@ -29,6 +29,7 @@ module Webrat
       @session = session
       instance_eval(&block) if block_given?
       
+      forms # preload
       areas # preload
     end
     

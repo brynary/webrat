@@ -78,7 +78,11 @@ module Webrat #:nodoc:
       else
         element.attributes[attribute_name]
       end
-    end    
+    end
+    
+    def self.xpath_at(*args)
+      xpath_search(*args).first
+    end
     
     def self.xpath_search(element, *searches)
       searches.flatten.map do |search|
