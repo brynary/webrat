@@ -8,22 +8,6 @@ module Webrat
   end
   
   class Field #:nodoc:
-    
-    def self.class_for_element(element)
-      if element.name == "input"
-        if %w[submit image].include?(Webrat::XML.attribute(element, "type"))
-          field_class = "button"
-        else
-          field_class = Webrat::XML.attribute(element, "type") || "text" #default type; 'type' attribute is not mandatory
-        end
-      else
-        field_class = element.name
-      end
-      Webrat.const_get("#{field_class.capitalize}Field")
-    rescue NameError
-     raise "Invalid field element: #{element.inspect}"
-    end
-    
     attr_reader :value
     
     def initialize(form, element)
@@ -146,6 +130,10 @@ module Webrat
   
   class ButtonField < Field #:nodoc:
 
+    def self.xpath_search
+      [".//button", ".//input[@type = 'submit']", ".//input[@type = 'image']"]
+    end
+    
     def to_param
       return nil if @value.nil?
       super
@@ -165,6 +153,10 @@ module Webrat
 
   class HiddenField < Field #:nodoc:
 
+    def self.xpath_search
+      ".//input[@type = 'hidden']"
+    end
+    
     def to_param
       if collection_name?
         super
@@ -189,6 +181,10 @@ module Webrat
 
   class CheckboxField < Field #:nodoc:
 
+    def self.xpath_search
+      ".//input[@type = 'checkbox']"
+    end
+    
     def to_param
       return nil if @value.nil?
       super
@@ -221,10 +217,19 @@ module Webrat
   end
 
   class PasswordField < Field #:nodoc:
+    
+    def self.xpath_search
+      ".//input[@type = 'password']"
+    end
+    
   end
 
   class RadioField < Field #:nodoc:
 
+    def self.xpath_search
+      ".//input[@type = 'radio']"
+    end
+    
     def to_param
       return nil if @value.nil?
       super
@@ -261,6 +266,10 @@ module Webrat
 
   class TextareaField < Field #:nodoc:
 
+    def self.xpath_search
+      ".//textarea"
+    end
+    
   protected
 
     def default_value
@@ -270,7 +279,11 @@ module Webrat
   end
   
   class FileField < Field #:nodoc:
-
+    
+    def self.xpath_search
+      ".//input[@type = 'file']"
+    end
+    
     attr_accessor :content_type
 
     def set(value, content_type = nil)
@@ -299,13 +312,23 @@ module Webrat
   end
 
   class TextField < Field #:nodoc:
+    def self.xpath_search
+      [".//input[@type = 'text']", ".//input[not(@type)]"]
+    end
   end
 
   class ResetField < Field #:nodoc:
+    def self.xpath_search
+      ".//input[@type = 'reset']"
+    end
   end
 
   class SelectField < Field #:nodoc:
 
+    def self.xpath_search
+      ".//select"
+    end
+    
     def find_option(text)
       options.detect { |o| o.matches_text?(text) }
     end

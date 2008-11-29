@@ -43,9 +43,16 @@ module Webrat
     def fields
       return @fields if @fields
       
-      @fields = Webrat::XML.css_search(@element, "button", "input", "textarea", "select").collect do |field_element|
-        Field.class_for_element(field_element).new(self, field_element)
+      @fields = []
+      
+      [SelectField, TextareaField, ButtonField, CheckboxField, PasswordField,
+       RadioField, FileField, ResetField, TextField, HiddenField].each do |field_class|
+        @fields += Webrat::XML.xpath_search(@element, *field_class.xpath_search).map do |element| 
+          field_class.new(self, element)
+        end
       end
+      
+      @fields
     end
     
     def labels
