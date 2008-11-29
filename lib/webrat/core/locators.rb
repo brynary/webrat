@@ -99,10 +99,9 @@ module Webrat
     end
 
     def find_field_id_for_label(label_text) #:nodoc:
-      # TODO - Convert to using elements
+      require "webrat/core/locators/label_locator"
       
-      label = forms.detect_mapped { |form| form.label_matching(label_text) } 
-      if label
+      if (label = LabelLocator.new(self, label_text).locate)
         label.for_id
       else
         raise NotFoundError.new("Could not find the label with text #{label_text}")
