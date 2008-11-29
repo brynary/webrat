@@ -31,6 +31,7 @@ module Webrat
       
       forms # preload
       areas # preload
+      links # preload
     end
     
     # Verifies an input field or textarea exists on the current page, and stores a value for
@@ -318,7 +319,9 @@ module Webrat
     
     def links #:nodoc:
       Webrat::XML.css_search(dom, Link.css_search).map do |element|
-        Link.new(@session, element)
+        link = Link.new(@session, element)
+        @session.elements[Webrat::XML.xpath_to(element)] = link
+        link
       end
     end
     

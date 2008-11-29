@@ -62,6 +62,11 @@ module Webrat
       @session.elements[Webrat::XML.xpath_to(element)]
     end
     
+    def link_by_element(element)
+      return nil if element.nil?
+      @session.elements[Webrat::XML.xpath_to(element)]
+    end
+    
     def find_field_with_id(id, *field_types) #:nodoc:
       field_elements = Webrat::XML.xpath_search(dom, *Field.xpath_search)
       
@@ -115,18 +120,10 @@ module Webrat
     end
     
     def find_link(text_or_title_or_id) #:nodoc:
-      # TODO - Convert to using elements
-      # 
-      # matching_links = links.select do |possible_link|
-      #   possible_link.matches_text?(text_or_title_or_id) || possible_link.matches_id?(text_or_title_or_id)
-      # end
       require "webrat/core/locators/link_locator"
       
-      if link = LinkLocator.new(self, text_or_title_or_id).locate
-        link
-      else
-        raise NotFoundError.new("Could not find link with text or title or id #{text_or_title_or_id.inspect}")
-      end
+      LinkLocator.new(self, text_or_title_or_id).locate ||
+      raise(NotFoundError.new("Could not find link with text or title or id #{text_or_title_or_id.inspect}"))
     end
 
     def find_field_id_for_label(label_text) #:nodoc:
