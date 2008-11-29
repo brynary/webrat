@@ -289,9 +289,6 @@ module Webrat
     end
     
     def scoped_dom #:nodoc:
-      # if @selector == "#form2"
-      #   require "rubygems"; require "ruby-debug"; Debugger.start; debugger
-      # end
       Webrat::XML.document("<html>" + Webrat::XML.to_html(Webrat::XML.css_search(@scope.dom, @selector).first) + "</html>")
     end
     
@@ -309,22 +306,22 @@ module Webrat
     end
     
     def areas #:nodoc:
-      Webrat::XML.css_search(dom, "area").map do |element| 
+      Webrat::XML.css_search(dom, Area.css_search).map do |element| 
         Area.new(@session, element)
       end
     end
     
     def links #:nodoc:
-      Webrat::XML.css_search(dom, "a[@href]").map do |link_element|
-        Link.new(@session, link_element)
+      Webrat::XML.css_search(dom, Link.css_search).map do |element|
+        Link.new(@session, element)
       end
     end
     
     def forms #:nodoc:
       return @forms if @forms
       
-      @forms = Webrat::XML.css_search(dom, "form").map do |form_element|
-        Form.new(@session, form_element)
+      @forms = Webrat::XML.css_search(dom, Form.css_search).map do |element|
+        Form.new(@session, element)
       end
     end
     

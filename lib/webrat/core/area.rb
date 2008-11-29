@@ -1,6 +1,10 @@
 module Webrat
   class Area #:nodoc:
     
+    def self.css_search
+      "area"
+    end
+    
     def initialize(session, element)
       @session  = session
       @element  = element

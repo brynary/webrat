@@ -5,6 +5,10 @@ module Webrat
   class Form #:nodoc:
     attr_reader :element
     
+    def self.css_search
+      "form"
+    end
+    
     def initialize(session, element)
       @session  = session
       @element  = element

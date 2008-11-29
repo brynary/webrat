@@ -3,6 +3,10 @@ require "webrat/core_extensions/blank"
 module Webrat
   class Link #:nodoc:
     
+    def self.css_search
+      "a[@href]"
+    end
+    
     def initialize(session, element)
       @session  = session
       @element  = element
