@@ -39,8 +39,9 @@ module Webrat
       @data            = {}
       @default_headers = {}
       @custom_headers  = {}
-      @elements        = {}
       @context         = context
+      
+      reset
     end
 
     # Saves the page out to RAILS_ROOT/tmp/ and opens it in the default
@@ -112,9 +113,8 @@ module Webrat
       save_and_open_page if exception_caught? && Webrat.configuration.open_error_files?
       raise PageLoadError.new("Page load was not successful (Code: #{response_code.inspect}):\n#{formatted_error}") unless success_code?
       
-      @elements     = {}
-      @_scopes      = nil
-      @_page_scope  = nil
+      reset
+      
       @current_url  = url
       @http_method  = http_method
       @data         = data
@@ -220,7 +220,14 @@ module Webrat
     def_delegators :current_scope, :field_by_xpath
     def_delegators :current_scope, :field_with_id
     
-    private
+  private
+    
+    def reset
+      @elements     = {}
+      @_scopes      = nil
+      @_page_scope  = nil
+    end
+    
     # accessor for testing
     def ruby_platform
       RUBY_PLATFORM
