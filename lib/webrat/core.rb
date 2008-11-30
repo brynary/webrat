@@ -1,6 +1,6 @@
 require "webrat/core/configuration"
 require "webrat/core/xml"
-require "webrat/core/nokogiri"
+require "webrat/core/xml/nokogiri"
 require "webrat/core/logging"
 require "webrat/core/elements/form"
 require "webrat/core/scope"

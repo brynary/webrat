@@ -17,7 +17,7 @@ module Webrat
       require "rexml/document"
     else
       require "nokogiri"
-      require "webrat/core/nokogiri"
+      require "webrat/core/xml/nokogiri"
     end
   end
   

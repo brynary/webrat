@@ -10,7 +10,7 @@ module Webrat
         if Webrat.configuration.parse_with_nokogiri?
           @document = Webrat.nokogiri_document(stringlike)
         else
-          @document = Webrat::XML.hpricot_document(stringlike)
+          @document = Webrat.hpricot_document(stringlike)
         end
         
         @element = Webrat::XML.inner_text(@document)

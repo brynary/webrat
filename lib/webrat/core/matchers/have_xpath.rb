@@ -1,5 +1,5 @@
-require "webrat/core/nokogiri"
-require "webrat/core/rexml"
+require "webrat/core/xml/nokogiri"
+require "webrat/core/xml/rexml"
 
 module Webrat
   module Matchers

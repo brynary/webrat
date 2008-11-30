@@ -29,11 +29,8 @@ module Webrat
       @session = session
       instance_eval(&block) if block_given?
       
-      labels
-      fields
-      forms # preload
-      areas # preload
-      links # preload
+      # preload
+      load_elements
     end
     
     # Verifies an input field or textarea exists on the current page, and stores a value for
@@ -283,6 +280,14 @@ module Webrat
     
   protected
   
+    def load_elements
+      labels
+      fields
+      forms
+      areas
+      links
+    end
+    
     def page_dom #:nodoc:
       return @response.dom if @response.respond_to?(:dom)
       dom = Webrat::XML.document(@response_body)

@@ -11,13 +11,6 @@ module Webrat
       ".//form"
     end
     
-    def initialize(*args)
-      super
-      
-      fields # preload
-      labels # preload
-    end
-    
     def find_select_option(option_text)
       select_fields = fields_by_type([SelectField])
 
@@ -30,15 +23,7 @@ module Webrat
     end
 
     def fields
-      @fields ||= Webrat::XML.xpath_search(@element, *Field.xpath_search).map do |element|
-        @session.element_to_webrat_element(element)
-      end
-    end
-    
-    def labels
-      @labels ||= Webrat::XML.css_search(element, "label").map do |element|
-        @session.element_to_webrat_element(element)
-      end
+      @fields ||= Field.load_all(@session, @element)
     end
     
     def submit
