@@ -15,6 +15,7 @@ module Webrat
       @fields   = nil
       
       fields # preload
+      labels # preload
     end
     
     def find_select_option(option_text)
@@ -46,7 +47,11 @@ module Webrat
     end
     
     def labels
-      @labels ||= Webrat::XML.css_search(element, "label").map { |element| Label.new(nil, element) }
+      @labels ||= Webrat::XML.css_search(element, "label").map do |element|
+        label = Label.new(nil, element)
+        @session.elements[Webrat::XML.xpath_to(element)] = label
+        label
+      end
     end
     
     def submit

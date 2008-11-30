@@ -7,13 +7,27 @@ module Webrat
     class LabelLocator < Locator
   
       def locate
-        # TODO - Convert to using elements
-
-        @scope.send(:forms).detect_mapped do |form|
-          form.label_matching(@value)
+        @scope.element_to_webrat_element(label_element)
+      end
+      
+      def label_element
+        label_elements.detect do |label_element|
+          text(label_element) =~ /^\W*#{Regexp.escape(@value.to_s)}\b/i
         end
       end
   
+      def label_elements
+        Webrat::XML.xpath_search(@scope.dom, Label.xpath_search)
+      end
+      
+      def text(label_element)
+        str = Webrat::XML.all_inner_text(label_element)
+        str.gsub!("\n","")
+        str.strip!
+        str.squeeze!(" ")
+        str
+      end
+      
     end
     
   end

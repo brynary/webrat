@@ -1,6 +1,10 @@
 module Webrat
   class Label #:nodoc:
     
+    def self.xpath_search
+      ".//label"
+    end
+    
     def initialize(field, element)
       @field    = field
       @element  = element
