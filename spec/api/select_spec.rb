@@ -199,4 +199,36 @@ describe "select" do
     select /jan/i, :from => "End Month"
     click_button
   end
+  
+  it "should properly handle submitting HTML entities in select values" do
+    pending "needs bug fix" do
+      with_html <<-HTML
+        <html>
+        <form method="post" action="/login">
+          <select name="month"><option>Peanut butter &amp; jelly</option></select>
+          <input type="submit" />
+        </form>
+        </html>
+      HTML
+      webrat_session.should_receive(:post).with("/login", "month" => "Peanut butter & jelly")
+      click_button
+    end
+  end
+  
+  it "should properly handle locating with HTML entities in select values" do
+    pending "needs bug fix" do
+      with_html <<-HTML
+        <html>
+        <form method="post" action="/login">
+          <select name="month"><option>Peanut butter &amp; jelly</option></select>
+          <input type="submit" />
+        </form>
+        </html>
+      HTML
+      
+      lambda {
+        select "Peanut butter & jelly"
+      }.should_not raise_error(Webrat::NotFoundError)
+    end
+  end
 end
