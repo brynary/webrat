@@ -14,10 +14,9 @@ module Webrat
       [".//button", ".//input", ".//textarea", ".//select"]
     end
     
-    def initialize(form, element)
-      @form     = form
+    def initialize(session, element)
+      @session  = session
       @element  = element
-      
       @value    = default_value
     end
 
@@ -75,6 +74,19 @@ module Webrat
     
   protected
   
+    def form
+      @session.element_to_webrat_element(form_element)
+    end
+    
+    def form_element
+      parent = @element.parent
+      
+      while parent.respond_to?(:parent)
+        return parent if parent.name == 'form'
+        parent = parent.parent
+      end
+    end
+    
     def name
       Webrat::XML.attribute(@element, "name")
     end
@@ -101,7 +113,7 @@ module Webrat
       end
 
       unless id.blank?
-        @label_elements += Webrat::XML.css_search(@form.element, "label[@for='#{id}']")
+        @label_elements += Webrat::XML.css_search(form.element, "label[@for='#{id}']")
       end
 
       @label_elements
@@ -146,7 +158,7 @@ module Webrat
     def click
       raise_error_if_disabled
       set(Webrat::XML.attribute(@element, "value")) unless Webrat::XML.attribute(@element, "name").blank?
-      @form.submit
+      form.submit
     end
 
   end
@@ -161,7 +173,7 @@ module Webrat
       if collection_name?
         super
       else
-        checkbox_with_same_name = @form.field_named(name, CheckboxField)
+        checkbox_with_same_name = form.field_named(name, CheckboxField)
 
         if checkbox_with_same_name.to_param.blank?
           super
@@ -251,7 +263,7 @@ module Webrat
   protected
 
     def other_options
-      @form.fields.select { |f| f.name == name }
+      form.fields.select { |f| f.name == name }
     end
     
     def default_value

@@ -16,6 +16,7 @@ module Webrat
     end
     
     def element_to_webrat_element(element)
+      @session.element_to_webrat_element(element)
       return nil if element.nil?
       @session.elements[Webrat::XML.xpath_to(element)]
     end

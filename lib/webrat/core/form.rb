@@ -37,7 +37,7 @@ module Webrat
       [SelectField, TextareaField, ButtonField, CheckboxField, PasswordField,
        RadioField, FileField, ResetField, TextField, HiddenField].each do |field_class|
         @fields += Webrat::XML.xpath_search(@element, *field_class.xpath_search).map do |element| 
-          field = field_class.new(self, element)
+          field = field_class.new(@session, element)
           @session.elements[Webrat::XML.xpath_to(element)] = field
           field
         end

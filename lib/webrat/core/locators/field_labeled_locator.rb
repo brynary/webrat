@@ -13,11 +13,29 @@ module Webrat
           
           matching_fields = possible_fields.select do |possible_field|
             possible_field.send(:labels).any? do |label|
-              text(label) =~ /^\W*#{Regexp.escape(@value.to_s)}\b/i
+              text(label.element) =~ /^\W*#{Regexp.escape(@value.to_s)}\b/i
             end
           end      
           
           matching_fields.min { |a, b| a.label_text.length <=> b.label_text.length }
+        end
+        
+        # matching_fields.min { |a, b| a.label_text.length <=> b.label_text.length }
+      end
+      
+      def matching_fields
+        matching_labels.map(&:field).compact.uniq
+      end
+      
+      def matching_labels
+        matching_label_elements.map do |label_element|
+          @scope.element_to_webrat_element(label_element)
+        end
+      end
+      
+      def matching_label_elements
+        label_elements.select do |label_element|
+          text(label_element) =~ /^\W*#{Regexp.escape(@value.to_s)}\b/i
         end
       end
   
@@ -25,8 +43,8 @@ module Webrat
         "Could not find field labeled #{@value.inspect}"
       end
       
-      def text(label)
-        str = Webrat::XML.all_inner_text(label.element)
+      def text(element)
+        str = Webrat::XML.all_inner_text(element)
         str.gsub!("\n","")
         str.strip!
         str.squeeze!(" ")

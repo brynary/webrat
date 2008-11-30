@@ -334,7 +334,9 @@ module Webrat
       return @forms if @forms
       
       @forms = Webrat::XML.css_search(dom, Form.css_search).map do |element|
-        Form.new(@session, element)
+        form = Form.new(@session, element)
+        @session.elements[Webrat::XML.xpath_to(element)] = form
+        form
       end
     end
     
