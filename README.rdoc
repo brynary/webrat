@@ -41,6 +41,14 @@ Behind the scenes, Webrat will ensure:
 * If a URL is invalid, the test will fail.
 * If a page load or form submission is unsuccessful, the test will fail.
 
+== Installing Nokogiri
+
+Users of Debian Linux (e.g. Ubuntu) need to run:
+
+  sudo apt-get install libxslt1-dev libxml2-dev.
+
+Otherwise the Nokogiri gem, which Webrat depends on, won't install properly.
+
 == Install for Rails
 
 To install the latest release as a gem:
