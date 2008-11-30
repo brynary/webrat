@@ -2,7 +2,7 @@ require "cgi"
 require "webrat/core_extensions/blank"
 require "webrat/core_extensions/nil_to_param"
 
-require "webrat/core/element"
+require "webrat/core/elements/element"
 
 module Webrat
   # Raised when Webrat is asked to manipulate a disabled form field

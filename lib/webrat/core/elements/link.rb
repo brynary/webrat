@@ -1,6 +1,6 @@
 require "webrat/core_extensions/blank"
 
-require "webrat/core/element"
+require "webrat/core/elements/element"
 
 module Webrat
   class Link < Element #:nodoc:

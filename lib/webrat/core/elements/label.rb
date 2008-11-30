@@ -1,4 +1,4 @@
-require "webrat/core/element"
+require "webrat/core/elements/element"
 
 module Webrat
   class Label < Element #:nodoc:

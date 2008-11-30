@@ -1,7 +1,7 @@
-require "webrat/core/field"
+require "webrat/core/elements/field"
 require "webrat/core_extensions/blank"
 
-require "webrat/core/element"
+require "webrat/core/elements/element"
 
 module Webrat
   class Form < Element #:nodoc:

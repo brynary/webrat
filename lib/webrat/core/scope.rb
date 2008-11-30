@@ -1,4 +1,4 @@
-require "webrat/core/form"
+require "webrat/core/elements/form"
 require "webrat/core/locators"
 require "webrat/core_extensions/deprecate"
 
