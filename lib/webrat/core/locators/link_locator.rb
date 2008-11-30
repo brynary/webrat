@@ -54,5 +54,10 @@ module Webrat
   
     end
     
+    def find_link(text_or_title_or_id) #:nodoc:
+      LinkLocator.new(self, text_or_title_or_id).locate ||
+      raise(NotFoundError.new("Could not find link with text or title or id #{text_or_title_or_id.inspect}"))
+    end
+    
   end
 end

@@ -42,5 +42,10 @@ module Webrat
   
     end
     
+    def find_button(value) #:nodoc:
+      ButtonLocator.new(self, value).locate ||
+      raise(NotFoundError.new("Could not find button #{value.inspect}"))
+    end
+    
   end
 end

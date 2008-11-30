@@ -26,5 +26,10 @@ module Webrat
   
     end
     
+    def find_area(id_or_title) #:nodoc:
+      AreaLocator.new(self, id_or_title).locate ||
+      raise(NotFoundError.new("Could not find area with name #{id_or_title}"))
+    end
+    
   end
 end

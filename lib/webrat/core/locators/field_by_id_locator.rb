@@ -25,5 +25,10 @@ module Webrat
   
     end
     
+    def field_with_id(id, *field_types)
+      FieldByIdLocator.new(self, id, *field_types).locate ||
+      raise(NotFoundError.new("Could not find field with id #{id.inspect}"))
+    end
+    
   end
 end
