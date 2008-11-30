@@ -3,6 +3,10 @@ require "webrat/core/elements/element"
 module Webrat
   class SelectOption < Element #:nodoc:
     
+    def self.xpath_search
+      ".//option"
+    end
+    
     def matches_text?(text)
       if text.is_a?(Regexp)
         Webrat::XML.inner_html(@element) =~ text

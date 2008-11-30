@@ -365,11 +365,7 @@ module Webrat
     end
 
     def options
-      option_elements.map { |oe| SelectOption.new(@session, oe) }
-    end
-
-    def option_elements
-      Webrat::XML.css_search(@element, "option")
+      @options ||= SelectOption.load_all(@session, @element)
     end
 
   end
