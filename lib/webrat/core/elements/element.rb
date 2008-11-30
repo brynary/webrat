@@ -17,6 +17,10 @@ module Webrat
       @element  = element
     end
     
+    def path
+      Webrat::XML.xpath_to(@element)
+    end
+    
   end
   
 end

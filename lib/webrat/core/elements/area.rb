@@ -11,10 +11,6 @@ module Webrat
       @session.request_page(absolute_href, :get, {})
     end
     
-    def path
-      Webrat::XML.xpath_to(@element)
-    end
-    
   protected
     
     def href

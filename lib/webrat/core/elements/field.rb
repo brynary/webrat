@@ -40,10 +40,6 @@ module Webrat
       Webrat::XML.attribute(@element, "id")
     end
     
-    def path
-      Webrat::XML.xpath_to(@element)
-    end
-    
     def matches_name?(name)
       Webrat::XML.attribute(@element, "name") == name.to_s
     end
