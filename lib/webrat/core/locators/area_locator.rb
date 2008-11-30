@@ -21,7 +21,7 @@ module Webrat
       end
   
       def area_elements
-        Webrat::XML.css_search(@scope.dom, "area")
+        Webrat::XML.xpath_search(@scope.dom, Area.xpath_search)
       end
   
       def error_message

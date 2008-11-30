@@ -200,6 +200,10 @@ module Webrat
       @_page_scope ||= Scope.from_page(self, response, response_body)
     end
     
+    def dom
+      page_scope.dom
+    end
+    
     def_delegators :current_scope, :fill_in,            :fills_in
     def_delegators :current_scope, :set_hidden_field
     def_delegators :current_scope, :submit_form

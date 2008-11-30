@@ -21,5 +21,17 @@ module Webrat
       Webrat::XML.attribute(@element, "for")
     end
     
+    def field
+      Field.load(@session, field_element)
+    end
+    
+    def field_element
+      if for_id.blank?
+        Webrat::XML.xpath_at(@element, *Field.xpath_search)
+      else
+        Webrat::XML.css_search(@session.dom, "#" + for_id).first
+      end
+    end
+    
   end
 end

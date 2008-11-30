@@ -7,20 +7,7 @@ module Webrat
     class FieldLabeledLocator < Locator
   
       def locate
-        # TODO - Convert to using elements
-        @scope.send(:forms).detect_mapped do |form|
-          possible_fields = form.send(:fields_by_type, @field_types)
-          
-          matching_fields = possible_fields.select do |possible_field|
-            possible_field.send(:labels).any? do |label|
-              text(label.element) =~ /^\W*#{Regexp.escape(@value.to_s)}\b/i
-            end
-          end      
-          
-          matching_fields.min { |a, b| a.label_text.length <=> b.label_text.length }
-        end
-        
-        # matching_fields.min { |a, b| a.label_text.length <=> b.label_text.length }
+        matching_fields.min { |a, b| a.label_text.length <=> b.label_text.length }
       end
       
       def matching_fields
@@ -37,6 +24,10 @@ module Webrat
         label_elements.select do |label_element|
           text(label_element) =~ /^\W*#{Regexp.escape(@value.to_s)}\b/i
         end
+      end
+      
+      def label_elements
+        Webrat::XML.xpath_search(@scope.dom, Label.xpath_search)
       end
   
       def error_message
