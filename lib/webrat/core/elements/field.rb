@@ -128,7 +128,9 @@ module Webrat
     end
     
     def labels
-      @labels ||= label_elements.map { |element| Label.new(@session, element) }
+      @labels ||= label_elements.map do |element|
+        Label.load(@session, element)
+      end
     end
     
     def label_elements
