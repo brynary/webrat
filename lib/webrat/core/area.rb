@@ -1,13 +1,10 @@
+require "webrat/core/element"
+
 module Webrat
-  class Area #:nodoc:
+  class Area < Element #:nodoc:
     
-    def self.css_search
-      "area"
-    end
-    
-    def initialize(session, element)
-      @session  = session
-      @element  = element
+    def self.xpath_search
+      ".//area"
     end
     
     def click(method = nil, options = {})

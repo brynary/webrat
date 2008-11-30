@@ -1,18 +1,18 @@
 require "webrat/core/field"
 require "webrat/core_extensions/blank"
 
+require "webrat/core/element"
+
 module Webrat
-  class Form #:nodoc:
+  class Form < Element #:nodoc:
     attr_reader :element
     
-    def self.css_search
-      "form"
+    def self.xpath_search
+      ".//form"
     end
     
-    def initialize(session, element)
-      @session  = session
-      @element  = element
-      @fields   = nil
+    def initialize(*args)
+      super
       
       fields # preload
       labels # preload

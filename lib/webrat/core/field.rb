@@ -2,22 +2,33 @@ require "cgi"
 require "webrat/core_extensions/blank"
 require "webrat/core_extensions/nil_to_param"
 
+require "webrat/core/element"
+
 module Webrat
   # Raised when Webrat is asked to manipulate a disabled form field
   class DisabledFieldError < WebratError
   end
   
-  class Field #:nodoc:
+  class Field < Element #:nodoc:
     attr_reader :value
     
     def self.xpath_search
       [".//button", ".//input", ".//textarea", ".//select"]
     end
     
-    def initialize(session, element)
-      @session  = session
-      @element  = element
-      @value    = default_value
+    def self.field_classes
+      @field_classes || []
+    end
+    
+    def self.inherited(klass)
+      @field_classes ||= []
+      @field_classes << klass
+      # raise args.inspect
+    end
+    
+    def initialize(*args)
+      super
+      @value = default_value
     end
 
     def label_text

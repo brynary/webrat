@@ -1,15 +1,16 @@
 require "webrat/core_extensions/blank"
 
+require "webrat/core/element"
+
 module Webrat
-  class Link #:nodoc:
+  class Link < Element #:nodoc:
+    
+    def self.xpath_search
+      ".//a[@href]"
+    end
     
     def self.css_search
       "a[@href]"
-    end
-    
-    def initialize(session, element)
-      @session  = session
-      @element  = element
     end
     
     def click(options = {})

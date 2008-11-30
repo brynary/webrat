@@ -317,54 +317,25 @@ module Webrat
     end
     
     def areas #:nodoc:
-      Webrat::XML.css_search(dom, Area.css_search).map do |element| 
-        area = Area.new(@session, element)
-        @session.elements[Webrat::XML.xpath_to(element)] = area
-        area
-      end
+      @areas ||= Area.load_all(@session, dom)
     end
     
     def links #:nodoc:
-      Webrat::XML.css_search(dom, Link.css_search).map do |element|
-        link = Link.new(@session, element)
-        @session.elements[Webrat::XML.xpath_to(element)] = link
-        link
-      end
+      @links ||= Link.load_all(@session, dom)
     end
     
     def forms #:nodoc:
-      return @forms if @forms
-      
-      @forms = Webrat::XML.css_search(dom, Form.css_search).map do |element|
-        form = Form.new(@session, element)
-        @session.elements[Webrat::XML.xpath_to(element)] = form
-        form
-      end
+      @forms ||= Form.load_all(@session, dom)
     end
     
     def fields
-      return @fields if @fields
-      
-      @fields = []
-      
-      [SelectField, TextareaField, ButtonField, CheckboxField, PasswordField,
-       RadioField, FileField, ResetField, TextField, HiddenField].each do |field_class|
-        @fields += Webrat::XML.xpath_search(dom, *field_class.xpath_search).map do |element| 
-          field = field_class.new(self, element)
-          @session.elements[Webrat::XML.xpath_to(element)] = field
-          field
-        end
-      end
-      
-      @fields
+      @fields ||= Field.field_classes.map do |field_class|
+        field_class.load_all(@session, dom)
+      end.flatten
     end
     
     def labels
-      @labels ||= Webrat::XML.css_search(dom, "label").map do |element|
-        label = Label.new(self, element)
-        @session.elements[Webrat::XML.xpath_to(element)] = label
-        label
-      end
+      @labels ||= Label.load_all(@session, dom)
     end
     
   end
