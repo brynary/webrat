@@ -369,7 +369,7 @@ module Webrat
     end
 
     def options
-      option_elements.map { |oe| SelectOption.new(self, oe) }
+      option_elements.map { |oe| SelectOption.new(@session, oe) }
     end
 
     def option_elements
