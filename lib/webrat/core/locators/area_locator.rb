@@ -24,11 +24,14 @@ module Webrat
         Webrat::XML.css_search(@scope.dom, "area")
       end
   
+      def error_message
+        "Could not find area with name #{@value}"
+      end
+      
     end
     
     def find_area(id_or_title) #:nodoc:
-      AreaLocator.new(self, id_or_title).locate ||
-      raise(NotFoundError.new("Could not find area with name #{id_or_title}"))
+      AreaLocator.new(self, id_or_title).locate!
     end
     
   end

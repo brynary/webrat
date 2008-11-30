@@ -12,11 +12,14 @@ module Webrat
         end
       end
   
+      def error_message
+        "Could not find field labeled #{@value.inspect}"
+      end
+      
     end
     
     def field_labeled(label, *field_types)
-      FieldLabeledLocator.new(self, label, *field_types).locate ||
-      raise(NotFoundError.new("Could not find field labeled #{label.inspect}"))
+      FieldLabeledLocator.new(self, label, *field_types).locate!
     end
     
   end

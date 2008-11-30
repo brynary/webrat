@@ -27,11 +27,14 @@ module Webrat
         end
       end
   
+      def error_message
+        "Could not find field named #{@value.inspect}"
+      end
+      
     end
     
     def field_named(name, *field_types)
-      FieldNamedLocator.new(self, name, *field_types).locate ||
-      raise(NotFoundError.new("Could not find field named #{name.inspect}"))
+      FieldNamedLocator.new(self, name, *field_types).locate!
     end
     
   end

@@ -22,12 +22,15 @@ module Webrat
       def field_elements
         Webrat::XML.xpath_search(@scope.dom, *Field.xpath_search)
       end
-  
+
+      def error_message
+        "Could not find field with id #{@value.inspect}"
+      end
+      
     end
     
     def field_with_id(id, *field_types)
-      FieldByIdLocator.new(self, id, *field_types).locate ||
-      raise(NotFoundError.new("Could not find field with id #{id.inspect}"))
+      FieldByIdLocator.new(self, id, *field_types).locate!
     end
     
   end

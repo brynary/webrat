@@ -52,11 +52,14 @@ module Webrat
         str.gsub('&#xA0;',' ').gsub('&nbsp;', ' ')
       end
   
+      def error_message
+        "Could not find link with text or title or id #{@value.inspect}"
+      end
+      
     end
     
     def find_link(text_or_title_or_id) #:nodoc:
-      LinkLocator.new(self, text_or_title_or_id).locate ||
-      raise(NotFoundError.new("Could not find link with text or title or id #{text_or_title_or_id.inspect}"))
+      LinkLocator.new(self, text_or_title_or_id).locate!
     end
     
   end

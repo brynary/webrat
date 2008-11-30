@@ -40,11 +40,14 @@ module Webrat
         Webrat::XML.xpath_search(@scope.dom, *ButtonField.xpath_search)
       end
   
+      def error_message
+        "Could not find button #{@value.inspect}"
+      end
+      
     end
     
     def find_button(value) #:nodoc:
-      ButtonLocator.new(self, value).locate ||
-      raise(NotFoundError.new("Could not find button #{value.inspect}"))
+      ButtonLocator.new(self, value).locate!
     end
     
   end

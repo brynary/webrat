@@ -22,11 +22,5 @@ module Webrat
       @session.elements[Webrat::XML.xpath_to(element)]
     end
     
-    def field(*args) # :nodoc:
-      # This is the default locator strategy
-      FieldLocator.new(self, *args).locate ||
-      raise(NotFoundError.new("Could not find field: #{args.inspect}"))
-    end
-    
   end
 end

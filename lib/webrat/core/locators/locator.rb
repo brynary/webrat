@@ -9,6 +9,10 @@ module Webrat
         @field_types = field_types
       end
   
+      def locate!
+        locate || raise(NotFoundError.new(error_message))
+      end
+      
     end
     
   end
