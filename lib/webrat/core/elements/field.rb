@@ -64,10 +64,6 @@ module Webrat
     def id
       Webrat::XML.attribute(@element, "id")
     end
-    
-    def matches_name?(name)
-      Webrat::XML.attribute(@element, "name") == name.to_s
-    end
 
     def disabled?
       @element.attributes.has_key?("disabled") && Webrat::XML.attribute(@element, "disabled") != 'false'

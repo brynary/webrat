@@ -2,6 +2,7 @@ require "webrat/core/elements/field"
 require "webrat/core_extensions/blank"
 
 require "webrat/core/elements/element"
+require "webrat/core/locators/field_named_locator"
 
 module Webrat
   class Form < Element #:nodoc:
@@ -28,12 +29,15 @@ module Webrat
     end
     
     def field_named(name, *field_types)
-      possible_fields = fields_by_type(field_types)
-      possible_fields.detect { |possible_field| possible_field.matches_name?(name) }
+      Webrat::Locators::FieldNamedLocator.new(@session, dom, name, *field_types).locate
     end
     
   protected
   
+    def dom
+      Webrat::XML.xpath_at(@session.dom, path)
+    end
+    
     def fields_by_type(field_types)
       if field_types.any?
         fields.select { |f| field_types.include?(f.class) }
