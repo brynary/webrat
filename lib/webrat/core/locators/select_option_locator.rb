@@ -13,7 +13,6 @@ module Webrat
       end
       
       def locate
-        # TODO - Convert to using elements
         if @id_or_name_or_label
           field = FieldLocator.new(@scope, @id_or_name_or_label, SelectField).locate!
           
@@ -25,19 +24,20 @@ module Webrat
             end
           end
         else
-          @scope.send(:forms).detect_mapped do |form|
-            select_fields = form.send(:fields_by_type, [SelectField])
-            select_fields.detect_mapped do |select_field|
-              select_field.send(:options).detect do |o|
-                if @option_text.is_a?(Regexp)
-                  Webrat::XML.inner_html(o.element) =~ @option_text
-                else
-                  Webrat::XML.inner_html(o.element) == @option_text.to_s
-                end
-              end
+          option_element = option_elements.detect do |o|
+            if @option_text.is_a?(Regexp)
+              Webrat::XML.inner_html(o) =~ @option_text
+            else
+              Webrat::XML.inner_html(o) == @option_text.to_s
             end
           end
+          
+          SelectOption.load(@scope.session, option_element)
         end
+      end
+      
+      def option_elements
+        Webrat::XML.xpath_search(@scope.dom, *SelectOption.xpath_search)
       end
       
       def error_message
