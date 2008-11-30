@@ -7,8 +7,8 @@ module Webrat
       ".//label"
     end
     
-    def initialize(field, element)
-      @field    = field
+    def initialize(session, element)
+      @session  = session
       @element  = element
     end
     

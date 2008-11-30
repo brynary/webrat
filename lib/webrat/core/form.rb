@@ -48,7 +48,7 @@ module Webrat
     
     def labels
       @labels ||= Webrat::XML.css_search(element, "label").map do |element|
-        label = Label.new(nil, element)
+        label = Label.new(@session, element)
         @session.elements[Webrat::XML.xpath_to(element)] = label
         label
       end
