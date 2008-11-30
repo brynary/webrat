@@ -14,12 +14,9 @@ module Webrat
     def find_select_option(option_text)
       select_fields = fields_by_type([SelectField])
 
-      select_fields.each do |select_field|
-        result = select_field.find_option(option_text)
-        return result if result
+      select_fields.detect_mapped do |select_field|
+        select_field.find_option(option_text)
       end
-
-      nil
     end
 
     def fields

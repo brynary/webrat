@@ -13,6 +13,8 @@ module Webrat
       session.elements[Webrat::XML.xpath_to(element)] ||= self.new(session, element)
     end
     
+    attr_reader :element
+    
     def initialize(session, element)
       @session  = session
       @element  = element

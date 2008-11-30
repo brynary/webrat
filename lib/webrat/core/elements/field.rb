@@ -68,11 +68,6 @@ module Webrat
     def matches_name?(name)
       Webrat::XML.attribute(@element, "name") == name.to_s
     end
-    
-    def matches_label?(label_text)
-      return false if labels.empty?
-      labels.any? { |label| label.matches_text?(label_text) }
-    end
 
     def disabled?
       @element.attributes.has_key?("disabled") && Webrat::XML.attribute(@element, "disabled") != 'false'

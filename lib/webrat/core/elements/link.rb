@@ -32,16 +32,8 @@ module Webrat
       else
         matcher = /#{Regexp.escape(link_text.to_s)}/i
       end
-
+    
       replace_nbsp(text) =~ matcher || replace_nbsp_ref(inner_html) =~ matcher || title =~ matcher
-    end
-
-    def matches_id?(id_or_regexp)
-      if id_or_regexp.is_a?(Regexp)
-        (id =~ id_or_regexp) ? true : false
-      else
-        (id == id_or_regexp) ? true : false
-      end
     end
 
     def inner_html

@@ -78,23 +78,5 @@ describe Webrat::Link do
     link.should_receive(:inner_html).and_return('<img src="logo.png" />')
     link.matches_text?('logo.png').should == 10
   end
-
-  it "should matches_id? on exact matching id" do
-    link = Webrat::Link.new(webrat_session, nil)
-    link.should_receive(:id).and_return("some_id")
-    link.matches_id?("some_id").should == true
-  end
-  
-  it "should not matches_id? on incorrect id" do
-    link = Webrat::Link.new(webrat_session, nil)
-    link.should_receive(:id).and_return("other_id")
-    link.matches_id?("some_id").should == false
-  end
-  
-  it "should matches_id? on matching id by regexp" do
-    link = Webrat::Link.new(webrat_session, nil)
-    link.should_receive(:id).and_return("some_id")
-    link.matches_id?(/some/).should == true
-  end
   
 end

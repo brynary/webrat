@@ -7,14 +7,6 @@ module Webrat
       ".//option"
     end
     
-    def matches_text?(text)
-      if text.is_a?(Regexp)
-        Webrat::XML.inner_html(@element) =~ text
-      else
-        Webrat::XML.inner_html(@element) == text.to_s
-      end
-    end
-    
     def choose
       select.raise_error_if_disabled
       select.set(value)
