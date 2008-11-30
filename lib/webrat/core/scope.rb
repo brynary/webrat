@@ -30,9 +30,6 @@ module Webrat
     def initialize(session, &block) #:nodoc:
       @session = session
       instance_eval(&block) if block_given?
-      
-      # preload
-      load_elements
     end
     
     # Verifies an input field or textarea exists on the current page, and stores a value for
@@ -281,14 +278,6 @@ module Webrat
     end
     
   protected
-  
-    def load_elements
-      labels
-      fields
-      forms
-      areas
-      links
-    end
     
     def page_dom #:nodoc:
       return @response.dom if @response.respond_to?(:dom)
@@ -323,26 +312,8 @@ module Webrat
       end
     end
     
-    def areas #:nodoc:
-      @areas ||= Area.load_all(@session, dom)
-    end
-    
-    def links #:nodoc:
-      @links ||= Link.load_all(@session, dom)
-    end
-    
     def forms #:nodoc:
       @forms ||= Form.load_all(@session, dom)
-    end
-    
-    def fields
-      @fields ||= Field.field_classes.map do |field_class|
-        field_class.load_all(@session, dom)
-      end.flatten
-    end
-    
-    def labels
-      @labels ||= Label.load_all(@session, dom)
     end
     
   end
