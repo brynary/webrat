@@ -7,15 +7,13 @@ module Webrat
     class FieldLabeledLocator < Locator
   
       def locate
-        matching_fields.min { |a, b| a.label_text.length <=> b.label_text.length }
-      end
-      
-      def matching_fields
-        matching_labels.map(&:field).compact.uniq
+        matching_labels.any? && matching_labels.first.field
       end
       
       def matching_labels
-        matching_label_elements.map do |label_element|
+        matching_label_elements.sort_by do |label_element|
+          text(label_element).length
+        end.map do |label_element|
           Label.load(@scope.session, label_element)
         end
       end

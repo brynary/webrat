@@ -8,14 +8,6 @@ module Webrat
     def self.xpath_search
       ".//label"
     end
-    
-    def text
-      str = Webrat::XML.all_inner_text(@element)
-      str.gsub!("\n","")
-      str.strip!
-      str.squeeze!(" ")
-      str
-    end
 
     def for_id
       Webrat::XML.attribute(@element, "for")
@@ -25,6 +17,8 @@ module Webrat
       Field.load(@session, field_element)
     end
     
+  protected
+  
     def field_element
       if for_id.blank?
         Webrat::XML.xpath_at(@element, *Field.xpath_search)
