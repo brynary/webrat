@@ -30,27 +30,14 @@ module Webrat
     end
 
     def fields
-      return @fields if @fields
-      
-      @fields = []
-      
-      [SelectField, TextareaField, ButtonField, CheckboxField, PasswordField,
-       RadioField, FileField, ResetField, TextField, HiddenField].each do |field_class|
-        @fields += Webrat::XML.xpath_search(@element, *field_class.xpath_search).map do |element| 
-          field = field_class.new(@session, element)
-          @session.elements[Webrat::XML.xpath_to(element)] = field
-          field
-        end
+      @fields ||= Webrat::XML.xpath_search(@element, *Field.xpath_search).map do |element|
+        @session.element_to_webrat_element(element)
       end
-      
-      @fields
     end
     
     def labels
       @labels ||= Webrat::XML.css_search(element, "label").map do |element|
-        label = Label.new(@session, element)
-        @session.elements[Webrat::XML.xpath_to(element)] = label
-        label
+        @session.element_to_webrat_element(element)
       end
     end
     
