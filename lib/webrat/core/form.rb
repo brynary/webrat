@@ -63,18 +63,6 @@ module Webrat
       possible_fields.detect { |possible_field| possible_field.matches_name?(name) }
     end
     
-    def field_labeled(label, *field_types)
-      possible_fields = fields_by_type(field_types)      
-      matching_fields = possible_fields.select do |possible_field|
-        possible_field.matches_label?(label)
-      end      
-      matching_fields.min { |a, b| a.label_text.length <=> b.label_text.length }
-    end
-
-    def label_matching(label_text)
-      labels.detect { |label| label.matches_text?(label_text) }
-    end
-    
     def matches_id?(id)
       Webrat::XML.attribute(@element, "id") == id.to_s
     end

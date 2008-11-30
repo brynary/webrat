@@ -1,6 +1,8 @@
 module Webrat
   class Label #:nodoc:
     
+    attr_reader :element
+    
     def self.xpath_search
       ".//label"
     end
@@ -8,10 +10,6 @@ module Webrat
     def initialize(field, element)
       @field    = field
       @element  = element
-    end
-    
-    def matches_text?(label_text)
-      text =~ /^\W*#{Regexp.escape(label_text.to_s)}\b/i
     end
     
     def text
