@@ -261,8 +261,7 @@ module Webrat
     webrat_deprecate :clicks_button, :click_button
     
     def submit_form(id)
-      form = forms.detect { |f| f.matches_id?(id) }
-      form.submit
+      FormLocator.new(self, id).locate.submit
     end
     
     def dom # :nodoc:

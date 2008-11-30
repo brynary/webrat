@@ -131,7 +131,7 @@ module Webrat
     def label_elements
       return @label_elements unless @label_elements.nil?
       @label_elements = []
-
+    
       parent = @element.parent
       while parent.respond_to?(:parent)
         if parent.name == 'label'
@@ -140,11 +140,11 @@ module Webrat
         end
         parent = parent.parent
       end
-
+    
       unless id.blank?
         @label_elements += Webrat::XML.css_search(form.element, "label[@for='#{id}']")
       end
-
+    
       @label_elements
     end
     

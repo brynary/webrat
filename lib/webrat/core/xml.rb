@@ -71,6 +71,10 @@ module Webrat #:nodoc:
       xpath_search(*args).first
     end
     
+    def self.css_at(*args)
+      css_search(*args).first
+    end
+    
     def self.xpath_search(element, *searches)
       searches.flatten.map do |search|
         if Webrat.configuration.parse_with_nokogiri?

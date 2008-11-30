@@ -32,10 +32,6 @@ module Webrat
       possible_fields.detect { |possible_field| possible_field.matches_name?(name) }
     end
     
-    def matches_id?(id)
-      Webrat::XML.attribute(@element, "id") == id.to_s
-    end
-    
   protected
   
     def fields_by_type(field_types)

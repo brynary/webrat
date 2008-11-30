@@ -26,25 +26,8 @@ module Webrat
       end
     end
     
-    def matches_text?(link_text)
-      if link_text.is_a?(Regexp)
-        matcher = link_text
-      else
-        matcher = /#{Regexp.escape(link_text.to_s)}/i
-      end
-    
-      replace_nbsp(text) =~ matcher || replace_nbsp_ref(inner_html) =~ matcher || title =~ matcher
-    end
-
-    def inner_html
-      Webrat::XML.inner_html(@element)
-    end
-    
-    def text
-      Webrat::XML.all_inner_text(@element)
-    end
-    
   protected
+  
     def id
       Webrat::XML.attribute(@element, "id")
     end
@@ -106,14 +89,6 @@ module Webrat
         raise Webrat::WebratError.new("No HTTP method for _method param in #{onclick.inspect}")
       end
     end
-
-  private
-    def replace_nbsp(str)
-      str.gsub([0xA0].pack('U'), ' ')
-    end
-
-    def replace_nbsp_ref(str)
-      str.gsub('&#xA0;',' ').gsub('&nbsp;', ' ')
-    end
+    
   end
 end
