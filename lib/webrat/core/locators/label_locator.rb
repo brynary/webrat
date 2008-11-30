@@ -1,3 +1,4 @@
+require "webrat/core_extensions/detect_mapped"
 require "webrat/core/locators/locator"
 
 module Webrat

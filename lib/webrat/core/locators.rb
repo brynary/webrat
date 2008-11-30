@@ -1,5 +1,3 @@
-require "webrat/core_extensions/detect_mapped"
-
 require "webrat/core/locators/area_locator"
 require "webrat/core/locators/button_locator"
 require "webrat/core/locators/field_labeled_locator"
