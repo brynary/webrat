@@ -7,7 +7,7 @@ module Webrat
     class LabelLocator < Locator
   
       def locate
-        Label.load(@scope.session, label_element)
+        Label.load(@session, label_element)
       end
       
       def label_element
@@ -17,7 +17,7 @@ module Webrat
       end
   
       def label_elements
-        Webrat::XML.xpath_search(@scope.dom, Label.xpath_search)
+        Webrat::XML.xpath_search(@dom, Label.xpath_search)
       end
       
       def text(label_element)

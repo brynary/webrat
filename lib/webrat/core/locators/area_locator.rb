@@ -4,9 +4,9 @@ module Webrat
   module Locators
     
     class AreaLocator < Locator
-  
+      
       def locate
-        Area.load(@scope.session, area_element)
+        Area.load(@session, area_element)
       end
   
       def area_element
@@ -21,7 +21,7 @@ module Webrat
       end
   
       def area_elements
-        Webrat::XML.xpath_search(@scope.dom, Area.xpath_search)
+        Webrat::XML.xpath_search(@dom, Area.xpath_search)
       end
   
       def error_message
@@ -31,7 +31,7 @@ module Webrat
     end
     
     def find_area(id_or_title) #:nodoc:
-      AreaLocator.new(self, id_or_title).locate!
+      AreaLocator.new(@session, dom, id_or_title).locate!
     end
     
   end

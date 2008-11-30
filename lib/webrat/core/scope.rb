@@ -132,7 +132,7 @@ module Webrat
                 date_to_select : Date.parse(date_to_select) 
       
       id_prefix = locate_id_prefix(options) do
-        year_field = FieldByIdLocator.new(self, /(.*?)_#{DATE_TIME_SUFFIXES[:year]}$/).locate
+        year_field = FieldByIdLocator.new(@session, dom, /(.*?)_#{DATE_TIME_SUFFIXES[:year]}$/).locate
         raise NotFoundError.new("No date fields were found") unless year_field && year_field.id =~ /(.*?)_1i/
         $1
       end
@@ -166,7 +166,7 @@ module Webrat
       time = time_to_select.is_a?(Time) ? time_to_select : Time.parse(time_to_select) 
 
       id_prefix = locate_id_prefix(options) do
-        hour_field = FieldByIdLocator.new(self, /(.*?)_#{DATE_TIME_SUFFIXES[:hour]}$/).locate
+        hour_field = FieldByIdLocator.new(@session, dom, /(.*?)_#{DATE_TIME_SUFFIXES[:hour]}$/).locate
         raise NotFoundError.new("No time fields were found") unless hour_field && hour_field.id =~ /(.*?)_4i/
         $1
       end
@@ -188,7 +188,7 @@ module Webrat
     def select_datetime(time_to_select, options ={})
       time = time_to_select.is_a?(Time) ? time_to_select : Time.parse(time_to_select) 
       
-      options[:id_prefix] ||= (options[:from] ? FieldByIdLocator.new(self, options[:from]).locate : nil)
+      options[:id_prefix] ||= (options[:from] ? FieldByIdLocator.new(@session, dom, options[:from]).locate : nil)
       
       select_date time, options
       select_time time, options
@@ -261,7 +261,7 @@ module Webrat
     webrat_deprecate :clicks_button, :click_button
     
     def submit_form(id)
-      FormLocator.new(self, id).locate.submit
+      FormLocator.new(@session, dom, id).locate.submit
     end
     
     def dom # :nodoc:
@@ -301,7 +301,7 @@ module Webrat
       return options[:id_prefix] if options[:id_prefix]
       
       if options[:from]
-        if (label = LabelLocator.new(self, options[:from]).locate)
+        if (label = LabelLocator.new(@session, dom, options[:from]).locate)
           label.for_id
         else
           raise NotFoundError.new("Could not find the label with text #{options[:from]}")

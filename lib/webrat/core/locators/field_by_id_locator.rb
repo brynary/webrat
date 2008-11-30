@@ -6,7 +6,7 @@ module Webrat
     class FieldByIdLocator < Locator
   
       def locate
-        Field.load(@scope.session, field_element)
+        Field.load(@session, field_element)
       end
   
       def field_element
@@ -20,7 +20,7 @@ module Webrat
       end
   
       def field_elements
-        Webrat::XML.xpath_search(@scope.dom, *Field.xpath_search)
+        Webrat::XML.xpath_search(@dom, *Field.xpath_search)
       end
 
       def error_message
@@ -30,7 +30,7 @@ module Webrat
     end
     
     def field_with_id(id, *field_types)
-      FieldByIdLocator.new(self, id, *field_types).locate!
+      FieldByIdLocator.new(@session, dom, id, *field_types).locate!
     end
     
   end

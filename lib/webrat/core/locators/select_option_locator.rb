@@ -6,15 +6,16 @@ module Webrat
     
     class SelectOptionLocator < Locator
   
-      def initialize(scope, option_text, id_or_name_or_label)
-        @scope = scope
+      def initialize(session, dom, option_text, id_or_name_or_label)
+        @session = session
+        @dom = dom
         @option_text = option_text
         @id_or_name_or_label = id_or_name_or_label
       end
       
       def locate
         if @id_or_name_or_label
-          field = FieldLocator.new(@scope, @id_or_name_or_label, SelectField).locate!
+          field = FieldLocator.new(@session, @dom, @id_or_name_or_label, SelectField).locate!
           
           field.send(:options).detect do |o|
             if @option_text.is_a?(Regexp)
@@ -32,12 +33,12 @@ module Webrat
             end
           end
           
-          SelectOption.load(@scope.session, option_element)
+          SelectOption.load(@session, option_element)
         end
       end
       
       def option_elements
-        Webrat::XML.xpath_search(@scope.dom, *SelectOption.xpath_search)
+        Webrat::XML.xpath_search(@dom, *SelectOption.xpath_search)
       end
       
       def error_message
@@ -51,7 +52,7 @@ module Webrat
     end
     
     def find_select_option(option_text, id_or_name_or_label) #:nodoc:
-      SelectOptionLocator.new(self, option_text, id_or_name_or_label).locate!
+      SelectOptionLocator.new(@session, dom, option_text, id_or_name_or_label).locate!
     end
     
   end

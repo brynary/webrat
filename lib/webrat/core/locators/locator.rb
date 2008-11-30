@@ -2,9 +2,10 @@ module Webrat
   module Locators
   
     class Locator
-  
-      def initialize(scope, value, *field_types)
-        @scope = scope
+
+      def initialize(session, dom, value, *field_types)
+        @session = session
+        @dom = dom
         @value = value
         @field_types = field_types
       end

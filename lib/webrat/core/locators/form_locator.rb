@@ -6,11 +6,11 @@ module Webrat
     class FormLocator < Locator
   
       def locate
-        Form.load(@scope.session, form_element)
+        Form.load(@session, form_element)
       end
       
       def form_element
-        Webrat::XML.css_at(@scope.dom, "#" + @value)
+        Webrat::XML.css_at(@dom, "#" + @value)
       end
       
     end

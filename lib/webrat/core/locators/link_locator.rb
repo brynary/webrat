@@ -6,7 +6,7 @@ module Webrat
     class LinkLocator < Locator
   
       def locate
-        Link.load(@scope.session, link_element)
+        Link.load(@session, link_element)
       end
   
       def link_element
@@ -41,7 +41,7 @@ module Webrat
       end
   
       def link_elements
-        Webrat::XML.css_search(@scope.dom, *Link.css_search)
+        Webrat::XML.css_search(@dom, *Link.css_search)
       end
   
       def replace_nbsp(str)
@@ -59,7 +59,7 @@ module Webrat
     end
     
     def find_link(text_or_title_or_id) #:nodoc:
-      LinkLocator.new(self, text_or_title_or_id).locate!
+      LinkLocator.new(@session, dom, text_or_title_or_id).locate!
     end
     
   end

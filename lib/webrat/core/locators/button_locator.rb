@@ -6,7 +6,7 @@ module Webrat
     class ButtonLocator < Locator
   
       def locate
-        ButtonField.load(@scope.session, button_element)
+        ButtonField.load(@session, button_element)
       end
   
       def button_element
@@ -37,7 +37,7 @@ module Webrat
       end
   
       def button_elements
-        Webrat::XML.xpath_search(@scope.dom, *ButtonField.xpath_search)
+        Webrat::XML.xpath_search(@dom, *ButtonField.xpath_search)
       end
   
       def error_message
@@ -47,7 +47,7 @@ module Webrat
     end
     
     def find_button(value) #:nodoc:
-      ButtonLocator.new(self, value).locate!
+      ButtonLocator.new(@session, dom, value).locate!
     end
     
   end

@@ -6,9 +6,9 @@ module Webrat
     class FieldLocator < Locator
   
       def locate
-        FieldByIdLocator.new(@scope, @value).locate   ||
-        FieldNamedLocator.new(@scope, @value, *@field_types).locate   ||
-        FieldLabeledLocator.new(@scope, @value, *@field_types).locate
+        FieldByIdLocator.new(@session, @dom, @value).locate   ||
+        FieldNamedLocator.new(@session, @dom, @value, *@field_types).locate   ||
+        FieldLabeledLocator.new(@session, @dom, @value, *@field_types).locate
       end
       
       def error_message
@@ -18,7 +18,7 @@ module Webrat
     end
     
     def field(*args) # :nodoc:
-      FieldLocator.new(self, *args).locate!
+      FieldLocator.new(@session, dom, *args).locate!
     end
     
   end

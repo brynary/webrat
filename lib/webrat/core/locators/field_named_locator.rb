@@ -6,7 +6,7 @@ module Webrat
     class FieldNamedLocator < Locator
   
       def locate
-        Field.load(@scope.session, field_element)
+        Field.load(@session, field_element)
       end
   
       def field_element
@@ -16,7 +16,7 @@ module Webrat
       end
   
       def field_elements
-        Webrat::XML.xpath_search(@scope.dom, *xpath_searches)
+        Webrat::XML.xpath_search(@dom, *xpath_searches)
       end
   
       def xpath_searches
@@ -34,7 +34,7 @@ module Webrat
     end
     
     def field_named(name, *field_types)
-      FieldNamedLocator.new(self, name, *field_types).locate!
+      FieldNamedLocator.new(@session, dom, name, *field_types).locate!
     end
     
   end

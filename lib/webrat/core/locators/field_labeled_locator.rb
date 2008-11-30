@@ -14,7 +14,7 @@ module Webrat
         matching_label_elements.sort_by do |label_element|
           text(label_element).length
         end.map do |label_element|
-          Label.load(@scope.session, label_element)
+          Label.load(@session, label_element)
         end
       end
       
@@ -25,7 +25,7 @@ module Webrat
       end
       
       def label_elements
-        Webrat::XML.xpath_search(@scope.dom, Label.xpath_search)
+        Webrat::XML.xpath_search(@dom, Label.xpath_search)
       end
   
       def error_message
@@ -43,7 +43,7 @@ module Webrat
     end
     
     def field_labeled(label, *field_types)
-      FieldLabeledLocator.new(self, label, *field_types).locate!
+      FieldLabeledLocator.new(@session, dom, label, *field_types).locate!
     end
     
   end
