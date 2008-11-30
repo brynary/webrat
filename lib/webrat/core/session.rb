@@ -43,11 +43,6 @@ module Webrat
       
       reset
     end
-    
-    def element_to_webrat_element(element)
-      return nil if element.nil?
-      elements[Webrat::XML.xpath_to(element)]
-    end
 
     # Saves the page out to RAILS_ROOT/tmp/ and opens it in the default
     # web browser if on OS X. Useful for debugging.

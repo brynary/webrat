@@ -9,6 +9,7 @@ module Webrat
     end
     
     def self.load(session, element)
+      return nil if element.nil?
       session.elements[Webrat::XML.xpath_to(element)] ||= self.new(session, element)
     end
     

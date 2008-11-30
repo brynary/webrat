@@ -6,7 +6,7 @@ module Webrat
     class LinkLocator < Locator
   
       def locate
-        @scope.element_to_webrat_element(link_element)
+        Link.load(@scope.session, link_element)
       end
   
       def link_element

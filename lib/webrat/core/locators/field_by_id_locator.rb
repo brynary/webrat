@@ -6,7 +6,7 @@ module Webrat
     class FieldByIdLocator < Locator
   
       def locate
-        @scope.element_to_webrat_element(field_element)
+        Field.load(@scope.session, field_element)
       end
   
       def field_element

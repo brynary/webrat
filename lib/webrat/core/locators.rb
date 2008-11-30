@@ -12,13 +12,7 @@ module Webrat
   module Locators
     
     def field_by_xpath(xpath)
-      element_to_webrat_element(Webrat::XML.xpath_at(dom, xpath))
-    end
-    
-    def element_to_webrat_element(element)
-      @session.element_to_webrat_element(element)
-      return nil if element.nil?
-      @session.elements[Webrat::XML.xpath_to(element)]
+      Field.load(@session, Webrat::XML.xpath_at(dom, xpath))
     end
     
   end

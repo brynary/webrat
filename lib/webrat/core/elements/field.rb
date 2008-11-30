@@ -26,6 +26,31 @@ module Webrat
       # raise args.inspect
     end
     
+    def self.load(session, element)
+      return nil if element.nil?
+      session.elements[Webrat::XML.xpath_to(element)] ||= field_class(element).new(session, element)
+    end
+    
+    def self.field_class(element)
+      case element.name
+      when "button"   then ButtonField
+      when "select"   then SelectField
+      when "textarea" then TextareaField
+      else
+        case Webrat::XML.attribute(element, "type")
+        when "checkbox" then CheckboxField
+        when "hidden"   then HiddenField
+        when "radio"    then RadioField
+        when "password" then PasswordField
+        when "file"     then FileField
+        when "reset"    then ResetField
+        when "submit"   then ButtonField
+        when "image"    then ButtonField
+        else  TextField
+        end
+      end
+    end
+    
     def initialize(*args)
       super
       @value = default_value
@@ -82,7 +107,7 @@ module Webrat
   protected
   
     def form
-      @session.element_to_webrat_element(form_element)
+      Form.load(@session, form_element)
     end
     
     def form_element

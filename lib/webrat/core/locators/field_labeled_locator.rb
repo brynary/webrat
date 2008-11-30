@@ -29,7 +29,7 @@ module Webrat
       
       def matching_labels
         matching_label_elements.map do |label_element|
-          @scope.element_to_webrat_element(label_element)
+          Label.load(@scope.session, label_element)
         end
       end
       

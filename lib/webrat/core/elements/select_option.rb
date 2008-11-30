@@ -23,7 +23,7 @@ module Webrat
   protected
     
     def select
-      @session.element_to_webrat_element(select_element)
+      SelectField.load(@session, select_element)
     end
     
     def select_element

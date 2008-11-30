@@ -7,7 +7,7 @@ module Webrat
     class LabelLocator < Locator
   
       def locate
-        @scope.element_to_webrat_element(label_element)
+        Label.load(@scope.session, label_element)
       end
       
       def label_element
