@@ -6,7 +6,7 @@ module Webrat
     class AreaLocator < Locator
   
       def locate
-        @scope.area_by_element(area_element)
+        @scope.element_to_webrat_element(area_element)
       end
   
       def area_element

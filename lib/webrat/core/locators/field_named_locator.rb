@@ -6,7 +6,7 @@ module Webrat
     class FieldNamedLocator < Locator
   
       def locate
-        @scope.field_by_element(field_element)
+        @scope.element_to_webrat_element(field_element)
       end
   
       def field_element

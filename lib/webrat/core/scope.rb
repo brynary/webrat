@@ -134,7 +134,7 @@ module Webrat
                 date_to_select : Date.parse(date_to_select) 
       
       id_prefix = locate_id_prefix(options) do
-        year_field = find_field_with_id(/(.*?)_#{DATE_TIME_SUFFIXES[:year]}$/)
+        year_field = FieldByIdLocator.new(self, /(.*?)_#{DATE_TIME_SUFFIXES[:year]}$/).locate
         raise NotFoundError.new("No date fields were found") unless year_field && year_field.id =~ /(.*?)_1i/
         $1
       end
@@ -168,7 +168,7 @@ module Webrat
       time = time_to_select.is_a?(Time) ? time_to_select : Time.parse(time_to_select) 
 
       id_prefix = locate_id_prefix(options) do
-        hour_field = find_field_with_id(/(.*?)_#{DATE_TIME_SUFFIXES[:hour]}$/)
+        hour_field = FieldByIdLocator.new(self, /(.*?)_#{DATE_TIME_SUFFIXES[:hour]}$/).locate
         raise NotFoundError.new("No time fields were found") unless hour_field && hour_field.id =~ /(.*?)_4i/
         $1
       end
@@ -190,7 +190,7 @@ module Webrat
     def select_datetime(time_to_select, options ={})
       time = time_to_select.is_a?(Time) ? time_to_select : Time.parse(time_to_select) 
       
-      options[:id_prefix] ||= (options[:from] ? find_field_with_id(options[:from]) : nil)
+      options[:id_prefix] ||= (options[:from] ? FieldByIdLocator.new(self, options[:from]).locate : nil)
       
       select_date time, options
       select_time time, options
@@ -302,7 +302,16 @@ module Webrat
     
     def locate_id_prefix(options, &location_strategy) #:nodoc:
       return options[:id_prefix] if options[:id_prefix]
-      id_prefix = options[:from] ? find_field_id_for_label(options[:from]) : yield
+      
+      if options[:from]
+        if (label = LabelLocator.new(self, options[:from]).locate)
+          label.for_id
+        else
+          raise NotFoundError.new("Could not find the label with text #{options[:from]}")
+        end
+      else
+        yield
+      end
     end
     
     def areas #:nodoc:

@@ -6,7 +6,7 @@ module Webrat
     class ButtonLocator < Locator
   
       def locate
-        @scope.field_by_element(button_element)
+        @scope.element_to_webrat_element(button_element)
       end
   
       def button_element
