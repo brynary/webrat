@@ -4,7 +4,7 @@ require "webrat/core/locators/locator"
 module Webrat
   module Locators
     
-    class LabelLocator < Locator
+    class LabelLocator < Locator # :nodoc:
   
       def locate
         Label.load(@session, label_element)

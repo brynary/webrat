@@ -3,7 +3,7 @@ require "webrat/core/locators/locator"
 module Webrat
   module Locators
     
-    class FieldLocator < Locator
+    class FieldLocator < Locator # :nodoc:
   
       def locate
         FieldByIdLocator.new(@session, @dom, @value).locate   ||

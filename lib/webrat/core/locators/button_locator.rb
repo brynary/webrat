@@ -3,7 +3,7 @@ require "webrat/core/locators/locator"
 module Webrat
   module Locators
     
-    class ButtonLocator < Locator
+    class ButtonLocator < Locator # :nodoc:
   
       def locate
         ButtonField.load(@session, button_element)

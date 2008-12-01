@@ -75,8 +75,13 @@ task :install_gem => [:clean, :package] do
   sh "sudo gem install --local #{gem}"
 end
 
+desc "Delete generated RDoc"
+task :clobber_docs do
+  FileUtils.rm_rf("doc")
+end
+
 desc "Generate RDoc"
-task :docs do
+task :docs => :clobber_docs do
   system "hanna --title 'Webrat #{Webrat::VERSION} API Documentation'"
 end
 

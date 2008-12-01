@@ -182,7 +182,7 @@ module Webrat
       end
     end
     
-    def rewrite_css_and_image_references(response_html) #:nodoc
+    def rewrite_css_and_image_references(response_html) # :nodoc:
       return response_html unless doc_root
       response_html.gsub(/"\/(stylesheets|images)/, doc_root + '/\1')
     end

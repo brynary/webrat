@@ -1,6 +1,6 @@
 module Webrat
   
-  class Element
+  class Element # :nodoc:
     
     def self.load_all(session, dom)
       Webrat::XML.xpath_search(dom, xpath_search).map do |element| 

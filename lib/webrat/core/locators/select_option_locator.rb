@@ -4,7 +4,7 @@ require "webrat/core/locators/locator"
 module Webrat
   module Locators
     
-    class SelectOptionLocator < Locator
+    class SelectOptionLocator < Locator # :nodoc:
   
       def initialize(session, dom, option_text, id_or_name_or_label)
         @session = session

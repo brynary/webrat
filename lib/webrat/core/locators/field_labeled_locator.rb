@@ -4,7 +4,7 @@ require "webrat/core/locators/locator"
 module Webrat
   module Locators
     
-    class FieldLabeledLocator < Locator
+    class FieldLabeledLocator < Locator # :nodoc:
   
       def locate
         matching_labels.any? && matching_labels.first.field

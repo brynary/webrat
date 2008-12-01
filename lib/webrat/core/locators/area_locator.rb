@@ -3,7 +3,7 @@ require "webrat/core/locators/locator"
 module Webrat
   module Locators
     
-    class AreaLocator < Locator
+    class AreaLocator < Locator # :nodoc:
       
       def locate
         Area.load(@session, area_element)
