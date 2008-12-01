@@ -98,8 +98,7 @@ module Webrat
     #   select "February", :from => "event_month"
     #   select "February", :from => "Event Month"
     def select(option_text, options = {})
-      option = find_select_option(option_text, options[:from])
-      option.choose
+      select_option(option_text, options[:from]).choose
     end
 
     webrat_deprecate :selects, :select

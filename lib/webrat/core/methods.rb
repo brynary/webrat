@@ -40,6 +40,7 @@ module Webrat
       :reload, :reloads,
       :clicks_link_within, :click_link_within,
       :field_labeled,
+      :select_option,
       :set_hidden_field, :submit_form,
       :request_page, :current_dom,
       :selects_date, :selects_time, :selects_datetime,

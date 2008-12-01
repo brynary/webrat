@@ -365,11 +365,11 @@ module Webrat
     def self.xpath_search
       ".//select"
     end
-    
-    def find_option(text)
-      options.detect { |o| o.matches_text?(text) }
-    end
 
+    def options
+      @options ||= SelectOption.load_all(@session, @element)
+    end
+    
   protected
 
     def default_value
@@ -380,10 +380,6 @@ module Webrat
         return "" if option.nil?
         Webrat::XML.attribute(option, "value") || Webrat::XML.inner_html(option)
       end
-    end
-
-    def options
-      @options ||= SelectOption.load_all(@session, @element)
     end
 
   end

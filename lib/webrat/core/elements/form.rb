@@ -11,14 +11,6 @@ module Webrat
     def self.xpath_search
       ".//form"
     end
-    
-    def find_select_option(option_text)
-      select_fields = fields_by_type([SelectField])
-
-      select_fields.detect_mapped do |select_field|
-        select_field.find_option(option_text)
-      end
-    end
 
     def fields
       @fields ||= Field.load_all(@session, @element)

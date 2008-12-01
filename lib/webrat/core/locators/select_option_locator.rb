@@ -17,7 +17,7 @@ module Webrat
         if @id_or_name_or_label
           field = FieldLocator.new(@session, @dom, @id_or_name_or_label, SelectField).locate!
           
-          field.send(:options).detect do |o|
+          field.options.detect do |o|
             if @option_text.is_a?(Regexp)
               Webrat::XML.inner_html(o.element) =~ @option_text
             else
@@ -51,7 +51,7 @@ module Webrat
   
     end
     
-    def find_select_option(option_text, id_or_name_or_label) #:nodoc:
+    def select_option(option_text, id_or_name_or_label = nil) #:nodoc:
       SelectOptionLocator.new(@session, dom, option_text, id_or_name_or_label).locate!
     end
     
