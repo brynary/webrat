@@ -31,7 +31,7 @@ module Webrat
       end
       pattern ||= '*'
       selenium.click("button=#{pattern}")
-      wait_for_result(options[:wait])
+      wait_for_page_to_load
     end
     
     webrat_deprecate :clicks_button, :click_button
@@ -39,44 +39,21 @@ module Webrat
     def click_link(link_text_or_regexp, options = {})
       pattern = adjust_if_regexp(link_text_or_regexp)
       selenium.click("webratlink=#{pattern}")
-      wait_for_result(options[:wait])
+      wait_for_page_to_load
     end
     
     webrat_deprecate :clicks_link, :click_link
     
     def click_link_within(selector, link_text, options = {})
       selenium.click("webratlinkwithin=#{selector}|#{link_text}")
-      wait_for_result(options[:wait])
+      wait_for_page_to_load
     end
     
     webrat_deprecate :clicks_link_within, :click_link_within
 
-    def wait_for_result(wait_type)
-      if wait_type == :ajax
-        wait_for_ajax
-      elsif wait_type == :effects
-        wait_for_effects
-      else
-        wait_for_page_to_load
-      end
-    end
-
     def wait_for_page_to_load(timeout = 15000)
       selenium.wait_for_page_to_load(timeout)
     end
-
-    def wait_for_ajax(timeout = 15000)
-      selenium.wait_for_condition "Ajax.activeRequestCount == 0", timeout
-    end
-
-    def wait_for_effects(timeout = 15000)
-      selenium.wait_for_condition "window.Effect.Queue.size() == 0", timeout
-    end
-
-    def wait_for_ajax_and_effects
-      wait_for_ajax
-      wait_for_effects
-    end    
     
     def select(option_text, options = {})
       id_or_name_or_label = options[:from]
@@ -102,14 +79,6 @@ module Webrat
     end
     
     webrat_deprecate :checks, :check
-    
-    def is_ordered(*args) #:nodoc:
-      selenium.is_ordered(*args)
-    end
-    
-    def dragdrop(*args) #:nodoc:
-      selenium.dragdrop(*args)
-    end
 
     def fire_event(field_identifier, event)
       locator = "webrat=#{Regexp.escape(field_identifier)}"
@@ -141,7 +110,6 @@ module Webrat
         Webrat.start_selenium_server
         Webrat.start_app_server
       end
-      
       
       $browser = ::Selenium::Client::Driver.new("localhost", 4444, "*firefox", "http://0.0.0.0:3001")
       $browser.set_speed(0)
