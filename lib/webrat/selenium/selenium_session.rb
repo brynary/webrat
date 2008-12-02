@@ -2,8 +2,6 @@ module Webrat
   class SeleniumSession
     
     def initialize(*args) # :nodoc:
-      extend_selenium
-      define_location_strategies
     end
     
     def visit(url)
@@ -31,28 +29,30 @@ module Webrat
         pattern = adjust_if_regexp(button_text_or_regexp)
       end
       pattern ||= '*'
-      selenium.click("button=#{pattern}")
+      locator = "button=#{pattern}"
+      
+      selenium.wait_for_element locator, 5
+      selenium.click locator
     end
     
     webrat_deprecate :clicks_button, :click_button
 
     def click_link(link_text_or_regexp, options = {})
       pattern = adjust_if_regexp(link_text_or_regexp)
-      selenium.wait_for_element "webratlink=#{pattern}", 5
-      selenium.click("webratlink=#{pattern}")
+      locator = "webratlink=#{pattern}"
+      selenium.wait_for_element locator, 5
+      selenium.click locator
     end
     
     webrat_deprecate :clicks_link, :click_link
     
     def click_link_within(selector, link_text, options = {})
-      selenium.click("webratlinkwithin=#{selector}|#{link_text}")
+      locator = "webratlinkwithin=#{selector}|#{link_text}"
+      selenium.wait_for_element locator, 5
+      selenium.click locator
     end
     
     webrat_deprecate :clicks_link_within, :click_link_within
-
-    def wait_for_page_to_load(timeout = 15000)
-      selenium.wait_for_page_to_load(timeout)
-    end
     
     def select(option_text, options = {})
       id_or_name_or_label = options[:from]
@@ -62,19 +62,25 @@ module Webrat
       else
         select_locator = "webratselectwithoption=#{option_text}"
       end
+      
+      selenium.wait_for_element select_locator, 5
       selenium.select(select_locator, option_text)
     end
     
     webrat_deprecate :selects, :select
     
     def choose(label_text)
-      selenium.click("webrat=#{label_text}")
+      locator = "webrat=#{label_text}"
+      selenium.wait_for_element locator, 5
+      selenium.click locator
     end
     
     webrat_deprecate :chooses, :choose
         
     def check(label_text)
-      selenium.check("webrat=#{label_text}")
+      locator = "webrat=#{label_text}"
+      selenium.wait_for_element locator, 5
+      selenium.check locator
     end
     
     webrat_deprecate :checks, :check
@@ -114,6 +120,9 @@ module Webrat
       $browser.set_speed(0)
       $browser.start
       teardown_at_exit
+      
+      extend_selenium
+      define_location_strategies
     end
     
     def teardown_at_exit #:nodoc:

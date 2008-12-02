@@ -45,7 +45,6 @@ module Webrat
       :request_page, :current_dom,
       :selects_date, :selects_time, :selects_datetime,
       :select_date, :select_time, :select_datetime,
-      :wait_for_page_to_load,
       :field_by_xpath,
       :field_with_id,
       :selenium
