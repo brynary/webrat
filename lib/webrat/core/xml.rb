@@ -12,6 +12,22 @@ module Webrat #:nodoc:
         Webrat.rexml_document(Webrat.hpricot_document(stringlike).to_html)
       end
     end
+    
+    def self.html_document(stringlike) #:nodoc:
+      if Webrat.configuration.parse_with_nokogiri?
+        Webrat.html_nokogiri_document(stringlike)
+      else
+        Webrat.rexml_document(Webrat.hpricot_document(stringlike).to_html)
+      end
+    end
+    
+    def self.xml_document(stringlike) #:nodoc:
+      if Webrat.configuration.parse_with_nokogiri?
+        Webrat.xml_nokogiri_document(stringlike)
+      else
+        Webrat.rexml_document(Webrat.hpricot_document(stringlike).to_html)
+      end
+    end
 
     def self.to_html(element)
       if Webrat.configuration.parse_with_nokogiri?

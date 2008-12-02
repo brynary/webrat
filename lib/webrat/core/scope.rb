@@ -279,13 +279,25 @@ module Webrat
     
     def page_dom #:nodoc:
       return @response.dom if @response.respond_to?(:dom)
-      dom = Webrat::XML.document(@response_body)
+      
+      if @session.xml_content_type?
+        dom = Webrat::XML.xml_document(@response_body)
+      else
+        dom = Webrat::XML.html_document(@response_body)
+      end
+      
       Webrat.define_dom_method(@response, dom)
       return dom
     end
     
     def scoped_dom #:nodoc:
-      Webrat::XML.document("<html>" + Webrat::XML.to_html(Webrat::XML.css_search(@scope.dom, @selector).first) + "</html>")
+      source = Webrat::XML.to_html(Webrat::XML.css_search(@scope.dom, @selector).first)
+      
+      if @session.xml_content_type?
+        Webrat::XML.xml_document(source)
+      else
+        Webrat::XML.html_document(source)
+      end
     end
     
     def locate_field(field_locator, *field_types) #:nodoc:
