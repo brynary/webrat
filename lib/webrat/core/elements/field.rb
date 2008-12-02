@@ -138,7 +138,7 @@ module Webrat
       end
     
       unless id.blank?
-        @label_elements += Webrat::XML.css_search(form.element, "label[@for='#{id}']")
+        @label_elements += Webrat::XML.xpath_search(form.element, ".//label[@for = '#{id}']")
       end
     
       @label_elements
@@ -373,8 +373,8 @@ module Webrat
   protected
 
     def default_value
-      selected_options = Webrat::XML.css_search(@element, "option[@selected='selected']")
-      selected_options = Webrat::XML.css_search(@element, "option:first") if selected_options.empty? 
+      selected_options = Webrat::XML.xpath_search(@element, ".//option[@selected = 'selected']")
+      selected_options = Webrat::XML.xpath_search(@element, ".//option[position() = 1]") if selected_options.empty? 
       
       selected_options.map do |option|
         return "" if option.nil?

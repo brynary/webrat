@@ -9,10 +9,6 @@ module Webrat
       ".//a[@href]"
     end
     
-    def self.css_search
-      "a[@href]"
-    end
-    
     def click(options = {})
       method = options[:method] || http_method
       return if href =~ /^#/ && method == :get

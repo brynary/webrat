@@ -41,7 +41,7 @@ module Webrat
       end
   
       def link_elements
-        Webrat::XML.css_search(@dom, *Link.css_search)
+        Webrat::XML.xpath_search(@dom, *Link.xpath_search)
       end
   
       def replace_nbsp(str)
