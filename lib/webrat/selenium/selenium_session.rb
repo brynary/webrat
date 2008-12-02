@@ -126,11 +126,13 @@ module Webrat
       selenium.key_up(locator, key_code)
     end
     
-    def browser
+    def selenium
       return $browser if $browser
       setup
       $browser
     end
+    
+    webrat_deprecate :browser, :selenium
     
   protected
     
@@ -145,10 +147,6 @@ module Webrat
       $browser.set_speed(0)
       $browser.start
       teardown_at_exit
-    end
-    
-    def selenium #:nodoc:
-      browser
     end
     
     def teardown_at_exit #:nodoc:

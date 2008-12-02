@@ -47,7 +47,8 @@ module Webrat
       :select_date, :select_time, :select_datetime,
       :wait_for_page_to_load,
       :field_by_xpath,
-      :field_with_id
+      :field_with_id,
+      :selenium
       
     
   end
