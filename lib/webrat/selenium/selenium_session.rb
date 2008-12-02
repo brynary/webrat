@@ -14,6 +14,7 @@ module Webrat
     
     def fill_in(field_identifier, options)
       locator = "webrat=#{Regexp.escape(field_identifier)}"
+      selenium.wait_for_element locator, 5
       selenium.type(locator, "#{options[:with]}")
     end
     
@@ -31,22 +32,20 @@ module Webrat
       end
       pattern ||= '*'
       selenium.click("button=#{pattern}")
-      wait_for_page_to_load
     end
     
     webrat_deprecate :clicks_button, :click_button
 
     def click_link(link_text_or_regexp, options = {})
       pattern = adjust_if_regexp(link_text_or_regexp)
+      selenium.wait_for_element "webratlink=#{pattern}", 5
       selenium.click("webratlink=#{pattern}")
-      wait_for_page_to_load
     end
     
     webrat_deprecate :clicks_link, :click_link
     
     def click_link_within(selector, link_text, options = {})
       selenium.click("webratlinkwithin=#{selector}|#{link_text}")
-      wait_for_page_to_load
     end
     
     webrat_deprecate :clicks_link_within, :click_link_within
