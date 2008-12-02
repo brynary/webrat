@@ -50,10 +50,8 @@ module Webrat
     
 end
 
-module ::ActionController #:nodoc:
-  module Integration #:nodoc:
-    class Session #:nodoc:
-      include Webrat::Methods
-    end
+module ActionController #:nodoc:
+  IntegrationTest.class_eval do
+    include Webrat::Methods
   end
 end
