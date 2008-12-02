@@ -17,6 +17,7 @@
 
 * Minor enhancements
 
+  * Detect if the document is XML or HTML using the Content-Type when in Rails mode
   * Expose #selenium method for direct access to Selenium client
   * Check nokogiri gem version before requiring nokogiri
   * Include the Selenium server jar file in the gem (Bryan Helmkamp, Ben Schwarz)
