@@ -7,12 +7,12 @@ module Webrat
           def #{meth}(*args, &blk)
             webrat_session.#{meth}(*args, &blk)
           end
-          
-          def webrat_session
-            @_webrat_session ||= ::Webrat.session_class.new(self)
-          end
         RUBY
       end
+    end
+    
+    def webrat_session
+      @_webrat_session ||= ::Webrat.session_class.new(self)
     end
     
     # all of these methods delegate to the @session, which should
