@@ -1,17 +1,24 @@
-== Trunk
+== Trunk (Git)
 
-  TODO: Document changes to Webrat requiring. See:
+* _IMPORTANT_ Breaking change:
+
+  * Removed init.rb auto-require of webrat/rails
+  * Removed auto-require of webrat/rails when requiring webrat when RAILS_ENV is
+    defined
   
-    54de30032e7a6be5ef0321a3fcab318029dad0f8
-    ad8956070788cf3fa0f2ea5cbcb33867028c8605
+  In your env.rb file, ensure you have:
+  
+    require "webrat/rails"
   
 * Major enhancements
 
-  * Use Hpricot and REXML when not parsing with Nokogiri (on JRuby, for example)
   * Added select_time, select_date, and select_datetime to API. [#36] (Ben Mabey)
+  * Use Hpricot and REXML when not parsing with Nokogiri (on JRuby, for example)
 
 * Minor enhancements
 
+  * Expose #selenium method for direct access to Selenium client
+  * Check nokogiri gem version before requiring nokogiri
   * Include the Selenium server jar file in the gem (Bryan Helmkamp, Ben Schwarz)
   * Added key_down, key_up and fire_event to Selenium session (Fernando Garcia)
   * Fix outputing README during Rails plugin install (Fernando Garcia)
