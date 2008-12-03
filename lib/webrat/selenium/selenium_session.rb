@@ -1,4 +1,21 @@
 module Webrat
+  class TimeoutError < WebratError
+  end
+  
+  class SeleniumResponse
+    attr_reader :body
+    attr_reader :session
+    
+    def initialize(session, body)
+      @session = session
+      @body = body
+    end
+    
+    def selenium
+      session.selenium
+    end
+  end
+  
   class SeleniumSession
     
     def initialize(*args) # :nodoc:
@@ -17,6 +34,10 @@ module Webrat
     end
     
     webrat_deprecate :fills_in, :fill_in
+    
+    def response
+      SeleniumResponse.new(self, response_body)
+    end
     
     def response_body #:nodoc:
       selenium.get_html_source
@@ -98,6 +119,30 @@ module Webrat
     def key_up(field_identifier, key_code)
       locator = "webrat=#{Regexp.escape(field_identifier)}"
       selenium.key_up(locator, key_code)
+    end
+    
+    def wait_for(params={})
+      timeout = params[:timeout] || 5
+      message = params[:message] || "Timeout exceeded"
+
+      begin_time = Time.now
+
+      while (Time.now - begin_time) < timeout
+        value = nil
+
+        begin
+          value = yield
+        rescue ::Spec::Expectations::ExpectationNotMetError, ::Selenium::CommandError, Webrat::WebratError
+          value = nil
+        end
+
+        return value if value
+
+        sleep 0.25
+      end
+
+      raise Webrat::TimeoutError.new(message + " (after #{timeout} sec)")
+      true
     end
     
     def selenium

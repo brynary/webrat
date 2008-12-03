@@ -81,6 +81,14 @@ module Webrat
           @_result = Test::Unit::TestResult.new
         end
         
+        def response
+          webrat_session.response
+        end
+        
+        def wait_for(*args, &block)
+          webrat_session.wait_for(*args, &block)
+        end
+        
       end
     end
   end
