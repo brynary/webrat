@@ -11,6 +11,10 @@ module Webrat
       end
     end
     
+    def webrat
+      webrat_session
+    end
+    
     def webrat_session
       @_webrat_session ||= ::Webrat.session_class.new(self)
     end
@@ -47,7 +51,9 @@ module Webrat
       :select_date, :select_time, :select_datetime,
       :field_by_xpath,
       :field_with_id,
-      :selenium
+      :selenium,
+      :simulate, :automate
+      
       
     
   end
