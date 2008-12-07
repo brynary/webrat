@@ -2,6 +2,7 @@ require "webrat"
 gem "selenium-client", ">=1.2.9"
 require "selenium/client"
 require "webrat/selenium/selenium_session"
+require "webrat/selenium/matchers"
 
 Webrat.configuration.mode = :selenium
 
@@ -76,6 +77,7 @@ module Webrat
     
     module Rails #:nodoc:
       class World < ::ActionController::IntegrationTest
+        include Webrat::Selenium::Matchers
         
         def initialize #:nodoc:
           @_result = Test::Unit::TestResult.new
