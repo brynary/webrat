@@ -21,6 +21,13 @@ module Webrat
     def initialize(*args) # :nodoc:
     end
     
+    def simulate
+    end
+    
+    def automate
+      yield
+    end
+    
     def visit(url)
       selenium.open(url)
     end
