@@ -18,6 +18,7 @@ Spec::Runner.configure do |config|
   def with_html(html)
     webrat_session.response_body = html
   end
+  
 end
 
 module Webrat
@@ -29,5 +30,11 @@ module Webrat
 
   def self.reset_for_test
     @@configuration = @@previous_config if @@previous_config
+  end
+  
+  class Configuration
+    def mode_for_test= (mode)
+      @mode = mode
+    end
   end
 end

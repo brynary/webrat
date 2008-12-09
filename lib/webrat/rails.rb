@@ -81,5 +81,3 @@ module ActionController #:nodoc:
     end
   end
 end
-
-Webrat.configuration.mode = :rails

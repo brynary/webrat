@@ -3,6 +3,7 @@ require "mechanize"
 require "webrat/mechanize"
 
 describe Webrat::MechanizeSession do
+  
   before(:each) do
     @mech = Webrat::MechanizeSession.new
   end

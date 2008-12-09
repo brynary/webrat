@@ -12,6 +12,14 @@ module Webrat
   end
   
   class Configuration
+    
+    RAILS_MODE = :rails
+    SELENIUM_MODE = :selenium
+    RACK_MODE = :rack
+    SINATRA_MODE = :sinatra
+    MECHANIZE_MODE = :mechanize
+    MERB_MODE = :merb
+    
     # Should XHTML be parsed with Nokogiri? Defaults to true, except on JRuby. When false, Hpricot and REXML are used
     attr_writer :parse_with_nokogiri
     
@@ -32,6 +40,14 @@ module Webrat
     
     def open_error_files? #:nodoc:
       @open_error_files ? true : false
+    end
+    
+    # Allows setting of webrat's mode, valid modes are:
+    # RAILS_MODE - Used in typical rails development
+    # SELENIUM_MODE - Used for webrat in selenium mode
+    def mode=(mode)
+      @mode = mode
+      require("webrat/#{mode}")
     end
     
   end

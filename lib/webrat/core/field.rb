@@ -80,9 +80,9 @@ module Webrat
       return nil if disabled?
       
       case Webrat.configuration.mode
-      when :rails
+      when Webrat::Configuration::RAILS_MODE
         ActionController::AbstractRequest.parse_query_parameters("#{name}=#{escaped_value}")
-      when :merb
+      when Webrat::Configuration::MERB_MODE
         ::Merb::Parse.query("#{name}=#{escaped_value}")
       else
         { name => escaped_value }

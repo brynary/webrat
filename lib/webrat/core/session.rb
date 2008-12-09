@@ -10,17 +10,17 @@ module Webrat
   
   def self.session_class
     case Webrat.configuration.mode
-    when :rails
+    when Webrat::Configuration::RAILS_MODE
       RailsSession
-    when :merb
+    when Webrat::Configuration::MERB_MODE
       MerbSession
-    when :selenium
+    when Webrat::Configuration::SELENIUM_MODE
       SeleniumSession
-    when :rack
+    when Webrat::Configuration::RACK_MODE
       RackSession
-    when :sinatra
+    when Webrat::Configuration::SINATRA_MODE
       SinatraSession
-    when :mechanize
+    when Webrat::Configuration::MECHANIZE_MODE
       MechanizeSession
     else
       raise WebratError.new("Unknown Webrat mode: #{Webrat.configuration.mode.inspect}")

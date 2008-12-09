@@ -144,9 +144,9 @@ module Webrat
       klasses = [Hash]
       
       case Webrat.configuration.mode
-      when :rails
+      when Webrat::Configuration::RAILS_MODE
         klasses << HashWithIndifferentAccess
-      when :merb
+      when Webrat::Configuration::MERB_MODE
         klasses << Mash
       end
       

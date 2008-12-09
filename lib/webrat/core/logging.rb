@@ -8,9 +8,9 @@ module Webrat
 
     def logger # :nodoc:
       case Webrat.configuration.mode
-      when :rails
+      when Webrat::Configuration::RAILS_MODE
         defined?(RAILS_DEFAULT_LOGGER) ? RAILS_DEFAULT_LOGGER : nil
-      when :merb
+      when Webrat::Configuration::MERB_MODE
         Merb.logger
       else
         nil
