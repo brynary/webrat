@@ -12,9 +12,11 @@ describe "Basic Auth HTTP headers" do
   
   it "should be present in form submits" do
     with_html <<-HTML
+      <html>
       <form method="post" action="/form1">
         <input type="submit" />
       </form>
+      </html>
     HTML
     webrat_session.should_receive(:post).with("/form1", {}, {'HTTP_AUTHORIZATION' => "Basic dXNlcjpzZWNyZXQ=\n"})
     click_button

@@ -32,6 +32,7 @@ module Webrat
     include Logging
     
     attr_reader :current_url
+    attr_reader :elements
     
     def initialize(context = nil) #:nodoc:
       @http_method     = :get
@@ -39,6 +40,8 @@ module Webrat
       @default_headers = {}
       @custom_headers  = {}
       @context         = context
+      
+      reset
     end
 
     # Saves the page out to RAILS_ROOT/tmp/ and opens it in the default
@@ -110,8 +113,8 @@ module Webrat
       save_and_open_page if exception_caught? && Webrat.configuration.open_error_files?
       raise PageLoadError.new("Page load was not successful (Code: #{response_code.inspect}):\n#{formatted_error}") unless success_code?
       
-      @_scopes      = nil
-      @_page_scope  = nil
+      reset
+      
       @current_url  = url
       @http_method  = http_method
       @data         = data
@@ -179,7 +182,7 @@ module Webrat
       end
     end
     
-    def rewrite_css_and_image_references(response_html) #:nodoc
+    def rewrite_css_and_image_references(response_html) # :nodoc:
       return response_html unless doc_root
       response_html.gsub(/"\/(stylesheets|images)/, doc_root + '/\1')
     end
@@ -195,6 +198,24 @@ module Webrat
 
     def page_scope #:nodoc:
       @_page_scope ||= Scope.from_page(self, response, response_body)
+    end
+    
+    def dom
+      page_scope.dom
+    end
+    
+    def xml_content_type?
+      false
+    end
+    
+    def simulate
+      return if Webrat.configuration.mode == :selenium
+      yield
+    end
+    
+    def automate
+      return unless Webrat.configuration.mode == :selenium
+      yield
     end
     
     def_delegators :current_scope, :fill_in,            :fills_in
@@ -215,8 +236,17 @@ module Webrat
     def_delegators :current_scope, :should_not_see
     def_delegators :current_scope, :field_labeled
     def_delegators :current_scope, :field_by_xpath
+    def_delegators :current_scope, :field_with_id
+    def_delegators :current_scope, :select_option
     
-    private
+  private
+    
+    def reset
+      @elements     = {}
+      @_scopes      = nil
+      @_page_scope  = nil
+    end
+    
     # accessor for testing
     def ruby_platform
       RUBY_PLATFORM

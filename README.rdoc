@@ -4,6 +4,7 @@
 - http://groups.google.com/group/webrat
 - http://webrat.lighthouseapp.com/
 - http://github.com/brynary/webrat
+- #webrat on Freenode
 
 == Description
 
@@ -15,7 +16,7 @@ web application.
 * Browser Simulator for expressive, high level acceptance testing without the
   performance hit and browser dependency of Selenium or Watir (See Webrat::Session)
 * Use the same API for Browser Simulator and real Selenium tests using
-  Webrat::SeleniumSession when necessary (eg. for testing AJAX interactions)
+  Webrat::Selenium when necessary (eg. for testing AJAX interactions)
 * Supports multiple Ruby web frameworks: Rails, Merb and Sinatra
 * Supports popular test frameworks: RSpec, Cucumber, Test::Unit and Shoulda
 * Webrat::Matchers API for verifying rendered HTML using CSS, XPath, etc.
@@ -39,6 +40,14 @@ Behind the scenes, Webrat will ensure:
 * If a link, form field or button is missing, the test will fail.
 * If a URL is invalid, the test will fail.
 * If a page load or form submission is unsuccessful, the test will fail.
+
+== Installing Nokogiri
+
+Users of Debian Linux (e.g. Ubuntu) need to run:
+
+  sudo apt-get install libxslt1-dev libxml2-dev.
+
+Otherwise the Nokogiri gem, which Webrat depends on, won't install properly.
 
 == Install for Rails
 

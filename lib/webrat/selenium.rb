@@ -2,6 +2,7 @@ require "webrat"
 gem "selenium-client", ">=1.2.9"
 require "selenium/client"
 require "webrat/selenium/selenium_session"
+require "webrat/selenium/matchers"
 
 module Webrat
   
@@ -34,12 +35,58 @@ module Webrat
     system "mongrel_rails stop -c #{RAILS_ROOT} --pid #{pid_file}"
   end
   
-  module Selenium #:nodoc:
+  # To use Webrat's Selenium support, you'll need the selenium-client gem installed.
+  # Activate it with (for example, in your <tt>env.rb</tt>):
+  #
+  #   require "webrat/selenium"
+  # 
+  # Then, if you're using Cucumber, configure it to use a 
+  # <tt>Webrat::Selenium::Rails::World</tt> as the scenario context by adding
+  # the following to <tt>env.rb</tt>:
+  #
+  #   World do
+  #     Webrat::Selenium::Rails::World.new
+  #   end
+  #
+  # == Dropping down to the selenium-client API
+  #
+  # If you ever need to do something with Selenium not provided in the Webrat API,
+  # you can always drop down to the selenium-client API using the <tt>selenium</tt> method.
+  # For example:
+  #
+  #   When "I drag the photo to the left" do
+  #     selenium.dragdrop("id=photo_123", "+350, 0")
+  #   end
+  #
+  # == Auto-starting of the mongrel and java server
+  #
+  # Webrat will automatically start the Selenium Java server process and an instance
+  # of Mongrel when a test is run. The Mongrel will run in the "selenium" environment
+  # instead of "test", so ensure you've got that defined, and will run on port 3001.
+  #
+  # == Waiting
+  #
+  # In order to make writing Selenium tests as easy as possible, Webrat will automatically
+  # wait for the correct elements to exist on the page when trying to manipulate them
+  # with methods like <tt>fill_in</tt>, etc. In general, this means you should be able to write
+  # your Webrat::Selenium tests ignoring the concurrency issues that can plague in-browser
+  # testing, so long as you're using the Webrat API.
+  module Selenium
+    
     module Rails #:nodoc:
       class World < ::ActionController::IntegrationTest
+        include Webrat::Selenium::Matchers
         
         def initialize #:nodoc:
           @_result = Test::Unit::TestResult.new
+        end
+        
+        def response
+          webrat_session.response
+        end
+        
+        def wait_for(*args, &block)
+          webrat_session.wait_for(*args, &block)
         end
         
       end
@@ -48,10 +95,8 @@ module Webrat
     
 end
 
-module ::ActionController #:nodoc:
-  module Integration #:nodoc:
-    class Session #:nodoc:
-      include Webrat::Methods
-    end
+module ActionController #:nodoc:
+  IntegrationTest.class_eval do
+    include Webrat::Methods
   end
 end

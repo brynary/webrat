@@ -1,34 +1,21 @@
+require "webrat/core/elements/element"
+
 module Webrat
-  class Area #:nodoc:
+  class Area < Element #:nodoc:
     
-    def initialize(session, element)
-      @session  = session
-      @element  = element
+    def self.xpath_search
+      ".//area"
     end
     
     def click(method = nil, options = {})
       @session.request_page(absolute_href, :get, {})
     end
     
-    def matches_text?(id_or_title)
-      matcher = /#{Regexp.escape(id_or_title.to_s)}/i
-      title =~ matcher || id =~ matcher
-    end
-    
-    protected
+  protected
     
     def href
-      @element["href"]
+      Webrat::XML.attribute(@element, "href")
     end
-    
-    def title
-      @element["title"]
-    end
-    
-    def id
-      @element["id"]
-    end
-   
    
     def absolute_href
       if href =~ /^\?/

@@ -1,9 +1,31 @@
 module Webrat
+  class TimeoutError < WebratError
+  end
+  
+  class SeleniumResponse
+    attr_reader :body
+    attr_reader :session
+    
+    def initialize(session, body)
+      @session = session
+      @body = body
+    end
+    
+    def selenium
+      session.selenium
+    end
+  end
+  
   class SeleniumSession
     
     def initialize(*args) # :nodoc:
-      extend_selenium
-      define_location_strategies
+    end
+    
+    def simulate
+    end
+    
+    def automate
+      yield
     end
     
     def visit(url)
@@ -14,10 +36,15 @@ module Webrat
     
     def fill_in(field_identifier, options)
       locator = "webrat=#{Regexp.escape(field_identifier)}"
+      selenium.wait_for_element locator, 5
       selenium.type(locator, "#{options[:with]}")
     end
     
     webrat_deprecate :fills_in, :fill_in
+    
+    def response
+      SeleniumResponse.new(self, response_body)
+    end
     
     def response_body #:nodoc:
       selenium.get_html_source
@@ -30,53 +57,30 @@ module Webrat
         pattern = adjust_if_regexp(button_text_or_regexp)
       end
       pattern ||= '*'
-      selenium.click("button=#{pattern}")
-      wait_for_result(options[:wait])
+      locator = "button=#{pattern}"
+      
+      selenium.wait_for_element locator, 5
+      selenium.click locator
     end
     
     webrat_deprecate :clicks_button, :click_button
 
     def click_link(link_text_or_regexp, options = {})
       pattern = adjust_if_regexp(link_text_or_regexp)
-      selenium.click("webratlink=#{pattern}")
-      wait_for_result(options[:wait])
+      locator = "webratlink=#{pattern}"
+      selenium.wait_for_element locator, 5
+      selenium.click locator
     end
     
     webrat_deprecate :clicks_link, :click_link
     
     def click_link_within(selector, link_text, options = {})
-      selenium.click("webratlinkwithin=#{selector}|#{link_text}")
-      wait_for_result(options[:wait])
+      locator = "webratlinkwithin=#{selector}|#{link_text}"
+      selenium.wait_for_element locator, 5
+      selenium.click locator
     end
     
     webrat_deprecate :clicks_link_within, :click_link_within
-
-    def wait_for_result(wait_type)
-      if wait_type == :ajax
-        wait_for_ajax
-      elsif wait_type == :effects
-        wait_for_effects
-      else
-        wait_for_page_to_load
-      end
-    end
-
-    def wait_for_page_to_load(timeout = 15000)
-      selenium.wait_for_page_to_load(timeout)
-    end
-
-    def wait_for_ajax(timeout = 15000)
-      selenium.wait_for_condition "Ajax.activeRequestCount == 0", timeout
-    end
-
-    def wait_for_effects(timeout = 15000)
-      selenium.wait_for_condition "window.Effect.Queue.size() == 0", timeout
-    end
-
-    def wait_for_ajax_and_effects
-      wait_for_ajax
-      wait_for_effects
-    end    
     
     def select(option_text, options = {})
       id_or_name_or_label = options[:from]
@@ -86,30 +90,28 @@ module Webrat
       else
         select_locator = "webratselectwithoption=#{option_text}"
       end
+      
+      selenium.wait_for_element select_locator, 5
       selenium.select(select_locator, option_text)
     end
     
     webrat_deprecate :selects, :select
     
     def choose(label_text)
-      selenium.click("webrat=#{label_text}")
+      locator = "webrat=#{label_text}"
+      selenium.wait_for_element locator, 5
+      selenium.click locator
     end
     
     webrat_deprecate :chooses, :choose
         
     def check(label_text)
-      selenium.check("webrat=#{label_text}")
+      locator = "webrat=#{label_text}"
+      selenium.wait_for_element locator, 5
+      selenium.check locator
     end
     
     webrat_deprecate :checks, :check
-    
-    def is_ordered(*args) #:nodoc:
-      selenium.is_ordered(*args)
-    end
-    
-    def dragdrop(*args) #:nodoc:
-      selenium.dragdrop(*args)
-    end
 
     def fire_event(field_identifier, event)
       locator = "webrat=#{Regexp.escape(field_identifier)}"
@@ -126,11 +128,37 @@ module Webrat
       selenium.key_up(locator, key_code)
     end
     
-    def browser
+    def wait_for(params={})
+      timeout = params[:timeout] || 5
+      message = params[:message] || "Timeout exceeded"
+
+      begin_time = Time.now
+
+      while (Time.now - begin_time) < timeout
+        value = nil
+
+        begin
+          value = yield
+        rescue ::Spec::Expectations::ExpectationNotMetError, ::Selenium::CommandError, Webrat::WebratError
+          value = nil
+        end
+
+        return value if value
+
+        sleep 0.25
+      end
+
+      raise Webrat::TimeoutError.new(message + " (after #{timeout} sec)")
+      true
+    end
+    
+    def selenium
       return $browser if $browser
       setup
       $browser
     end
+    
+    webrat_deprecate :browser, :selenium
     
   protected
     
@@ -140,15 +168,13 @@ module Webrat
         Webrat.start_app_server
       end
       
-      
       $browser = ::Selenium::Client::Driver.new("localhost", 4444, "*firefox", "http://0.0.0.0:3001")
       $browser.set_speed(0)
       $browser.start
       teardown_at_exit
-    end
-    
-    def selenium #:nodoc:
-      browser
+      
+      extend_selenium
+      define_location_strategies
     end
     
     def teardown_at_exit #:nodoc:

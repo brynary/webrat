@@ -21,14 +21,14 @@ spec = Gem::Specification.new do |s|
   s.bindir       = "bin"
   s.description  = s.summary
   s.require_path = "lib"
-  s.files        = %w(History.txt init.rb install.rb MIT-LICENSE.txt README.rdoc Rakefile) + Dir["lib/**/*"]
+  s.files        = %w(History.txt install.rb MIT-LICENSE.txt README.rdoc Rakefile) + Dir["lib/**/*"] + Dir["vendor/**/*"]
 
   # rdoc
   s.has_rdoc         = true
   s.extra_rdoc_files = %w(README.rdoc MIT-LICENSE.txt)
 
   # Dependencies
-  s.add_dependency "nokogiri", ">= 1.0.3"
+  s.add_dependency "nokogiri", ">= 1.0.6"
   
   s.rubyforge_project = "webrat"
 end
@@ -75,8 +75,13 @@ task :install_gem => [:clean, :package] do
   sh "sudo gem install --local #{gem}"
 end
 
+desc "Delete generated RDoc"
+task :clobber_docs do
+  FileUtils.rm_rf("doc")
+end
+
 desc "Generate RDoc"
-task :docs do
+task :docs => :clobber_docs do
   system "hanna --title 'Webrat #{Webrat::VERSION} API Documentation'"
 end
 
@@ -85,4 +90,15 @@ task "spec:jruby" do
   system "jruby -S rake spec"
 end
 
+desc "Run each spec in isolation to test for dependency issues"
+task :spec_deps do
+  Dir["spec/**/*_spec.rb"].each do |test|
+    if !system("spec #{test} &> /dev/null")
+      puts "Dependency Issues: #{test}"
+    end
+  end
+end
+
 task :default => :spec
+
+task :precommit => ["spec", "spec:jruby"]

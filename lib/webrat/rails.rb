@@ -1,4 +1,5 @@
 require "webrat"
+require "action_controller/integration"
 
 module Webrat
   class RailsSession < Session #:nodoc:
@@ -33,6 +34,10 @@ module Webrat
     
     def response_code
       response.code.to_i
+    end
+    
+    def xml_content_type?
+      response.headers["Content-Type"].to_s =~ /xml/
     end
     
   protected
@@ -71,13 +76,15 @@ end
 
 module ActionController #:nodoc:
   module Integration #:nodoc:
-    class Session #:nodoc:
+    Session.class_eval do
       unless instance_methods.include?("put_via_redirect")
         require "webrat/rails/redirect_actions"
         include Webrat::RedirectActions
       end
-
-      include Webrat::Methods
     end
+  end
+  IntegrationTest.class_eval do
+    include Webrat::Methods
+    include Webrat::Matchers
   end
 end

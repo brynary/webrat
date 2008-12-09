@@ -40,14 +40,14 @@ describe "within" do
   it "should submit forms within a scope" do
     with_html <<-HTML
       <html>
-      <form id="form1" action="/form1">
-        <label>Email: <input type="text" name="email" />
-        <input type="submit" value="Add" />
-      </form>
-      <form id="form2" action="/form2">
-        <label>Email: <input type="text" name="email" />
-        <input type="submit" value="Add" />
-      </form>
+        <form id="form1" action="/form1">
+          <label>Email: <input type="text" name="email" />
+          <input type="submit" value="Add" />
+        </form>
+        <form id="form2" action="/form2">
+          <label>Email: <input type="text" name="email" />
+          <input type="submit" value="Add" />
+        </form>
       </html>
     HTML
     

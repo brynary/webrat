@@ -3,7 +3,9 @@ require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
 describe "visit" do
   before do
     with_html <<-HTML
+      <html>
       Hello world
+      </html>
     HTML
   end
 
@@ -33,7 +35,9 @@ describe "visit with referer" do
   before do
     webrat_session.instance_variable_set(:@current_url, "/old_url")
     with_html <<-HTML
+      <html>
       Hello world
+      </html>
     HTML
   end
 

@@ -1,5 +1,5 @@
 # Supports using the matchers in controller, helper, and view specs if you're
-# using rspec-rails. Just add a require statement to spec/spec_helper.rb:
+# using rspec-rails. Just add a require statement to spec/spec_helper.rb or env.rb:
 # 
 #   require 'webrat/rspec-rails'
 #

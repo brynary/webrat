@@ -1,4 +1,4 @@
-require "webrat/core/form"
+require "webrat/core/elements/form"
 require "webrat/core/locators"
 require "webrat/core_extensions/deprecate"
 
@@ -24,6 +24,8 @@ module Webrat
         @selector = selector
       end
     end
+    
+    attr_reader :session
     
     def initialize(session, &block) #:nodoc:
       @session = session
@@ -96,12 +98,7 @@ module Webrat
     #   select "February", :from => "event_month"
     #   select "February", :from => "Event Month"
     def select(option_text, options = {})
-      if option = find_select_option(option_text, options[:from])
-        option.choose
-      else
-        select_box_text = options[:from] ? " in the '#{options[:from]}' select box" : '' 
-        raise NotFoundError.new("The '#{option_text}' option was not found#{select_box_text}") 
-       end
+      select_option(option_text, options[:from]).choose
     end
 
     webrat_deprecate :selects, :select
@@ -134,7 +131,7 @@ module Webrat
                 date_to_select : Date.parse(date_to_select) 
       
       id_prefix = locate_id_prefix(options) do
-        year_field = field_by_xpath("//*[contains(@id, '_#{DATE_TIME_SUFFIXES[:year]}')]")
+        year_field = FieldByIdLocator.new(@session, dom, /(.*?)_#{DATE_TIME_SUFFIXES[:year]}$/).locate
         raise NotFoundError.new("No date fields were found") unless year_field && year_field.id =~ /(.*?)_1i/
         $1
       end
@@ -168,7 +165,7 @@ module Webrat
       time = time_to_select.is_a?(Time) ? time_to_select : Time.parse(time_to_select) 
 
       id_prefix = locate_id_prefix(options) do
-        hour_field = field_by_xpath("//*[contains(@id, '_#{DATE_TIME_SUFFIXES[:hour]}')]")
+        hour_field = FieldByIdLocator.new(@session, dom, /(.*?)_#{DATE_TIME_SUFFIXES[:hour]}$/).locate
         raise NotFoundError.new("No time fields were found") unless hour_field && hour_field.id =~ /(.*?)_4i/
         $1
       end
@@ -190,7 +187,7 @@ module Webrat
     def select_datetime(time_to_select, options ={})
       time = time_to_select.is_a?(Time) ? time_to_select : Time.parse(time_to_select) 
       
-      options[:id_prefix] ||= (options[:from] ? field_by_xpath("//*[@id='#{options[:from]}']") : nil)
+      options[:id_prefix] ||= (options[:from] ? FieldByIdLocator.new(@session, dom, options[:from]).locate : nil)
       
       select_date time, options
       select_time time, options
@@ -263,8 +260,7 @@ module Webrat
     webrat_deprecate :clicks_button, :click_button
     
     def submit_form(id)
-      form = forms.detect { |f| f.matches_id?(id) }
-      form.submit
+      FormLocator.new(@session, dom, id).locate.submit
     end
     
     def dom # :nodoc:
@@ -280,16 +276,28 @@ module Webrat
     end
     
   protected
-  
+    
     def page_dom #:nodoc:
       return @response.dom if @response.respond_to?(:dom)
-      dom = Webrat::XML.document(@response_body)
+      
+      if @session.xml_content_type?
+        dom = Webrat::XML.xml_document(@response_body)
+      else
+        dom = Webrat::XML.html_document(@response_body)
+      end
+      
       Webrat.define_dom_method(@response, dom)
       return dom
     end
     
     def scoped_dom #:nodoc:
-      Webrat::XML.document(@scope.dom.search(@selector).first.to_html)
+      source = Webrat::XML.to_html(Webrat::XML.css_search(@scope.dom, @selector).first)
+      
+      if @session.xml_content_type?
+        Webrat::XML.xml_document(source)
+      else
+        Webrat::XML.html_document(source)
+      end
     end
     
     def locate_field(field_locator, *field_types) #:nodoc:
@@ -302,27 +310,20 @@ module Webrat
     
     def locate_id_prefix(options, &location_strategy) #:nodoc:
       return options[:id_prefix] if options[:id_prefix]
-      id_prefix = options[:from] ? find_field_id_for_label(options[:from]) : yield
-    end
-    
-    def areas #:nodoc:
-      Webrat::XML.css_search(dom, "area").map do |element| 
-        Area.new(@session, element)
-      end
-    end
-    
-    def links #:nodoc:
-      Webrat::XML.css_search(dom, "a[@href]").map do |link_element|
-        Link.new(@session, link_element)
+      
+      if options[:from]
+        if (label = LabelLocator.new(@session, dom, options[:from]).locate)
+          label.for_id
+        else
+          raise NotFoundError.new("Could not find the label with text #{options[:from]}")
+        end
+      else
+        yield
       end
     end
     
     def forms #:nodoc:
-      return @forms if @forms
-      
-      @forms = Webrat::XML.css_search(dom, "form").map do |form_element|
-        Form.new(@session, form_element)
-      end
+      @forms ||= Form.load_all(@session, dom)
     end
     
   end

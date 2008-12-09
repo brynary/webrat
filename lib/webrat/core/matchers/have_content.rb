@@ -7,8 +7,13 @@ module Webrat
       end
       
       def matches?(stringlike)
-        @document = Webrat::XML.document(stringlike)
-        @element = @document.inner_text
+        if Webrat.configuration.parse_with_nokogiri?
+          @document = Webrat.nokogiri_document(stringlike)
+        else
+          @document = Webrat.hpricot_document(stringlike)
+        end
+        
+        @element = Webrat::XML.inner_text(@document)
       
         case @content
         when String

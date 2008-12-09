@@ -2,35 +2,58 @@ require "cgi"
 require "webrat/core_extensions/blank"
 require "webrat/core_extensions/nil_to_param"
 
+require "webrat/core/elements/element"
+
 module Webrat
   # Raised when Webrat is asked to manipulate a disabled form field
   class DisabledFieldError < WebratError
   end
   
-  class Field #:nodoc:
-    
-    def self.class_for_element(element)
-      if element.name == "input"
-        if %w[submit image].include?(element["type"])
-          field_class = "button"
-        else
-          field_class = element["type"] || "text" #default type; 'type' attribute is not mandatory
-        end
-      else
-        field_class = element.name
-      end
-      Webrat.const_get("#{field_class.capitalize}Field")
-    rescue NameError
-     raise "Invalid field element: #{element.inspect}"
-    end
-    
+  class Field < Element #:nodoc:
     attr_reader :value
     
-    def initialize(form, element)
-      @form     = form
-      @element  = element
-      
-      @value    = default_value
+    def self.xpath_search
+      [".//button", ".//input", ".//textarea", ".//select"]
+    end
+    
+    def self.field_classes
+      @field_classes || []
+    end
+    
+    def self.inherited(klass)
+      @field_classes ||= []
+      @field_classes << klass
+      # raise args.inspect
+    end
+    
+    def self.load(session, element)
+      return nil if element.nil?
+      session.elements[Webrat::XML.xpath_to(element)] ||= field_class(element).new(session, element)
+    end
+    
+    def self.field_class(element)
+      case element.name
+      when "button"   then ButtonField
+      when "select"   then SelectField
+      when "textarea" then TextareaField
+      else
+        case Webrat::XML.attribute(element, "type")
+        when "checkbox" then CheckboxField
+        when "hidden"   then HiddenField
+        when "radio"    then RadioField
+        when "password" then PasswordField
+        when "file"     then FileField
+        when "reset"    then ResetField
+        when "submit"   then ButtonField
+        when "image"    then ButtonField
+        else  TextField
+        end
+      end
+    end
+    
+    def initialize(*args)
+      super
+      @value = default_value
     end
 
     def label_text
@@ -39,36 +62,11 @@ module Webrat
     end
     
     def id
-      @element["id"]
-    end
-    
-    def path
-      @element.path
-    end
-    
-    def matches_id?(id)
-      if id.is_a?(Regexp)
-        @element["id"] =~ id
-      else
-        @element["id"] == id.to_s
-      end
-    end
-    
-    def matches_name?(name)
-      @element["name"] == name.to_s
-    end
-    
-    def matches_label?(label_text)
-      return false if labels.empty?
-      labels.any? { |label| label.matches_text?(label_text) }
-    end
-    
-    def matches_alt?(alt)
-      @element["alt"] =~ /^\W*#{Regexp.escape(alt.to_s)}/i
+      Webrat::XML.attribute(@element, "id")
     end
 
     def disabled?
-      @element.attributes.has_key?("disabled") && @element["disabled"] != 'false'
+      @element.attributes.has_key?("disabled") && Webrat::XML.attribute(@element, "disabled") != 'false'
     end
     
     def raise_error_if_disabled
@@ -99,8 +97,21 @@ module Webrat
     
   protected
   
+    def form
+      Form.load(@session, form_element)
+    end
+    
+    def form_element
+      parent = @element.parent
+      
+      while parent.respond_to?(:parent)
+        return parent if parent.name == 'form'
+        parent = parent.parent
+      end
+    end
+    
     def name
-      @element["name"]
+      Webrat::XML.attribute(@element, "name")
     end
     
     def escaped_value
@@ -108,13 +119,15 @@ module Webrat
     end
     
     def labels
-      @labels ||= label_elements.map { |element| Label.new(self, element) }
+      @labels ||= label_elements.map do |element|
+        Label.load(@session, element)
+      end
     end
     
     def label_elements
       return @label_elements unless @label_elements.nil?
       @label_elements = []
-
+    
       parent = @element.parent
       while parent.respond_to?(:parent)
         if parent.name == 'label'
@@ -123,16 +136,16 @@ module Webrat
         end
         parent = parent.parent
       end
-
+    
       unless id.blank?
-        @label_elements += Webrat::XML.css_search(@form.element, "label[@for='#{id}']")
+        @label_elements += Webrat::XML.xpath_search(form.element, ".//label[@for = '#{id}']")
       end
-
+    
       @label_elements
     end
     
     def default_value
-      @element["value"]
+      Webrat::XML.attribute(@element, "value")
     end
     
     def replace_param_value(params, oval, nval)
@@ -154,14 +167,10 @@ module Webrat
   
   class ButtonField < Field #:nodoc:
 
-    def matches_text?(text)
-      @element.inner_html =~ /#{Regexp.escape(text.to_s)}/i
+    def self.xpath_search
+      [".//button", ".//input[@type = 'submit']", ".//input[@type = 'image']"]
     end
     
-    def matches_value?(value)
-      @element["value"] =~ /^\W*#{Regexp.escape(value.to_s)}/i || matches_text?(value) || matches_alt?(value)
-    end
-
     def to_param
       return nil if @value.nil?
       super
@@ -173,19 +182,23 @@ module Webrat
 
     def click
       raise_error_if_disabled
-      set(@element["value"]) unless @element["name"].blank?
-      @form.submit
+      set(Webrat::XML.attribute(@element, "value")) unless Webrat::XML.attribute(@element, "name").blank?
+      form.submit
     end
 
   end
 
   class HiddenField < Field #:nodoc:
 
+    def self.xpath_search
+      ".//input[@type = 'hidden']"
+    end
+    
     def to_param
       if collection_name?
         super
       else
-        checkbox_with_same_name = @form.field(name, CheckboxField)
+        checkbox_with_same_name = form.field_named(name, CheckboxField)
 
         if checkbox_with_same_name.to_param.blank?
           super
@@ -205,6 +218,10 @@ module Webrat
 
   class CheckboxField < Field #:nodoc:
 
+    def self.xpath_search
+      ".//input[@type = 'checkbox']"
+    end
+    
     def to_param
       return nil if @value.nil?
       super
@@ -212,11 +229,11 @@ module Webrat
 
     def check
       raise_error_if_disabled
-      set(@element["value"] || "on")
+      set(Webrat::XML.attribute(@element, "value") || "on")
     end
     
     def checked?
-      @element["checked"] == "checked"
+      Webrat::XML.attribute(@element, "checked") == "checked"
     end
 
     def uncheck
@@ -227,8 +244,8 @@ module Webrat
   protected
 
     def default_value
-      if @element["checked"] == "checked"
-        @element["value"] || "on"
+      if Webrat::XML.attribute(@element, "checked") == "checked"
+        Webrat::XML.attribute(@element, "value") || "on"
       else
         nil
       end
@@ -237,10 +254,19 @@ module Webrat
   end
 
   class PasswordField < Field #:nodoc:
+    
+    def self.xpath_search
+      ".//input[@type = 'password']"
+    end
+    
   end
 
   class RadioField < Field #:nodoc:
 
+    def self.xpath_search
+      ".//input[@type = 'radio']"
+    end
+    
     def to_param
       return nil if @value.nil?
       super
@@ -252,22 +278,22 @@ module Webrat
         option.set(nil)
       end
       
-      set(@element["value"] || "on")
+      set(Webrat::XML.attribute(@element, "value") || "on")
     end
     
     def checked?
-      @element["checked"] == "checked"
+      Webrat::XML.attribute(@element, "checked") == "checked"
     end
     
   protected
 
     def other_options
-      @form.fields.select { |f| f.name == name }
+      form.fields.select { |f| f.name == name }
     end
     
     def default_value
-      if @element["checked"] == "checked"
-        @element["value"] || "on"
+      if Webrat::XML.attribute(@element, "checked") == "checked"
+        Webrat::XML.attribute(@element, "value") || "on"
       else
         nil
       end
@@ -277,16 +303,24 @@ module Webrat
 
   class TextareaField < Field #:nodoc:
 
+    def self.xpath_search
+      ".//textarea"
+    end
+    
   protected
 
     def default_value
-      @element.inner_html
+      Webrat::XML.inner_html(@element)
     end
 
   end
   
   class FileField < Field #:nodoc:
-
+    
+    def self.xpath_search
+      ".//input[@type = 'file']"
+    end
+    
     attr_accessor :content_type
 
     def set(value, content_type = nil)
@@ -315,35 +349,37 @@ module Webrat
   end
 
   class TextField < Field #:nodoc:
+    def self.xpath_search
+      [".//input[@type = 'text']", ".//input[not(@type)]"]
+    end
   end
 
   class ResetField < Field #:nodoc:
+    def self.xpath_search
+      ".//input[@type = 'reset']"
+    end
   end
 
   class SelectField < Field #:nodoc:
 
-    def find_option(text)
-      options.detect { |o| o.matches_text?(text) }
-    end
-
-  protected
-
-    def default_value
-      selected_options = Webrat::XML.css_search(@element, "option[@selected='selected']")
-      selected_options = Webrat::XML.css_search(@element, "option:first") if selected_options.empty? 
-      
-      selected_options.map do |option|
-        return "" if option.nil?
-        option["value"] || option.inner_html
-      end
+    def self.xpath_search
+      ".//select"
     end
 
     def options
-      option_elements.map { |oe| SelectOption.new(self, oe) }
+      @options ||= SelectOption.load_all(@session, @element)
     end
+    
+  protected
 
-    def option_elements
-      Webrat::XML.css_search(@element, "option")
+    def default_value
+      selected_options = Webrat::XML.xpath_search(@element, ".//option[@selected = 'selected']")
+      selected_options = Webrat::XML.xpath_search(@element, ".//option[position() = 1]") if selected_options.empty? 
+      
+      selected_options.map do |option|
+        return "" if option.nil?
+        Webrat::XML.attribute(option, "value") || Webrat::XML.inner_html(option)
+      end
     end
 
   end
