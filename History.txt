@@ -5,7 +5,7 @@
   * Added selects_time, selects_date, and selects_datetime to API. (Ben Mabey, Ticket #36)
 
 * Minor enhancements
-
+  * Now sets the mode with configuration.mode in the block (gaffo, Ticket #85)
   * Allow clicking links by id and id regexp (gaffo)
   * Raise Webrat::PageLoadError when a failure occurs so that application exceptions can be more accurately tested (Ryan Briones)
   * Helpful error message for missing option in select box. (Ben Mabey, Ticket #40)
