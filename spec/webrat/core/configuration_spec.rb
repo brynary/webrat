@@ -42,12 +42,12 @@ describe Webrat::Configuration do
     config.should_not open_error_files
   end
   
-  [Webrat::Configuration::RAILS_MODE, 
-   Webrat::Configuration::SELENIUM_MODE,
-   Webrat::Configuration::RACK_MODE,
-   Webrat::Configuration::SINATRA_MODE,
-   Webrat::Configuration::MERB_MODE,
-   Webrat::Configuration::MECHANIZE_MODE].each do |mode|
+  [:rails, 
+   :selenium,
+   :rack,
+   :sinatra,
+   :merb,
+   :mechanize].each do |mode|
     it "should require correct lib when in #{mode} mode" do
       config = Webrat::Configuration.new
       config.should_receive(:require).with("webrat/#{mode}")
