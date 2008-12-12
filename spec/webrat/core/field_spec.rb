@@ -1,6 +1,20 @@
 require File.expand_path(File.dirname(__FILE__) + "/../../spec_helper")
 
 module Webrat
+  describe Field do
+    it "should have nice inspect output" do
+      html = <<-HTML
+        <html>
+        <input type='checkbox' checked='checked' />
+        </html>
+      HTML
+      
+      element = Webrat::XML.css_search(Webrat::XML.document(html), "input").first
+      checkbox = CheckboxField.new(nil, element)
+      checkbox.inspect.should =~ /#<Webrat::CheckboxField @element=<input type=['"]checkbox['"] checked=['"]checked['"]\/>>/
+    end
+  end
+  
   describe CheckboxField do
     it "should say it is checked if it is" do
       html = <<-HTML
