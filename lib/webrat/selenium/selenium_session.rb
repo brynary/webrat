@@ -191,7 +191,7 @@ module Webrat
       if text_or_regexp.is_a?(Regexp)
         "evalregex:#{text_or_regexp.inspect}"
       else
-        text_or_regexp
+        "evalregex:/#{text_or_regexp}/"
       end 
     end
     
