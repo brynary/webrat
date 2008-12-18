@@ -53,7 +53,7 @@ module Webrat
     def click_button(button_text_or_regexp = nil, options = {})
       if button_text_or_regexp.is_a?(Hash) && options == {}
         pattern, options = nil, button_text_or_regexp
-      else
+      elsif button_text_or_regexp
         pattern = adjust_if_regexp(button_text_or_regexp)
       end
       pattern ||= '*'
