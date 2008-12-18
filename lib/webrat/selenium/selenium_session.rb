@@ -175,6 +175,7 @@ module Webrat
       
       extend_selenium
       define_location_strategies
+      $browser.window_maximize
     end
     
     def teardown_at_exit #:nodoc:
