@@ -69,6 +69,15 @@ describe Webrat::RailsSession do
     end
   end
   
+  context "the URL include an anchor" do
+    it "should strip out the anchor" do
+      integration_session = mock("integration session", :https! => false)
+      rails_session = Webrat::RailsSession.new(integration_session)
+      integration_session.should_receive(:request_via_redirect).with(:get, "/url", "data", "headers")
+      rails_session.get("http://www.example.com/url#foo", "data", "headers")
+    end
+  end
+  
   it "should provide a saved_page_dir" do
     Webrat::RailsSession.new(mock("integration session")).should respond_to(:saved_page_dir)
   end
