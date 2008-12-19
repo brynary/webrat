@@ -90,7 +90,10 @@ module Webrat
         def wait_for(*args, &block)
           webrat_session.wait_for(*args, &block)
         end
-        
+
+        def save_and_open_screengrab
+          webrat_session.save_and_open_screengrab
+        end
       end
     end
   end

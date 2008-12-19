@@ -2,6 +2,7 @@ require "forwardable"
 require "ostruct"
 
 require "webrat/core/mime"
+require "webrat/core/save_and_open_page"
 
 module Webrat
   # A page load or form submission returned an unsuccessful response code (500-599)
@@ -30,6 +31,7 @@ module Webrat
   class Session
     extend Forwardable
     include Logging
+    include SaveAndOpenPage
     
     attr_reader :current_url
     attr_reader :elements
@@ -42,23 +44,6 @@ module Webrat
       @context         = context
       
       reset
-    end
-
-    # Saves the page out to RAILS_ROOT/tmp/ and opens it in the default
-    # web browser if on OS X. Useful for debugging.
-    # 
-    # Example:
-    #   save_and_open_page
-    def save_and_open_page
-      return unless File.exist?(saved_page_dir)
-
-      filename = "#{saved_page_dir}/webrat-#{Time.now.to_i}.html"
-      
-      File.open(filename, "w") do |f|
-        f.write rewrite_css_and_image_references(response_body)
-      end
-
-      open_in_browser(filename)
     end
     
     def current_dom #:nodoc:
@@ -78,10 +63,6 @@ module Webrat
       nil
     end
     
-    def saved_page_dir #:nodoc:
-      File.expand_path(".")
-    end
-
     def header(key, value)
       @custom_headers[key] = value
     end
@@ -172,20 +153,6 @@ module Webrat
     end
     
     webrat_deprecate :visits, :visit
-    
-    def open_in_browser(path) # :nodoc
-      platform = ruby_platform
-      if platform =~ /cygwin/ || platform =~ /win32/
-        `rundll32 url.dll,FileProtocolHandler #{path.gsub("/", "\\\\")}`
-      elsif platform =~ /darwin/
-        `open #{path}`
-      end
-    end
-    
-    def rewrite_css_and_image_references(response_html) # :nodoc:
-      return response_html unless doc_root
-      response_html.gsub(/"\/(stylesheets|images)/, doc_root + '/\1')
-    end
 
     # Subclasses can override this to show error messages without html
     def formatted_error #:nodoc:
@@ -247,9 +214,5 @@ module Webrat
       @_page_scope  = nil
     end
     
-    # accessor for testing
-    def ruby_platform
-      RUBY_PLATFORM
-    end
   end
 end

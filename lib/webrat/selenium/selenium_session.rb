@@ -1,3 +1,5 @@
+require "webrat/core/save_and_open_page"
+
 module Webrat
   class TimeoutError < WebratError
   end
@@ -17,6 +19,7 @@ module Webrat
   end
   
   class SeleniumSession
+    include Webrat::SaveAndOpenPage
     
     def initialize(*args) # :nodoc:
     end
@@ -159,6 +162,20 @@ module Webrat
     end
     
     webrat_deprecate :browser, :selenium
+    
+    
+    def save_and_open_screengrab
+      return unless File.exist?(saved_page_dir)
+      
+      filename = "#{saved_page_dir}/webrat-#{Time.now.to_i}.png"
+         
+      if $browser.chrome_backend?
+        $browser.capture_entire_page_screenshot(filename, '')
+      else
+        $browser.capture_screenshot(filename)
+      end
+        open_in_browser(filename)
+    end
     
   protected
     
