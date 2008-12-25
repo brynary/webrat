@@ -1,8 +1,15 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
-require "mechanize"
-require "webrat/mechanize"
 
-describe Webrat::MechanizeSession do
+describe "Webrat::MechanizeSession" do
+  before :all do
+    Webrat.cache_config_for_test
+    require "webrat/mechanize"
+  end
+  
+  after :all do
+    Webrat.reset_for_test
+  end
+  
   before(:each) do
     @mech = Webrat::MechanizeSession.new
   end
