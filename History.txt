@@ -17,6 +17,7 @@
 
 * Minor enhancements
 
+  * Maximize the browser window after initializing Selenium (Luke Melia)
   * Better inspect output for Webrat elements
   * Detect if the document is XML or HTML using the Content-Type when in Rails mode
   * Expose #selenium method for direct access to Selenium client
@@ -51,6 +52,8 @@
   * Raise Webrat::PageLoadError when a failure occurs so that application exceptions
     can be more accurately tested (Ryan Briones)
   * Helpful error message for missing option in select box. [#40] (Ben Mabey)
+  * Extracted save_and_open page to make it usable in Selenium mode (Luke Melia)
+  * Added save_and_open_screengrab for Selenium mode (Luke Melia)
 
 * Bug fixes
   
@@ -67,6 +70,13 @@
   * Extend Rails' ActionController::IntegrationTest instead of
     ActionController::Integration::Session (Fixes using Webrat's #select method and 
     avoids usage of method_missing)
+  * Ensure that Webrat::MechanizeSession.request_page always uses an absolute 
+    URL. (Graham Ashton)
+  * Strip anchor tags from URIs before passing to Rails integration session
+    (Noah Davis)
+  * Treat text and regexp when matching Selenium buttons (Ross Kaffenberger)
+  * Allow SeleniumSession's click_button to be called without an argument without
+    blowing up (Luke Melia)
     
 == 0.3.2 / 2008-11-08
 
