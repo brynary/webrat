@@ -11,7 +11,7 @@ module Webrat
       
       element = Webrat::XML.css_search(Webrat::XML.document(html), "input").first
       checkbox = CheckboxField.new(nil, element)
-      checkbox.inspect.should =~ /#<Webrat::CheckboxField @element=<input type=['"]checkbox['"] checked=['"]checked['"]\/>>/
+      checkbox.inspect.should =~ /#<Webrat::CheckboxField @element=<input type=['"]checkbox['"] checked(=['"]checked['"])?\/?>>/
     end
   end
   
