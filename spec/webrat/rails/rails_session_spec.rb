@@ -1,6 +1,12 @@
-require File.expand_path(File.dirname(__FILE__) + '/helper')
+require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
+
+require "webrat/rails"
 
 describe Webrat::RailsSession do
+  before do
+    Webrat.configuration.mode = :rails
+  end
+  
   it "should delegate response_body to the session response body" do
     response = mock("response", :body => "<html>")
     integration_session = mock("integration session", :response => response)

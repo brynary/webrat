@@ -4,14 +4,6 @@ describe Webrat::Configuration do
   predicate_matchers[:parse_with_nokogiri]  = :parse_with_nokogiri?
   predicate_matchers[:open_error_files]     = :open_error_files?
 
-  before do
-    Webrat.cache_config_for_test
-  end
-  
-  after do
-    Webrat.reset_for_test
-  end
-
   it "should have a mode" do
     Webrat.configuration.should respond_to(:mode)
   end

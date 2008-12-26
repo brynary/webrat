@@ -1,4 +1,6 @@
 require "webrat"
+
+require "action_controller"
 require "action_controller/integration"
 
 module Webrat

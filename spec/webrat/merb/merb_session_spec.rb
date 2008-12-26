@@ -2,8 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + "/../../spec_helper")
 
 require "webrat/merb"
 
-describe Webrat::Session do
-  
+describe Webrat::MerbSession do
   it "should not pass empty params if data is and empty hash" do
     session = Webrat::MerbSession.new
     response = OpenStruct.new

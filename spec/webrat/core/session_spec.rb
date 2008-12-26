@@ -87,11 +87,7 @@ describe Webrat::Session do
 
   describe "#request_page" do
     before(:each) do
-      Webrat.cache_config_for_test
       webrat_session = Webrat::Session.new
-    end
-    after(:each) do
-      Webrat.reset_for_test
     end
   
     it "should raise an error if the request is not a success" do
