@@ -3,13 +3,13 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 describe "Webrat::MechanizeSession" do
   before :all do
     Webrat.cache_config_for_test
-    require "webrat/mechanize"
+    Webrat.configuration.mode = :mechanize
   end
   
   after :all do
     Webrat.reset_for_test
   end
-  
+
   before(:each) do
     @mech = Webrat::MechanizeSession.new
   end

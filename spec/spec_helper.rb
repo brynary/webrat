@@ -38,4 +38,10 @@ module Webrat
   def self.reset_for_test
     @@configuration = @@previous_config if @@previous_config
   end
+  
+  class Configuration
+    def mode_for_test= (mode)
+      @mode = mode
+    end
+  end
 end

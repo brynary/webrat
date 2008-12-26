@@ -4,8 +4,6 @@ require "selenium/client"
 require "webrat/selenium/selenium_session"
 require "webrat/selenium/matchers"
 
-Webrat.configuration.mode = :selenium
-
 module Webrat
   
   def self.with_selenium_server #:nodoc:

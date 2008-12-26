@@ -7,3 +7,4 @@ silence_warnings do
 end
 
 require "webrat/rails"
+Webrat.configuration.mode_for_test = :rails

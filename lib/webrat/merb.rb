@@ -72,6 +72,3 @@ class Merb::Test::RspecStory #:nodoc:
     @browser ||= Webrat::MerbSession.new
   end
 end
-
-Webrat.configuration.mode = :merb
-

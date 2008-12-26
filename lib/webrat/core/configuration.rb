@@ -17,6 +17,7 @@ module Webrat
   #     config.parse_with_nokogiri = false
   #   end
   class Configuration
+    
     # Should XHTML be parsed with Nokogiri? Defaults to true, except on JRuby. When false, Hpricot and REXML are used
     attr_writer :parse_with_nokogiri
     
@@ -37,6 +38,13 @@ module Webrat
     
     def open_error_files? #:nodoc:
       @open_error_files ? true : false
+    end
+    
+    # Allows setting of webrat's mode, valid modes are:
+    # :rails, :selenium, :rack, :sinatra, :mechanize, :merb
+    def mode=(mode)
+      @mode = mode
+      require("webrat/#{mode}")
     end
     
   end

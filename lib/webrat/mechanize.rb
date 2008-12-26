@@ -72,5 +72,3 @@ module Webrat #:nodoc:
       end
   end
 end
-
-Webrat.configuration.mode = :mechanize

@@ -86,11 +86,8 @@ module ActionController #:nodoc:
       end
     end
   end
-  
   IntegrationTest.class_eval do
     include Webrat::Methods
     include Webrat::Matchers
   end
 end
-
-Webrat.configuration.mode = :rails
