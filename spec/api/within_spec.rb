@@ -58,6 +58,28 @@ describe "within" do
     end
   end
   
+  it "should work when the scope is inside the form" do
+    pending "needs bug fix" do
+      with_html <<-HTML
+        <html>
+          <form id="form2" action="/form2">
+            <div class="important">
+              <label>Email: <input type="text" class="email2" name="email" /></label>
+            </div>
+            <input type="submit" value="Add" />
+          </form>
+        </html>
+      HTML
+    
+      webrat_session.should_receive(:get).with("/form2", "email" => "test@example.com")
+      within ".important" do
+        fill_in "Email", :with => "test@example.com"
+      end
+    
+      submit_form "form2"
+    end
+  end
+  
   it "should not find buttons outside of the scope" do
     with_html <<-HTML
       <html>
