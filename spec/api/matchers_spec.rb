@@ -166,12 +166,12 @@ describe Webrat::Matchers do
           assert_contain(/hello, world/)
         end
         
-        it "should throw an exception when it the body doesnt contain the text" do
+        it "should throw an exception when the body doesnt contain the text" do
           require 'test/unit'
           lambda {assert_contain("monkeys")}.should raise_error(Test::Unit::AssertionFailure)
         end
         
-        it "should throw an exception when it the body doesnt contain the regexp" do
+        it "should throw an exception when the body doesnt contain the regexp" do
           require 'test/unit'
           lambda {assert_contain(/monkeys/)}.should raise_error(Test::Unit::AssertionFailure)
         end
@@ -186,12 +186,12 @@ describe Webrat::Matchers do
           assert_not_contain(/monkeys/)
         end
         
-        it "should throw an exception when it the body does contain the text" do
+        it "should throw an exception when the body does contain the text" do
           require 'test/unit'
           lambda {assert_not_contain("hello, world")}.should raise_error(Test::Unit::AssertionFailure)
         end
         
-        it "should throw an exception when it the body does contain the regexp" do
+        it "should throw an exception when the body does contain the regexp" do
           require 'test/unit'
           lambda {assert_not_contain(/hello, world/)}.should raise_error(Test::Unit::AssertionFailure)
         end
