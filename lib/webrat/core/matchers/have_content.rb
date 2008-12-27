@@ -51,5 +51,17 @@ module Webrat
       HasContent.new(content)
     end
     
+    # Asserts that the body of the response contain
+    # the supplied string or regexp
+    def assert_contain(content)
+      assert(contain(content))
+    end
+    
+    # Asserts that the body of the response
+    # does not contain the supplied string or regepx
+    def assert_not_contain(content)
+      assert(!contain(content))
+    end
+    
   end
 end

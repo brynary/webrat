@@ -155,8 +155,51 @@ describe Webrat::Matchers do
         @body.should contain(/hello, world/)
       end
     end
+    
+    describe "asserts for contains," do
+      describe "assert_contain" do
+        it "should pass when containing the text" do
+          assert_contain("hello, world")
+        end
+        
+        it "should pass when containing the regexp" do
+          assert_contain(/hello, world/)
+        end
+        
+        it "should throw an exception when it the body doesnt contain the text" do
+          require 'test/unit'
+          lambda {assert_contain("monkeys")}.should raise_error(Test::Unit::AssertionFailure)
+        end
+        
+        it "should throw an exception when it the body doesnt contain the regexp" do
+          require 'test/unit'
+          lambda {assert_contain(/monkeys/)}.should raise_error(Test::Unit::AssertionFailure)
+        end
+      end
+      
+      describe "assert_not_contain" do
+        it "should pass when not containing the text" do
+          assert_not_contain("hello, world")
+        end
+        
+        it "should pass when not containing the regexp" do
+          assert_not_contain(/monkeys/)
+        end
+        
+        it "should throw an exception when it the body does contain the text" do
+          require 'test/unit'
+          lambda {assert_not_contain("hello, world")}.should raise_error(Test::Unit::AssertionFailure)
+        end
+        
+        it "should throw an exception when it the body does contain the regexp" do
+          require 'test/unit'
+          lambda {assert_not_contain(/hello, world/)}.should raise_error(Test::Unit::AssertionFailure)
+        end
+      end
+    end
   
     describe "#failure_message" do
+      
       it "should include the content string" do
         hc = Webrat::Matchers::HasContent.new("hello, world!")
         hc.matches?(@body)
