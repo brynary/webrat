@@ -27,9 +27,17 @@ module Webrat
     # Save and open pages with error status codes (500-599) in a browser? Defualts to true.
     attr_writer :open_error_files
     
+    # Which environment should the selenium tests be run in? Defaults to selenium.
+    attr_accessor :selenium_environment
+
+    # Which port should the selenium tests be run on? Defaults to 3001.
+    attr_accessor :selenium_port
+
     def initialize # :nodoc:
       self.open_error_files = true
       self.parse_with_nokogiri = !Webrat.on_java?
+      self.selenium_environment = :selenium
+      self.selenium_port = 3001
     end
     
     def parse_with_nokogiri? #:nodoc:
