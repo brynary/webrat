@@ -6,9 +6,13 @@
   * Removed auto-require of webrat/rails when requiring webrat when RAILS_ENV is
     defined
   
-  In your env.rb file, ensure you have:
+  In your env.rb or test_helper.rb file, ensure you have something like:
   
-    require "webrat/rails"
+    require "webrat"
+    
+    Webrat.configure do |config|
+      config.mode = :rails
+    end
   
 * Major enhancements
 

@@ -38,14 +38,10 @@ module Webrat
   # To use Webrat's Selenium support, you'll need the selenium-client gem installed.
   # Activate it with (for example, in your <tt>env.rb</tt>):
   #
-  #   require "webrat/selenium"
-  # 
-  # Then, if you're using Cucumber, configure it to use a 
-  # <tt>Webrat::Selenium::Rails::World</tt> as the scenario context by adding
-  # the following to <tt>env.rb</tt>:
-  #
-  #   World do
-  #     Webrat::Selenium::Rails::World.new
+  #   require "webrat"
+  #   
+  #   Webrat.configure do |config|
+  #     config.mode = :selenium
   #   end
   #
   # == Dropping down to the selenium-client API
@@ -72,34 +68,26 @@ module Webrat
   # your Webrat::Selenium tests ignoring the concurrency issues that can plague in-browser
   # testing, so long as you're using the Webrat API.
   module Selenium
-    
-    module Rails #:nodoc:
-      class World < ::ActionController::IntegrationTest
-        include Webrat::Selenium::Matchers
-        
-        def initialize #:nodoc:
-          @_result = Test::Unit::TestResult.new
-        end
-        
-        def response
-          webrat_session.response
-        end
-        
-        def wait_for(*args, &block)
-          webrat_session.wait_for(*args, &block)
-        end
+    module Methods
+      def response
+        webrat_session.response
+      end
 
-        def save_and_open_screengrab
-          webrat_session.save_and_open_screengrab
-        end
+      def wait_for(*args, &block)
+        webrat_session.wait_for(*args, &block)
+      end
+
+      def save_and_open_screengrab
+        webrat_session.save_and_open_screengrab
       end
     end
   end
-    
 end
 
 module ActionController #:nodoc:
   IntegrationTest.class_eval do
     include Webrat::Methods
+    include Webrat::Selenium::Methods
+    include Webrat::Selenium::Matchers
   end
 end
