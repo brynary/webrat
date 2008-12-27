@@ -1,6 +1,12 @@
-require File.expand_path(File.dirname(__FILE__) + '/helper')
+require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
+
+require "webrat/rails"
 
 describe Webrat::RailsSession do
+  before do
+    Webrat.configuration.mode = :rails
+  end
+  
   it "should delegate response_body to the session response body" do
     response = mock("response", :body => "<html>")
     integration_session = mock("integration session", :response => response)
@@ -66,6 +72,15 @@ describe Webrat::RailsSession do
       rails_session = Webrat::RailsSession.new(integration_session)
       integration_session.should_receive(:https!).with(false)
       rails_session.get("http://www.example.com/url", "data", "headers")
+    end
+  end
+  
+  context "the URL include an anchor" do
+    it "should strip out the anchor" do
+      integration_session = mock("integration session", :https! => false)
+      rails_session = Webrat::RailsSession.new(integration_session)
+      integration_session.should_receive(:request_via_redirect).with(:get, "/url", "data", "headers")
+      rails_session.get("http://www.example.com/url#foo", "data", "headers")
     end
   end
   

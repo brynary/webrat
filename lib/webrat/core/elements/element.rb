@@ -24,6 +24,10 @@ module Webrat
       Webrat::XML.xpath_to(@element)
     end
     
+    def inspect
+      "#<#{self.class} @element=#{element.inspect}>"
+    end
+    
   end
   
 end

@@ -59,11 +59,12 @@ To install the latest code as a plugin: (_Note:_ This may be less stable than us
 
   script/plugin install git://github.com/brynary/webrat.git
 
-In your test_helper.rb, spec_helper.rb, or env.rb (for Cucumber) add:
+In your test_helper.rb or env.rb (for Cucumber) add:
 
   require "webrat"
+  
   Webrat.configure do |config|
-    config.mode = Webrat::Configuration::RAILS_MODE
+    config.mode = :rails
   end
   
 == Install with Merb

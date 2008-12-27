@@ -1,7 +1,8 @@
-require File.expand_path(File.dirname(__FILE__) + '/helper')
+require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe "attach_file" do
   before do
+    Webrat.configuration.mode = :rails
     @filename = __FILE__
     @uploaded_file = mock("uploaded file")
     ActionController::TestUploadedFile.stub!(:new => @uploaded_file)

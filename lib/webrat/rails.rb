@@ -1,4 +1,6 @@
 require "webrat"
+
+require "action_controller"
 require "action_controller/integration"
 
 module Webrat
@@ -48,15 +50,18 @@ module Webrat
     
     def do_request(http_method, url, data, headers) #:nodoc:
       update_protocol(url)
-      integration_session.request_via_redirect(http_method, remove_protocol(url), data, headers)
+      url = normalize_url(url)
+      integration_session.request_via_redirect(http_method, url, data, headers)
     end
   
-    def remove_protocol(href) #:nodoc:
-      if href =~ %r{^https?://www.example.com(/.*)}
-        $LAST_MATCH_INFO.captures.first
-      else
-        href
+    # remove protocol, host and anchor
+    def normalize_url(href) #:nodoc:
+      uri = URI.parse(href)
+      normalized_url = uri.path
+      if uri.query
+        normalized_url += "?" + uri.query
       end
+      normalized_url
     end
     
     def update_protocol(href) #:nodoc:

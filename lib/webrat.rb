@@ -7,7 +7,7 @@ module Webrat
   class WebratError < StandardError
   end
 
-  VERSION = '0.3.2.1'
+  VERSION = '0.3.2.2'
 
   def self.require_xml
     gem "nokogiri", ">= 1.0.6"
