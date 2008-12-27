@@ -25,13 +25,23 @@ describe Webrat::Configuration do
     config.should open_error_files
   end
   
+  it "should have selenium setting defaults" do
+    config = Webrat::Configuration.new
+    config.selenium_environment.should == :selenium
+    config.selenium_port.should == 3001
+  end
+  
   it "should be configurable with a block" do
     Webrat.configure do |config|
       config.open_error_files = false
+      config.selenium_environment = :test
+      config.selenium_port = 4000
     end
     
     config = Webrat.configuration
     config.should_not open_error_files
+    config.selenium_environment.should == :test
+    config.selenium_port.should == 4000
   end
   
   [:rails, 
