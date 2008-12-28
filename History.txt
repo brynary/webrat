@@ -21,6 +21,7 @@
 
 * Minor enhancements
 
+  * Add configuration options for the Selenium environment and port (Kieran Pilkington)
   * Maximize the browser window after initializing Selenium (Luke Melia)
   * Better inspect output for Webrat elements
   * Sets the Webrat mode with Configuration#mode= in the config block [#85] (Mike Gaffney)
