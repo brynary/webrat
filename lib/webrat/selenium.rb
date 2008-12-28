@@ -26,7 +26,7 @@ module Webrat
   
   def self.start_app_server #:nodoc:
     pid_file = File.expand_path(RAILS_ROOT + "/tmp/pids/mongrel_selenium.pid")
-    system("mongrel_rails start -d --chdir=#{RAILS_ROOT} --port=#{Webrat.configuration.selenium_port.to_s} --environment=#{Webrat.configuration.selenium_environment.to_s} --pid #{pid_file} &")
+    system("mongrel_rails start -d --chdir=#{RAILS_ROOT} --port=#{Webrat.configuration.selenium_port} --environment=#{Webrat.configuration.selenium_environment} --pid #{pid_file} &")
     TCPSocket.wait_for_service :host => "0.0.0.0", :port => Webrat.configuration.selenium_port.to_i
   end
   
