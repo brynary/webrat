@@ -24,7 +24,17 @@ module Webrat
     when :mechanize
       MechanizeSession
     else
-      raise WebratError.new("Unknown Webrat mode: #{Webrat.configuration.mode.inspect}")
+      raise WebratError.new(<<-STR)
+Unknown Webrat mode: #{Webrat.configuration.mode.inspect}
+
+Please ensure you have a Webrat configuration block that specifies a mode
+in your test_helper.rb, spec_helper.rb, or env.rb (for Cucumber).
+For example:
+
+  Webrat.configure do |config|
+    config.mode = :rails
+  end
+      STR
     end
   end
   
