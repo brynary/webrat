@@ -3,7 +3,7 @@ require "rubygems"
 $LOAD_PATH.unshift(File.expand_path(File.dirname(__FILE__))) unless $LOAD_PATH.include?(File.expand_path(File.dirname(__FILE__)))
 
 module Webrat
-  VERSION = '0.3.3'
+  VERSION = '0.3.4'
   
   def self.root #:nodoc:
     defined?(RAILS_ROOT) ? RAILS_ROOT : Merb.root
