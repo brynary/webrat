@@ -110,6 +110,11 @@ namespace :spec do
       result = system "rake test:integration"
       raise "Tests failed" unless result
     end
+    
+    Dir.chdir "spec/integration/merb" do
+      result = system "rake spec"
+      raise "Tests failed" unless result
+    end
   end
 end
 
