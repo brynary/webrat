@@ -12,13 +12,14 @@ module Webrat
   def self.require_xml
     gem "nokogiri", ">= 1.1.0"
     
+    # We need Nokogiri's CSS to XPath support, even if using
+    # REXML and Hpricot for parsing and searching
+    require "nokogiri"
+    
     if on_java?
-      # We need Nokogiri's CSS to XPath support, even if using REXML and Hpricot for parsing and searching
-      require "nokogiri/css"
       require "hpricot"
       require "rexml/document"
     else
-      require "nokogiri"
       require "webrat/core/nokogiri"
     end
   end
