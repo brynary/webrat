@@ -1,20 +1,30 @@
+== 0.3.4 / 2008-12-29
+
+* 1 Minor enhancement
+
+  * Fix compatibility with Nokogiri 1.1.0 on JRuby
+  
+* 1 Bug fix
+
+  * Correct version for Nokogiri dependency in gem
+  
 == 0.3.3 / 2008-12-28
 
-* Minor enhancements
+* 1 Minor enhancement
 
   * Fix compatibility with Nokogiri 1.1.0 on MRI
   
 == 0.3.2 / 2008-11-08
 
-* Minor enhancements
+* 1 Minor enhancement
 
   * Fixes behavior or have_tag when a block is passed. It passes the matched node(s) to the block for further specs again. (Carl Lerche)
   
 == 0.3.1 / 2008-11-07
 
-  * Minor enhancements
+* 1 Minor enhancement
 
-    * Use @_webrat_session instance variable instead of @session for Merb integration to avoid collisions
+  * Use @_webrat_session instance variable instead of @session for Merb integration to avoid collisions
 
 == 0.3.0 / 2008-11-07
 
