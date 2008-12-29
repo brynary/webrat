@@ -2,6 +2,9 @@ require 'webrat/rack'
 require 'sinatra'
 require 'sinatra/test/methods'
 
+disable :run
+disable :reload
+
 module Webrat
   class SinatraSession < RackSession #:nodoc:
     include Sinatra::Test::Methods
