@@ -90,9 +90,13 @@ module ActionController #:nodoc:
 
       def follow_redirect_with_headers(h = {})
         raise "Not a redirect! #{@status} #{@status_message}" unless redirect?
-        h['HTTP_REFERER'] = current_url if current_url
 
-        get(interpret_uri(headers["location"].first), {}, h)
+        h['HTTP_REFERER'] = request.url
+
+        location = headers["location"]
+        location = location.first if location.is_a?(Array)
+        
+        get(location, {}, h)
         status
       end
     end

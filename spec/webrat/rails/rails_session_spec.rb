@@ -131,6 +131,7 @@ describe ActionController::Integration::Session do
   before :each do
     Webrat.configuration.mode = :rails
     @integration_session = ActionController::Integration::Session.new
+    @integration_session.stub!(:request => mock("request", :url => "http://source.url/"))
     @integration_session.stub!(:response => mock("response"))
   end
 
@@ -167,8 +168,6 @@ describe ActionController::Integration::Session do
     end
 
     it "should set the HTTP referer header" do
-      @integration_session.stub!(:current_url).and_return "http://source.url/"
-
       headers = {}
 
       @integration_session.follow_redirect_with_headers(headers)
