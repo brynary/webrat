@@ -103,6 +103,16 @@ task :prepare do
   system "ln -s ../../../../.. ./spec/integration/rails/vendor/plugins/webrat"
 end
 
+namespace :spec do
+  desc "Run the integration specs"
+  task :integration do
+    Dir.chdir "spec/integration/rails" do
+      result = system "rake test:integration"
+      raise "Tests failed" unless result
+    end
+  end
+end
+
 task :default => :spec
 
-task :precommit => ["spec", "spec:jruby"]
+task :precommit => ["spec", "spec:jruby", "spec:integration"]
