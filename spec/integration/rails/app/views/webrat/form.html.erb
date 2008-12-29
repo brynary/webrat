@@ -1,0 +1,17 @@
+<h1>Webrat Form</h1>
+
+<% form_tag submit_path do %>
+  <label>
+    Text field <%= text_field_tag "text_field" %>
+  </label>
+  
+  <label>
+    TOS <%= check_box_tag "tos" %>
+  </label>
+  
+  <label>
+    <%= select_tag "month", "<option></option><option>January</option>" %>
+  </label>
+  
+  <%= submit_tag "Test" %>
+<% end %>
