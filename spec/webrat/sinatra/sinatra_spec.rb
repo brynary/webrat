@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/helper')
 
-describe Webrat::SinatraSession do
+describe Webrat::SinatraSession, "API" do
   before :each do
     Webrat.configuration.mode = :sinatra
     @sinatra_session = Webrat::SinatraSession.new
@@ -31,12 +31,12 @@ describe Webrat::SinatraSession do
     @sinatra_session.delete("url", {}, "headers")
   end
 
-  it "should forward headers when following redirects" do
+  it "should use Session#request_page to handle redirects" do
     @response.should_receive(:redirect?).twice.and_return(true, false)
     @response.should_receive(:location).and_return("redirect url")
 
     @sinatra_session.should_receive(:get_it).with("original url", { :env => "headers" })
-    @sinatra_session.should_receive(:get_it).with("redirect url", { :env => "headers" })
+    @sinatra_session.should_receive(:request_page).with("redirect url", :get, {})
 
     @sinatra_session.get("original url", {}, "headers")
   end
