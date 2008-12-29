@@ -28,7 +28,7 @@ spec = Gem::Specification.new do |s|
   s.extra_rdoc_files = %w(README.txt MIT-LICENSE.txt)
 
   # Dependencies
-  s.add_dependency "nokogiri", ">= 1.0.3"
+  s.add_dependency "nokogiri", ">= 1.1.0"
 end
 
 Rake::GemPackageTask.new(spec) do |package|
