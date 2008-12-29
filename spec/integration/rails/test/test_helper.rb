@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'test_help'
 require "redgreen"
 
-require "webrat"
+require File.dirname(__FILE__) + "/../../../../lib/webrat"
 
 Webrat.configure do |config|
   config.mode = :rails
