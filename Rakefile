@@ -108,12 +108,17 @@ namespace :spec do
   task :integration do
     Dir.chdir "spec/integration/rails" do
       result = system "rake test:integration"
-      raise "Tests failed" unless result
+      raise "Integration tests failed for rails" unless result
     end
     
     Dir.chdir "spec/integration/merb" do
       result = system "rake spec"
-      raise "Tests failed" unless result
+      raise "Integration tests failed for merb" unless result
+    end
+    
+    Dir.chdir "spec/integration/sinatra" do
+      result = system "rake test"
+      raise "Integration tests failed for sinatra" unless result
     end
   end
 end
