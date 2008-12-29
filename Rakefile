@@ -1,4 +1,4 @@
-require 'rubygems'
+# require 'rubygems'
 require "rake/gempackagetask"
 require 'rake/rdoctask'
 require "rake/clean"
@@ -52,13 +52,13 @@ end
 desc "Run API and Core specs"
 Spec::Rake::SpecTask.new do |t|
   t.spec_opts = ['--options', "\"#{File.dirname(__FILE__)}/spec/spec.opts\""]
-  t.spec_files = FileList['spec/**/*_spec.rb']
+  t.spec_files = FileList['spec/public/*_spec.rb'] + FileList['spec/private/*_spec.rb']
 end
 
 desc "Run all specs in spec directory with RCov"
 Spec::Rake::SpecTask.new(:rcov) do |t|
   t.spec_opts = ['--options', "\"#{File.dirname(__FILE__)}/spec/spec.opts\""]
-  t.spec_files = FileList['spec/**/*_spec.rb']
+  t.spec_files = FileList['spec/public/*_spec.rb'] + FileList['spec/private/*_spec.rb']
   t.rcov = true
   t.rcov_opts = lambda do
     IO.readlines(File.dirname(__FILE__) + "/spec/rcov.opts").map {|l| l.chomp.split " "}.flatten
@@ -71,8 +71,8 @@ end
 
 desc 'Install the package as a gem.'
 task :install_gem => [:clean, :package] do
-  gem = Dir['pkg/*.gem'].first
-  sh "sudo gem install --local #{gem}"
+  gem_filename = Dir['pkg/*.gem'].first
+  sh "sudo gem install --local #{gem_filename}"
 end
 
 desc "Delete generated RDoc"
@@ -97,6 +97,10 @@ task :spec_deps do
       puts "Dependency Issues: #{test}"
     end
   end
+end
+
+task :prepare do
+  system "ln -s ../../../../.. ./spec/integration/rails/vendor/plugins/webrat"
 end
 
 task :default => :spec
