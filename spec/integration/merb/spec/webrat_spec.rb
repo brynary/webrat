@@ -5,7 +5,7 @@ describe "Webrat" do
     response = visit "/"
     response.should contain("Webrat Form")
   end
-  
+
   it "should submit forms" do
     visit "/"
     fill_in "Text field", :with => "Hello"
@@ -13,5 +13,9 @@ describe "Webrat" do
     select "January"
     click_button "Test"
   end
-  
+
+  it "should follow redirects" do
+    response = visit "/redirect"
+    response.should contain("Webrat Form")
+  end
 end

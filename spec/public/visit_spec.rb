@@ -33,7 +33,7 @@ describe "visit" do
 
   it "should follow redirects" do
     webrat_session.should_receive(:redirect?).twice.and_return(true, false)
-    webrat_session.response.should_receive(:location).once.and_return("/newurl")
+    webrat_session.response.should_receive(:headers).once.and_return({ "Location" => "/newurl" })
 
     visit("/oldurl")
 

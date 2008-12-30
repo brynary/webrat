@@ -110,7 +110,7 @@ For example:
       @http_method  = http_method
       @data         = data
 
-      request_page(response.location, :get, data) if redirect?
+      request_page(response.headers["Location"], :get, data) if redirect?
 
       return response
     end
