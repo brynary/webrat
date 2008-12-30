@@ -10,7 +10,7 @@ describe "click_link" do
     webrat_session.should_receive(:get).with("/page", {})
     click_link "Save & go back"
   end
-  
+
   it "should use get by default" do
     with_html <<-HTML
       <html>
@@ -30,7 +30,7 @@ describe "click_link" do
     webrat_session.should_receive(:get).with("/page", {})
     click_link "Link text", :method => :get
   end
-  
+
   it "should click link on substring" do
     with_html <<-HTML
       <html>
@@ -40,7 +40,7 @@ describe "click_link" do
     webrat_session.should_receive(:get).with("/page", {})
     click_link "ink tex", :method => :get
   end
-  
+
   it "should click delete links" do
     with_html <<-HTML
       <html>
@@ -50,8 +50,8 @@ describe "click_link" do
     webrat_session.should_receive(:delete).with("/page", {})
     click_link "Link text", :method => :delete
   end
-  
-  
+
+
   it "should click post links" do
     with_html <<-HTML
       <html>
@@ -61,7 +61,7 @@ describe "click_link" do
     webrat_session.should_receive(:post).with("/page", {})
     click_link "Link text", :method => :post
   end
-  
+
   it "should click put links" do
     with_html <<-HTML
       <html>
@@ -71,7 +71,7 @@ describe "click_link" do
     webrat_session.should_receive(:put).with("/page", {})
     click_link "Link text", :method => :put
   end
-  
+
   it "should click links by regexp" do
     with_html <<-HTML
       <html>
@@ -81,8 +81,8 @@ describe "click_link" do
     webrat_session.should_receive(:get).with("/page", {})
     click_link /link [a-z]/i
   end
-  
-  it "should click links by id" do 
+
+  it "should click links by id" do
     with_html <<-HTML
       <html>
       <a id="link_text_link" href="/page">Link text</a>
@@ -91,8 +91,8 @@ describe "click_link" do
     webrat_session.should_receive(:get).with("/page", {})
     click_link "link_text_link"
   end
-  
-  it "should click links by id regexp" do 
+
+  it "should click links by id regexp" do
     with_html <<-HTML
       <html>
       <a id="link_text_link" href="/page">Link text</a>
@@ -101,7 +101,7 @@ describe "click_link" do
     webrat_session.should_receive(:get).with("/page", {})
     click_link /_text_/
   end
-  
+
   it "should click rails javascript links with authenticity tokens" do
     with_html <<-HTML
       <html>
@@ -122,7 +122,7 @@ describe "click_link" do
     webrat_session.should_receive(:post).with("/posts", "authenticity_token" => "aa79cb354597a60a3786e7e291ed4f74d77d3a62")
     click_link "Posts"
   end
-  
+
   it "should click rails javascript delete links" do
     with_html <<-HTML
       <html>
@@ -143,7 +143,7 @@ describe "click_link" do
     webrat_session.should_receive(:delete).with("/posts/1", {})
     click_link "Delete"
   end
-  
+
   it "should click rails javascript post links" do
     with_html <<-HTML
       <html>
@@ -159,7 +159,7 @@ describe "click_link" do
     webrat_session.should_receive(:post).with("/posts", {})
     click_link "Posts"
   end
-  
+
   it "should click rails javascript post links without javascript" do
     with_html <<-HTML
       <html>
@@ -175,7 +175,7 @@ describe "click_link" do
     webrat_session.should_receive(:get).with("/posts", {})
     click_link "Posts", :javascript => false
   end
-  
+
   it "should click rails javascript put links" do
     with_html <<-HTML
       <html>
@@ -196,7 +196,7 @@ describe "click_link" do
     webrat_session.should_receive(:put).with("/posts", {})
     click_link "Put"
   end
-  
+
   it "should fail if the javascript link doesn't have a value for the _method input" do
     with_html <<-HTML
       <html>
@@ -213,12 +213,12 @@ describe "click_link" do
         return false;">Link</a>
       </html>
     HTML
-    
+
     lambda {
       click_link "Link"
     }.should raise_error(Webrat::WebratError)
   end
-  
+
   it "should assert valid response" do
     with_html <<-HTML
       <html>
@@ -228,7 +228,7 @@ describe "click_link" do
     webrat_session.response_code = 501
     lambda { click_link "Link text" }.should raise_error(Webrat::PageLoadError)
   end
-  
+
   [200, 300, 400, 499].each do |status|
     it "should consider the #{status} status code as success" do
       with_html <<-HTML
@@ -236,23 +236,24 @@ describe "click_link" do
         <a href="/page">Link text</a>
         </html>
       HTML
+      webrat_session.stub!(:redirect? => false)
       webrat_session.response_code = status
       lambda { click_link "Link text" }.should_not raise_error
     end
   end
-  
+
   it "should fail is the link doesn't exist" do
     with_html <<-HTML
       <html>
       <a href="/page">Link text</a>
       </html>
     HTML
-    
+
     lambda {
       click_link "Missing link"
     }.should raise_error(Webrat::NotFoundError)
   end
-  
+
   it "should not be case sensitive" do
     with_html <<-HTML
       <html>
@@ -262,7 +263,7 @@ describe "click_link" do
     webrat_session.should_receive(:get).with("/page", {})
     click_link "LINK TEXT"
   end
-  
+
   it "should match link substrings" do
     with_html <<-HTML
       <html>
@@ -272,7 +273,7 @@ describe "click_link" do
     webrat_session.should_receive(:get).with("/page", {})
     click_link "Link text"
   end
-  
+
   it "should work with elements in the link" do
     with_html <<-HTML
       <html>
@@ -282,7 +283,7 @@ describe "click_link" do
     webrat_session.should_receive(:get).with("/page", {})
     click_link "Link text"
   end
-  
+
   it "should match the first matching link" do
     with_html <<-HTML
       <html>
@@ -293,7 +294,7 @@ describe "click_link" do
     webrat_session.should_receive(:get).with("/page1", {})
     click_link "Link text"
   end
-  
+
   it "should choose the shortest link text match" do
     with_html <<-HTML
       <html>
@@ -301,22 +302,22 @@ describe "click_link" do
         <a href="/page2">Link</a>
       </html>
     HTML
-    
+
     webrat_session.should_receive(:get).with("/page2", {})
     click_link "Link"
   end
-  
+
   it "should treat non-breaking spaces as spaces" do
     with_html <<-HTML
       <html>
         <a href="/page1">This&nbsp;is&nbsp;a&nbsp;link</a>
       </html>
     HTML
-    
+
     webrat_session.should_receive(:get).with("/page1", {})
     click_link "This is a link"
   end
-  
+
   it "should not match on non-text contents" do
     pending "needs fix" do
       with_html <<-HTML
@@ -325,12 +326,12 @@ describe "click_link" do
         <a href="/page2">Location</a>
         </html>
       HTML
-    
+
       webrat_session.should_receive(:get).with("/page2", {})
       click_link "Location"
     end
   end
-  
+
   it "should click link within a selector" do
     with_html <<-HTML
     <html>
@@ -340,7 +341,7 @@ describe "click_link" do
       </div>
     </html>
     HTML
-    
+
     webrat_session.should_receive(:get).with("/page2", {})
     click_link_within "#container", "Link"
   end
@@ -366,7 +367,7 @@ describe "click_link" do
     webrat_session.should_receive(:get).with("/page/sub", {})
     click_link "Jump to sub page"
   end
-  
+
   it "should follow fully qualified local links" do
     webrat_session.stub!(:current_url => "/page")
     with_html <<-HTML
@@ -377,7 +378,7 @@ describe "click_link" do
     webrat_session.should_receive(:get).with("http://subdomain.example.com/page/sub", {})
     click_link "Jump to sub page"
   end
-  
+
   it "should follow fully qualified local links to example.com" do
     with_html <<-HTML
       <html>
@@ -398,28 +399,28 @@ describe "click_link" do
     webrat_session.should_receive(:get).with("/page?foo=bar", {})
     click_link "Jump to foo bar"
   end
-  
+
   it "should matches_text? on regexp" do
     pending "need to update these"
     link = Webrat::Link.new(webrat_session, nil)
     link.should_receive(:text).and_return(@link_text_with_nbsp)
     link.matches_text?(/link/i).should == 0
   end
-  
+
   it "should matches_text? on link_text" do
     pending "need to update these"
     link = Webrat::Link.new(webrat_session, nil)
     link.should_receive(:text).and_return(@link_text_with_nbsp)
     link.matches_text?("Link Text").should == 0
   end
-  
+
   it "should matches_text? on substring" do
     pending "need to update these"
     link = Webrat::Link.new(webrat_session, nil)
     link.should_receive(:text).and_return(@link_text_with_nbsp)
     link.matches_text?("nk Te").should_not be_nil
   end
-  
+
   it "should not matches_text? on link_text case insensitive" do
     pending "need to update these"
     link = Webrat::Link.new(webrat_session, nil)
@@ -428,15 +429,15 @@ describe "click_link" do
     link.should_receive(:title).and_return(nil)
     link.matches_text?("link_text").should == false
   end
-  
+
   it "should match text not include &nbsp;" do
     pending "need to update these"
     link = Webrat::Link.new(webrat_session, nil)
     link.should_receive(:text).and_return('LinkText')
     link.matches_text?("LinkText").should == 0
   end
-  
-  it "should not matches_text? on wrong text" do 
+
+  it "should not matches_text? on wrong text" do
     pending "need to update these"
     link = Webrat::Link.new(webrat_session, nil)
     nbsp = [0xA0].pack("U")
@@ -464,5 +465,5 @@ describe "click_link" do
     link.should_receive(:inner_html).and_return('<img src="logo.png" />')
     link.matches_text?('logo.png').should == 10
   end
-  
+
 end

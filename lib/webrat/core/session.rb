@@ -110,13 +110,17 @@ For example:
       @http_method  = http_method
       @data         = data
 
-      request_page(response.location, :get, data) if response.redirect?
+      request_page(response.location, :get, data) if redirect?
 
       return response
     end
 
     def success_code? #:nodoc:
       (200..499).include?(response_code)
+    end
+    
+    def redirect? #:nodoc:
+      response_code / 100 == 3
     end
 
     def exception_caught? #:nodoc:

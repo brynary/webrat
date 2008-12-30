@@ -21,6 +21,7 @@ describe "visit" do
 
   [200, 300, 400, 499].each do |status|
     it "should consider the #{status} status code as success" do
+      webrat_session.stub!(:redirect? => false)
       webrat_session.response_code = status
       lambda { visit("/") }.should_not raise_error
     end
@@ -31,7 +32,7 @@ describe "visit" do
   end
 
   it "should follow redirects" do
-    webrat_session.response.should_receive(:redirect?).twice.and_return(true, false)
+    webrat_session.should_receive(:redirect?).twice.and_return(true, false)
     webrat_session.response.should_receive(:location).once.and_return("/newurl")
 
     visit("/oldurl")

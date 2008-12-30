@@ -114,12 +114,28 @@ describe Webrat::Session do
     end
 
     it "should follow redirects" do
-      webrat_session.response.should_receive(:redirect?).twice.and_return(true, false)
+      webrat_session.should_receive(:redirect?).twice.and_return(true, false)
       webrat_session.response.should_receive(:location).once.and_return("/newurl")
 
       webrat_session.request_page("/oldurl", :get, {})
 
       webrat_session.current_url.should == "/newurl"
+    end
+  end
+
+  describe "#redirect?" do
+    before(:each) do
+      webrat_session = Webrat::Session.new
+    end
+
+    it "should return true if the last response was a redirect" do
+      webrat_session.stub!(:response_code => 301)
+      webrat_session.redirect?.should be_true
+    end
+
+    it "should return false if the last response wasn't a redirect" do
+      webrat_session.stub!(:response_code => 200)
+      webrat_session.redirect?.should be_false
     end
   end
 end

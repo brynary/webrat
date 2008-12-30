@@ -12,7 +12,7 @@ module Webrat #:nodoc:
     end
 
     def response
-      @response ||= TestResponse.new
+      @response ||= Object.new
     end
 
     def response_code
@@ -29,12 +29,6 @@ module Webrat #:nodoc:
     end
 
     def delete(url, data, headers = nil)
-    end
-  end
-  
-  class TestResponse #:nodoc:
-    def redirect?
-      false
     end
   end
 end
