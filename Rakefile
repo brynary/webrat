@@ -29,7 +29,7 @@ spec = Gem::Specification.new do |s|
 
   # Dependencies
   s.add_dependency "nokogiri", ">= 1.1.0"
-  
+
   s.rubyforge_project = "webrat"
 end
 
@@ -105,15 +105,23 @@ end
 
 namespace :spec do
   desc "Run the integration specs"
-  task :integration do
-    Dir.chdir "spec/integration/rails" do
-      result = system "rake test:integration"
-      raise "Tests failed" unless result
+  task :integration => ["integration:rails", "integration:merb"]
+
+  namespace :integration do
+    desc "Run the Rails integration specs"
+    task :rails do
+      Dir.chdir "spec/integration/rails" do
+        result = system "rake test:integration"
+        raise "Tests failed" unless result
+      end
     end
-    
-    Dir.chdir "spec/integration/merb" do
-      result = system "rake spec"
-      raise "Tests failed" unless result
+
+    desc "Run the Merb integration specs"
+    task :merb do
+      Dir.chdir "spec/integration/merb" do
+        result = system "rake spec"
+        raise "Tests failed" unless result
+      end
     end
   end
 end
