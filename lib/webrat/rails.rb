@@ -50,10 +50,7 @@ module Webrat
 
     def do_request(http_method, url, data, headers) #:nodoc:
       update_protocol(url)
-
       integration_session.send(http_method, normalize_url(url), data, headers)
-      integration_session.follow_redirect_with_headers(headers) while integration_session.internal_redirect?
-      integration_session.status
     end
 
     # remove protocol, host and anchor
@@ -82,27 +79,6 @@ module Webrat
 end
 
 module ActionController #:nodoc:
-  module Integration #:nodoc:
-    class Session #:nodoc:
-      def internal_redirect?
-        redirect? && response.redirect_url_match?(host)
-      end
-
-      def follow_redirect_with_headers(h = {})
-        raise "Not a redirect! #{@status} #{@status_message}" unless redirect?
-
-        h = Hash.new if h.nil?
-        h['HTTP_REFERER'] = request.url
-
-        location = headers["location"]
-        location = location.first if location.is_a?(Array)
-        
-        get(location, {}, h)
-        status
-      end
-    end
-  end
-
   IntegrationTest.class_eval do
     include Webrat::Methods
     include Webrat::Matchers
