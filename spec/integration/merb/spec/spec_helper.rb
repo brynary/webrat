@@ -18,3 +18,7 @@ Spec::Runner.configure do |config|
   config.include(Merb::Test::RouteHelper)
   config.include(Merb::Test::ControllerHelper)
 end
+
+Webrat.configure do |config|
+  config.mode = :merb
+end
