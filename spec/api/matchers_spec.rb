@@ -157,6 +157,10 @@ describe Webrat::Matchers do
     end
     
     describe "asserts for contains," do
+      before(:each) do
+        should_receive(:response_body).and_return @body
+        require 'test/unit'
+      end
       describe "assert_contain" do
         it "should pass when containing the text" do
           assert_contain("hello, world")
@@ -167,19 +171,17 @@ describe Webrat::Matchers do
         end
         
         it "should throw an exception when the body doesnt contain the text" do
-          require 'test/unit'
-          lambda {assert_contain("monkeys")}.should raise_error(Test::Unit::AssertionFailure)
+          lambda {assert_contain("monkeys")}.should raise_error(Test::Unit::AssertionFailedError)
         end
         
         it "should throw an exception when the body doesnt contain the regexp" do
-          require 'test/unit'
-          lambda {assert_contain(/monkeys/)}.should raise_error(Test::Unit::AssertionFailure)
+          lambda {assert_contain(/monkeys/)}.should raise_error(Test::Unit::AssertionFailedError)
         end
       end
       
       describe "assert_not_contain" do
         it "should pass when not containing the text" do
-          assert_not_contain("hello, world")
+          assert_not_contain("monkeys")
         end
         
         it "should pass when not containing the regexp" do
@@ -187,13 +189,11 @@ describe Webrat::Matchers do
         end
         
         it "should throw an exception when the body does contain the text" do
-          require 'test/unit'
-          lambda {assert_not_contain("hello, world")}.should raise_error(Test::Unit::AssertionFailure)
+          lambda {assert_not_contain("hello, world")}.should raise_error(Test::Unit::AssertionFailedError)
         end
         
         it "should throw an exception when the body does contain the regexp" do
-          require 'test/unit'
-          lambda {assert_not_contain(/hello, world/)}.should raise_error(Test::Unit::AssertionFailure)
+          lambda {assert_not_contain(/hello, world/)}.should raise_error(Test::Unit::AssertionFailedError)
         end
       end
     end
