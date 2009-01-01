@@ -12,9 +12,11 @@ class WebratTest < Test::Unit::TestCase
   def test_submits_form
     visit "/go"
     fill_in "Name", :with => "World"
+    fill_in "Email", :with => "world@example.org"
     click_button "Submit"
     
     assert response_body.include?("Hello, World")
+    assert response_body.include?("Your email is: world@example.org")
   end
   
   def test_follows_redirects

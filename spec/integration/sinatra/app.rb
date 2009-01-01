@@ -17,6 +17,7 @@ end
  
 post "/go" do
   @user = params[:name]
+  @email = params[:email]
   erb :hello
 end
  
@@ -36,10 +37,17 @@ __END__
  
 @@ go
 <form method="post" action="/go">
-  <label for="name">Name</label>
-  <input type="text" name="name" id="name">
+  <div>
+    <label for="name">Name</label>
+    <input type="text" name="name" id="name">
+  </div>
+  <div>
+    <label for="email">Email</label>
+    <input type="text" name="email" id="email">
+  </div>
   <input type="submit" value="Submit" />
 </form>
  
 @@ hello
 <p>Hello, <%= @user %></p>
+<p>Your email is: <%= @email %></p>
