@@ -133,6 +133,49 @@ describe Webrat::Matchers do
       }
     end
     
+    describe "asserts for tags," do
+      before(:each) do
+        should_receive(:response_body).and_return @body
+        require 'test/unit'
+      end
+      describe "assert_tag" do
+        it "should pass when body contains the tag" do
+          assert_tag("div")
+        end
+        
+        it "should pass when finding with additional selectors" do
+          assert_tag("div", :class => "inner")
+        end
+        
+        
+        it "should throw an exception when the body doesnt have matching tag" do
+          lambda {assert_tag("p")}.should raise_error(Test::Unit::AssertionFailedError)
+        end
+        
+        it "should throw an exception when the body doens't have a tag matching the additional selector" do
+          lambda {assert_tag("div", :class => "nope")}.should raise_error(Test::Unit::AssertionFailedError)
+        end
+      end
+      
+      describe "assert_no_tag" do
+        it "should pass when the body doesn't contan the tag" do
+          assert_no_tag("p")
+        end
+        
+        it "should pass when the body doesn't contain the tag due to additional selectors missing" do
+          assert_no_tag("div", :class => "nope")
+        end
+        
+        it "should throw an exception when the body does contain the tag" do
+          lambda {assert_no_tag("div")}.should raise_error(Test::Unit::AssertionFailedError)
+        end
+        
+        it "should throw an exception when the body contains the tag with additional selectors" do
+          lambda {assert_no_tag("div", :class => "inner")}.should raise_error(Test::Unit::AssertionFailedError)
+        end
+      end
+    end
+    
   end
 
   describe Webrat::Matchers::HasContent do
