@@ -1,4 +1,4 @@
-require 'rubygems'
+# require 'rubygems'
 require "rake/gempackagetask"
 require 'rake/rdoctask'
 require "rake/clean"
@@ -28,8 +28,8 @@ spec = Gem::Specification.new do |s|
   s.extra_rdoc_files = %w(README.rdoc MIT-LICENSE.txt)
 
   # Dependencies
-  s.add_dependency "nokogiri", ">= 1.0.6"
-  
+  s.add_dependency "nokogiri", ">= 1.1.0"
+
   s.rubyforge_project = "webrat"
 end
 
@@ -52,13 +52,13 @@ end
 desc "Run API and Core specs"
 Spec::Rake::SpecTask.new do |t|
   t.spec_opts = ['--options', "\"#{File.dirname(__FILE__)}/spec/spec.opts\""]
-  t.spec_files = FileList['spec/**/*_spec.rb']
+  t.spec_files = FileList['spec/public/**/*_spec.rb'] + FileList['spec/private/**/*_spec.rb']
 end
 
 desc "Run all specs in spec directory with RCov"
 Spec::Rake::SpecTask.new(:rcov) do |t|
   t.spec_opts = ['--options', "\"#{File.dirname(__FILE__)}/spec/spec.opts\""]
-  t.spec_files = FileList['spec/**/*_spec.rb']
+  t.spec_files = FileList['spec/public/**/*_spec.rb'] + FileList['spec/private/**/*_spec.rb']
   t.rcov = true
   t.rcov_opts = lambda do
     IO.readlines(File.dirname(__FILE__) + "/spec/rcov.opts").map {|l| l.chomp.split " "}.flatten
@@ -71,8 +71,8 @@ end
 
 desc 'Install the package as a gem.'
 task :install_gem => [:clean, :package] do
-  gem = Dir['pkg/*.gem'].first
-  sh "sudo gem install --local #{gem}"
+  gem_filename = Dir['pkg/*.gem'].first
+  sh "sudo gem install --local #{gem_filename}"
 end
 
 desc "Delete generated RDoc"
@@ -99,6 +99,33 @@ task :spec_deps do
   end
 end
 
+task :prepare do
+  system "ln -s ../../../../.. ./spec/integration/rails/vendor/plugins/webrat"
+end
+
+namespace :spec do
+  desc "Run the integration specs"
+  task :integration => ["integration:rails", "integration:merb"]
+
+  namespace :integration do
+    desc "Run the Rails integration specs"
+    task :rails do
+      Dir.chdir "spec/integration/rails" do
+        result = system "rake test:integration"
+        raise "Tests failed" unless result
+      end
+    end
+
+    desc "Run the Merb integration specs"
+    task :merb do
+      Dir.chdir "spec/integration/merb" do
+        result = system "rake spec"
+        raise "Tests failed" unless result
+      end
+    end
+  end
+end
+
 task :default => :spec
 
-task :precommit => ["spec", "spec:jruby"]
+task :precommit => ["spec", "spec:jruby", "spec:integration"]

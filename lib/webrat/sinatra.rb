@@ -11,9 +11,7 @@ module Webrat
         path, data, headers = *args
         params = data.merge({:env => headers || {}})
         self.__send__("#{verb}_it", path, params)
-        follow! while @response.redirect?
       end
     end
-    
   end
 end
