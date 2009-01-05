@@ -59,24 +59,24 @@ describe Webrat::Matchers do
           should_receive(:response_body).and_return @body
           require 'test/unit'
         end
-        describe "assert_xpath" do
+        describe "assert_have_xpath" do
           it "should pass when body contains the selection" do
-            assert_xpath("//div")
+            assert_have_xpath("//div")
           end
 
           it "should throw an exception when the body doesnt have matching xpath" do
-            lambda {assert_xpath("//p")}.should raise_error(Test::Unit::AssertionFailedError)
+            lambda {assert_have_xpath("//p")}.should raise_error(Test::Unit::AssertionFailedError)
           end
 
         end
 
-        describe "assert_no_xpath" do
+        describe "assert_have_no_xpath" do
           it "should pass when the body doesn't contan the xpath" do
-            assert_no_xpath("//p")
+            assert_have_no_xpath("//p")
           end
 
           it "should throw an exception when the body does contain the xpath" do
-            lambda {assert_no_xpath("//div")}.should raise_error(Test::Unit::AssertionFailedError)
+            lambda {assert_have_no_xpath("//div")}.should raise_error(Test::Unit::AssertionFailedError)
           end
         end
     end
