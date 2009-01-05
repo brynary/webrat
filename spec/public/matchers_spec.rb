@@ -118,24 +118,24 @@ describe Webrat::Matchers do
         should_receive(:response_body).and_return @body
         require 'test/unit'
       end
-      describe "assert_selector" do
+      describe "assert_have_selector" do
         it "should pass when body contains the selection" do
-          assert_selector("div")
+          assert_have_selector("div")
         end
         
         it "should throw an exception when the body doesnt have matching selection" do
-          lambda {assert_selector("p")}.should raise_error(Test::Unit::AssertionFailedError)
+          lambda {assert_have_selector("p")}.should raise_error(Test::Unit::AssertionFailedError)
         end
         
       end
       
-      describe "assert_not_selector" do
+      describe "assert_have_not_selector" do
         it "should pass when the body doesn't contan the selection" do
-          assert_no_selector("p")
+          assert_have_no_selector("p")
         end
         
         it "should throw an exception when the body does contain the selection" do
-          lambda {assert_no_selector("div")}.should raise_error(Test::Unit::AssertionFailedError)
+          lambda {assert_have_no_selector("div")}.should raise_error(Test::Unit::AssertionFailedError)
         end
       end
     end
