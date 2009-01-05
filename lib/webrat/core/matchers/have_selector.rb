@@ -33,5 +33,20 @@ module Webrat
     end
     alias_method :match_selector, :have_selector
     
+    
+    # Asserts that the body of the response contains
+    # the supplied selector
+    def assert_selector(expected)
+      hs = HaveSelector.new(expected)
+      raise Test::Unit::AssertionFailedError.new(hs.failure_message) unless hs.matches?(response_body)
+    end
+    
+    # Asserts that the body of the response
+    # does not contain the supplied string or regepx
+    def assert_no_selector(expected)
+      hs = HaveSelector.new(expected)
+      raise Test::Unit::AssertionFailedError.new(hs.negative_failure_message) if hs.matches?(response_body)
+    end
+    
   end
 end
