@@ -7,8 +7,12 @@ class WebratController < ApplicationController
     render :text => "OK"
   end
 
-  def redirect
+  def internal_redirect
     redirect_to :submit
+  end
+  
+  def external_redirect
+    redirect_to "http://google.com"
   end
 
 end

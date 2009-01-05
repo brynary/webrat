@@ -15,8 +15,13 @@ class WebratTest < ActionController::IntegrationTest
     click_button "Test"
   end
 
-  test "should follow redirects" do
-    visit redirect_path
+  test "should follow internal redirects" do
+    visit internal_redirect_path
     assert response.body.include?("OK")
+  end
+  
+  test "should not follow external redirects" do
+    visit external_redirect_path
+    assert response.redirect?
   end
 end

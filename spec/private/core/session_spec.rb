@@ -113,13 +113,21 @@ describe Webrat::Session do
       lambda { webrat_session.request_page('some url', :get, {}) }.should raise_error(Webrat::PageLoadError)
     end
 
-    it "should follow redirects" do
-      webrat_session.should_receive(:redirect?).twice.and_return(true, false)
+    it "should follow internal redirects" do
+      webrat_session.should_receive(:internal_redirect?).twice.and_return(true, false)
       webrat_session.response.should_receive(:headers).once.and_return({ "Location" => "/newurl" })
 
       webrat_session.request_page("/oldurl", :get, {})
 
       webrat_session.current_url.should == "/newurl"
+    end
+
+    it "should now follow external redirects" do
+      webrat_session.should_receive(:internal_redirect?).and_return(false)
+
+      webrat_session.request_page("/oldurl", :get, {})
+
+      webrat_session.current_url.should == "/oldurl"
     end
   end
 
@@ -136,6 +144,31 @@ describe Webrat::Session do
     it "should return false if the last response wasn't a redirect" do
       webrat_session.stub!(:response_code => 200)
       webrat_session.redirect?.should be_false
+    end
+  end
+  
+  describe "#internal_redirect?" do
+    before(:each) do
+      webrat_session = Webrat::Session.new
+    end
+
+    it "should return true if the last response was a redirect and the host of the current_url matches that of the response location" do
+      webrat_session.stub!(:redirect?         => true)
+      webrat_session.stub!(:current_url       => "http://example.com")
+      webrat_session.stub!(:response_location => "http://example.com")
+      webrat_session.internal_redirect?.should be_true
+    end
+    
+    it "should return false if the last response was not a redirect" do
+      webrat_session.stub!(:redirect? => false)
+      webrat_session.internal_redirect?.should be_false
+    end
+    
+    it "should return false if the last response was a redirect but the host of the current_url doesn't matches that of the response location" do
+      webrat_session.stub!(:redirect?         => true)
+      webrat_session.stub!(:current_url       => "http://example.com")
+      webrat_session.stub!(:response_location => "http://google.com")
+      webrat_session.internal_redirect?.should be_false
     end
   end
 end

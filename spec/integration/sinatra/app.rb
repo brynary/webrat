@@ -1,26 +1,30 @@
 require "rubygems"
 require "sinatra"
- 
+
 use_in_file_templates!
- 
+
 get "/" do
   erb :home
 end
- 
+
 get "/go" do
   erb :go
 end
 
-get "/redirect" do
+get "/internal_redirect" do
   redirect "/"
 end
- 
+
+get "/external_redirect" do
+  redirect "http://google.com"
+end
+
 post "/go" do
   @user = params[:name]
   @email = params[:email]
   erb :hello
 end
- 
+
 __END__
 
 @@ layout
@@ -31,10 +35,10 @@ __END__
     <%= yield %>
   </body>
 </html>
- 
+
 @@ home
 <p> visit <a href="/go">there</a></p>
- 
+
 @@ go
 <form method="post" action="/go">
   <div>
@@ -47,7 +51,7 @@ __END__
   </div>
   <input type="submit" value="Submit" />
 </form>
- 
+
 @@ hello
 <p>Hello, <%= @user %></p>
 <p>Your email is: <%= @email %></p>
