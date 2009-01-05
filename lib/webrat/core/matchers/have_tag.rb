@@ -55,14 +55,14 @@ module Webrat
     
     # Asserts that the body of the response contains
     # the supplied tag with the associated selectors
-    def assert_tag(name, attributes = {})
+    def assert_have_tag(name, attributes = {})
       ht = HaveTag.new([name, attributes])
       raise Test::Unit::AssertionFailedError.new(ht.failure_message) unless ht.matches?(response_body)
     end
     
     # Asserts that the body of the response
     # does not contain the supplied string or regepx
-    def assert_no_tag(name, attributes = {})
+    def assert_have_no_tag(name, attributes = {})
       ht = HaveTag.new([name, attributes])
       raise Test::Unit::AssertionFailedError.new(ht.negative_failure_message) if ht.matches?(response_body)
     end
