@@ -7,8 +7,12 @@ class Testing < Application
   def submit_form
   end
   
-  def redirect_to_root
+  def internal_redirect
     redirect "/"
+  end
+  
+  def external_redirect
+    redirect "http://google.com"
   end
   
 end

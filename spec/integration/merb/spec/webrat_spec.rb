@@ -14,8 +14,14 @@ describe "Webrat" do
     click_button "Test"
   end
 
-  it "should follow redirects" do
-    response = visit "/redirect"
+  it "should follow internal redirects" do
+    response = visit "/internal_redirect"
+    response.status.should == 200
     response.should contain("Webrat Form")
+  end
+
+  it "should not follow external redirects" do
+    response = visit "/external_redirect"
+    response.status.should == 302
   end
 end

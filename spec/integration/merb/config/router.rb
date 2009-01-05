@@ -28,5 +28,6 @@
 Merb.logger.info("Compiling routes...")
 Merb::Router.prepare do
   match("/").to(:controller => "testing", :action => "show_form")
-  match("/redirect").to(:controller => "testing", :action => "redirect_to_root")
+  match("/internal_redirect").to(:controller => "testing", :action => "internal_redirect")
+  match("/external_redirect").to(:controller => "testing", :action => "external_redirect")
 end

@@ -109,7 +109,7 @@ For example:
       @http_method  = http_method
       @data         = data
 
-      request_page(response.headers["Location"], :get, data) if redirect?
+      request_page(response_location, :get, data) if internal_redirect?
 
       return response
     end
@@ -117,9 +117,13 @@ For example:
     def success_code? #:nodoc:
       (200..499).include?(response_code)
     end
-    
+
     def redirect? #:nodoc:
       response_code / 100 == 3
+    end
+
+    def internal_redirect? #:nodoc:
+      redirect? && current_host == response_location_host
     end
 
     def exception_caught? #:nodoc:
@@ -220,6 +224,18 @@ For example:
     def_delegators :current_scope, :select_option
 
   private
+
+    def response_location
+      response.headers["Location"]
+    end
+
+    def current_host
+      URI.parse(current_url).host || "www.example.com"
+    end
+
+    def response_location_host
+      URI.parse(response_location).host || "www.example.com"
+    end
 
     def reset
       @elements     = {}

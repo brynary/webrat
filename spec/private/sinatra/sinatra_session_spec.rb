@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/helper')
 
-describe Webrat::SinatraSession do
+describe Webrat::SinatraSession, "API" do
   before :each do
     Webrat.configuration.mode = :sinatra
     @sinatra_session = Webrat::SinatraSession.new
