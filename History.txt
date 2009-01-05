@@ -20,7 +20,7 @@
   * Use Hpricot and REXML when not parsing with Nokogiri (on JRuby, for example)
 
 * Minor enhancements
-  * Added assert_contain, assert_not_contain [#86] (Mike Gaffney)
+  * Added assert_contain, assert_not_contain [#86] (Mike Gaffney, Amos King)
   * Add configuration options for the Selenium environment and port (Kieran Pilkington)
   * Maximize the browser window after initializing Selenium (Luke Melia)
   * Better inspect output for Webrat elements
