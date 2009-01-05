@@ -79,5 +79,15 @@ module Webrat
     end
     alias_method :match_xpath, :have_xpath
     
+    def assert_xpath(expected, &block)
+      hs = HaveXpath.new(expected, &block)
+      raise Test::Unit::AssertionFailedError.new(hs.failure_message) unless hs.matches?(response_body)
+    end
+    
+    def assert_no_xpath(expected, &block)
+      hs = HaveXpath.new(expected, &block)
+      raise Test::Unit::AssertionFailedError.new(hs.negative_failure_message) if hs.matches?(response_body)
+    end
+    
   end
 end
