@@ -22,7 +22,6 @@ module Webrat
         path, data, headers = *args
         params = data.merge(:env => headers || {})
         self.__send__("#{verb}_it", path, params)
-        request_page(response.location, :get, {}) while response.redirect?
       end
     end
   end

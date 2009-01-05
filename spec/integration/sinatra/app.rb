@@ -10,6 +10,10 @@ end
 get "/go" do
   erb :go
 end
+
+get "/redirect" do
+  redirect "/"
+end
  
 post "/go" do
   @user = params[:name]

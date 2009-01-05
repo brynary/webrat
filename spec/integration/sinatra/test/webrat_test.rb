@@ -16,4 +16,9 @@ class WebratTest < Test::Unit::TestCase
     
     assert response_body.include?("Hello, World")
   end
+  
+  def test_follows_redirects
+    visit "/redirect"
+    assert response_body.include?("visit")
+  end
 end
