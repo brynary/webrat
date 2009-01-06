@@ -24,7 +24,7 @@ module Webrat
     attr_writer :parse_with_nokogiri
 
     # Webrat's mode, set automatically when requiring webrat/rails, webrat/merb, etc.
-    attr_accessor :mode # :nodoc:
+    attr_reader :mode # :nodoc:
 
     # Save and open pages with error status codes (500-599) in a browser? Defualts to true.
     attr_writer :open_error_files
