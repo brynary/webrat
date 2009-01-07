@@ -79,7 +79,11 @@ module Webrat
       
       case Webrat.configuration.mode
       when :rails
-        ActionController::AbstractRequest.parse_query_parameters("#{name}=#{escaped_value}")
+        if defined?(ActionController::RequestParser)
+          ActionController::RequestParser.parse_query_parameters("#{name}=#{escaped_value}")
+        else
+          ActionController::AbstractRequest.parse_query_parameters("#{name}=#{escaped_value}")
+        end
       when :merb
         ::Merb::Parse.query("#{name}=#{escaped_value}")
       else
