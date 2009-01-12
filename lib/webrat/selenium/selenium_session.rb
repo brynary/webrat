@@ -185,14 +185,20 @@ module Webrat
         Webrat.start_app_server
       end
 
-      $browser = ::Selenium::Client::Driver.new("localhost", 4444, "*firefox", "http://0.0.0.0:3001")
-      $browser.set_speed(0)
+      create_browser
       $browser.start
       teardown_at_exit
 
       extend_selenium
       define_location_strategies
       $browser.window_maximize
+    end
+
+
+    def create_browser
+      $browser = ::Selenium::Client::Driver.new(Webrat.configuration.selenium_server_address || "localhost",
+          Webrat.configuration.selenium_server_port, Webrat.configuration.selenium_browser_key, "http://#{Webrat.configuration.application_address}:#{Webrat.configuration.application_port}")
+      $browser.set_speed(0) unless Webrat.configuration.selenium_server_address
     end
 
     def teardown_at_exit #:nodoc:

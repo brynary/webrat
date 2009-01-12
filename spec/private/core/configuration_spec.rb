@@ -71,6 +71,10 @@ describe Webrat::Configuration do
     it 'should default selenium server port to 4444' do
       @config.selenium_server_port.should == 4444
     end
+
+    it 'should default selenium browser key to *firefox' do
+      @config.selenium_browser_key.should == '*firefox'
+    end
   end
 
 end

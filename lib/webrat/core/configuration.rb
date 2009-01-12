@@ -46,13 +46,17 @@ module Webrat
     # Which server Selenium port is running on. Defaults to 4444
     attr_accessor :selenium_server_port
 
+    # Set the key that Selenium uses to determine the browser running. Default *firefox
+    attr_accessor :selenium_browser_key
+
     def initialize # :nodoc:
       self.open_error_files = true
       self.parse_with_nokogiri = !Webrat.on_java?
       self.application_environment = :selenium
       self.application_port = 3001
-      self.application_address = "localhost"
+      self.application_address = 'localhost'
       self.selenium_server_port = 4444
+      self.selenium_browser_key = '*firefox'
     end
 
     def parse_with_nokogiri? #:nodoc:
