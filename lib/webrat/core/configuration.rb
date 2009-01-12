@@ -30,7 +30,7 @@ module Webrat
     # Which environment should the selenium tests be run in? Defaults to selenium.
     attr_accessor :selenium_environment
 
-    # Which port should the selenium tests be run on? Defaults to 3001.
+    # Which port is the application running on for selenium testing? Defaults to 3001.
     attr_accessor :application_port
 
     def initialize # :nodoc:
