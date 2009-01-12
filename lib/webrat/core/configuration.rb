@@ -37,11 +37,22 @@ module Webrat
     attr_accessor :application_port
     webrat_deprecate :selenium_port, :application_port
 
+    # Which server the application is running on for selenium testing? Defaults to localhost
+    attr_accessor :application_address
+
+    # Which server Selenium server is running on. Defaults to nil(server starts in webrat process and runs locally)
+    attr_accessor :selenium_server_address
+
+    # Which server Selenium port is running on. Defaults to 4444
+    attr_accessor :selenium_server_port
+
     def initialize # :nodoc:
       self.open_error_files = true
       self.parse_with_nokogiri = !Webrat.on_java?
       self.application_environment = :selenium
       self.application_port = 3001
+      self.application_address = "localhost"
+      self.selenium_server_port = 4444
     end
 
     def parse_with_nokogiri? #:nodoc:

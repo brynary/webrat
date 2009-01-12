@@ -25,16 +25,6 @@ describe Webrat::Configuration do
     config.should open_error_files
   end
 
-  it "should use 'selenium' as the application environment by default" do
-    config = Webrat::Configuration.new
-    config.application_environment.should == :selenium
-  end
-
-  it "should use 3001 as the application port by default" do
-    config = Webrat::Configuration.new
-    config.application_port.should == 3001
-  end
-
   it "should be configurable with a block" do
     Webrat.configure do |config|
       config.open_error_files = false
@@ -45,11 +35,11 @@ describe Webrat::Configuration do
   end
 
   [:rails,
-   :selenium,
-   :rack,
-   :sinatra,
-   :merb,
-   :mechanize].each do |mode|
+  :selenium,
+  :rack,
+  :sinatra,
+  :merb,
+  :mechanize].each do |mode|
     it "should require correct lib when in #{mode} mode" do
       config = Webrat::Configuration.new
       config.should_receive(:require).with("webrat/#{mode}")
@@ -57,5 +47,30 @@ describe Webrat::Configuration do
     end
   end
 
-end
+  describe "Selenium" do
+    before :each do
+      @config = Webrat::Configuration.new
+    end
 
+    it "should use 'selenium' as the application environment by default" do
+      @config.application_environment.should == :selenium
+    end
+
+    it "should use 3001 as the application port by default" do
+      @config.application_port.should == 3001
+    end
+
+    it 'should default application address to localhost' do
+      @config.application_address.should == 'localhost'
+    end
+
+    it 'should default selenium server address to nil' do
+      @config.selenium_server_address.should be_nil
+    end
+
+    it 'should default selenium server port to 4444' do
+      @config.selenium_server_port.should == 4444
+    end
+  end
+
+end
