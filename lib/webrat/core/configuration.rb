@@ -1,3 +1,5 @@
+require "webrat/core_extensions/deprecate"
+
 module Webrat
 
   # Configures Webrat. If this is not done, Webrat will be created
@@ -27,16 +29,18 @@ module Webrat
     # Save and open pages with error status codes (500-599) in a browser? Defualts to true.
     attr_writer :open_error_files
 
-    # Which environment should the selenium tests be run in? Defaults to selenium.
-    attr_accessor :selenium_environment
+    # Which rails environment should the selenium tests be run in? Defaults to selenium.
+    attr_accessor :application_environment
+    webrat_deprecate :selenium_environment, :application_environment
 
     # Which port is the application running on for selenium testing? Defaults to 3001.
     attr_accessor :application_port
+    webrat_deprecate :selenium_port, :application_port
 
     def initialize # :nodoc:
       self.open_error_files = true
       self.parse_with_nokogiri = !Webrat.on_java?
-      self.selenium_environment = :selenium
+      self.application_environment = :selenium
       self.application_port = 3001
     end
 

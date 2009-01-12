@@ -25,9 +25,9 @@ describe Webrat::Configuration do
     config.should open_error_files
   end
 
-  it "should use 'selenium' as the selenium environment by default" do
+  it "should use 'selenium' as the application environment by default" do
     config = Webrat::Configuration.new
-    config.selenium_environment.should == :selenium
+    config.application_environment.should == :selenium
   end
 
   it "should use 3001 as the application port by default" do
@@ -55,10 +55,6 @@ describe Webrat::Configuration do
       config.should_receive(:require).with("webrat/#{mode}")
       config.mode = mode
     end
-  end
-
-  describe "Selenium config" do
-
   end
 
 end
