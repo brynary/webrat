@@ -20,7 +20,7 @@ Rake::Task['test_unit_webrat'].comment = "runs the test::unit based tests in web
 Rake::TestTask.new(:test_unit_selenium => "db:test:prepare") do |t|
   ENV['WEBRAT_INTEGRATION_MODE'] = 'selenium'
   t.libs << "test"
-  t.pattern = 'test/integration/**/*_test.rb'
+  t.pattern = 'test/selenium/**/*_test.rb'
   t.verbose = true
 end
 Rake::Task['test_unit_selenium'].comment = "runs the test::unit based tests in selenium mode"
