@@ -16,7 +16,7 @@ task :test_unit_webrat do
 end
 
 desc "runs the test::unit based tests in selenium mode"
-task :test_unit_webrat do
+task :test_unit_selenium do
   ENV['WEBRAT_INTEGRATION_MODE'] = 'selenium'
   Rake::Task['test:integration'].invoke
 end
