@@ -115,6 +115,13 @@ namespace :spec do
         raise "Rails integration tests failed" unless result
       end
     end
+    
+    task :rails_selenium do
+      Dir.chdir "spec/integration/rails" do
+        result = system "rake test_unit_selenium"
+        raise "Rails integration tests failed" unless result
+      end
+    end
 
     desc "Run the Merb integration specs"
     task :merb do
