@@ -111,7 +111,7 @@ namespace :spec do
     desc "Run the Rails integration specs"
     task :rails do
       Dir.chdir "spec/integration/rails" do
-        result = system "rake test:integration"
+        result = system "rake test_unit_webrat"
         raise "Rails integration tests failed" unless result
       end
     end
