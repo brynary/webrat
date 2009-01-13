@@ -6,12 +6,7 @@ require "redgreen"
 require File.dirname(__FILE__) + "/../../../../lib/webrat"
 
 Webrat.configure do |config|
-  mode = case ENV['WEBRAT_INTEGRATION_MODE']
-    when 'webrat': :rails
-    when 'selenium': :selenium
-    else :rails
-  end
-  config.mode = mode
+  config.mode = ENV['WEBRAT_INTEGRATION_MODE'].to_sym
 end
 
 ActionController::Base.class_eval do
