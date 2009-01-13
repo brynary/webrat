@@ -9,14 +9,18 @@ require 'rake/rdoctask'
 
 require 'tasks/rails'
 
-desc "runs the test::unit based tests in webrat mode"
-task :test_unit_webrat do
+Rake::TestTask.new(:test_unit_webrat => "db:test:prepare") do |t|
   ENV['WEBRAT_INTEGRATION_MODE'] = 'webrat'
-  Rake::Task['test:integration'].invoke
+  t.libs << "test"
+  t.pattern = 'test/integration/**/*_test.rb'
+  t.verbose = true
 end
+Rake::Task['test_unit_webrat'].comment = "runs the test::unit based tests in webrat mode"
 
-desc "runs the test::unit based tests in selenium mode"
-task :test_unit_selenium do
+Rake::TestTask.new(:test_unit_selenium => "db:test:prepare") do |t|
   ENV['WEBRAT_INTEGRATION_MODE'] = 'selenium'
-  Rake::Task['test:integration'].invoke
+  t.libs << "test"
+  t.pattern = 'test/integration/**/*_test.rb'
+  t.verbose = true
 end
+Rake::Task['test_unit_selenium'].comment = "runs the test::unit based tests in selenium mode"

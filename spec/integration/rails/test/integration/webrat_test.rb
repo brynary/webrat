@@ -16,7 +16,7 @@ class WebratTest < ActionController::IntegrationTest
 
   test "should follow internal redirects" do
     visit internal_redirect_path
-    assert_contain("OK")
+    assert response_body.include?("OK")
   end
   
   test "should not follow external redirects" do
