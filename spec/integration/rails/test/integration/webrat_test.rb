@@ -3,8 +3,7 @@ require 'test_helper'
 class WebratTest < ActionController::IntegrationTest
   test "should visit pages" do
     visit root_path
-    assert_tag "Webrat Form"
-    assert response.body.include?("Webrat Form")
+    assert_contain("Webrat Form")
   end
 
   test "should submit forms" do
@@ -17,7 +16,7 @@ class WebratTest < ActionController::IntegrationTest
 
   test "should follow internal redirects" do
     visit internal_redirect_path
-    assert response.body.include?("OK")
+    assert_contain("OK")
   end
   
   test "should not follow external redirects" do
