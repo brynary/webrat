@@ -40,4 +40,9 @@ class WebratTest < ActionController::IntegrationTest
     visit root_path
     assert_have_xpath "//h1"
   end
+  
+  test "should be able to assert selector" do
+    visit root_path
+    assert_have_selector "h1"
+  end
 end
