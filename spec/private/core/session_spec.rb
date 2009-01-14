@@ -159,6 +159,13 @@ describe Webrat::Session do
       webrat_session.internal_redirect?.should be_true
     end
     
+    it "should return true if the last response was a redirect and the hosts are the same but the subdomains are different" do
+      webrat_session.stub!(:redirect?         => true)
+      webrat_session.stub!(:current_url       => "http://example.com")
+      webrat_session.stub!(:response_location => "http://myName.example.com")
+      webrat_session.internal_redirect?.should be_true
+    end
+    
     it "should return false if the last response was not a redirect" do
       webrat_session.stub!(:redirect? => false)
       webrat_session.internal_redirect?.should be_false
@@ -170,5 +177,13 @@ describe Webrat::Session do
       webrat_session.stub!(:response_location => "http://google.com")
       webrat_session.internal_redirect?.should be_false
     end
+
+    it "should return false if the last response was a redirect but the host of the current_url doesn't matches that of the response location, but they have the same subdomain" do
+      webrat_session.stub!(:redirect?         => true)
+      webrat_session.stub!(:current_url       => "http://login.example.com")
+      webrat_session.stub!(:response_location => "http://login.google.com")
+      webrat_session.internal_redirect?.should be_false
+    end
+
   end
 end
