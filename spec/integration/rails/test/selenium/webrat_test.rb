@@ -35,4 +35,9 @@ class WebratTest < ActionController::IntegrationTest
     click_link "link_id"
     assert_contain("Webrat Form")
   end
+  
+  test "should be able to assert xpath" do
+    visit root_path
+    assert_have_xpath "//h1"
+  end
 end
