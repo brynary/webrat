@@ -55,14 +55,14 @@ module Webrat
     # the supplied string or regexp
     def assert_contain(content)
       hc = HasContent.new(content)
-      raise Test::Unit::AssertionFailedError.new(hc.failure_message) unless hc.matches?(response_body)
+      assert hc.matches?(response_body), hc.failure_message
     end
     
     # Asserts that the body of the response
     # does not contain the supplied string or regepx
     def assert_not_contain(content)
       hc = HasContent.new(content)
-      raise Test::Unit::AssertionFailedError.new(hc.negative_failure_message) if hc.matches?(response_body)
+      assert !hc.matches?(response_body), hc.negative_failure_message
     end
     
   end
