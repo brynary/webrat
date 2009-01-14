@@ -254,6 +254,7 @@ describe Webrat::Matchers do
     end
     
     describe "asserts for contains," do
+        include Test::Unit::Assertions
       before(:each) do
         should_receive(:response_body).and_return @body
         require 'test/unit'
