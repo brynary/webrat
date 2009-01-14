@@ -32,12 +32,12 @@ module Webrat
       
       def assert_have_xpath(expected)
         hs = HaveXpath.new(expected)
-        raise Test::Unit::AssertionFailedError.new(hs.failure_message) unless hs.matches?(response)
+        assert hs.matches?(response), hs.failure_message
       end
 
       def assert_have_no_xpath(expected)
         hs = HaveXpath.new(expected)
-        raise Test::Unit::AssertionFailedError.new(hs.negative_failure_message) if hs.matches?(response)
+        assert !hs.matches?(response), hs.negative_failure_message
       end
       
       class HaveSelector
@@ -72,14 +72,14 @@ module Webrat
       # the supplied selector
       def assert_have_selector(expected)
         hs = HaveSelector.new(expected)
-        raise Test::Unit::AssertionFailedError.new(hs.failure_message) unless hs.matches?(response)
+        assert hs.matches?(response), hs.failure_message
       end
 
       # Asserts that the body of the response
       # does not contain the supplied string or regepx
       def assert_have_no_selector(expected)
         hs = HaveSelector.new(expected)
-        raise Test::Unit::AssertionFailedError.new(hs.negative_failure_message) if hs.matches?(response)
+        assert !hs.matches?(response), hs.negative_failure_message
       end
       
       class HasContent #:nodoc:
@@ -131,14 +131,14 @@ module Webrat
       # the supplied string or regexp
       def assert_contain(content)
         hc = HasContent.new(content)
-        raise Test::Unit::AssertionFailedError.new(hc.failure_message) unless hc.matches?(response)
+       assert hc.matches?(response), hc.failure_message
       end
 
       # Asserts that the body of the response
       # does not contain the supplied string or regepx
       def assert_not_contain(content)
         hc = HasContent.new(content)
-        raise Test::Unit::AssertionFailedError.new(hc.negative_failure_message) if hc.matches?(response)
+        assert !hc.matches?(response), hc.negative_failure_message
       end
       
     end
