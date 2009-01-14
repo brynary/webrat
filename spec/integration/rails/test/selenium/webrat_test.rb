@@ -23,4 +23,10 @@ class WebratTest < ActionController::IntegrationTest
     visit external_redirect_path
     assert response.redirect?
   end
+  
+  test "should click link by text" do
+    visit internal_redirect_path
+    click_link "Test Link Text"
+    assert_contain("Webrat Form")
+  end
 end
