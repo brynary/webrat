@@ -29,4 +29,10 @@ class WebratTest < ActionController::IntegrationTest
     click_link "Test Link Text"
     assert_contain("Webrat Form")
   end
+  
+  test "should click link by id" do
+    visit internal_redirect_path
+    click_link "link_id"
+    assert_contain("Webrat Form")
+  end
 end
