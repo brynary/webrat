@@ -38,14 +38,14 @@ module Webrat
     # the supplied selector
     def assert_have_selector(expected)
       hs = HaveSelector.new(expected)
-      raise Test::Unit::AssertionFailedError.new(hs.failure_message) unless hs.matches?(response_body)
+      assert hs.matches?(response_body), hs.failure_message
     end
     
     # Asserts that the body of the response
     # does not contain the supplied string or regepx
     def assert_have_no_selector(expected)
       hs = HaveSelector.new(expected)
-      raise Test::Unit::AssertionFailedError.new(hs.negative_failure_message) if hs.matches?(response_body)
+      assert !hs.matches?(response_body), hs.negative_failure_message
     end
     
   end
