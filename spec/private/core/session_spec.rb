@@ -184,6 +184,24 @@ describe Webrat::Session do
       webrat_session.stub!(:response_location => "http://login.google.com")
       webrat_session.internal_redirect?.should be_false
     end
-
   end
+  
+  describe "#redirected_to" do
+    before(:each) do
+      webrat_session = Webrat::Session.new
+    end
+    
+    it "should return nil if not redirected" do
+      webrat_session.stub!(:redirect? => false)
+      webrat_session.redirected_to.should be_nil
+    end
+    
+    it "should return the response_location if redirected" do
+      webrat_session.stub!(:redirect?         => true)
+      webrat_session.stub!(:response_location => "http://www.example.com")
+      webrat_session.redirected_to.should == "http://www.example.com"
+    end
+  
+  end
+  
 end

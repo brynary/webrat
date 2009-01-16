@@ -125,16 +125,17 @@ For example:
       response_code / 100 == 3
     end
 
-    # def internal_redirect? #:nodoc:
-    #   redirect? && current_host == response_location_host
-    # end
-
     def internal_redirect?
       return false unless redirect?
       #should keep internal_redirects if the subdomain changes
       current_host_domain = current_host.split('.')[-2..-1].join('.') rescue current_host
       response_location_host_domain = response_location_host.split('.')[-2..-1].join('.') rescue response_location_host
       current_host_domain == response_location_host_domain
+    end
+    
+    #easy helper to pull out where we were redirected to
+    def redirected_to
+      redirect? ? response_location : nil
     end
 
     def exception_caught? #:nodoc:
