@@ -1,4 +1,5 @@
 require "rubygems"
+require "test/unit"
 require "spec"
 
 # gem install redgreen for colored test output
