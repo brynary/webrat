@@ -65,6 +65,8 @@
 
 * Bug fixes
   
+  * Support Rails > v2.2 by using ActionController::RequestParser for param parsing [#107]
+    (Marcello Nuccio)
   * Raise a Webrat::NotFoundError if the scope passed to #within doesn't exist [#90]
   * Match against link _text_ which decodes character references.
     Useful for multibyte languages like Japanese (moronatural@gmail.com)
