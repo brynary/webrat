@@ -39,6 +39,13 @@ __END__
 @@ home
 <p> visit <a href="/go">there</a></p>
 
+<form>
+  <label>
+    Prefilled
+    <input type="text" name="prefilled" value="text" />
+  </label>
+</form>
+
 @@ go
 <form method="post" action="/go">
   <div>

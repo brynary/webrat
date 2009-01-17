@@ -16,6 +16,11 @@ class WebratTest < ActionController::IntegrationTest
     click_button "Test"
   end
 
+  test "should check the value of a field" do
+    visit "/"
+    assert field_labeled("Prefilled").value, "text"
+  end
+  
   test "should follow internal redirects" do
     visit internal_redirect_path
     assert response.body.include?("OK")

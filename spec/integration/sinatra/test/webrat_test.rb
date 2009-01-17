@@ -19,6 +19,11 @@ class WebratTest < Test::Unit::TestCase
     assert response_body.include?("Your email is: world@example.org")
   end
 
+  def test_check_value_of_field
+    visit "/"
+    assert field_labeled("Prefilled").value, "text"
+  end
+  
   def test_follows_internal_redirects
     visit "/internal_redirect"
     assert response_body.include?("visit")

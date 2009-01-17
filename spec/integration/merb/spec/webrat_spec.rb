@@ -19,6 +19,11 @@ describe "Webrat" do
     response.status.should == 200
     response.should contain("Webrat Form")
   end
+  
+  it "should check the value of a field" do
+    visit "/"
+    field_labeled("Prefilled").value.should == "text"
+  end
 
   it "should not follow external redirects" do
     response = visit "/external_redirect"
