@@ -54,6 +54,11 @@ module Webrat
 
     webrat_deprecate :fills_in, :fill_in
     
+    # Verifies that a hidden field exists on the current page and sets
+    # the value to that given by the <tt>:to</tt> option.
+    #
+    # Example:
+    #   set_hidden_field 'user_id', :to => 1
     def set_hidden_field(field_locator, options = {})
       field = locate_field(field_locator, HiddenField)
       field.set(options[:to])
@@ -211,7 +216,16 @@ module Webrat
     end
 
     webrat_deprecate :attaches_file, :attach_file
-    
+
+    # Issues a request for the URL pointed to by an <tt>area</tt> tag
+    # on the current page, follows any redirects, and verifies the
+    # final page load was successful.
+    #
+    # The area used is the first area whose title or id contains the
+    # given +area_name+ (case is ignored).
+    #
+    # Example:
+    #   click_area 'Australia'
     def click_area(area_name)
       find_area(area_name).click
     end
@@ -262,7 +276,15 @@ module Webrat
     end
 
     webrat_deprecate :clicks_button, :click_button
-    
+
+    # Submit the form with the given id.
+    #
+    # Note that +click_button+ is usually preferrable for simulating
+    # form submissions, as you may specify part of the button text
+    # rather than the form id.
+    #
+    # Example:
+    #   submit_form 'login'
     def submit_form(id)
       FormLocator.new(@session, dom, id).locate.submit
     end
