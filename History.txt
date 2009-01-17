@@ -83,7 +83,23 @@
   * Treat text and regexp when matching Selenium buttons (Ross Kaffenberger)
   * Allow SeleniumSession's click_button to be called without an argument without
     blowing up (Luke Melia)
-    
+
+== 0.3.4 / 2008-12-29
+
+* 1 Minor enhancement
+
+  * Fix compatibility with Nokogiri 1.1.0 on JRuby
+
+* 1 Bug fix
+
+  * Correct version for Nokogiri dependency in gem
+
+== 0.3.3 / 2008-12-28
+
+* 1 Minor enhancement
+
+  * Fix compatibility with Nokogiri 1.1.0 on MRI
+      
 == 0.3.2 / 2008-11-08
 
 * 1 Minor enhancement
