@@ -65,6 +65,7 @@
 
 * Bug fixes
   
+  * Raise a Webrat::NotFoundError if the scope passed to #within doesn't exist [#90]
   * Match against link _text_ which decodes character references.
     Useful for multibyte languages like Japanese (moronatural@gmail.com)
   * Fix params hash generation for Mechanize when Merb is not defined [#62]

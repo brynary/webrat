@@ -30,6 +30,10 @@ module Webrat
     def initialize(session, &block) #:nodoc:
       @session = session
       instance_eval(&block) if block_given?
+      
+      if @selector && scoped_element.nil?
+        raise Webrat::NotFoundError.new("The scope was not found on the page: #{@selector.inspect}")
+      end
     end
     
     # Verifies an input field or textarea exists on the current page, and stores a value for
@@ -291,13 +295,17 @@ module Webrat
     end
     
     def scoped_dom #:nodoc:
-      source = Webrat::XML.to_html(Webrat::XML.css_search(@scope.dom, @selector).first)
+      source = Webrat::XML.to_html(scoped_element)
       
       if @session.xml_content_type?
         Webrat::XML.xml_document(source)
       else
         Webrat::XML.html_document(source)
       end
+    end
+    
+    def scoped_element
+      Webrat::XML.css_at(@scope.dom, @selector)
     end
     
     def locate_field(field_locator, *field_types) #:nodoc:

@@ -97,4 +97,16 @@ describe "within" do
       }.should raise_error(Webrat::NotFoundError)
     end
   end
+  
+  it "should raise a Webrat::NotFounderror error when the scope doesn't exist" do
+    with_html <<-HTML
+      <html>
+      </html>
+    HTML
+    
+    lambda {
+      within "#form2" do
+      end
+    }.should raise_error(Webrat::NotFoundError)
+  end
 end
