@@ -81,12 +81,12 @@ module Webrat
     
     def assert_have_xpath(expected, &block)
       hs = HaveXpath.new(expected, &block)
-      raise Test::Unit::AssertionFailedError.new(hs.failure_message) unless hs.matches?(response_body)
+      assert hs.matches?(response_body), hs.failure_message
     end
     
     def assert_have_no_xpath(expected, &block)
       hs = HaveXpath.new(expected, &block)
-      raise Test::Unit::AssertionFailedError.new(hs.negative_failure_message) if hs.matches?(response_body)
+      assert !hs.matches?(response_body), hs.negative_failure_message
     end
     
   end

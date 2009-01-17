@@ -55,6 +55,7 @@ describe Webrat::Matchers do
     end
     
     describe 'asserts for xpath' do
+      include Test::Unit::Assertions
        before(:each) do
           should_receive(:response_body).and_return @body
           require 'test/unit'
@@ -114,6 +115,7 @@ describe Webrat::Matchers do
     end
     
     describe "asserts for selector," do
+      include Test::Unit::Assertions
       before(:each) do
         should_receive(:response_body).and_return @body
         require 'test/unit'
@@ -188,6 +190,7 @@ describe Webrat::Matchers do
     end
     
     describe "asserts for tags," do
+      include Test::Unit::Assertions
       before(:each) do
         should_receive(:response_body).and_return @body
         require 'test/unit'
@@ -254,6 +257,7 @@ describe Webrat::Matchers do
     end
     
     describe "asserts for contains," do
+      include Test::Unit::Assertions
       before(:each) do
         should_receive(:response_body).and_return @body
         require 'test/unit'
