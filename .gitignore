@@ -11,3 +11,4 @@ log
 *.swp
 results
 test_apps
+*.tmproj
