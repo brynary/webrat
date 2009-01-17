@@ -20,6 +20,8 @@
   * Use Hpricot and REXML when not parsing with Nokogiri (on JRuby, for example)
 
 * Minor enhancements
+
+  * Support passing an ActiveRecord model to #within when in Rails mode [#68] (Luke Melia)
   * Added assert_contain, assert_not_contain [#86] (Mike Gaffney, Amos King)
   * Add configuration options for the Selenium environment and port (Kieran Pilkington)
   * Maximize the browser window after initializing Selenium (Luke Melia)

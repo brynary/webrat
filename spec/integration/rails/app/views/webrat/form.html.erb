@@ -13,5 +13,11 @@
     <%= select_tag "month", "<option></option><option>January</option>" %>
   </label>
   
+  <% div_for FakeModel.new do %>
+    <label>
+      Object field <%= text_field_tag "object_field" %>
+    </label>
+  <% end %>
+  
   <%= submit_tag "Test" %>
 <% end %>

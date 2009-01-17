@@ -1,3 +1,9 @@
+class FakeModel
+  def id
+    nil
+  end
+end
+
 class WebratController < ApplicationController
 
   def form

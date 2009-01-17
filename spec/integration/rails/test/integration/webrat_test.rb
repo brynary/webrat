@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class WebratTest < ActionController::IntegrationTest
+  
   test "should visit pages" do
     visit root_path
     assert_tag "Webrat Form"
@@ -24,4 +25,5 @@ class WebratTest < ActionController::IntegrationTest
     visit external_redirect_path
     assert response.redirect?
   end
+
 end
