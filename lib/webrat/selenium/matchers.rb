@@ -30,6 +30,16 @@ module Webrat
         HaveXpath.new(xpath)
       end
       
+      def assert_have_xpath(expected)
+        hs = HaveXpath.new(expected)
+        assert hs.matches?(response), hs.failure_message
+      end
+
+      def assert_have_no_xpath(expected)
+        hs = HaveXpath.new(expected)
+        assert !hs.matches?(response), hs.negative_failure_message
+      end
+      
       class HaveSelector
         def initialize(expected)
           @expected = expected
@@ -56,6 +66,20 @@ module Webrat
       
       def have_selector(content)
         HaveSelector.new(content)
+      end
+      
+      # Asserts that the body of the response contains
+      # the supplied selector
+      def assert_have_selector(expected)
+        hs = HaveSelector.new(expected)
+        assert hs.matches?(response), hs.failure_message
+      end
+
+      # Asserts that the body of the response
+      # does not contain the supplied string or regepx
+      def assert_have_no_selector(expected)
+        hs = HaveSelector.new(expected)
+        assert !hs.matches?(response), hs.negative_failure_message
       end
       
       class HasContent #:nodoc:
@@ -101,6 +125,20 @@ module Webrat
       # whatever string is supplied
       def contain(content)
         HasContent.new(content)
+      end
+      
+      # Asserts that the body of the response contain
+      # the supplied string or regexp
+      def assert_contain(content)
+        hc = HasContent.new(content)
+       assert hc.matches?(response), hc.failure_message
+      end
+
+      # Asserts that the body of the response
+      # does not contain the supplied string or regepx
+      def assert_not_contain(content)
+        hc = HasContent.new(content)
+        assert !hc.matches?(response), hc.negative_failure_message
       end
       
     end

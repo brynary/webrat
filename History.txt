@@ -24,6 +24,7 @@
 
   * Support passing an ActiveRecord model to #within when in Rails mode [#68] (Luke Melia)
   * Make assert_* matchers in rails mode increment the assertions count [#123] (Amos King)
+  * Added assert_* matchers to selenium matchers [#110] (Amos King)
   * Added assert_contain, assert_not_contain [#86] (Mike Gaffney, Amos King)
   * Add configuration options for the Selenium environment and port (Kieran Pilkington)
   * Maximize the browser window after initializing Selenium (Luke Melia)
