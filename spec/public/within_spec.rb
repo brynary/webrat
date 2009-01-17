@@ -59,7 +59,6 @@ describe "within" do
   end
   
   it "should work when the scope is inside the form" do
-    pending "needs bug fix" do
       with_html <<-HTML
         <html>
           <form id="form2" action="/form2">
@@ -77,6 +76,51 @@ describe "within" do
       end
     
       submit_form "form2"
+  end
+
+  it "should work when the form submission occurs inside a scope" do
+    with_html <<-HTML
+      <html>
+        <body>
+          <div>
+            <form id="form2" action="/form2">
+              <label for="email">Email</label><input id="email" type="text" class="email2" name="email" />
+              <input type="submit" value="Add" />
+            </form>
+          </div>
+        </body>
+      </html>
+    HTML
+
+    webrat_session.should_receive(:get).with("/form2", "email" => "test@example.com")
+    within "form[@action='/form2']" do 
+      fill_in "Email", :with => "test@example.com"
+      click_button "Add"
+    end
+  end
+
+  it "should work when there are multiple forms with the same label text" do
+    with_html <<-HTML
+      <html>
+        <body>
+          <div>
+            <form id="form1" action="/form1">
+              <label for="email1">Email</label><input id="email1" type="text" class="email1" name="email1" />
+              <input type="submit" value="Add" />
+            </form>
+            <form id="form2" action="/form2">
+              <label for="email2">Email</label><input id="email2" type="text" class="email2" name="email2" />
+              <input type="submit" value="Add" />
+            </form>
+          </div>
+        </body>
+      </html>
+    HTML
+
+    webrat_session.should_receive(:get).with("/form2", "email2" => "test@example.com")
+    within "form[@action='/form2']" do 
+      fill_in "Email", :with => "test@example.com"
+      click_button "Add"
     end
   end
   

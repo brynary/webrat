@@ -31,7 +31,7 @@ module Webrat
       @session = session
       instance_eval(&block) if block_given?
       
-      if @selector && scoped_element.nil?
+      if @selector && scoped_dom.nil?
         raise Webrat::NotFoundError.new("The scope was not found on the page: #{@selector.inspect}")
       end
     end
@@ -316,17 +316,7 @@ module Webrat
       return dom
     end
     
-    def scoped_dom #:nodoc:
-      source = Webrat::XML.to_html(scoped_element)
-      
-      if @session.xml_content_type?
-        Webrat::XML.xml_document(source)
-      else
-        Webrat::XML.html_document(source)
-      end
-    end
-    
-    def scoped_element
+    def scoped_dom
       Webrat::XML.css_at(@scope.dom, @selector)
     end
     
