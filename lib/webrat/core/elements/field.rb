@@ -79,11 +79,7 @@ module Webrat
       
       case Webrat.configuration.mode
       when :rails
-        if defined?(ActionController::RequestParser)
-          ActionController::RequestParser.parse_query_parameters("#{name}=#{escaped_value}")
-        else
-          ActionController::AbstractRequest.parse_query_parameters("#{name}=#{escaped_value}")
-        end
+        rails_request_parser.parse_query_parameters("#{name}=#{escaped_value}")
       when :merb
         ::Merb::Parse.query("#{name}=#{escaped_value}")
       else
@@ -100,6 +96,14 @@ module Webrat
     end
     
   protected
+  
+    def rails_request_parser
+      if defined?(ActionController::RequestParser) # For Rails > 2.2
+        ActionController::RequestParser
+      else
+        ActionController::AbstractRequest
+      end
+    end
   
     def form
       Form.load(@session, form_element)
