@@ -59,23 +59,23 @@ describe "within" do
   end
   
   it "should work when the scope is inside the form" do
-      with_html <<-HTML
-        <html>
-          <form id="form2" action="/form2">
-            <div class="important">
-              <label>Email: <input type="text" class="email2" name="email" /></label>
-            </div>
-            <input type="submit" value="Add" />
-          </form>
-        </html>
-      HTML
-    
-      webrat_session.should_receive(:get).with("/form2", "email" => "test@example.com")
-      within ".important" do
-        fill_in "Email", :with => "test@example.com"
-      end
-    
-      submit_form "form2"
+    with_html <<-HTML
+      <html>
+        <form id="form2" action="/form2">
+          <div class="important">
+            <label>Email: <input type="text" class="email2" name="email" /></label>
+          </div>
+          <input type="submit" value="Add" />
+        </form>
+      </html>
+    HTML
+
+    webrat_session.should_receive(:get).with("/form2", "email" => "test@example.com")
+    within ".important" do
+      fill_in "Email", :with => "test@example.com"
+    end
+
+    submit_form "form2"
   end
 
   it "should work when the form submission occurs inside a scope" do
