@@ -5,17 +5,18 @@
   * Removed init.rb auto-require of webrat/rails
   * Removed auto-require of webrat/rails when requiring webrat when RAILS_ENV is
     defined
-  
+
   In your env.rb or test_helper.rb file, ensure you have something like:
-  
+
     require "webrat"
-    
+
     Webrat.configure do |config|
       config.mode = :rails
     end
-  
+
 * Major enhancements
 
+  * Added Selenium grid configuration and support. (Amos King && Cornel Borcean)
   * Added select_time, select_date, and select_datetime to API. [#36] (Ben Mabey)
   * Use Hpricot and REXML when not parsing with Nokogiri (on JRuby, for example)
 
@@ -79,9 +80,9 @@
   * Fixed bug where Webrat would lose complex parameters (like foo[bar[baz]][])
     in Merb due to not correctly merging Mashes. (Drew Colthorp)
   * Extend Rails' ActionController::IntegrationTest instead of
-    ActionController::Integration::Session (Fixes using Webrat's #select method and 
+    ActionController::Integration::Session (Fixes using Webrat's #select method and
     avoids usage of method_missing)
-  * Ensure that Webrat::MechanizeSession.request_page always uses an absolute 
+  * Ensure that Webrat::MechanizeSession.request_page always uses an absolute
     URL. (Graham Ashton)
   * Strip anchor tags from URIs before passing to Rails integration session
     (Noah Davis)
@@ -104,14 +105,14 @@
 * 1 Minor enhancement
 
   * Fix compatibility with Nokogiri 1.1.0 on MRI
-      
+
 == 0.3.2 / 2008-11-08
 
 * 1 Minor enhancement
 
   * Fixes behavior or have_tag when a block is passed. It passes the matched node(s)
     to the block for further specs again. (Carl Lerche)
-  
+
 == 0.3.1 / 2008-11-07
 
 * 1 Minor enhancement
@@ -127,7 +128,7 @@
   * Added experimental Selenium support (Luke Melia)
   * Add have_selector, have_xpath, have_tag and contain matchers from Merb
   * Switch from Hpricot to Nokogiri for XML parsing (thanks, Aaron Patterson)
-  
+
 * 37 Minor enhancements
 
   * Added #within for manipulating the current page within a selector scope
@@ -174,7 +175,7 @@
   * Switched tests to specs, and from Mocha to RSpec's mocking library
   * Add support to click_button for IDs (Gwyn Morfey)
   * Miscellaneous core refactorings (Jan Suchal)
-  
+
 * 8 Bug fixes
 
   * Fix initialization of WWW::Mechanize (Derek Kastner)
@@ -186,7 +187,7 @@
   * Don't explode if encountering inputs with no type attribute (assume text)
   * Fix bug where choosing a radio button in a series with a default submitted the
     incorrect field value (Luke Melia)
-  
+
 == 0.2.0 / 2008-04-04
 
 * 4 Major enhancements
@@ -196,12 +197,12 @@
   * Add basic support for Rails-generated JavaScript link tags
   * Add support for checkboxes (Patches from Kyle Hargraves and Jarkko Laine)
   * Add support for textarea fields (Sacha Schlegel)
-  
+
 * 8 Minor enhancements
-  
+
   * Added reloads method to reload the page (Kamal Fariz Mahyuddi)
   * Prevent making a request if clicking on local anchor link (Kamal Fariz Mahyuddi)
-  * Added clicks_link_within(selector, link_text), allowing restricting link search 
+  * Added clicks_link_within(selector, link_text), allowing restricting link search
     to within a given css selector (Luke Melia)
   * Allow specifying the input name/label when doing a select (David Chelimsky)
   * Raise a specific exception if the developer tries to manipulate form elements
@@ -209,7 +210,7 @@
   * Add support for alternate POST, PUT and DELETE link clicking (Kyle Hargraves)
   * Change clicks_link to find the shortest matching link (Luke Melia)
   * Improve matching for labels in potentially ambiguous cases
-  
+
 * 7 Bug fixes
 
   * Fix incorrect serializing of collection inputs, i.e. name contains []
