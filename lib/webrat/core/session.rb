@@ -29,6 +29,9 @@ Unknown Webrat mode: #{Webrat.configuration.mode.inspect}
 
 Please ensure you have a Webrat configuration block that specifies a mode
 in your test_helper.rb, spec_helper.rb, or env.rb (for Cucumber).
+
+This configure block supercedes the need to require "webrat/<framework>".
+
 For example:
 
   Webrat.configure do |config|
