@@ -139,11 +139,11 @@ For example:
 
     # Reloads the last page requested. Note that this will resubmit forms
     # and their data.
-    def reloads
+    def reload
       request_page(@current_url, @http_method, @data)
     end
 
-    webrat_deprecate :reload, :reloads
+    webrat_deprecate :reloads, :reload
 
 
     # Works like click_link, but only looks for the link text within a given selector
