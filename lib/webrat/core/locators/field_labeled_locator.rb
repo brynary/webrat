@@ -42,6 +42,12 @@ module Webrat
       
     end
     
+    # Locates a form field based on a <tt>label</tt> element in the HTML source.
+    # This can be useful in order to verify that a field is pre-filled with the
+    # correct value.
+    #
+    # Example:
+    #   field_labeled("First name").value.should == "Bryan"
     def field_labeled(label, *field_types)
       FieldLabeledLocator.new(@session, dom, label, *field_types).locate!
     end
