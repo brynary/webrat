@@ -70,12 +70,12 @@ module Webrat
     # Allows setting of webrat's mode, valid modes are:
     # :rails, :selenium, :rack, :sinatra, :mechanize, :merb
     def mode=(mode)
-      @mode = mode
+      @mode = mode.to_sym
       
       # This is a temporary hack to support backwards compatibility
       # with Merb 1.0.8 until it's updated to use the new Webrat.configure
       # syntax
-      if @mode.to_s == "merb"
+      if @mode == :merb
         require("webrat/merb_session")
       else
         require("webrat/#{mode}")
