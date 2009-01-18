@@ -10,11 +10,11 @@ module Webrat
     elsif Nokogiri::XML::NodeSet === stringlike
       stringlike
     elsif StringIO === stringlike
-      Nokogiri.parse(stringlike.string)
+      Nokogiri::HTML(stringlike.string)
     elsif stringlike.respond_to?(:body)
-      Nokogiri.parse(stringlike.body.to_s)
+      Nokogiri::HTML(stringlike.body.to_s)
     else
-      Nokogiri.parse(stringlike.to_s)
+      Nokogiri::HTML(stringlike.to_s)
     end
   end
   
