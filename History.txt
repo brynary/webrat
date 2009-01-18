@@ -1,4 +1,4 @@
-== Trunk (Git)
+== 0.4.0 / 2009-01-18
 
 * _IMPORTANT_ Breaking change:
 
@@ -16,12 +16,15 @@
 
 * Major enhancements
 
-  * Added Selenium grid configuration and support. (Amos King && Cornel Borcean)
+  * Major improvements to Webrat::Selenium (Many contributors listed here)
+  * Add assert_* methods for using Webrat's matchers w/o RSpec (Mike Gaffney, Amos King)
+  * Added Webrat.configure method for Webrat configuration [#33] (Mike Gaffney)
   * Added select_time, select_date, and select_datetime to API. [#36] (Ben Mabey)
   * Use Hpricot and REXML when not parsing with Nokogiri (on JRuby, for example)
 
 * Minor enhancements
 
+  * Added Selenium grid configuration and support. (Amos King && Cornel Borcean)
   * Support passing an ActiveRecord model to #within when in Rails mode [#68] (Luke Melia)
   * Make assert_* matchers in rails mode increment the assertions count [#123] (Amos King)
   * Added assert_* matchers to selenium matchers [#110] (Amos King)
@@ -49,14 +52,12 @@
   * Add submit_form method for submitting a form by ID (Noah Davis, Bryan Helmkamp)
   * Switch to using Nokogiri.parse for simple XML/XHTML autodetection [#66]
   * Removed Webrat.root method, which seemed to be unused
-  * Added Webrat.configure method for global Webrat configuration [#33]
-    (Mike Gaffney)
   * Added automatic starting and stopping of the Selenium server and a Mongrel Rails
     app server when using webrat/selenium
   * Switch to using selenium-client gem and vendor selenium-server.jar (Luke Melia)
   * Added gemspec so the gem builds on GitHub now
   * Deprecate old style methods (fills_in is deprecated in favor of fill_in, etc.)
-  * Improcements to the README and RDoc (Bryan Helmkamp, Mike Gaffney)
+  * Improvements to the README and RDoc (Bryan Helmkamp, Mike Gaffney)
   * Allow clicking links by id and id regexp (Mike Gaffney)
   * Raise Webrat::DisabledFieldError when attempting to manipulate a disabled field
   * Raise Webrat::NotFoundErrors when an element is not found
