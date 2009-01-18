@@ -138,5 +138,20 @@ describe "field_labeled" do
     with_an_id_of  "element_42",       :for => "A label with a link on it's own line"
     should_raise_error_matching /Could not find .* "Other Label"/, :for => "Other Label"
   end
+
+  describe "finding a field when labels without fields also match" do
+    using_this_html <<-HTML
+      <html>
+        <label>The Label</label>
+        <form>
+          <label for="element_42">The Label</label>
+          <input type="text" id="element_42">
+        </form>
+      </html>
+    HTML
+
+    should_return_a Webrat::TextField, :for => "The Label"
+    with_an_id_of   "element_42",      :for => "The Label"
+  end
   
 end

@@ -68,6 +68,7 @@
 
 * Bug fixes
   
+  * field_labeled should disregard labels without matching fields (Kyle Hargraves)
   * Fixed bug where Scope was creating a new DOM rather than re-using the existing DOM.
     [#105] (Zach Dennis)
   * Support Rails > v2.2 by using ActionController::RequestParser for param parsing [#107]

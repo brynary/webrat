@@ -7,7 +7,7 @@ module Webrat
     class FieldLabeledLocator < Locator # :nodoc:
   
       def locate
-        matching_labels.any? && matching_labels.first.field
+        matching_labels.any? && matching_labels.detect_mapped { |label| label.field }
       end
       
       def matching_labels
