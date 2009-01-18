@@ -71,7 +71,15 @@ module Webrat
     # :rails, :selenium, :rack, :sinatra, :mechanize, :merb
     def mode=(mode)
       @mode = mode
-      require("webrat/#{mode}")
+      
+      # This is a temporary hack to support backwards compatibility
+      # with Merb 1.0.8 until it's updated to use the new Webrat.configure
+      # syntax
+      if @mode.to_s == "merb"
+        require("webrat/merb_session")
+      else
+        require("webrat/#{mode}")
+      end
     end
 
   end
