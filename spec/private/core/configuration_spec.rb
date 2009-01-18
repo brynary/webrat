@@ -34,6 +34,20 @@ describe Webrat::Configuration do
     config.should_not open_error_files
   end
 
+  it "should be configurable with multiple blocks" do
+    Webrat.configure do |config|
+      config.open_error_files = false
+    end
+    
+    Webrat.configure do |config|
+      config.selenium_server_port = 1234
+    end
+
+    config = Webrat.configuration
+    config.should_not open_error_files
+    config.selenium_server_port.should == 1234
+  end
+  
   [:rails,
   :selenium,
   :rack,
