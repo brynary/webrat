@@ -23,7 +23,7 @@ module Webrat
       if for_id.blank?
         Webrat::XML.xpath_at(@element, *Field.xpath_search)
       else
-        Webrat::XML.css_search(@session.dom, "#" + for_id).first
+        Webrat::XML.css_search(@session.current_dom, "#" + for_id).first
       end
     end
     

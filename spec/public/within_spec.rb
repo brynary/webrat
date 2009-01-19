@@ -123,6 +123,27 @@ describe "within" do
       click_button "Add"
     end
   end
+
+  it "should not find fields outside of the scope" do
+    with_html <<-HTML
+      <html>
+        <form id="form1" action="/form1">
+          <label for="email">Email</label><input id="email" type="text" name="email" />
+          <input type="submit" value="Add" />
+        </form>
+        <form id="form2" action="/form2">
+          <label for="email">Email</label><input id="email" type="text" name="email" />
+          <input type="submit" value="Add" />
+        </form>
+      </html>
+    HTML
+
+    webrat_session.should_receive(:get).with("/form2", "email" => "test@example.com")
+    within "#form2" do
+      fill_in "Email", :with => "test@example.com"
+      click_button "Add"
+    end
+  end
   
   it "should not find buttons outside of the scope" do
     with_html <<-HTML
