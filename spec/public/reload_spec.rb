@@ -5,6 +5,6 @@ describe "reloads" do
     webrat_session.should_receive(:get).with("/", {})
     webrat_session.should_receive(:get).with("/", {}, {"HTTP_REFERER"=>"/"})
     visit("/")
-    reloads
+    reload
   end
 end
