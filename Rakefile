@@ -72,7 +72,7 @@ end
 desc 'Install the package as a gem.'
 task :install_gem => [:clean, :package] do
   gem_filename = Dir['pkg/*.gem'].first
-  sh "sudo gem install --local #{gem_filename}"
+  sh "sudo gem install --no-rdoc --no-ri --local #{gem_filename}"
 end
 
 desc "Delete generated RDoc"
