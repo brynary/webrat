@@ -112,7 +112,7 @@ For example:
       @http_method  = http_method
       @data         = data
 
-      request_page(response_location, :get, data) if internal_redirect?
+      request_page(response_location, :get, {}) if internal_redirect?
 
       return response
     end

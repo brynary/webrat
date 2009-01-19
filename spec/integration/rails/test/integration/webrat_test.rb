@@ -21,8 +21,19 @@ class WebratTest < ActionController::IntegrationTest
     assert field_labeled("Prefilled").value, "text"
   end
   
+  test "should not carry params through redirects" do
+    visit before_redirect_form_path
+    fill_in "Text field", :with => "value"
+    click_button
+    
+    assert response.body !~ /value/
+    assert response.body =~ /custom_param/
+  end
+  
   test "should follow internal redirects" do
     visit internal_redirect_path
+    
+    assert !response.redirect?
     assert response.body.include?("OK")
   end
   
