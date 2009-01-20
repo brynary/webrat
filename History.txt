@@ -1,5 +1,9 @@
 == Git
 
+* Minor enhancements
+  
+  * Support Sinatra 0.9 (Harry Vangberg)
+  
 * Bug fixes
 
   * Update query param parsing to work with latest Edge Rails
