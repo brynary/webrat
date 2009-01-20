@@ -1,3 +1,10 @@
+== Git
+
+* Bug fixes
+
+  * Ensure the previous pages params aren't passed through redirect
+  * Labels should only search for fields within the current scope (Kyle Hargraves)
+
 == 0.4.0 / 2009-01-18
 
 * _IMPORTANT_ Breaking change:
