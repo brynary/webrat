@@ -32,10 +32,12 @@ module Webrat
     # Which rails environment should the selenium tests be run in? Defaults to selenium.
     attr_accessor :application_environment
     webrat_deprecate :selenium_environment, :application_environment
+    webrat_deprecate :selenium_environment=, :application_environment=
 
     # Which port is the application running on for selenium testing? Defaults to 3001.
     attr_accessor :application_port
     webrat_deprecate :selenium_port, :application_port
+    webrat_deprecate :selenium_port=, :application_port=
 
     # Which server the application is running on for selenium testing? Defaults to localhost
     attr_accessor :application_address
