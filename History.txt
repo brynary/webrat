@@ -3,10 +3,11 @@
 * Minor enhancements
   
   * Support Sinatra 0.9 (Harry Vangberg)
+  * Update query param parsing to work with latest Edge Rails
   
 * Bug fixes
 
-  * Update query param parsing to work with latest Edge Rails
+  * Setup deprecated writers for the selenium_environment= and selenium_port= config
   * Ensure the previous pages params aren't passed through redirect
   * Labels should only search for fields within the current scope (Kyle Hargraves)
 
