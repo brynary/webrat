@@ -98,10 +98,11 @@ module Webrat
   protected
   
     def rails_request_parser
-      if defined?(ActionController::RequestParser) # For Rails > 2.2
-        ActionController::RequestParser
-      else
+      if defined?(ActionController::AbstractRequest)
         ActionController::AbstractRequest
+      else
+        # For Rails > 2.2
+        ActionController::UrlEncodedPairParser
       end
     end
   
