@@ -65,11 +65,19 @@ module Webrat
       @context
     end
 
-    #now that we are not following external links, do NOT normalize the url and strip it of its host
-    #once we get here we don't care about stripping out the host because we know
     def do_request(http_method, url, data, headers) #:nodoc:
       update_protocol(url)
-      integration_session.send(http_method, url, data, headers)
+      integration_session.send(http_method, normalize_url(url), data, headers)
+    end
+
+    # remove protocol, host and anchor
+    def normalize_url(href) #:nodoc:
+      uri = URI.parse(href)
+      normalized_url = uri.path
+      if uri.query
+        normalized_url += "?" + uri.query
+      end
+      normalized_url
     end
 
     def update_protocol(href) #:nodoc:
