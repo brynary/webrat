@@ -1,7 +1,12 @@
 require 'test_helper'
 
 class WebratTest < ActionController::IntegrationTest
-  
+
+  test "should visit fully qualified urls" do
+    visit root_url(:host => "chunkybacon.example.com")
+    assert_equal "chunkybacon", request.subdomains.first
+  end
+    
   test "should visit pages" do
     visit root_path
     assert_tag "Webrat Form"

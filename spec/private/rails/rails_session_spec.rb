@@ -43,18 +43,18 @@ describe Webrat::RailsSession do
   end
 
   context "the URL is a full path" do
-    it "should just pass on the path" do
+    it "should pass the full url" do
       @integration_session.stub!(:https!)
-      @integration_session.should_receive(:get).with("/url", "data", "headers")
+      @integration_session.should_receive(:get).with("http://www.example.com/url", "data", "headers")
       rails_session = Webrat::RailsSession.new(@integration_session)
       rails_session.get("http://www.example.com/url", "data", "headers")
     end
   end
 
   context "the URL is https://" do
-    it "should call #https! with true before the request and just pass on the path" do
+    it "should call #https! with true before the request before passing along the full url" do
       @integration_session.should_receive(:https!).with(true)
-      @integration_session.should_receive(:get).with("/url", "data", "headers")
+      @integration_session.should_receive(:get).with("https://www.example.com/url", "data", "headers")
       rails_session = Webrat::RailsSession.new(@integration_session)
       rails_session.get("https://www.example.com/url", "data", "headers")
     end
@@ -72,7 +72,7 @@ describe Webrat::RailsSession do
   context "the URL include an anchor" do
     it "should strip out the anchor" do
       @integration_session.should_receive(:https!).with(false)
-      @integration_session.should_receive(:get).with("/url", "data", "headers")
+      @integration_session.should_receive(:get).with("http://www.example.com/url", "data", "headers")
       rails_session = Webrat::RailsSession.new(@integration_session)
       rails_session.get("http://www.example.com/url#foo", "data", "headers")
     end
