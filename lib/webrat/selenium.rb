@@ -26,6 +26,7 @@ module Webrat
   end
 
   def self.start_app_server #:nodoc:
+    FileUtils.mkdir_p File.expand_path(RAILS_ROOT + "/tmp/pids")
     pid_file = File.expand_path(RAILS_ROOT + "/tmp/pids/mongrel_selenium.pid")
     system("mongrel_rails start -d --chdir=#{RAILS_ROOT} --port=#{Webrat.configuration.application_port} --environment=#{Webrat.configuration.application_environment} --pid #{pid_file} &")
     TCPSocket.wait_for_service :host => Webrat.configuration.application_address, :port => Webrat.configuration.application_port.to_i
@@ -89,7 +90,6 @@ module ActionController #:nodoc:
   IntegrationTest.class_eval do
     include Webrat::Methods
     include Webrat::Selenium::Methods
-#    include Webrat::Matchers
     include Webrat::Selenium::Matchers
   end
 end
