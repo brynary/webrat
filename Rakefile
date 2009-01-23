@@ -109,17 +109,21 @@ namespace :spec do
 
   namespace :integration do
     desc "Run the Rails integration specs"
-    task :rails do
-      Dir.chdir "spec/integration/rails" do
-        result = system "rake test_unit_webrat"
-        raise "Rails integration tests failed" unless result
+    task :rails => ['rails:webrat','rails:selenium']
+
+    namespace :rails do
+      task :selenium do
+        Dir.chdir "spec/integration/rails" do
+          result = system "rake test_unit:selenium"
+          raise "Rails integration tests failed" unless result
+        end
       end
-    end
-    
-    task :rails_selenium do
-      Dir.chdir "spec/integration/rails" do
-        result = system "rake test_unit_selenium"
-        raise "Rails integration tests failed" unless result
+
+      task :webrat do
+        Dir.chdir "spec/integration/rails" do
+          result = system "rake test_unit:rails"
+          raise "Rails integration tests failed" unless result
+        end
       end
     end
 
