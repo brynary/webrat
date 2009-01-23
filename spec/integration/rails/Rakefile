@@ -16,27 +16,15 @@ namespace :test_unit do
   desc "runs the test::unit based tests in webrat mode"
   task :rails do
     ENV['WEBRAT_INTEGRATION_MODE'] = 'rails'
-    Rake::Task['test_unit:rails_test'].execute
+    Rake::Task['test:integration'].execute
   end
-  
-  Rake::TestTask.new(:rails_test => "db:test:prepare") do |t|
-    t.libs << "test"
-    t.pattern = 'test/integration/**/*_test.rb'
-    t.verbose = true
-  end
-  
+
   desc "runs the test::unit based tests in selenium mode"
   task :selenium do
     ENV['WEBRAT_INTEGRATION_MODE'] = 'selenium'
-    Rake::Task['test_unit:selenium_test'].execute
+    Rake::Task['test:integration'].execute
   end
-  
-  Rake::TestTask.new(:selenium_test => "db:test:prepare") do |t|
-    t.libs << "test"
-    t.pattern = 'test/selenium/**/*_test.rb'
-    t.verbose = true
-  end
-  
-  desc "run both selenium and rails mode Test::Unit suites"  
+
+  desc "run both selenium and rails mode Test::Unit suites"
   task :all => [:rails, :selenium]
 end
