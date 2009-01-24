@@ -69,3 +69,9 @@ module Webrat
 
   end
 end
+
+module Webrat
+  module Matchers
+    include Webrat::HaveTagMatcher
+  end
+end
