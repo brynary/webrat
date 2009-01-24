@@ -10,6 +10,8 @@ module Webrat
           response.session.wait_for do
             response.selenium.is_element_present("xpath=#{@expected}")
           end
+          rescue Webrat::TimeoutError
+            false
         end
 
         # ==== Returns

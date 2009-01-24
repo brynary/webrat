@@ -16,6 +16,8 @@ module Webrat
           response.session.wait_for do
             response.selenium.is_text_present(text_finder)
           end
+          rescue Webrat::TimeoutError
+            false
         end
 
         # ==== Returns

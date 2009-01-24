@@ -8,6 +8,7 @@
   
 * Bug fixes
 
+  * rescue from Webrat::TimeoutError in selenium matchers which allows NegativeMatchers to behave correctly (Noah Davis)
   * Switch to using selenium.click instead of .check when checking a checkbox
     (Noah Davis)
   * Create tmp/pids directory if directory does not exist. (Amos King and Mike Gaffney)  
