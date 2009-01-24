@@ -40,7 +40,7 @@
 * Minor enhancements
 
   * have_tag and the corresponding asserts work outside of merb, including selenium mode. (Amos King) 
-  * Create tmp/pids directory if directory does not exist. (Amos King)
+  * Create tmp/pids directory if directory does not exist. (Amos King and Mike Gaffney)
   * Added Selenium grid configuration and support. (Amos King && Cornel Borcean)
   * Support passing an ActiveRecord model to #within when in Rails mode [#68] (Luke Melia)
   * Make assert_* matchers in rails mode increment the assertions count [#123] (Amos King)
