@@ -111,7 +111,7 @@ module Webrat
     def check(label_text)
       locator = "webrat=#{label_text}"
       selenium.wait_for_element locator, 5
-      selenium.check locator
+      selenium.click locator
     end
 
     webrat_deprecate :checks, :check
