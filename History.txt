@@ -1,7 +1,8 @@
 == Git
 
 * Minor enhancements
-  
+
+  * have_tag and the corresponding asserts work outside of merb, including selenium mode. (Amos King) 
   * Support Sinatra 0.9 (Harry Vangberg)
   * Update query param parsing to work with latest Edge Rails
   
@@ -9,6 +10,7 @@
 
   * Switch to using selenium.click instead of .check when checking a checkbox
     (Noah Davis)
+  * Create tmp/pids directory if directory does not exist. (Amos King and Mike Gaffney)  
   * Setup deprecated writers for the selenium_environment= and selenium_port= config
   * Ensure the previous pages params aren't passed through redirect
   * Labels should only search for fields within the current scope (Kyle Hargraves)
@@ -39,8 +41,6 @@
 
 * Minor enhancements
 
-  * have_tag and the corresponding asserts work outside of merb, including selenium mode. (Amos King) 
-  * Create tmp/pids directory if directory does not exist. (Amos King and Mike Gaffney)
   * Added Selenium grid configuration and support. (Amos King && Cornel Borcean)
   * Support passing an ActiveRecord model to #within when in Rails mode [#68] (Luke Melia)
   * Make assert_* matchers in rails mode increment the assertions count [#123] (Amos King)
