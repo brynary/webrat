@@ -4,9 +4,15 @@
 
   * Support Sinatra 0.9 (Harry Vangberg)
   * Update query param parsing to work with latest Edge Rails
-  
+  * Added #redirected_to method to easily check where an external redirect was
+    redirected to (Adam Greene)
+    
 * Bug fixes
 
+  * Make requests to a Rails app using a full URL instead of a relative path. This change
+    is helpful for Rails apps that use subdomains. (John Hwang and Zach Dennis)
+  * Follow redirects that are on the same domain but a different subdomain
+    (Adam Greene)
   * rescue from Webrat::TimeoutError in selenium matchers which allows NegativeMatchers
     to behave correctly (Noah Davis)
   * Switch to using selenium.click instead of .check when checking a checkbox
