@@ -11,7 +11,6 @@ end
 disable :run
 disable :reload
 
-require 'ruby-debug'
 module Webrat
   class SinatraSession < RackSession #:nodoc:
     include Sinatra::Test
