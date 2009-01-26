@@ -2,13 +2,13 @@
 
 * Minor enhancements
 
-  * have_tag and the corresponding asserts work outside of merb, including selenium mode. (Amos King) 
   * Support Sinatra 0.9 (Harry Vangberg)
   * Update query param parsing to work with latest Edge Rails
   
 * Bug fixes
 
-  * rescue from Webrat::TimeoutError in selenium matchers which allows NegativeMatchers to behave correctly (Noah Davis)
+  * rescue from Webrat::TimeoutError in selenium matchers which allows NegativeMatchers
+    to behave correctly (Noah Davis)
   * Switch to using selenium.click instead of .check when checking a checkbox
     (Noah Davis)
   * Create tmp/pids directory if directory does not exist. (Amos King and Mike Gaffney)  
