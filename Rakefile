@@ -87,7 +87,8 @@ end
 
 desc "Run specs using jruby"
 task "spec:jruby" do
-  system "jruby -S rake spec"
+  result = system "jruby -S rake spec"
+  raise "JRuby tests failed" unless result
 end
 
 desc "Run each spec in isolation to test for dependency issues"
