@@ -67,8 +67,8 @@ class WebratTest < ActionController::IntegrationTest
     assert_have_selector "h1"
   end
   
-  test "should be able to assert have tag" do
-    visit root_path
-    assert_have_tag "h1"
-  end
+#  test "should be able to assert have tag" do
+#    visit root_path
+#    assert_have_tag "h1"
+#  end
 end
