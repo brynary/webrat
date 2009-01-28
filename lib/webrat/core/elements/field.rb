@@ -45,6 +45,7 @@ module Webrat
         when "file"     then FileField
         when "reset"    then ResetField
         when "submit"   then ButtonField
+        when "button"   then ButtonField
         when "image"    then ButtonField
         else  TextField
         end
@@ -177,7 +178,7 @@ module Webrat
   class ButtonField < Field #:nodoc:
 
     def self.xpath_search
-      [".//button", ".//input[@type = 'submit']", ".//input[@type = 'image']"]
+      [".//button", ".//input[@type = 'submit']", ".//input[@type = 'button']", ".//input[@type = 'image']"]
     end
     
     def to_param
