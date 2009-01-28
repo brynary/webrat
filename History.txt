@@ -19,7 +19,8 @@
     (Noah Davis)
   * Create tmp/pids directory if directory does not exist. (Amos King and Mike Gaffney)  
   * Setup deprecated writers for the selenium_environment= and selenium_port= config
-  * Ensure the previous pages params aren't passed through redirect
+  * Ensure the previous pages params aren't passed through redirect (Daniel Lucraft and
+    Bryan Helmkamp)
   * Labels should only search for fields within the current scope (Kyle Hargraves)
 
 == 0.4.0 / 2009-01-18
