@@ -6,6 +6,7 @@
   * Update query param parsing to work with latest Edge Rails
   * Added #redirected_to method to easily check where an external redirect was
     redirected to (Adam Greene)
+  * Recognize input tags with type button (Lena Herrmann)
     
 * Bug fixes
 
