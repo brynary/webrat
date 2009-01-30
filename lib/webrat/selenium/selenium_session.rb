@@ -113,6 +113,7 @@ module Webrat
       selenium.wait_for_element locator, 5
       selenium.click locator
     end
+    alias_method :uncheck, :check
 
     webrat_deprecate :checks, :check
 
