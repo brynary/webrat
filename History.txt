@@ -7,6 +7,7 @@
   * Added #redirected_to method to easily check where an external redirect was
     redirected to (Adam Greene)
   * Recognize input tags with type button (Lena Herrmann)
+  * Add uncheck method to Selenium mode (Lee Bankewitz)
     
 * Bug fixes
 
