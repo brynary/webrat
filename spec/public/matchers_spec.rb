@@ -26,12 +26,16 @@ describe Webrat::Matchers do
     end
     
     it "should be able to loop over all the matched elements" do
-      @body.should have_xpath("//div") { |node| node.first.name.should == "div" }
+      @body.should have_xpath("//div") do |node|
+        node.first.name.should == "div"
+      end
     end
     
-    it "should not match of any of the matchers in the block fail" do
+    it "should not match if any of the matchers in the block fail" do
       lambda {
-        @body.should have_xpath("//div") { |node| node.first.name.should == "p" }
+        @body.should have_xpath("//div") do |node|
+          node.first.name.should == "p"
+        end
       }.should raise_error(Spec::Expectations::ExpectationNotMetError)
     end
     
@@ -90,12 +94,16 @@ describe Webrat::Matchers do
     end
     
     it "should be able to loop over all the matched elements" do
-      @body.should have_selector("div") { |node| node.first.name.should == "div" }
+      @body.should have_selector("div") do |node|
+        node.first.name.should == "div"
+      end
     end
     
     it "should not match of any of the matchers in the block fail" do
       lambda {
-        @body.should have_selector("div") { |node| node.first.name.should == "p" }
+        @body.should have_selector("div") do |node|
+          node.first.name.should == "p"
+        end
       }.should raise_error(Spec::Expectations::ExpectationNotMetError)
     end
     
@@ -158,12 +166,16 @@ describe Webrat::Matchers do
     end
     
     it "should be able to loop over all the matched elements" do
-      @body.should have_tag("div") { |node| node.first.name.should == "div" }
+      @body.should have_tag("div") do |node|
+        node.first.name.should == "div"
+      end
     end
     
     it "should not match of any of the matchers in the block fail" do
       lambda {
-        @body.should have_tag("div") { |node| node.first.name.should == "p" }
+        @body.should have_tag("div") do |node|
+          node.first.name.should == "p"
+        end
       }.should raise_error(Spec::Expectations::ExpectationNotMetError)
     end
     
