@@ -3,7 +3,12 @@
 * Minor enhancements
 
   * Detect infinite redirects and raise a Webrat::InfiniteRedirectError (Daniel Lucraft)
-  
+
+* Bug fixes
+
+  * Quote --chdir option to mongrel_rails to support RAILS_ROOTs with spaces
+    (T.J. VanSlyke)
+    
 == 0.4.1 / 2009-01-31
 
 * Minor enhancements
