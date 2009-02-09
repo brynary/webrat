@@ -5,7 +5,7 @@ gem "extlib"
 require "extlib"
 require "merb-core"
 
-HashWithIndifferentAccess = Mash
+# HashWithIndifferentAccess = Mash
 
 module Webrat
   class MerbSession < Session #:nodoc:
