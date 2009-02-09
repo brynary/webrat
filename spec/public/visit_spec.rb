@@ -31,15 +31,6 @@ describe "visit" do
     lambda { fill_in "foo", :with => "blah" }.should raise_error(Webrat::WebratError)
   end
 
-  it "should follow internal redirects" do
-    webrat_session.should_receive(:internal_redirect?).twice.and_return(true, false)
-    webrat_session.response.should_receive(:headers).once.and_return({ "Location" => "/newurl" })
-
-    visit("/oldurl")
-
-    current_url.should == "/newurl"
-  end
-
   it "should not follow external redirects" do
     webrat_session.should_receive(:internal_redirect?).and_return(false)
 

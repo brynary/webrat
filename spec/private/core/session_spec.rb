@@ -113,15 +113,6 @@ describe Webrat::Session do
       lambda { webrat_session.request_page('some url', :get, {}) }.should raise_error(Webrat::PageLoadError)
     end
 
-    it "should follow internal redirects" do
-      webrat_session.should_receive(:internal_redirect?).twice.and_return(true, false)
-      webrat_session.response.should_receive(:headers).once.and_return({ "Location" => "/newurl" })
-
-      webrat_session.request_page("/oldurl", :get, {})
-
-      webrat_session.current_url.should == "/newurl"
-    end
-
     it "should now follow external redirects" do
       webrat_session.should_receive(:internal_redirect?).and_return(false)
 

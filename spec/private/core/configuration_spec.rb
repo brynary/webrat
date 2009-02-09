@@ -24,6 +24,11 @@ describe Webrat::Configuration do
     config = Webrat::Configuration.new
     config.should open_error_files
   end
+  
+  it "should detect infinite redirects after 10" do
+    config = Webrat::Configuration.new
+    config.infinite_redirect_limit.should == 10
+  end
 
   it "should be configurable with a block" do
     Webrat.configure do |config|

@@ -17,6 +17,10 @@ class WebratController < ApplicationController
     redirect_to submit_path
   end
   
+  def infinite_redirect
+    redirect_to infinite_redirect_path
+  end
+  
   def external_redirect
     redirect_to "http://google.com"
   end

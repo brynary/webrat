@@ -9,6 +9,9 @@ module Webrat
   class PageLoadError < WebratError
   end
 
+  class InfiniteRedirectError < WebratError
+  end
+  
   def self.session_class
     case Webrat.configuration.mode
     when :rails
@@ -112,11 +115,30 @@ For example:
       @http_method  = http_method
       @data         = data
 
-      request_page(response_location, :get, {}) if internal_redirect?
+      if internal_redirect?
+        check_for_infinite_redirects
+        request_page(response_location, :get, {})
+      end
 
       return response
     end
+    
+    def check_for_infinite_redirects
+      if current_url == response_location
+        @_identical_redirect_count ||= 0
+        @_identical_redirect_count += 1
+      end
+      
+      if infinite_redirect_limit_exceeded?
+        raise InfiniteRedirectError.new("#{Webrat.configuration.infinite_redirect_limit} redirects to the same URL (#{current_url.inspect})")
+      end
+    end
 
+    def infinite_redirect_limit_exceeded?
+       Webrat.configuration.infinite_redirect_limit &&
+       (@_identical_redirect_count || 0) > Webrat.configuration.infinite_redirect_limit
+    end
+    
     def success_code? #:nodoc:
       (200..499).include?(response_code)
     end
