@@ -151,4 +151,22 @@ describe "uncheck" do
     uncheck "remember_me"
     click_button
   end
+  
+  it "should work with checkboxes with the same name" do
+    with_html <<-HTML
+      <html>
+      <form method="post" action="/login">
+        <input id="option_1" name="options[]" type="checkbox" value="1" />
+        <label for="option_1">Option 1</label>
+        <input id="option_2" name="options[]" type="checkbox" value="2" />
+        <label for="option_2">Option 2</label>
+        <input type="submit" />
+      </form>
+      </html>
+    HTML
+    webrat_session.should_receive(:post).with("/login", {"options" => ["1", "2"]})
+    check 'Option 1'
+    check 'Option 2'
+    click_button
+  end
 end
