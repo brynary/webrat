@@ -34,23 +34,33 @@ module Webrat
   end
 
   def self.start_app_server #:nodoc:
-    if File.exists?('config.ru')
+    case Webrat.configuration.application_type
+    when :sinatra
       fork do
         File.open('rack.pid', 'w') { |fp| fp.write Process.pid }
-        exec 'rackup', File.expand_path(Dir.pwd + '/config.ru')
+        exec 'rackup', File.expand_path(Dir.pwd + '/config.ru'), '-p', Webrat.configuration.application_port.to_s
       end
-    else
+    when :merb
+      fork do
+        exec 'merb', '-d'
+      end
+    else # rails
       system("mongrel_rails start -d --chdir='#{RAILS_ROOT}' --port=#{Webrat.configuration.application_port} --environment=#{Webrat.configuration.application_environment} --pid #{pid_file} &")
     end
     TCPSocket.wait_for_service :host => Webrat.configuration.application_address, :port => Webrat.configuration.application_port.to_i
   end
 
   def self.stop_app_server #:nodoc:
-    if File.exists?('config.ru')
+    case Webrat.configuration.application_type
+    when :sinatra
       pid = File.read('rack.pid')
       system("kill -9 #{pid}")
       FileUtils.rm_f 'rack.pid'
-    else
+    when :merb
+      pid = File.read('log/merb.4000.pid')
+      system("kill -9 #{pid}")
+      FileUtils.rm_f 'log/merb.4000.pid'
+    else # rails
       system "mongrel_rails stop -c #{RAILS_ROOT} --pid #{pid_file}"
     end
   end
