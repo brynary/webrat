@@ -25,15 +25,31 @@ module Webrat
     ::Selenium::RemoteControl::RemoteControl.new("0.0.0.0", Webrat.configuration.selenium_server_port, 5).stop unless Webrat.configuration.selenium_server_address
   end
 
+  def self.pid_file
+    if File.exists?('config.ru')
+      prepare_pid_file(Dir.pwd, 'rack.pid')
+    else
+      prepare_pid_file("#{RAILS_ROOT}/tmp/pids", "mongrel_selenium.pid")
+    end
+  end
+
   def self.start_app_server #:nodoc:
-    pid_file = prepare_pid_file("#{RAILS_ROOT}/tmp/pids", "mongrel_selenium.pid")
-    system("mongrel_rails start -d --chdir='#{RAILS_ROOT}' --port=#{Webrat.configuration.application_port} --environment=#{Webrat.configuration.application_environment} --pid #{pid_file} &")
+    if File.exists?('config.ru')
+      fork do
+        exec 'rackup', File.expand_path(Dir.pwd + '/config.ru'), '-P', 'rack.pid'
+      end
+    else
+      system("mongrel_rails start -d --chdir='#{RAILS_ROOT}' --port=#{Webrat.configuration.application_port} --environment=#{Webrat.configuration.application_environment} --pid #{pid_file} &")
+    end
     TCPSocket.wait_for_service :host => Webrat.configuration.application_address, :port => Webrat.configuration.application_port.to_i
   end
 
   def self.stop_app_server #:nodoc:
-    pid_file = File.expand_path(RAILS_ROOT + "/tmp/pids/mongrel_selenium.pid")
-    system "mongrel_rails stop -c #{RAILS_ROOT} --pid #{pid_file}"
+    if File.exists?('config.ru')
+      system("kill -9 `cat rack.pid`")
+    else
+      system "mongrel_rails stop -c #{RAILS_ROOT} --pid #{pid_file}"
+    end
   end
 
   def self.prepare_pid_file(file_path, pid_file_name)
@@ -90,10 +106,10 @@ module Webrat
   end
 end
 
-module ActionController #:nodoc:
-  IntegrationTest.class_eval do
-    include Webrat::Methods
-    include Webrat::Selenium::Methods
-    include Webrat::Selenium::Matchers
-  end
-end
+#module ActionController #:nodoc:
+#  IntegrationTest.class_eval do
+#    include Webrat::Methods
+#    include Webrat::Selenium::Methods
+#    include Webrat::Selenium::Matchers
+#  end
+#end

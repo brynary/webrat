@@ -179,11 +179,21 @@ module Webrat
     end
 
   protected
+    def silence_stream(stream)
+      old_stream = stream.dup
+      stream.reopen(RUBY_PLATFORM =~ /mswin/ ? 'NUL:' : '/dev/null')
+      stream.sync = true
+      yield
+    ensure
+      stream.reopen(old_stream)
+    end
 
     def setup #:nodoc:
       silence_stream(STDOUT) do
-        Webrat.start_selenium_server
-        Webrat.start_app_server
+        silence_stream(STDERR) do
+          Webrat.start_selenium_server
+          Webrat.start_app_server
+        end
       end
 
       create_browser
