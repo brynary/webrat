@@ -36,7 +36,8 @@ module Webrat
   def self.start_app_server #:nodoc:
     if File.exists?('config.ru')
       fork do
-        exec 'rackup', File.expand_path(Dir.pwd + '/config.ru'), '-P', 'rack.pid'
+        File.open('rack.pid', 'w') { |fp| fp.write Process.pid }
+        exec 'rackup', File.expand_path(Dir.pwd + '/config.ru')
       end
     else
       system("mongrel_rails start -d --chdir='#{RAILS_ROOT}' --port=#{Webrat.configuration.application_port} --environment=#{Webrat.configuration.application_environment} --pid #{pid_file} &")
@@ -46,7 +47,9 @@ module Webrat
 
   def self.stop_app_server #:nodoc:
     if File.exists?('config.ru')
-      system("kill -9 `cat rack.pid`")
+      pid = File.read('rack.pid')
+      system("kill -9 #{pid}")
+      FileUtils.rm_f 'rack.pid'
     else
       system "mongrel_rails stop -c #{RAILS_ROOT} --pid #{pid_file}"
     end
