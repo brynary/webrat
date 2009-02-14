@@ -7,13 +7,64 @@ RAILS_ROOT = "/"
 
 
 describe Webrat, "Selenium" do
-
-  it "should start the app server with correct config options" do
-    pid_file = "file"
-    Webrat.should_receive(:prepare_pid_file).with("#{RAILS_ROOT}/tmp/pids","mongrel_selenium.pid").and_return pid_file
-    Webrat.should_receive(:system).with("mongrel_rails start -d --chdir='#{RAILS_ROOT}' --port=#{Webrat.configuration.application_port} --environment=#{Webrat.configuration.application_environment} --pid #{pid_file} &")
-    TCPSocket.should_receive(:wait_for_service).with(:host => Webrat.configuration.application_address, :port => Webrat.configuration.application_port.to_i)
-    Webrat.start_app_server
+  describe "start_app_server" do
+    after(:each) { Webrat.configuration.application_type = :rails }
+    describe "ruby on rails" do
+      it "should start the app server with correct config options" do
+        pid_file = "file"
+        Webrat.should_receive(:prepare_pid_file).with("#{RAILS_ROOT}/tmp/pids","mongrel_selenium.pid").and_return pid_file
+        Webrat.should_receive(:system).with("mongrel_rails start -d --chdir='#{RAILS_ROOT}' --port=#{Webrat.configuration.application_port} --environment=#{Webrat.configuration.application_environment} --pid #{pid_file} &")
+        TCPSocket.should_receive(:wait_for_service).with(:host => Webrat.configuration.application_address, :port => Webrat.configuration.application_port.to_i)
+        Webrat.start_app_server
+      end
+    end
+    describe "merb" do
+      it "should start the app server with correct config options" do
+        Webrat.configuration.application_type = :merb
+        Webrat.should_receive(:fork)
+#        Kernel.should_receive(:exec).with(['merb', '-d', '-p', Webrat.configuration.application_port])
+        TCPSocket.should_receive(:wait_for_service).with(:host => Webrat.configuration.application_address, :port => Webrat.configuration.application_port.to_i)
+        Webrat.start_app_server
+      end
+    end
+    describe "sinatra" do
+      it "should start the app server with correct config options" do
+        rackup_file = File.expand_path(Dir.pwd + '/config.ru')
+        Webrat.configuration.application_type = :sinatra
+        Webrat.should_receive(:fork)
+#        Kernel.should_receive(:exec).with(['rackup', rackup_file, '-p', Webrat.configuration.application_port])
+        TCPSocket.should_receive(:wait_for_service).with(:host => Webrat.configuration.application_address, :port => Webrat.configuration.application_port.to_i)
+        Webrat.start_app_server
+        FileUtils.rm_f 'rack.pid'
+      end
+    end
+  end
+  describe "stop_app_server" do
+    after(:each) { Webrat.configuration.application_type = :rails }
+    describe "ruby on rails" do
+      it "should stop the app server with correct config options" do
+        pid_file = RAILS_ROOT+'/tmp/pids/mongrel_selenium.pid'
+        Webrat.should_receive(:system).with("mongrel_rails stop -c #{RAILS_ROOT} --pid #{pid_file}")
+        Webrat.stop_app_server
+      end
+    end
+    describe "merb" do
+      it "should stop the app server with correct config options" do
+        Webrat.configuration.application_type = :merb
+        File.should_receive(:read).with('log/merb.4000.pid').and_return('666')
+        Webrat.should_receive(:system).with("kill -9 666")
+        Webrat.stop_app_server
+      end
+    end
+    describe "sinatra" do
+      it "should stop the app server with correct config options" do
+        Webrat.configuration.application_type = :sinatra
+        File.should_receive(:read).with('rack.pid').and_return('666')
+        Webrat.should_receive(:system).with("kill -9 666")
+        Webrat.stop_app_server
+        FileUtils.rm_f 'rack.pid'
+      end
+    end
   end
 
   it 'prepare_pid_file' do
