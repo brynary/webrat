@@ -34,16 +34,14 @@ module Webrat
   end
 
   def self.start_app_server #:nodoc:
-    case Webrat.configuration.application_type
+    case Webrat.configuration.application_framework
     when :sinatra
       fork do
         File.open('rack.pid', 'w') { |fp| fp.write Process.pid }
         exec 'rackup', File.expand_path(Dir.pwd + '/config.ru'), '-p', Webrat.configuration.application_port.to_s
       end
     when :merb
-      fork do
-        exec 'merb', '-d', '-p', Webrat.configuration.application_port
-      end
+      system("merb -d -p #{Webrat.configuration.application_port}"
     else # rails
       system("mongrel_rails start -d --chdir='#{RAILS_ROOT}' --port=#{Webrat.configuration.application_port} --environment=#{Webrat.configuration.application_environment} --pid #{pid_file} &")
     end
@@ -51,7 +49,7 @@ module Webrat
   end
 
   def self.stop_app_server #:nodoc:
-    case Webrat.configuration.application_type
+    case Webrat.configuration.application_framework
     when :sinatra
       pid = File.read('rack.pid')
       system("kill -9 #{pid}")

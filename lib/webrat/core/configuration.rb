@@ -39,8 +39,8 @@ module Webrat
     webrat_deprecate :selenium_port, :application_port
     webrat_deprecate :selenium_port=, :application_port=
 
-    # Which underlying appserver are we testing with selenium
-    attr_accessor :application_type
+    # Which underlying app framework we're testing with selenium
+    attr_accessor :application_framework
 
     # Which server the application is running on for selenium testing? Defaults to localhost
     attr_accessor :application_address

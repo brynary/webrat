@@ -8,7 +8,7 @@ RAILS_ROOT = "/"
 
 describe Webrat, "Selenium" do
   describe "start_app_server" do
-    after(:each) { Webrat.configuration.application_type = :rails }
+    after(:each) { Webrat.configuration.application_framework = :rails }
     describe "ruby on rails" do
       it "should start the app server with correct config options" do
         pid_file = "file"
@@ -20,7 +20,7 @@ describe Webrat, "Selenium" do
     end
     describe "merb" do
       it "should start the app server with correct config options" do
-        Webrat.configuration.application_type = :merb
+        Webrat.configuration.application_framework = :merb
         Webrat.should_receive(:fork)
 #        Kernel.should_receive(:exec).with(['merb', '-d', '-p', Webrat.configuration.application_port])
         TCPSocket.should_receive(:wait_for_service).with(:host => Webrat.configuration.application_address, :port => Webrat.configuration.application_port.to_i)
@@ -30,7 +30,7 @@ describe Webrat, "Selenium" do
     describe "sinatra" do
       it "should start the app server with correct config options" do
         rackup_file = File.expand_path(Dir.pwd + '/config.ru')
-        Webrat.configuration.application_type = :sinatra
+        Webrat.configuration.application_framework = :sinatra
         Webrat.should_receive(:fork)
 #        Kernel.should_receive(:exec).with(['rackup', rackup_file, '-p', Webrat.configuration.application_port])
         TCPSocket.should_receive(:wait_for_service).with(:host => Webrat.configuration.application_address, :port => Webrat.configuration.application_port.to_i)
@@ -40,7 +40,7 @@ describe Webrat, "Selenium" do
     end
   end
   describe "stop_app_server" do
-    after(:each) { Webrat.configuration.application_type = :rails }
+    after(:each) { Webrat.configuration.application_framework = :rails }
     describe "ruby on rails" do
       it "should stop the app server with correct config options" do
         pid_file = RAILS_ROOT+'/tmp/pids/mongrel_selenium.pid'
@@ -50,7 +50,7 @@ describe Webrat, "Selenium" do
     end
     describe "merb" do
       it "should stop the app server with correct config options" do
-        Webrat.configuration.application_type = :merb
+        Webrat.configuration.application_framework = :merb
         File.should_receive(:read).with('log/merb.3001.pid').and_return('666')
         Webrat.should_receive(:system).with("kill -9 666")
         Webrat.stop_app_server
@@ -58,7 +58,7 @@ describe Webrat, "Selenium" do
     end
     describe "sinatra" do
       it "should stop the app server with correct config options" do
-        Webrat.configuration.application_type = :sinatra
+        Webrat.configuration.application_framework = :sinatra
         File.should_receive(:read).with('rack.pid').and_return('666')
         Webrat.should_receive(:system).with("kill -9 666")
         Webrat.stop_app_server
