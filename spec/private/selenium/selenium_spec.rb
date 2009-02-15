@@ -51,7 +51,7 @@ describe Webrat, "Selenium" do
     describe "merb" do
       it "should stop the app server with correct config options" do
         Webrat.configuration.application_type = :merb
-        File.should_receive(:read).with('log/merb.4000.pid').and_return('666')
+        File.should_receive(:read).with('log/merb.3001.pid').and_return('666')
         Webrat.should_receive(:system).with("kill -9 666")
         Webrat.stop_app_server
       end

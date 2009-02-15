@@ -42,7 +42,7 @@ module Webrat
       end
     when :merb
       fork do
-        exec 'merb', '-d'
+        exec 'merb', '-d', '-p', Webrat.configuration.application_port
       end
     else # rails
       system("mongrel_rails start -d --chdir='#{RAILS_ROOT}' --port=#{Webrat.configuration.application_port} --environment=#{Webrat.configuration.application_environment} --pid #{pid_file} &")
@@ -57,9 +57,9 @@ module Webrat
       system("kill -9 #{pid}")
       FileUtils.rm_f 'rack.pid'
     when :merb
-      pid = File.read('log/merb.4000.pid')
+      pid = File.read("log/merb.#{Webrat.configuration.application_port}.pid")
       system("kill -9 #{pid}")
-      FileUtils.rm_f 'log/merb.4000.pid'
+      FileUtils.rm_f "log/merb.#{Webrat.configuration.application_port}.pid"
     else # rails
       system "mongrel_rails stop -c #{RAILS_ROOT} --pid #{pid_file}"
     end
@@ -118,11 +118,12 @@ module Webrat
     end
   end
 end
-
-#module ActionController #:nodoc:
-#  IntegrationTest.class_eval do
-#    include Webrat::Methods
-#    include Webrat::Selenium::Methods
-#    include Webrat::Selenium::Matchers
-#  end
-#end
+if defined?(ActionController::IntegrationTest)
+  module ActionController #:nodoc:
+    IntegrationTest.class_eval do
+      include Webrat::Methods
+      include Webrat::Selenium::Methods
+      include Webrat::Selenium::Matchers
+    end
+  end
+end
