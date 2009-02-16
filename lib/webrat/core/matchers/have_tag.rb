@@ -15,6 +15,19 @@ module Webrat
         "expected following output to omit a #{tag_inspect}:\n#{@document}"
       end
 
+      def matches?(stringlike, &block)
+        @block ||= block
+        matched = matches(stringlike)
+        
+        options = @expected.last.dup
+        
+        if options[:count]
+          matched.size == options[:count] && (!@block || @block.call(matched))
+        else
+          matched.any? && (!@block || @block.call(matched))
+        end
+      end
+      
       def tag_inspect
         options = @expected.last.dup
         content = options.delete(:content)
@@ -38,7 +51,7 @@ module Webrat
         selector = @expected.first.to_s
         
         options.each do |key, value|
-          next if key == :content
+          next if [:content, :count].include?(key)
           selector << "[#{key}='#{value}']"
         end
         
@@ -56,6 +69,7 @@ module Webrat
         elsif options[:content]
           q << "[contains(., '#{options[:content]}')]"
         end
+        
         q
       end
     end

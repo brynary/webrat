@@ -12,15 +12,19 @@ module Webrat
     
       def matches?(stringlike, &block)
         @block ||= block
-        
+        matched = matches(stringlike)
+        matched.any? && (!@block || @block.call(matched))
+      end
+      
+      def matches(stringlike)
         if Webrat.configuration.parse_with_nokogiri?
-          matches_nokogiri?(stringlike)
+          nokogiri_matches(stringlike)
         else
-          matches_rexml?(stringlike)
+          rexml_matches(stringlike)
         end
       end
     
-      def matches_rexml?(stringlike)
+      def rexml_matches(stringlike)
         if REXML::Node === stringlike || Array === stringlike
           @query = query.map { |q| q.gsub(%r'//', './') }
         else
@@ -29,18 +33,16 @@ module Webrat
 
         @document = Webrat.rexml_document(stringlike)
 
-        matched = @query.map do |q|
+        @query.map do |q|
           if @document.is_a?(Array)
             @document.map { |d| REXML::XPath.match(d, q) }
           else
             REXML::XPath.match(@document, q)
           end
         end.flatten.compact
-
-        matched.any? && (!@block || @block.call(matched))
       end
     
-      def matches_nokogiri?(stringlike)
+      def nokogiri_matches(stringlike)
         if Nokogiri::XML::NodeSet === stringlike
           @query = query.map { |q| q.gsub(%r'//', './') }
         else
@@ -48,8 +50,7 @@ module Webrat
         end
         
         @document = Webrat::XML.document(stringlike)
-        matched = @document.xpath(*@query)
-        matched.any? && (!@block || @block.call(matched))
+        @document.xpath(*@query)
       end
       
       def query

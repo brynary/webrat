@@ -178,19 +178,29 @@ describe Webrat::Matchers do
     end
     
     it "should be able to specify the content of the tag" do
-      @body.should have_tag("div", :content  => "hello, world!")
+      @body.should have_tag("div", :content => "hello, world!")
     end
     
     it "should be able to specify the content of the tag with double quotes in it" do
-      @body.should have_tag("h2", :content  => 'Welcome "Bryan"')
+      @body.should have_tag("h2", :content => 'Welcome "Bryan"')
     end
     
     it "should be able to specify the content of the tag with single quotes in it" do
-      @body.should have_tag("h3", :content  => "Welcome 'Bryan'")
+      @body.should have_tag("h3", :content => "Welcome 'Bryan'")
     end
     
     it "should be able to specify the content of the tag with both kinds of quotes" do
-      @body.should have_tag("h4", :content  => "Welcome 'Bryan\"")
+      @body.should have_tag("h4", :content => "Welcome 'Bryan\"")
+    end
+    
+    it "should be able to specify the number of occurences of the tag" do
+      @body.should have_tag("li", :count => 2)
+    end
+    
+    it "should not match if the count is wrong" do
+      lambda {
+        @body.should have_tag("li", :count => 3)
+      }.should raise_error(Spec::Expectations::ExpectationNotMetError)
     end
     
     it "should be able to specify the attributes of the tag" do
@@ -226,10 +236,10 @@ describe Webrat::Matchers do
     end
     
     it "should work with items that have multiple child nodes" do
-      @body.should have_tag("ul") { |n|
+      @body.should have_tag("ul") do |n|
         n.should have_tag("li", :content => "First")
         n.should have_tag("li", :content => "Second")
-      }
+      end
     end
     
     describe "asserts for tags," do
