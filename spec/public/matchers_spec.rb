@@ -8,6 +8,9 @@ describe Webrat::Matchers do
     @body = <<-HTML
       <div id='main'>
         <div class='inner'>hello, world!</div>
+        <h2>Welcome "Bryan"</h2>
+        <h3>Welcome 'Bryan'</h3>
+        <h4>Welcome 'Bryan"</h4>
         <ul>
           <li>First</li>
           <li>Second</li>
@@ -176,6 +179,18 @@ describe Webrat::Matchers do
     
     it "should be able to specify the content of the tag" do
       @body.should have_tag("div", :content  => "hello, world!")
+    end
+    
+    it "should be able to specify the content of the tag with double quotes in it" do
+      @body.should have_tag("h2", :content  => 'Welcome "Bryan"')
+    end
+    
+    it "should be able to specify the content of the tag with single quotes in it" do
+      @body.should have_tag("h3", :content  => "Welcome 'Bryan'")
+    end
+    
+    it "should be able to specify the content of the tag with both kinds of quotes" do
+      @body.should have_tag("h4", :content  => "Welcome 'Bryan\"")
     end
     
     it "should be able to specify the attributes of the tag" do

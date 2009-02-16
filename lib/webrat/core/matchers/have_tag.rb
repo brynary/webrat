@@ -36,14 +36,27 @@ module Webrat
       def query
         options  = @expected.last.dup
         selector = @expected.first.to_s
-
-        selector << ":contains('#{options.delete(:content)}')" if options[:content]
-
+        
         options.each do |key, value|
+          next if key == :content
           selector << "[#{key}='#{value}']"
         end
-
-        Nokogiri::CSS::Parser.parse(selector).map { |ast| ast.to_xpath }
+        
+        q = Nokogiri::CSS::Parser.parse(selector).map { |ast| ast.to_xpath }.first
+        
+        if options[:content] && options[:content].include?("'") && options[:content].include?('"')
+          parts = options[:content].split("'").map do |part|
+            "'#{part}'"
+          end
+          
+          string = "concat(" + parts.join(", \"'\", ") + ")"
+          q << "[contains(., #{string})]"
+        elsif options[:content] && options[:content].include?("'")
+          q << "[contains(., \"#{options[:content]}\")]"
+        elsif options[:content]
+          q << "[contains(., '#{options[:content]}')]"
+        end
+        q
       end
     end
 
