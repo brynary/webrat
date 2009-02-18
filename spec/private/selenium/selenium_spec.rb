@@ -21,7 +21,7 @@ describe Webrat, "Selenium" do
     describe "merb" do
       it "should start the app server with correct config options" do
         Webrat.configuration.application_framework = :merb
-        Webrat.should_receive(:system).with("merb -d -p #{Webrat.configuration.application_port}")
+        Webrat.should_receive(:system).with("merb -d -p #{Webrat.configuration.application_port} -e #{Webrat.configuration.application_environment}")
         TCPSocket.should_receive(:wait_for_service).with(:host => Webrat.configuration.application_address, :port => Webrat.configuration.application_port.to_i)
         Webrat.start_app_server
       end

@@ -41,7 +41,7 @@ module Webrat
         exec 'rackup', File.expand_path(Dir.pwd + '/config.ru'), '-p', Webrat.configuration.application_port.to_s
       end
     when :merb
-      system("merb -d -p #{Webrat.configuration.application_port}")
+      system("merb -d -p #{Webrat.configuration.application_port} -e #{Webrat.configuration.application_environment}")
     else # rails
       system("mongrel_rails start -d --chdir='#{RAILS_ROOT}' --port=#{Webrat.configuration.application_port} --environment=#{Webrat.configuration.application_environment} --pid #{pid_file} &")
     end
