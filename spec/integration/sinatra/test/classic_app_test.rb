@@ -1,6 +1,7 @@
 require File.dirname(__FILE__) + "/test_helper"
+require File.dirname(__FILE__) + "/../classic_app"
 
-class WebratTest < Test::Unit::TestCase
+class MyClassicAppTest < Test::Unit::TestCase
   def test_visits_pages
     visit "/"
     assert response_body.include?("visit")
@@ -23,7 +24,7 @@ class WebratTest < Test::Unit::TestCase
     visit "/"
     assert field_labeled("Prefilled").value, "text"
   end
-  
+
   def test_follows_internal_redirects
     visit "/internal_redirect"
     assert response_body.include?("visit")
