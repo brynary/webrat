@@ -30,6 +30,7 @@ module Webrat
             data[key] = Rack::Utils.unescape(value)
             data
           end
+          headers["HTTP_HOST"] = "www.example.com"
           @browser.#{verb}(path, params, headers)
         end
       RUBY

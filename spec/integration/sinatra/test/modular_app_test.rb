@@ -13,4 +13,9 @@ class MyModularAppTest < Test::Unit::TestCase
     visit "/"
     assert_contain "Hello World"
   end
+
+  def test_redirects
+    visit "/redirect_absolute_url"
+    assert_equal "spam", response_body
+  end
 end
