@@ -32,8 +32,12 @@ module Webrat
       prepare_pid_file("#{RAILS_ROOT}/tmp/pids", "mongrel_selenium.pid")
     end
   end
-
-  def self.start_app_server #:nodoc:
+  # Start the appserver for the underlying framework to test
+  #
+  # Sinatra: requires a config.ru in the root of your sinatra app to use this
+  # Merb: Attempts to use bin/merb and falls back to the system merb
+  # Rails: Calls mongrel_rails to startup the appserver
+  def self.start_app_server
     case Webrat.configuration.application_framework
     when :sinatra
       fork do
@@ -52,7 +56,12 @@ module Webrat
     TCPSocket.wait_for_service :host => Webrat.configuration.application_address, :port => Webrat.configuration.application_port.to_i
   end
 
-  def self.stop_app_server #:nodoc:
+  # Stop the appserver for the underlying framework under test
+  #
+  # Sinatra: Reads and kills the pid from the pid file created on startup
+  # Merb: Reads and kills the pid from the pid file created on startup
+  # Rails: Calls mongrel_rails stop to kill the appserver
+  def self.stop_app_server 
     case Webrat.configuration.application_framework
     when :sinatra
       pid = File.read('rack.pid')
@@ -91,11 +100,25 @@ module Webrat
   #     selenium.dragdrop("id=photo_123", "+350, 0")
   #   end
   #
-  # == Auto-starting of the mongrel and java server
+  # == Choosing the underlying framework to test
+  #
+  # Webrat assumes you're using rails by default but it can also work with sinatra
+  # and merb.  To take advantage of this you can use the configuration block to
+  # set the application_framework variable.
+  #   require "webrat"
+  #
+  #   Webrat.configure do |config|
+  #     config.mode = :selenium
+  #     config.application_port = 4567
+  #     config.application_framework = :sinatra  # could also be :merb
+  #   end
+  #
+  # == Auto-starting of the appserver and java server
   #
   # Webrat will automatically start the Selenium Java server process and an instance
   # of Mongrel when a test is run. The Mongrel will run in the "selenium" environment
-  # instead of "test", so ensure you've got that defined, and will run on port 3001.
+  # instead of "test", so ensure you've got that defined, and will run on port
+  # Webrat.configuration.application_port.
   #
   # == Waiting
   #
