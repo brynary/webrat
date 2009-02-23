@@ -26,15 +26,19 @@ module Webrat
       # ==== Returns
       # String:: The failure message.
       def failure_message
-        "expected the following element's content to #{content_message}:\n#{@element}"
+        "expected the following element's content to #{content_message}:\n#{squeeze_space(@element)}"
       end
 
       # ==== Returns
       # String:: The failure message to be displayed in negative matches.
       def negative_failure_message
-        "expected the following element's content to not #{content_message}:\n#{@element}"
+        "expected the following element's content to not #{content_message}:\n#{squeeze_space(@element)}"
       end
-    
+      
+      def squeeze_space(inner_text)
+        inner_text.gsub(/^\s*$/, "").squeeze("\n")
+      end
+      
       def content_message
         case @content
         when String
