@@ -44,21 +44,26 @@ module Webrat
         end
         
         q = Nokogiri::CSS::Parser.parse(selector).map { |ast| ast.to_xpath }.first
-        
-        if options[:content] && options[:content].include?("'") && options[:content].include?('"')
-          parts = options[:content].split("'").map do |part|
-            "'#{part}'"
-          end
-          
-          string = "concat(" + parts.join(", \"'\", ") + ")"
-          q << "[contains(., #{string})]"
-        elsif options[:content] && options[:content].include?("'")
-          q << "[contains(., \"#{options[:content]}\")]"
-        elsif options[:content]
-          q << "[contains(., '#{options[:content]}')]"
+
+        if options[:content]
+          q << "[contains(., #{xpath_escape(options[:content])})]"
         end
         
         q
+      end
+      
+      def xpath_escape(string)
+        if string.include?("'") && string.include?('"')
+          parts = string.split("'").map do |part|
+            "'#{part}'"
+          end
+          
+          "concat(" + parts.join(", \"'\", ") + ")"
+        elsif string.include?("'")
+          "\"#{string}\""
+        else
+          "'#{string}'"
+        end
       end
       
     end
