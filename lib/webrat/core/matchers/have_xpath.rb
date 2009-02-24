@@ -5,8 +5,9 @@ module Webrat
   module Matchers
     
     class HaveXpath #:nodoc:
-      def initialize(expected, &block)
+      def initialize(expected, options = {}, &block)
         @expected = expected
+        @options  = {}
         @block    = block
       end
     
@@ -77,18 +78,18 @@ module Webrat
     #
     # ==== Returns
     # HaveXpath:: A new have xpath matcher.
-    def have_xpath(expected, &block)
-      HaveXpath.new(expected, &block)
+    def have_xpath(expected, options = {}, &block)
+      HaveXpath.new(expected, options, &block)
     end
     alias_method :match_xpath, :have_xpath
     
-    def assert_have_xpath(expected, &block)
-      hs = HaveXpath.new(expected, &block)
+    def assert_have_xpath(expected, options = {}, &block)
+      hs = HaveXpath.new(expected, options, &block)
       assert hs.matches?(response_body), hs.failure_message
     end
     
-    def assert_have_no_xpath(expected, &block)
-      hs = HaveXpath.new(expected, &block)
+    def assert_have_no_xpath(expected, options = {}, &block)
+      hs = HaveXpath.new(expected, options, &block)
       assert !hs.matches?(response_body), hs.negative_failure_message
     end
     
