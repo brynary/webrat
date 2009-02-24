@@ -18,6 +18,7 @@ module Webrat
       
       def tag_inspect
         options = @options.dup
+        count = options.delete(:count)
         content = options.delete(:content)
 
         html = "<#{@expected}"
@@ -35,29 +36,7 @@ module Webrat
       end
 
       def query
-        options  = @options.dup
-        selector = @expected.to_s
-        
-        options.each do |key, value|
-          next if [:content, :count].include?(key)
-          selector << "[#{key}='#{value}']"
-        end
-        
-        Nokogiri::CSS::Parser.parse(selector).map { |ast| ast.to_xpath }.first
-      end
-      
-      def xpath_escape(string)
-        if string.include?("'") && string.include?('"')
-          parts = string.split("'").map do |part|
-            "'#{part}'"
-          end
-          
-          "concat(" + parts.join(", \"'\", ") + ")"
-        elsif string.include?("'")
-          "\"#{string}\""
-        else
-          "'#{string}'"
-        end
+        Nokogiri::CSS::Parser.parse(@expected.to_s).map { |ast| ast.to_xpath }.first
       end
       
     end

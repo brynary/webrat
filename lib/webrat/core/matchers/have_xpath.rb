@@ -37,6 +37,21 @@ module Webrat
           @query = query
         end
 
+        attribute_conditions = []
+        
+        @options.each do |key, value|
+          next if [:content, :count].include?(key)
+          attribute_conditions << "@#{key} = #{xpath_escape(value)}"
+        end
+        
+        if attribute_conditions.any?
+          @query.first << "[#{attribute_conditions.join(' and ')}]"
+        end
+        
+        if @options[:content]
+          @query.first << "[contains(., #{xpath_escape(@options[:content])})]"
+        end
+
         @document = Webrat.rexml_document(stringlike)
 
         @query.map do |q|
@@ -55,8 +70,19 @@ module Webrat
           @query = query
         end
         
+        attribute_conditions = []
+        
+        @options.each do |key, value|
+          next if [:content, :count].include?(key)
+          attribute_conditions << "@#{key} = #{xpath_escape(value)}"
+        end
+        
+        if attribute_conditions.any?
+          @query.first << "[#{attribute_conditions.join(' and ')}]"
+        end
+        
         if @options[:content]
-          query << "[contains(., #{xpath_escape(@options[:content])})]"
+          @query.first << "[contains(., #{xpath_escape(@options[:content])})]"
         end
         
         @document = Webrat::XML.document(stringlike)
@@ -77,7 +103,24 @@ module Webrat
       # String:: The failure message to be displayed in negative matches.
       def negative_failure_message
         "expected following text to not match xpath #{@expected}:\n#{@document}"
-      end    
+      end
+      
+    protected
+    
+      def xpath_escape(string)
+        if string.include?("'") && string.include?('"')
+          parts = string.split("'").map do |part|
+            "'#{part}'"
+          end
+          
+          "concat(" + parts.join(", \"'\", ") + ")"
+        elsif string.include?("'")
+          "\"#{string}\""
+        else
+          "'#{string}'"
+        end
+      end
+      
     end
     
     # Matches HTML content against an XPath query

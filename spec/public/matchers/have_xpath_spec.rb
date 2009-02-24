@@ -22,6 +22,34 @@ describe "have_xpath" do
     @body.should have_xpath("//div")
   end
   
+  it "should be able to match an XPATH with attributes" do
+    @body.should have_xpath("//div", :class => "inner")
+  end
+  
+  it "should be able to match an XPATH with content" do
+    @body.should have_xpath("//div", :content => "hello, world!")
+  end
+  
+  it "should not match an XPATH without content" do
+    @body.should_not have_xpath("//div", :content => "not present")
+  end
+  
+  it "should be able to match an XPATH with content and class" do
+    @body.should have_xpath("//div", :class => "inner", :content => "hello, world!")
+  end
+  
+  it "should not match an XPATH with content and wrong class" do
+    @body.should_not have_xpath("//div", :class => "outer", :content => "hello, world!")
+  end
+  
+  it "should not match an XPATH with wrong content and class" do
+    @body.should_not have_xpath("//div", :class => "inner", :content => "wrong")
+  end
+  
+  it "should not match an XPATH with wrong content and wrong class" do
+    @body.should_not have_xpath("//div", :class => "outer", :content => "wrong")
+  end
+  
   it "should not match a XPATH that does not exist" do
     @body.should_not have_xpath("//p")
   end
