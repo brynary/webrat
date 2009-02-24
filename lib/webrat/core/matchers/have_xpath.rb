@@ -55,6 +55,10 @@ module Webrat
           @query = query
         end
         
+        if @options[:content]
+          query << "[contains(., #{xpath_escape(@options[:content])})]"
+        end
+        
         @document = Webrat::XML.document(stringlike)
         @document.xpath(*@query)
       end

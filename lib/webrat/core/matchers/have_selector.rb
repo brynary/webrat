@@ -43,13 +43,7 @@ module Webrat
           selector << "[#{key}='#{value}']"
         end
         
-        q = Nokogiri::CSS::Parser.parse(selector).map { |ast| ast.to_xpath }.first
-
-        if options[:content]
-          q << "[contains(., #{xpath_escape(options[:content])})]"
-        end
-        
-        q
+        Nokogiri::CSS::Parser.parse(selector).map { |ast| ast.to_xpath }.first
       end
       
       def xpath_escape(string)
