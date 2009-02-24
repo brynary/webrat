@@ -37,20 +37,7 @@ module Webrat
           @query = query
         end
 
-        attribute_conditions = []
-        
-        @options.each do |key, value|
-          next if [:content, :count].include?(key)
-          attribute_conditions << "@#{key} = #{xpath_escape(value)}"
-        end
-        
-        if attribute_conditions.any?
-          @query.first << "[#{attribute_conditions.join(' and ')}]"
-        end
-        
-        if @options[:content]
-          @query.first << "[contains(., #{xpath_escape(@options[:content])})]"
-        end
+        add_options_conditions_to(@query.first)
 
         @document = Webrat.rexml_document(stringlike)
 
@@ -70,6 +57,18 @@ module Webrat
           @query = query
         end
         
+        add_options_conditions_to(@query.first)
+        
+        @document = Webrat::XML.document(stringlike)
+        @document.xpath(*@query)
+      end
+      
+      def add_options_conditions_to(query)
+        add_attributes_conditions_to(query)
+        add_content_condition_to(query)
+      end
+      
+      def add_attributes_conditions_to(query)
         attribute_conditions = []
         
         @options.each do |key, value|
@@ -78,15 +77,14 @@ module Webrat
         end
         
         if attribute_conditions.any?
-          @query.first << "[#{attribute_conditions.join(' and ')}]"
+          query << "[#{attribute_conditions.join(' and ')}]"
         end
-        
+      end
+      
+      def add_content_condition_to(query)
         if @options[:content]
-          @query.first << "[contains(., #{xpath_escape(@options[:content])})]"
+          query << "[contains(., #{xpath_escape(@options[:content])})]"
         end
-        
-        @document = Webrat::XML.document(stringlike)
-        @document.xpath(*@query)
       end
       
       def query
