@@ -15,31 +15,18 @@ module Webrat
       def negative_failure_message
         "expected following output to omit a #{tag_inspect}:\n#{@document}"
       end
-
-      def matches?(stringlike, &block)
-        @block ||= block
-        matched = matches(stringlike)
-        
-        options = @expected.last.dup
-        
-        if options[:count]
-          matched.size == options[:count] && (!@block || @block.call(matched))
-        else
-          matched.any? && (!@block || @block.call(matched))
-        end
-      end
       
       def tag_inspect
-        options = @expected.last.dup
+        options = @options.dup
         content = options.delete(:content)
 
-        html = "<#{@expected.first}"
+        html = "<#{@expected}"
         options.each do |k,v|
           html << " #{k}='#{v}'"
         end
 
         if content
-          html << ">#{content}</#{@expected.first}>"
+          html << ">#{content}</#{@expected}>"
         else
           html << "/>"
         end
@@ -48,8 +35,8 @@ module Webrat
       end
 
       def query
-        options  = @expected.last.dup
-        selector = @expected.first.to_s
+        options  = @options.dup
+        selector = @expected.to_s
         
         options.each do |key, value|
           next if [:content, :count].include?(key)
@@ -84,7 +71,7 @@ module Webrat
     # ==== Returns
     # HaveSelector:: A new have selector matcher.
     def have_selector(name, attributes = {}, &block)
-      HaveSelector.new([name, attributes], &block)
+      HaveSelector.new(name, attributes, &block)
     end
     alias_method :match_selector, :have_selector
     
@@ -92,14 +79,14 @@ module Webrat
     # Asserts that the body of the response contains
     # the supplied selector
     def assert_have_selector(name, attributes = {}, &block)
-      matcher = HaveSelector.new([name, attributes], &block)
+      matcher = HaveSelector.new(name, attributes, &block)
       assert matcher.matches?(response_body), matcher.failure_message
     end
     
     # Asserts that the body of the response
     # does not contain the supplied string or regepx
     def assert_have_no_selector(name, attributes = {}, &block)
-      matcher = HaveSelector.new([name, attributes], &block)
+      matcher = HaveSelector.new(name, attributes, &block)
       assert !matcher.matches?(response_body), matcher.negative_failure_message
     end
     

@@ -7,14 +7,19 @@ module Webrat
     class HaveXpath #:nodoc:
       def initialize(expected, options = {}, &block)
         @expected = expected
-        @options  = {}
+        @options  = options
         @block    = block
       end
     
       def matches?(stringlike, &block)
         @block ||= block
         matched = matches(stringlike)
-        matched.any? && (!@block || @block.call(matched))
+        
+        if @options[:count]
+          matched.size == @options[:count] && (!@block || @block.call(matched))
+        else
+          matched.any? && (!@block || @block.call(matched))
+        end
       end
       
       def matches(stringlike)
