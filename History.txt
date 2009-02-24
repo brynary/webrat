@@ -1,11 +1,22 @@
-== Git
+== 0.4.2 / 2009-02-24
 
+* Major enhancements
+
+  * Significant improvements to have_selector. It now supports specifying
+    attributes in a hash and :count and :content options. See
+    have_selector_spec.rb for more.
+  * Add the same functionality mentioned above to have_xpath
+    
 * Minor enhancements
 
-  * Detect infinite redirects and raise a Webrat::InfiniteRedirectError (Daniel Lucraft)
+  * Squeeze extra whitespace out of failures messages from contain
+    matcher
+  * Detect infinite redirects and raise a Webrat::InfiniteRedirectError
+    (Daniel Lucraft)
 
 * Bug fixes
 
+  * Properly quote single and double quotes strings in XPath
   * Fix warning caused by Nokogiri deprecating CSS::Parser.parse
     (Aaron Patterson)
   * Accept do/end blocks in matchers. [#157] (Peter Jaros)
