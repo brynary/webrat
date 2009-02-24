@@ -37,7 +37,7 @@ module Webrat
           @query = query
         end
 
-        add_options_conditions_to(@query.first)
+        add_options_conditions_to(@query)
 
         @document = Webrat.rexml_document(stringlike)
 
@@ -52,12 +52,12 @@ module Webrat
     
       def nokogiri_matches(stringlike)
         if Nokogiri::XML::NodeSet === stringlike
-          @query = query.map { |q| q.gsub(%r'//', './') }
+          @query = query.gsub(%r'//', './')
         else
           @query = query
         end
         
-        add_options_conditions_to(@query.first)
+        add_options_conditions_to(@query)
         
         @document = Webrat::XML.document(stringlike)
         @document.xpath(*@query)
@@ -88,7 +88,7 @@ module Webrat
       end
       
       def query
-        [@expected].flatten.compact
+        @expected
       end
     
       # ==== Returns
