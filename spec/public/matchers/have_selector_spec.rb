@@ -26,40 +26,85 @@ describe "have_selector" do
     @body.should_not have_selector("p")
   end
   
-  it "should be able to loop over all the matched elements" do
-    @body.should have_selector("div") do |node|
-      node.first.name.should == "div"
+  describe "specifying attributes" do
+    it "should be able to specify the attributes of the tag" do
+      @body.should have_selector("div", :class => "inner")
     end
   end
   
-  it "should not match of any of the matchers in the block fail" do
-    lambda {
+  describe "specifying content" do
+    it "should be able to specify the content of the tag" do
+      @body.should have_selector("div", :content => "hello, world!")
+    end
+
+    it "should be able to specify the content of the tag with double quotes in it" do
+      @body.should have_selector("h2", :content => 'Welcome "Bryan"')
+    end
+
+    it "should be able to specify the content of the tag with single quotes in it" do
+      @body.should have_selector("h3", :content => "Welcome 'Bryan'")
+    end
+
+    it "should be able to specify the content of the tag with both kinds of quotes" do
+      @body.should have_selector("h4", :content => "Welcome 'Bryan\"")
+    end
+  end
+  
+  describe "specifying counts" do
+    it "should be able to specify the number of occurences of the tag" do
+      @body.should have_selector("li", :count => 2)
+    end
+
+    it "should not match if the count is wrong" do
+      lambda {
+        @body.should have_selector("li", :count => 3)
+      }.should raise_error(Spec::Expectations::ExpectationNotMetError)
+    end
+  end
+  
+  describe "specifying nested elements" do
+    it "should be able to loop over all the matched elements" do
       @body.should have_selector("div") do |node|
-        node.first.name.should == "p"
+        node.first.name.should == "div"
       end
-    }.should raise_error(Spec::Expectations::ExpectationNotMetError)
-  end
-  
-  it "should be able to use #have_selector in the block" do
-    @body.should have_selector("#main") do |node|
-      node.should have_selector(".inner")
+    end
+
+    it "should not match of any of the matchers in the block fail" do
+      lambda {
+        @body.should have_selector("div") do |node|
+          node.first.name.should == "p"
+        end
+      }.should raise_error(Spec::Expectations::ExpectationNotMetError)
+    end
+
+    it "should be able to use #have_selector in the block" do
+      @body.should have_selector("#main") do |node|
+        node.should have_selector(".inner")
+      end
+    end
+
+    it "should not match any parent tags in the block" do
+      lambda {
+        @body.should have_selector(".inner") do |node|
+          node.should have_selector("#main")
+        end
+      }.should raise_error(Spec::Expectations::ExpectationNotMetError)
+    end
+    
+    it "should work with items that have multiple child nodes" do
+      @body.should have_selector("ul") do |n|
+        n.should have_selector("li", :content => "First")
+        n.should have_selector("li", :content => "Second")
+      end
     end
   end
   
-  it "should not match any parent tags in the block" do
-    lambda {
-      @body.should have_selector(".inner") do |node|
-        node.should have_selector("#main")
-      end
-    }.should raise_error(Spec::Expectations::ExpectationNotMetError)
-  end
-  
-  describe "asserts for selector," do
+  describe "Test::Unit assertions" do
     include Test::Unit::Assertions
     
     before(:each) do
-      should_receive(:response_body).and_return @body
       require 'test/unit'
+      should_receive(:response_body).and_return @body
     end
     
     describe "assert_have_selector" do
