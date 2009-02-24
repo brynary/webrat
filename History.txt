@@ -6,6 +6,8 @@
 
 * Bug fixes
 
+  * Fix warning caused by Nokogiri deprecating CSS::Parser.parse
+    (Aaron Patterson)
   * Accept do/end blocks in matchers. [#157] (Peter Jaros)
   * Quote --chdir option to mongrel_rails to support RAILS_ROOTs with spaces
     (T.J. VanSlyke)

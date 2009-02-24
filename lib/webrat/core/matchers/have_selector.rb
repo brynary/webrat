@@ -36,7 +36,7 @@ module Webrat
       end
 
       def query
-        Nokogiri::CSS::Parser.parse(@expected.to_s).map do |ast|
+        Nokogiri::CSS.parse(@expected.to_s).map do |ast|
           ast.to_xpath
         end.first
       end

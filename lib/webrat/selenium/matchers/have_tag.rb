@@ -43,7 +43,7 @@ module Webrat
             selector << "[#{key}='#{value}']"
           end
   
-          Nokogiri::CSS::Parser.parse(selector).map { |ast| ast.to_xpath }
+          Nokogiri::CSS.parse(selector).map { |ast| ast.to_xpath }
         end
       end
   
