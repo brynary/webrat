@@ -80,7 +80,7 @@ module Webrat
       
       case Webrat.configuration.mode
       when :rails
-        rails_request_parser.parse_query_parameters("#{name}=#{escaped_value}")
+        parse_rails_request_params("#{name}=#{escaped_value}")
       when :merb
         ::Merb::Parse.query("#{name}=#{escaped_value}")
       else
@@ -98,12 +98,15 @@ module Webrat
     
   protected
   
-    def rails_request_parser
+    def parse_rails_request_params(params)
       if defined?(ActionController::AbstractRequest)
-        ActionController::AbstractRequest
-      else
+        ActionController::AbstractRequest.parse_query_parameters(params)
+      elsif defined?(ActionController::UrlEncodedPairParser)
         # For Rails > 2.2
-        ActionController::UrlEncodedPairParser
+        ActionController::UrlEncodedPairParser.parse_query_parameters(params)
+      else
+        # For Rails > 2.3
+        Rack::Utils.parse_nested_query(params)
       end
     end
   

@@ -2,6 +2,7 @@
 
 * Minor enhancements
 
+  * When using Rails 2.3, use Rack::Utils to parse params (Matthew Ford)
   * Initial Merb and Sinatra compatibility for Selenium mode (Corey Donohoe)
   * Add application_framework config for Selenium mode to determine how to
     start and stop the app server (Corey Donohoe)
