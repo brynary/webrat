@@ -1,3 +1,11 @@
+== Git (Unreleased)
+
+* Minor enhancements
+
+  * Initial Merb and Sinatra compatibility for Selenium mode (Corey Donohoe)
+  * Add application_framework config for Selenium mode to determine how to
+    start and stop the app server (Corey Donohoe)
+
 == 0.4.2 / 2009-02-24
 
 * Major enhancements
