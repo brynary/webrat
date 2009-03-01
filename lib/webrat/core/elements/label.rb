@@ -21,7 +21,7 @@ module Webrat
   
     def field_element
       if for_id.blank?
-        Webrat::XML.xpath_at(@element, *Field.xpath_search)
+        Webrat::XML.xpath_at(@element, *Field.xpath_search_excluding_hidden)
       else
         Webrat::XML.css_search(@session.current_dom, "#" + for_id).first
       end

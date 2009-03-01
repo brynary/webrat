@@ -169,4 +169,23 @@ describe "uncheck" do
     check 'Option 2'
     click_button
   end
+  
+  it "should uncheck rails style checkboxes nested inside a label" do
+    with_html <<-HTML
+      <html>
+      <form method="get" action="/login">
+        <label>
+          TOS
+          <input name="user[tos]" type="hidden" value="0" />
+          <input id="user_tos" name="user[tos]" type="checkbox" value="1" checked="checked" />
+        </label>
+        <input type="submit" />
+      </form>
+      </html>
+    HTML
+    webrat_session.should_receive(:get).with("/login", "user" => {"tos" => "0"})
+    uncheck "TOS"
+    click_button
+  end
+  
 end

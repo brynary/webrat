@@ -15,6 +15,10 @@ module Webrat
     def self.xpath_search
       [".//button", ".//input", ".//textarea", ".//select"]
     end
+
+    def self.xpath_search_excluding_hidden
+      [".//button", ".//input[ @type != 'hidden']", ".//textarea", ".//select"]
+    end
     
     def self.field_classes
       @field_classes || []
