@@ -36,7 +36,7 @@ module Webrat #:nodoc:
     end
     
     def mechanize
-      @mechanize = WWW::Mechanize.new
+      @mechanize ||= WWW::Mechanize.new
     end
 
     def_delegators :mechanize, :basic_auth
