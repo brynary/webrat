@@ -256,6 +256,7 @@ For example:
     def_delegators :current_scope, :field_by_xpath
     def_delegators :current_scope, :field_with_id
     def_delegators :current_scope, :select_option
+    def_delegators :current_scope, :field_named
 
   private
 
