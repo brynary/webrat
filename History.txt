@@ -2,6 +2,10 @@
 
 * Minor enhancements
 
+  * When faced with a label with no for attribute, that contains a hidden field
+    and another field, as can be the case in Rails 2.3's checkbox view,
+    webrat now locates the non-hidden field. (Luke Melia) 
+  * When using Rails 2.3, use Rack::Utils to parse params (Matthew Ford)
   * Initial Merb and Sinatra compatibility for Selenium mode (Corey Donohoe)
   * Add application_framework config for Selenium mode to determine how to
     start and stop the app server (Corey Donohoe)
