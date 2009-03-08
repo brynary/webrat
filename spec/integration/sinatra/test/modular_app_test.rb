@@ -3,10 +3,7 @@ require File.dirname(__FILE__) + "/../modular_app"
 
 class MyModularAppTest < Test::Unit::TestCase
   def app
-    MyModularApp.tap { |app|
-      app.disable :run, :reload
-      app.set :environment, :test
-    }
+    MyModularApp
   end
 
   def test_it_works

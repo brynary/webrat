@@ -10,16 +10,7 @@ module Webrat
     def initialize(context = nil)
       super(context)
 
-      app =
-        if context.respond_to?(:app)
-          context.app
-        else
-          Sinatra::Application.tap { |app|
-            app.set     :environment, :test
-            app.disable :run, :reload
-          }
-        end
-
+      app = context.respond_to?(:app) ? context.app : Sinatra::Application
       @browser = Sinatra::TestHarness.new(app)
     end
 
