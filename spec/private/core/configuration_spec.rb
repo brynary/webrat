@@ -76,8 +76,8 @@ describe Webrat::Configuration do
       @config = Webrat::Configuration.new
     end
 
-    it "should use 'selenium' as the application environment by default" do
-      @config.application_environment.should == :selenium
+    it "should use 'test' as the application environment by default" do
+      @config.application_environment.should == :test
     end
 
     it "should use 3001 as the application port by default" do
