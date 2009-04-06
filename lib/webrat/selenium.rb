@@ -3,6 +3,7 @@ gem "selenium-client", ">=1.2.14"
 require "selenium/client"
 require "webrat/selenium/selenium_session"
 require "webrat/selenium/matchers"
+require "webrat/core_extensions/tcp_socket"
 
 module Webrat
 
@@ -16,9 +17,31 @@ module Webrat
     unless Webrat.configuration.selenium_server_address
       remote_control = ::Selenium::RemoteControl::RemoteControl.new("0.0.0.0", Webrat.configuration.selenium_server_port, 5)
       remote_control.jar_file = File.expand_path(__FILE__ + "../../../../vendor/selenium-server.jar")
-      remote_control.start :background => true
+      
+      silence_stream(STDOUT) do
+        remote_control.start :background => true
+      end
     end
-    TCPSocket.wait_for_service :host => (Webrat.configuration.selenium_server_address || "0.0.0.0"), :port => Webrat.configuration.selenium_server_port
+    
+    $stderr.print "==> Started selenium RC server. Waiting for it to boot... "
+    silence_stream(STDOUT) do
+      TCPSocket.wait_for_service_with_timeout \
+        :host     => (Webrat.configuration.selenium_server_address || "0.0.0.0"),
+        :port     => Webrat.configuration.selenium_server_port,
+        :timeout  => 15 # seconds
+    end
+    $stderr.print "Ready!\n"
+    
+    at_exit do
+      silence_stream(STDOUT) do
+        Webrat.stop_selenium_server
+      end
+    end
+  rescue SocketError
+    $stderr.puts
+    $stderr.puts
+    $stderr.puts "==> Failed to boot the Selenium RC server... exiting!"
+    exit
   end
 
   def self.stop_selenium_server #:nodoc:
@@ -45,15 +68,50 @@ module Webrat
         exec 'rackup', File.expand_path(Dir.pwd + '/config.ru'), '-p', Webrat.configuration.application_port.to_s
       end
     when :merb
-      cmd = 'merb'
+      merb_cmd = 'merb'
       if File.exist?('bin/merb')
-        cmd = 'bin/merb'
+        merb_cmd = 'bin/merb'
       end
-      system("#{cmd} -d -p #{Webrat.configuration.application_port} -e #{Webrat.configuration.application_environment}")
+      cmd = "#{merb_cmd} -d -p #{Webrat.configuration.application_port} -e #{Webrat.configuration.application_environment}"
+      system cmd
     else # rails
-      system("mongrel_rails start -d --chdir='#{RAILS_ROOT}' --port=#{Webrat.configuration.application_port} --environment=#{Webrat.configuration.application_environment} --pid #{pid_file} &")
+      cmd = "mongrel_rails start -d --chdir='#{RAILS_ROOT}' --port=#{Webrat.configuration.application_port} --environment=#{Webrat.configuration.application_environment} --pid #{pid_file} &"
+      system cmd
     end
-    TCPSocket.wait_for_service :host => Webrat.configuration.application_address, :port => Webrat.configuration.application_port.to_i
+    
+    $stderr.print "==> Started #{Webrat.configuration.application_framework} application server for Selenium. Waiting for it to boot... "
+    silence_stream(STDOUT) do
+      TCPSocket.wait_for_service_with_timeout \
+        :host     => Webrat.configuration.application_address,
+        :port     => Webrat.configuration.application_port.to_i,
+        :timeout  => 30 # seconds
+    end
+    $stderr.print "Ready!\n"
+    
+    at_exit do
+      silence_stream(STDOUT) do
+        Webrat.stop_app_server
+      end
+    end
+  rescue SocketError
+    $stderr.puts
+    $stderr.puts
+    $stderr.puts "==> Failed to boot the application server for selenium... exiting!"
+    
+    case Webrat.configuration.application_framework
+    when :sinatra
+    when :merb
+      $stderr.puts
+      $stderr.puts "Verify you can start a Merb server with the folliwing command:"
+      $stderr.puts
+      $stderr.puts "    #{cmd}"
+    else # rails
+      $stderr.puts
+      $stderr.puts "Verify you can start a Rails server with the folliwing command:"
+      $stderr.puts
+      $stderr.puts "    #{cmd}"
+    end
+    exit
   end
 
   # Stop the appserver for the underlying framework under test
