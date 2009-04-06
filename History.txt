@@ -1,11 +1,14 @@
-== Git
+== 0.4.4 / 2009-04-06
 
+* Major enhancements
+
+  * Make selenium process management code more robust and informative
+  
 * Minor enhancements
   
   * Add support for Rails javascript post links (Mark Menard)
   * Upgrade selenium-client dependency to 1.2.14, and update for new waiting
     API (Balint Erdi)
-  * Make selenium process management code more robust and informative
   * Change default app environment from "selenium" to "test"
 
 * Bug fixes
