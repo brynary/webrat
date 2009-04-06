@@ -2,6 +2,9 @@
 
 * Minor enhancements
   
+  * Upgrade selenium-client dependency to 1.2.14, and update for new waiting
+    API (Balint Erdi)
+  * Make selenium process management code more robust and informative
   * Change default app environment from "selenium" to "test"
   
 == 0.4.3 / 2009-03-17
