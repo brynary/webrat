@@ -176,6 +176,27 @@ describe "click_link" do
     click_link "Posts", :javascript => false
   end
 
+  it "should click rails javascript post links" do
+    with_html <<-HTML
+      <html>
+      <a href="/posts" onclick="var f = document.createElement('form');
+        f.style.display = 'none';
+        this.parentNode.appendChild(f);
+        f.method = 'POST';
+        f.action = this.href;
+        var m = document.createElement('input');
+        m.setAttribute('type', 'hidden');
+        m.setAttribute('name', '_method');
+        m.setAttribute('value', 'post');
+        f.appendChild(m);
+        f.submit();
+        return false;">Post</a></h2>
+      </html>
+    HTML
+    webrat_session.should_receive(:post).with("/posts", {})
+    click_link "Post"
+  end
+
   it "should click rails javascript put links" do
     with_html <<-HTML
       <html>

@@ -81,6 +81,8 @@ module Webrat
         :delete
       elsif onclick.include?("m.setAttribute('value', 'put')")
         :put
+      elsif onclick.include?("m.setAttribute('value', 'post')")
+        :post
       else
         raise Webrat::WebratError.new("No HTTP method for _method param in #{onclick.inspect}")
       end
