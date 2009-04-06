@@ -2,10 +2,16 @@
 
 * Minor enhancements
   
+  * Add support for Rails javascript post links (Mark Menard)
   * Upgrade selenium-client dependency to 1.2.14, and update for new waiting
     API (Balint Erdi)
   * Make selenium process management code more robust and informative
   * Change default app environment from "selenium" to "test"
+
+* Bug fixes
+
+  * Don't create a new instance of WWW::Mechanize for each request
+    (Mark Menard)
   
 == 0.4.3 / 2009-03-17
 
