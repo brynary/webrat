@@ -8,10 +8,10 @@ describe "choose" do
       </form>
       </html>
     HTML
-    
+
     lambda { choose "first option" }.should raise_error(Webrat::NotFoundError)
   end
-  
+
   it "should fail if input is not a radio button" do
     with_html <<-HTML
       <html>
@@ -20,10 +20,10 @@ describe "choose" do
       </form>
       </html>
     HTML
-    
+
     lambda { choose "first_option" }.should raise_error(Webrat::NotFoundError)
   end
-  
+
   it "should check rails style radio buttons" do
     with_html <<-HTML
       <html>
@@ -40,7 +40,7 @@ describe "choose" do
     choose "Male"
     click_button
   end
-  
+
   it "should only submit last chosen value" do
     with_html <<-HTML
       <html>
@@ -58,7 +58,7 @@ describe "choose" do
     choose "Male"
     click_button
   end
-  
+
   it "should fail if the radio button is disabled" do
     with_html <<-HTML
       <html>
@@ -68,10 +68,10 @@ describe "choose" do
       </form>
       </html>
     HTML
-    
+
     lambda { choose "first_option" }.should raise_error(Webrat::DisabledFieldError)
   end
-  
+
   it "should result in the value on being posted if not specified" do
     with_html <<-HTML
       <html>
@@ -85,7 +85,7 @@ describe "choose" do
     choose "first_option"
     click_button
   end
-  
+
   it "should result in the value on being posted if not specified and checked by default" do
     with_html <<-HTML
       <html>
@@ -98,7 +98,7 @@ describe "choose" do
     webrat_session.should_receive(:post).with("/login", "first_option" => "on")
     click_button
   end
-  
+
   it "should result in the value of the selected radio button being posted when a subsequent one is checked by default" do
     with_html <<-HTML
       <html>

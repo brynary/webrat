@@ -5,14 +5,14 @@ module Webrat
         def initialize(content)
           @content = content
         end
-        
+
         def matches?(response)
           if @content.is_a?(Regexp)
             text_finder = "regexp:#{@content.source}"
           else
             text_finder = @content
           end
-          
+
           response.session.wait_for do
             response.selenium.is_text_present(text_finder)
           end
@@ -47,7 +47,7 @@ module Webrat
       def contain(content)
         HasContent.new(content)
       end
-      
+
       # Asserts that the body of the response contain
       # the supplied string or regexp
       def assert_contain(content)

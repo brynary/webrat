@@ -1,5 +1,5 @@
 module Webrat
-  
+
   def self.rexml_document(stringlike)
     stringlike = stringlike.body.to_s if stringlike.respond_to?(:body)
 
@@ -20,5 +20,5 @@ module Webrat
       end
     end
   end
-  
+
 end

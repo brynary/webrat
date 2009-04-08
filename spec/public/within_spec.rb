@@ -12,7 +12,7 @@ describe "within" do
       </div>
       </html>
     HTML
-    
+
     webrat_session.should_receive(:get).with("/page2", {})
     within "#container" do
       within "div" do
@@ -20,7 +20,7 @@ describe "within" do
       end
     end
   end
-  
+
   it "should click links within a scope" do
     with_html <<-HTML
       <html>
@@ -30,13 +30,13 @@ describe "within" do
       </div>
       </html>
     HTML
-    
+
     webrat_session.should_receive(:get).with("/page2", {})
     within "#container" do
       click_link "Link"
     end
   end
-  
+
   it "should submit forms within a scope" do
     with_html <<-HTML
       <html>
@@ -50,14 +50,14 @@ describe "within" do
         </form>
       </html>
     HTML
-    
+
     webrat_session.should_receive(:get).with("/form2", "email" => "test@example.com")
     within "#form2" do
       fill_in "Email", :with => "test@example.com"
       click_button
     end
   end
-  
+
   it "should work when the scope is inside the form" do
     with_html <<-HTML
       <html>
@@ -93,7 +93,7 @@ describe "within" do
     HTML
 
     webrat_session.should_receive(:get).with("/form2", "email" => "test@example.com")
-    within "form[@action='/form2']" do 
+    within "form[@action='/form2']" do
       fill_in "Email", :with => "test@example.com"
       click_button "Add"
     end
@@ -118,7 +118,7 @@ describe "within" do
     HTML
 
     webrat_session.should_receive(:get).with("/form2", "email2" => "test@example.com")
-    within "form[@action='/form2']" do 
+    within "form[@action='/form2']" do
       fill_in "Email", :with => "test@example.com"
       click_button "Add"
     end
@@ -144,7 +144,7 @@ describe "within" do
       click_button "Add"
     end
   end
-  
+
   it "should not find buttons outside of the scope" do
     with_html <<-HTML
       <html>
@@ -155,20 +155,20 @@ describe "within" do
       </form>
       </html>
     HTML
-    
+
     within "#form2" do
       lambda {
         click_button
       }.should raise_error(Webrat::NotFoundError)
     end
   end
-  
+
   it "should raise a Webrat::NotFounderror error when the scope doesn't exist" do
     with_html <<-HTML
       <html>
       </html>
     HTML
-    
+
     lambda {
       within "#form2" do
       end

@@ -9,7 +9,7 @@ describe "Basic Auth HTTP headers" do
     webrat_session.should_receive(:get).with("/", {}, {'HTTP_AUTHORIZATION' => "Basic dXNlcjpzZWNyZXQ=\n"})
     visit("/")
   end
-  
+
   it "should be present in form submits" do
     with_html <<-HTML
       <html>

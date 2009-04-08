@@ -20,10 +20,10 @@ describe "check" do
         </form>
       </html>
     HTML
-    
+
     lambda { check "remember_me" }.should raise_error(Webrat::NotFoundError)
   end
-  
+
   it "should check rails style checkboxes" do
     with_html <<-HTML
       <html>
@@ -35,12 +35,12 @@ describe "check" do
       </form>
       </html>
     HTML
-    
+
     webrat_session.should_receive(:get).with("/login", "user" => {"tos" => "1"})
     check "TOS"
     click_button
   end
-  
+
   it "should result in the value on being posted if not specified" do
     with_html <<-HTML
       <html>
@@ -50,12 +50,12 @@ describe "check" do
         </form>
       </html>
     HTML
-    
+
     webrat_session.should_receive(:post).with("/login", "remember_me" => "on")
     check "remember_me"
     click_button
   end
-  
+
   it "should fail if the checkbox is disabled" do
     with_html <<-HTML
       <html>
@@ -65,10 +65,10 @@ describe "check" do
         </form>
       </html>
     HTML
-    
+
     lambda { check "remember_me" }.should raise_error(Webrat::DisabledFieldError)
   end
-  
+
   it "should result in a custom value being posted" do
     with_html <<-HTML
       <html>
@@ -78,7 +78,7 @@ describe "check" do
         </form>
       </html>
     HTML
-    
+
     webrat_session.should_receive(:post).with("/login", "remember_me" => "yes")
     check "remember_me"
     click_button
@@ -105,10 +105,10 @@ describe "uncheck" do
       </form>
       </html>
     HTML
-    
+
     lambda { uncheck "remember_me" }.should raise_error(Webrat::NotFoundError)
   end
-  
+
   it "should fail if the checkbox is disabled" do
     with_html <<-HTML
       <html>
@@ -120,7 +120,7 @@ describe "uncheck" do
     HTML
     lambda { uncheck "remember_me" }.should raise_error(Webrat::DisabledFieldError)
   end
-  
+
   it "should uncheck rails style checkboxes" do
     with_html <<-HTML
       <html>
@@ -151,7 +151,7 @@ describe "uncheck" do
     uncheck "remember_me"
     click_button
   end
-  
+
   it "should work with checkboxes with the same name" do
     with_html <<-HTML
       <html>
@@ -169,7 +169,7 @@ describe "uncheck" do
     check 'Option 2'
     click_button
   end
-  
+
   it "should uncheck rails style checkboxes nested inside a label" do
     with_html <<-HTML
       <html>
@@ -187,5 +187,5 @@ describe "uncheck" do
     uncheck "TOS"
     click_button
   end
-  
+
 end

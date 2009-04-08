@@ -7,7 +7,7 @@ require "action_controller/record_identifier"
 module Webrat
   class RailsSession < Session #:nodoc:
     include ActionController::RecordIdentifier
-    
+
     # The Rails version of within supports passing in a model and Webrat
     # will apply a scope based on Rails' dom_id for that model.
     #
@@ -22,7 +22,7 @@ module Webrat
         super('#' + dom_id(selector_or_object), &block)
       end
     end
-    
+
     def doc_root
       File.expand_path(File.join(RAILS_ROOT, 'public'))
     end

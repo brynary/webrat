@@ -10,36 +10,36 @@ require "merb-core"
 module Webrat
   class MerbSession < Session #:nodoc:
     include Merb::Test::MakeRequest
-    
+
     attr_accessor :response
-    
+
     def get(url, data, headers = nil)
       do_request(url, data, headers, "GET")
     end
-  
+
     def post(url, data, headers = nil)
       do_request(url, data, headers, "POST")
     end
-  
+
     def put(url, data, headers = nil)
       do_request(url, data, headers, "PUT")
     end
-  
+
     def delete(url, data, headers = nil)
       do_request(url, data, headers, "DELETE")
     end
-    
+
     def response_body
       @response.body.to_s
     end
-    
+
     def response_code
       @response.status
     end
-    
+
     def do_request(url, data, headers, method)
-      @response = request(url, 
-        :params => (data && data.any?) ? data : nil, 
+      @response = request(url,
+        :params => (data && data.any?) ? data : nil,
         :headers => headers,
         :method => method)
     end

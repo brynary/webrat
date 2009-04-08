@@ -5,7 +5,7 @@ module Webrat
         def initialize(expected)
           @expected = expected
         end
-        
+
         def matches?(response)
           response.session.wait_for do
             response.selenium.is_element_present("css=#{@expected}")
@@ -26,11 +26,11 @@ module Webrat
           "expected following text to not match selector #{@expected}:\n#{@document}"
         end
       end
-      
+
       def have_selector(content)
         HaveSelector.new(content)
       end
-      
+
       # Asserts that the body of the response contains
       # the supplied selector
       def assert_have_selector(expected)

@@ -2,7 +2,7 @@ require "webrat/core/matchers/have_xpath"
 
 module Webrat
   module Matchers
-    
+
     class HaveSelector < HaveXpath #:nodoc:
       # ==== Returns
       # String:: The failure message.
@@ -15,7 +15,7 @@ module Webrat
       def negative_failure_message
         "expected following output to omit a #{tag_inspect}:\n#{@document}"
       end
-      
+
       def tag_inspect
         options = @options.dup
         count = options.delete(:count)
@@ -40,9 +40,9 @@ module Webrat
           ast.to_xpath
         end.first
       end
-      
+
     end
-    
+
     # Matches HTML content against a CSS 3 selector.
     #
     # ==== Parameters
@@ -54,21 +54,21 @@ module Webrat
       HaveSelector.new(name, attributes, &block)
     end
     alias_method :match_selector, :have_selector
-    
-    
+
+
     # Asserts that the body of the response contains
     # the supplied selector
     def assert_have_selector(name, attributes = {}, &block)
       matcher = HaveSelector.new(name, attributes, &block)
       assert matcher.matches?(response_body), matcher.failure_message
     end
-    
+
     # Asserts that the body of the response
     # does not contain the supplied string or regepx
     def assert_have_no_selector(name, attributes = {}, &block)
       matcher = HaveSelector.new(name, attributes, &block)
       assert !matcher.matches?(response_body), matcher.negative_failure_message
     end
-    
+
   end
 end

@@ -425,7 +425,7 @@ describe "click_button" do
     webrat_session.should_receive(:get).with("/login", "user" => {"email" => ""})
     click_button
   end
-  
+
   it "should recognize button tags" do
     with_html <<-HTML
       <html>
@@ -448,9 +448,9 @@ describe "click_button" do
       </html>
     HTML
     webrat_session.should_receive(:get)
-    click_button  
+    click_button
   end
-  
+
   it "should recognize image button tags" do
     with_html <<-HTML
       <html>

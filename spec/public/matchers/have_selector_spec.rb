@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + "/../../spec_helper")
 
 describe "have_selector" do
   include Webrat::Matchers
-  
+
   before(:each) do
     @body = <<-HTML
       <div id='main'>
@@ -17,21 +17,21 @@ describe "have_selector" do
       </div>
     HTML
   end
-    
+
   it "should be able to match a CSS selector" do
     @body.should have_selector("div")
   end
-  
+
   it "should not match a CSS selector that does not exist" do
     @body.should_not have_selector("p")
   end
-  
+
   describe "specifying attributes" do
     it "should be able to specify the attributes of the tag" do
       @body.should have_selector("div", :class => "inner")
     end
   end
-  
+
   describe "specifying content" do
     it "should be able to specify the content of the tag" do
       @body.should have_selector("div", :content => "hello, world!")
@@ -49,7 +49,7 @@ describe "have_selector" do
       @body.should have_selector("h4", :content => "Welcome 'Bryan\"")
     end
   end
-  
+
   describe "specifying counts" do
     it "should be able to specify the number of occurences of the tag" do
       @body.should have_selector("li", :count => 2)
@@ -61,7 +61,7 @@ describe "have_selector" do
       }.should raise_error(Spec::Expectations::ExpectationNotMetError)
     end
   end
-  
+
   describe "specifying nested elements" do
     it "should be able to loop over all the matched elements" do
       @body.should have_selector("div") do |node|
@@ -90,7 +90,7 @@ describe "have_selector" do
         end
       }.should raise_error(Spec::Expectations::ExpectationNotMetError)
     end
-    
+
     it "should work with items that have multiple child nodes" do
       @body.should have_selector("ul") do |n|
         n.should have_selector("li", :content => "First")
@@ -98,32 +98,32 @@ describe "have_selector" do
       end
     end
   end
-  
+
   describe "Test::Unit assertions" do
     include Test::Unit::Assertions
-    
+
     before(:each) do
       require 'test/unit'
       should_receive(:response_body).and_return @body
     end
-    
+
     describe "assert_have_selector" do
       it "should pass when body contains the selection" do
         assert_have_selector("div")
       end
-      
+
       it "should throw an exception when the body doesnt have matching selection" do
         lambda {
           assert_have_selector("p")
         }.should raise_error(Test::Unit::AssertionFailedError)
       end
     end
-    
+
     describe "assert_have_not_selector" do
       it "should pass when the body doesn't contan the selection" do
         assert_have_no_selector("p")
       end
-      
+
       it "should throw an exception when the body does contain the selection" do
         lambda {
           assert_have_no_selector("div")
@@ -131,5 +131,5 @@ describe "have_selector" do
       end
     end
   end
-  
+
 end

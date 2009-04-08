@@ -10,7 +10,7 @@ describe "field_with_id" do
         </form>
       </html>
     HTML
-  
+
     field_with_id("user's name").id.should == "user's name"
   end
 end

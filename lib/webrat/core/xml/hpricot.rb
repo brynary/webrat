@@ -1,5 +1,5 @@
 module Webrat
-  
+
   def self.hpricot_document(stringlike)
     return stringlike.dom if stringlike.respond_to?(:dom)
 
@@ -15,5 +15,5 @@ module Webrat
       Hpricot(stringlike.to_s)
     end
   end
-  
+
 end

@@ -66,13 +66,13 @@ class WebratTest < ActionController::IntegrationTest
     visit root_path
     assert_have_selector "h1"
   end
-  
+
   test "should detect infinite redirects" do
     assert_raises Webrat::InfiniteRedirectError do
       visit infinite_redirect_path
     end
   end
-  
+
 #  test "should be able to assert have tag" do
 #    visit root_path
 #    assert_have_tag "h1"

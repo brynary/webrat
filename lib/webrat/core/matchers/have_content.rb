@@ -1,20 +1,20 @@
 module Webrat
   module Matchers
-  
+
     class HasContent #:nodoc:
       def initialize(content)
         @content = content
       end
-      
+
       def matches?(stringlike)
         if Webrat.configuration.parse_with_nokogiri?
           @document = Webrat.nokogiri_document(stringlike)
         else
           @document = Webrat.hpricot_document(stringlike)
         end
-        
+
         @element = Webrat::XML.inner_text(@document)
-      
+
         case @content
         when String
           @element.include?(@content)
@@ -22,7 +22,7 @@ module Webrat
           @element.match(@content)
         end
       end
-      
+
       # ==== Returns
       # String:: The failure message.
       def failure_message
@@ -34,11 +34,11 @@ module Webrat
       def negative_failure_message
         "expected the following element's content to not #{content_message}:\n#{squeeze_space(@element)}"
       end
-      
+
       def squeeze_space(inner_text)
         inner_text.gsub(/^\s*$/, "").squeeze("\n")
       end
-      
+
       def content_message
         case @content
         when String
@@ -48,26 +48,26 @@ module Webrat
         end
       end
     end
-    
+
     # Matches the contents of an HTML document with
     # whatever string is supplied
     def contain(content)
       HasContent.new(content)
     end
-    
+
     # Asserts that the body of the response contain
     # the supplied string or regexp
     def assert_contain(content)
       hc = HasContent.new(content)
       assert hc.matches?(response_body), hc.failure_message
     end
-    
+
     # Asserts that the body of the response
     # does not contain the supplied string or regepx
     def assert_not_contain(content)
       hc = HasContent.new(content)
       assert !hc.matches?(response_body), hc.negative_failure_message
     end
-    
+
   end
 end

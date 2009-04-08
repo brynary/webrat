@@ -1,6 +1,6 @@
 module Webrat
   module Locators
-  
+
     class Locator # :nodoc:
 
       def initialize(session, dom, value, *field_types)
@@ -9,12 +9,12 @@ module Webrat
         @value = value
         @field_types = field_types
       end
-  
+
       def locate!
         locate || raise(NotFoundError.new(error_message))
       end
-      
+
     end
-    
+
   end
 end

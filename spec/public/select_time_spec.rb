@@ -16,12 +16,12 @@ describe "select_time" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("/appointments", 
+    webrat_session.should_receive(:post).with("/appointments",
       "appointment" => {"time(4i)" => "09", "time(5i)" => "30"})
     select_time "9:30AM", :from => "Time"
     click_button
   end
-  
+
   it "should accept a time object" do
     with_html <<-HTML
       <html>
@@ -37,7 +37,7 @@ describe "select_time" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("/appointments", 
+    webrat_session.should_receive(:post).with("/appointments",
       "appointment" => {"time(4i)" => "09", "time(5i)" => "30"})
     select_time Time.parse("9:30AM"), :from => "Time"
     click_button
@@ -57,7 +57,7 @@ describe "select_time" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("/appointments", 
+    webrat_session.should_receive(:post).with("/appointments",
       "appointment" => {"time(4i)" => "09", "time(5i)" => "30"})
     select_time "9:30"
     click_button
@@ -72,7 +72,7 @@ describe "select_time" do
       </form>
       </html>
     HTML
-    
+
     lambda { select_time "9:30", :from => "Time" }.should raise_error(Webrat::NotFoundError)
   end
 

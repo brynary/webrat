@@ -2,24 +2,24 @@ require "webrat/core/locators/locator"
 
 module Webrat
   module Locators
-    
+
     class LinkLocator < Locator # :nodoc:
-  
+
       def locate
         Link.load(@session, link_element)
       end
-  
+
       def link_element
         matching_links.min { |a, b| Webrat::XML.all_inner_text(a).length <=> Webrat::XML.all_inner_text(b).length }
       end
-  
+
       def matching_links
         @matching_links ||= link_elements.select do |link_element|
           matches_text?(link_element) ||
           matches_id?(link_element)
         end
       end
-  
+
       def matches_text?(link)
         if @value.is_a?(Regexp)
           matcher = @value
@@ -39,11 +39,11 @@ module Webrat
           (Webrat::XML.attribute(link, "id") == @value) ? true : false
         end
       end
-  
+
       def link_elements
         Webrat::XML.xpath_search(@dom, *Link.xpath_search)
       end
-  
+
       def replace_nbsp(str)
         str.gsub([0xA0].pack('U'), ' ')
       end
@@ -51,16 +51,16 @@ module Webrat
       def replace_nbsp_ref(str)
         str.gsub('&#xA0;',' ').gsub('&nbsp;', ' ')
       end
-  
+
       def error_message
         "Could not find link with text or title or id #{@value.inspect}"
       end
-      
+
     end
-    
+
     def find_link(text_or_title_or_id) #:nodoc:
       LinkLocator.new(@session, dom, text_or_title_or_id).locate!
     end
-    
+
   end
 end

@@ -12,9 +12,9 @@ if File.directory?(gems_dir)
   Gem.clear_paths
   Gem.path.replace([File.expand_path(gems_dir)])
   ENV["PATH"] = "#{File.dirname(__FILE__)}:#{ENV["PATH"]}"
-  
+
   gem_file = File.join(gems_dir, "specifications", "<%= spec.name %>-*.gemspec")
-  
+
   if local_gem = Dir[gem_file].last
     version = File.basename(local_gem)[/-([\.\d]+)\.gemspec$/, 1]
   end

@@ -10,15 +10,15 @@ module Webrat
         RUBY
       end
     end
-    
+
     def webrat
       webrat_session
     end
-    
+
     def webrat_session
       @_webrat_session ||= ::Webrat.session_class.new(self)
     end
-    
+
     # all of these methods delegate to the @session, which should
     # be created transparently.
     #
@@ -31,7 +31,7 @@ module Webrat
       :header, :http_accept, :basic_auth,
       :save_and_open_page,
       :fills_in, :fill_in,
-      :checks, :check, 
+      :checks, :check,
       :unchecks, :uncheck,
       :chooses, :choose,
       :selects, :select,
@@ -47,15 +47,15 @@ module Webrat
       :select_option,
       :set_hidden_field, :submit_form,
       :request_page, :current_dom,
-      :response_body, 
+      :response_body,
       :selects_date, :selects_time, :selects_datetime,
       :select_date, :select_time, :select_datetime,
       :field_by_xpath,
       :field_with_id,
       :selenium,
       :simulate, :automate
-      
-      
-    
+
+
+
   end
 end

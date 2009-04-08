@@ -17,7 +17,7 @@ describe "save_and_open_page" do
     File.stub!(:exist? => true)
     Time.stub!(:now => 1234)
     webrat_session.stub!(:open_in_browser)
-    
+
     @file_handle = mock("file handle")
     File.stub!(:open).with(filename, 'w').and_yield(@file_handle)
     @file_handle.stub!(:write)
@@ -27,23 +27,23 @@ describe "save_and_open_page" do
     @file_handle.should_receive(:write) do |html|
       html.should =~ %r|#{webrat_session.doc_root}/stylesheets/foo.css|s
     end
-    
+
     save_and_open_page
   end
-  
+
   it "should rewrite image paths" do
     @file_handle.should_receive(:write) do |html|
       html.should =~ %r|#{webrat_session.doc_root}/images/bar.png|s
     end
-    
+
     save_and_open_page
   end
-  
+
   it "should open the temp file in a browser" do
     webrat_session.should_receive(:open_in_browser).with(filename)
     save_and_open_page
   end
-  
+
   def filename
     File.expand_path("./webrat-#{Time.now}.html")
   end

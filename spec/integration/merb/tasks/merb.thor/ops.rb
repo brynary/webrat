@@ -18,7 +18,7 @@ module Thor::Tasks
         @dependencies << [name, versions]
       end
     end
-    
+
     class Gem < Thor
       def full_list
         @idx.load_gems_in("gems/specifications")
@@ -34,7 +34,7 @@ module Thor::Tasks
           [spec] + deps
         end.flatten.uniq
       end
-      
+
       def rescue_failures(error = StandardError, prc = nil)
         begin
           yield
@@ -67,12 +67,12 @@ module Thor::Tasks
         end
         exit!
       end
-      
+
       private
       def _install(dep)
         @idx.load_gems_in("gems/specifications")
         return if @idx.search(dep).last
-        
+
         installer = ::Gem::DependencyInstaller.new(
           :bin_dir => Dir.pwd / "bin",
           :install_dir => Dir.pwd / "gems",

@@ -4,30 +4,30 @@ require "webrat/core/elements/element"
 
 module Webrat
   class Link < Element #:nodoc:
-    
+
     def self.xpath_search
       ".//a[@href]"
     end
-    
+
     def click(options = {})
       method = options[:method] || http_method
       return if href =~ /^#/ && method == :get
-      
+
       options[:javascript] = true if options[:javascript].nil?
-      
+
       if options[:javascript]
         @session.request_page(absolute_href, method, data)
       else
         @session.request_page(absolute_href, :get, {})
       end
     end
-    
+
   protected
-  
+
     def id
       Webrat::XML.attribute(@element, "id")
     end
-  
+
     def data
       authenticity_token.blank? ? {} : {"authenticity_token" => authenticity_token}
     end
@@ -49,17 +49,17 @@ module Webrat
         href
       end
     end
-    
+
     def authenticity_token
       return unless onclick && onclick.include?("s.setAttribute('name', 'authenticity_token');") &&
         onclick =~ /s\.setAttribute\('value', '([a-f0-9]{40})'\);/
       $LAST_MATCH_INFO.captures.first
     end
-    
+
     def onclick
       Webrat::XML.attribute(@element, "onclick")
     end
-    
+
     def http_method
       if !onclick.blank? && onclick.include?("f.submit()")
         http_method_from_js_form
@@ -87,6 +87,6 @@ module Webrat
         raise Webrat::WebratError.new("No HTTP method for _method param in #{onclick.inspect}")
       end
     end
-    
+
   end
 end

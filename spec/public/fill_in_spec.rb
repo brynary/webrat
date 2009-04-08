@@ -15,7 +15,7 @@ describe "fill_in" do
     fill_in "User Text", :with => "filling text area"
     click_button
   end
-  
+
   it "should work with password fields" do
     with_html <<-HTML
       <html>
@@ -37,10 +37,10 @@ describe "fill_in" do
       </form>
       </html>
     HTML
-    
+
     lambda { fill_in "Email", :with => "foo@example.com" }.should raise_error(Webrat::NotFoundError)
   end
-  
+
   it "should fail if input is disabled" do
     with_html <<-HTML
       <html>
@@ -51,10 +51,10 @@ describe "fill_in" do
       </form>
       </html>
     HTML
-    
+
     lambda { fill_in "Email", :with => "foo@example.com" }.should raise_error(Webrat::DisabledFieldError)
   end
-  
+
   it "should allow overriding default form values" do
     with_html <<-HTML
       <html>
@@ -69,7 +69,7 @@ describe "fill_in" do
     fill_in "user[email]", :with => "foo@example.com"
     click_button
   end
-  
+
   it "should choose the shortest label match" do
     with_html <<-HTML
       <html>
@@ -82,12 +82,12 @@ describe "fill_in" do
       </form>
       </html>
     HTML
-    
+
     webrat_session.should_receive(:post).with("/login", "user" => {"mail1" => "", "mail2" => "value"})
     fill_in "Some", :with => "value"
     click_button
   end
-  
+
   it "should choose the first label match if closest is a tie" do
     with_html <<-HTML
       <html>
@@ -100,12 +100,12 @@ describe "fill_in" do
       </form>
       </html>
     HTML
-    
+
     webrat_session.should_receive(:post).with("/login", "user" => {"mail1" => "value", "mail2" => ""})
     fill_in "Some mail", :with => "value"
     click_button
   end
-  
+
   it "should anchor label matches to start of label" do
     with_html <<-HTML
       <html>
@@ -115,10 +115,10 @@ describe "fill_in" do
       </form>
       </html>
     HTML
-    
+
     lambda { fill_in "mail", :with => "value" }.should raise_error(Webrat::NotFoundError)
   end
-  
+
   it "should anchor label matches to word boundaries" do
     with_html <<-HTML
       <html>
@@ -128,10 +128,10 @@ describe "fill_in" do
       </form>
       </html>
     HTML
-    
+
     lambda { fill_in "Email", :with => "value" }.should raise_error(Webrat::NotFoundError)
   end
-  
+
   it "should work with inputs nested in labels" do
     with_html <<-HTML
       <html>
@@ -148,7 +148,7 @@ describe "fill_in" do
     fill_in "Email", :with => "foo@example.com"
     click_button
   end
-  
+
   it "should work with full input names" do
     with_html <<-HTML
       <html>
@@ -176,7 +176,7 @@ describe "fill_in" do
     fill_in "user[email]", :with => "foo@example.com"
     click_button
   end
-  
+
   it "should work with symbols" do
     with_html <<-HTML
       <html>
@@ -191,7 +191,7 @@ describe "fill_in" do
     fill_in :email, :with => "foo@example.com"
     click_button
   end
-  
+
   it "should escape field values" do
     with_html <<-HTML
       <html>

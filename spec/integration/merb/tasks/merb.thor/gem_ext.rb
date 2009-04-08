@@ -2,12 +2,12 @@ require "erb"
 
 Gem.pre_install_hooks.push(proc do |installer|
   $INSTALLING << installer.spec
-  
+
   unless File.file?(installer.bin_dir / "common.rb")
     FileUtils.mkdir_p(installer.bin_dir)
     FileUtils.cp(File.dirname(__FILE__) / "common.rb", installer.bin_dir / "common.rb")
   end
-  
+
   include ColorfulMessages
   name = installer.spec.name
   if $GEMS && versions = ($GEMS.assoc(name) || [])[1]
@@ -25,19 +25,19 @@ end)
 
 class ::Gem::Uninstaller
   def self._with_silent_ui
-    
-    ui = Gem::DefaultUserInteraction.ui 
+
+    ui = Gem::DefaultUserInteraction.ui
     def ui.say(str)
       puts "- #{str}"
     end
-    
+
     yield
-    
+
     class << Gem::DefaultUserInteraction.ui
       remove_method :say
-    end 
+    end
   end
-  
+
   def self._uninstall(source_index, name, op, version)
     unless source_index.find_name(name, "#{op} #{version}").empty?
       uninstaller = Gem::Uninstaller.new(
@@ -50,7 +50,7 @@ class ::Gem::Uninstaller
       _with_silent_ui { uninstaller.uninstall }
     end
   end
-  
+
   def self._uninstall_others(source_index, name, version)
     _uninstall(source_index, name, "<", version)
     _uninstall(source_index, name, ">", version)
@@ -67,14 +67,14 @@ end)
 
 class ::Gem::DependencyInstaller
   alias old_fg find_gems_with_sources
-  
+
   def find_gems_with_sources(dep)
     if @source_index.any? { |_, installed_spec|
       installed_spec.satisfies_requirement?(dep)
     }
       return []
     end
-    
+
     old_fg(dep)
   end
 end
@@ -83,9 +83,9 @@ class ::Gem::SpecFetcher
   alias old_fetch fetch
   def fetch(dependency, all = false, matching_platform = true)
     idx = Gem::SourceIndex.from_installed_gems
-    
+
     dep = idx.search(dependency).sort.last
-    
+
     if dep
       file = dep.loaded_from.dup
       file.gsub!(/specifications/, "cache")

@@ -1,6 +1,6 @@
 module Webrat
   module Logging #:nodoc:
-    
+
     def debug_log(message) # :nodoc:
       return unless logger
       logger.debug message
@@ -16,6 +16,6 @@ module Webrat
         nil
       end
     end
-  
+
   end
 end

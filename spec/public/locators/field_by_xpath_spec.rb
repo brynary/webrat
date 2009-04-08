@@ -11,7 +11,7 @@ describe "field_by_xpath" do
         </form>
       </html>
     HTML
-    
+
     field = field_by_xpath(".//input")
     field.should_not be_nil
     field.id.should == "element_42"

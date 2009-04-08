@@ -5,7 +5,7 @@ module Webrat
         def initialize(expected)
           @expected = expected
         end
-        
+
         def matches?(response)
           response.session.wait_for do
             response.selenium.is_element_present("xpath=#{@expected}")
@@ -26,11 +26,11 @@ module Webrat
           "expected following text to not match xpath #{@expected}:\n#{@document}"
         end
       end
-      
+
       def have_xpath(xpath)
         HaveXpath.new(xpath)
       end
-      
+
       def assert_have_xpath(expected)
         hs = HaveXpath.new(expected)
         assert hs.matches?(response), hs.failure_message

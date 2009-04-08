@@ -11,10 +11,10 @@ require "webrat/core/locators/form_locator"
 
 module Webrat
   module Locators
-    
+
     def field_by_xpath(xpath)
       Field.load(@session, Webrat::XML.xpath_at(dom, xpath))
     end
-    
+
   end
 end

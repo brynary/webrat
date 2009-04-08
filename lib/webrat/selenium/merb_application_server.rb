@@ -1,12 +1,12 @@
 module Webrat
   module Selenium
-    
+
     class MerbApplicationServer < ApplicationServer
-      
+
       def start
         system start_command
       end
-      
+
       def stop
         silence_stream(STDOUT) do
           pid = File.read(pid_file)
@@ -14,7 +14,7 @@ module Webrat
           FileUtils.rm_f pid_file
         end
       end
-      
+
       def fail
         $stderr.puts
         $stderr.puts
@@ -25,11 +25,11 @@ module Webrat
         $stderr.puts "    #{start_command}"
         exit
       end
-      
+
       def pid_file
         "log/merb.#{Webrat.configuration.application_port}.pid"
       end
-      
+
       def start_command
         "#{merb_command} -d -p #{Webrat.configuration.application_port} -e #{Webrat.configuration.application_environment}"
       end
@@ -41,8 +41,8 @@ module Webrat
           merb_cmd = 'merb'
         end
       end
-      
+
     end
-    
+
   end
 end

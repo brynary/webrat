@@ -1,6 +1,6 @@
 module Webrat #:nodoc:
   module MIME #:nodoc:
-    
+
     def self.mime_type(string_or_symbol) #:nodoc:
       if string_or_symbol.is_a?(String)
         string_or_symbol
@@ -24,6 +24,6 @@ module Webrat #:nodoc:
         end
       end
     end
-    
+
   end
 end
