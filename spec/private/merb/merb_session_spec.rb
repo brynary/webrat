@@ -23,7 +23,7 @@ describe Webrat::MerbSession do
   end
 
   context "a session with a response" do
-    setup do
+    before do
       @session = Webrat::MerbSession.new
       @response = OpenStruct.new
       @response.status = 200
