@@ -8,7 +8,7 @@ module Webrat
     end
 
     def click(method = nil, options = {})
-      @session.request_page(absolute_href, :get, {})
+      @session.request_page(href, :get, {})
     end
 
   protected
@@ -16,16 +16,5 @@ module Webrat
     def href
       Webrat::XML.attribute(@element, "href")
     end
-
-    def absolute_href
-      if href =~ /^\?/
-        "#{@session.current_url}#{href}"
-      elsif href !~ %r{^https?://[\w|.]+(/.*)} && (href !~ /^\//)
-        "#{@session.current_url}/#{href}"
-      else
-        href
-      end
-    end
-
   end
 end

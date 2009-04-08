@@ -86,7 +86,7 @@ describe "click_button" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("/form1", {})
+    webrat_session.should_receive(:get).with("http://www.example.com/form1", {})
     click_button
   end
 
@@ -113,7 +113,7 @@ describe "click_button" do
         </form>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("/form2", {})
+    webrat_session.should_receive(:get).with("http://www.example.com/form2", {})
     click_button "Form2"
   end
 
@@ -125,7 +125,7 @@ describe "click_button" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("/login", {})
+    webrat_session.should_receive(:get).with("http://www.example.com/login", {})
     click_button
   end
 
@@ -150,7 +150,7 @@ describe "click_button" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("/login", "login" => "Login")
+    webrat_session.should_receive(:post).with("http://www.example.com/login", "login" => "Login")
     click_button("Login")
   end
 
@@ -163,7 +163,7 @@ describe "click_button" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("/login", {})
+    webrat_session.should_receive(:post).with("http://www.example.com/login", {})
     click_button("Login")
   end
 
@@ -176,7 +176,7 @@ describe "click_button" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("/login", "user" => {"password" => "mypass"})
+    webrat_session.should_receive(:get).with("http://www.example.com/login", "user" => {"password" => "mypass"})
     click_button
   end
 
@@ -189,7 +189,7 @@ describe "click_button" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("/login", "user" => {"email" => "test@example.com"})
+    webrat_session.should_receive(:get).with("http://www.example.com/login", "user" => {"email" => "test@example.com"})
     click_button
   end
 
@@ -202,7 +202,7 @@ describe "click_button" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("/login", "user" => {"email" => "test@example.com"})
+    webrat_session.should_receive(:get).with("http://www.example.com/login", "user" => {"email" => "test@example.com"})
     click_button
   end
 
@@ -219,7 +219,7 @@ describe "click_button" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("/login", {})
+    webrat_session.should_receive(:get).with("http://www.example.com/login", {})
     click_button
   end
 
@@ -232,7 +232,7 @@ describe "click_button" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("/login", "user" => {"tos" => "1"})
+    webrat_session.should_receive(:get).with("http://www.example.com/login", "user" => {"tos" => "1"})
     click_button
   end
 
@@ -248,7 +248,7 @@ describe "click_button" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("/login", "user" => {"gender" => "F"})
+    webrat_session.should_receive(:get).with("http://www.example.com/login", "user" => {"gender" => "F"})
     click_button
   end
 
@@ -262,7 +262,7 @@ describe "click_button" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("/login", "user" => {"tos" => "0"})
+    webrat_session.should_receive(:get).with("http://www.example.com/login", "user" => {"tos" => "0"})
     click_button
   end
 
@@ -276,7 +276,7 @@ describe "click_button" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("/login", "user" => {"tos" => "1"})
+    webrat_session.should_receive(:get).with("http://www.example.com/login", "user" => {"tos" => "1"})
     click_button
   end
 
@@ -298,7 +298,7 @@ describe "click_button" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("/login",
+    webrat_session.should_receive(:post).with("http://www.example.com/login",
       "options"  => ["burger", "fries", "soda", "soda", "dessert"],
       "response" => { "choices" => [{"selected" => "one"}, {"selected" => "two"}, {"selected" => "two"}]})
     click_button
@@ -313,7 +313,7 @@ describe "click_button" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("/login", {})
+    webrat_session.should_receive(:get).with("http://www.example.com/login", {})
     click_button
   end
 
@@ -326,7 +326,7 @@ describe "click_button" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("/posts", "post" => {"body" => "Post body here!"})
+    webrat_session.should_receive(:post).with("http://www.example.com/posts", "post" => {"body" => "Post body here!"})
     click_button
   end
 
@@ -340,7 +340,7 @@ describe "click_button" do
         </form>
         </html>
       HTML
-      webrat_session.should_receive(:post).with("/posts", "post" => {"body" => "Peanut butter & jelly"})
+      webrat_session.should_receive(:post).with("http://www.example.com/posts", "post" => {"body" => "Peanut butter & jelly"})
       click_button
     end
 
@@ -363,7 +363,7 @@ describe "click_button" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("/login", "month" => "2")
+    webrat_session.should_receive(:get).with("http://www.example.com/login", "month" => "2")
     click_button
   end
 
@@ -379,7 +379,7 @@ describe "click_button" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("/login", "month" => "February")
+    webrat_session.should_receive(:get).with("http://www.example.com/login", "month" => "February")
     click_button
   end
 
@@ -395,7 +395,7 @@ describe "click_button" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("/login", "month" => "1")
+    webrat_session.should_receive(:get).with("http://www.example.com/login", "month" => "1")
     click_button
   end
 
@@ -409,7 +409,7 @@ describe "click_button" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("/login", "contestant" => {"scores" => {'1' => '2', '3' => '4'}})
+    webrat_session.should_receive(:post).with("http://www.example.com/login", "contestant" => {"scores" => {'1' => '2', '3' => '4'}})
     click_button
   end
 
@@ -422,7 +422,7 @@ describe "click_button" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("/login", "user" => {"email" => ""})
+    webrat_session.should_receive(:get).with("http://www.example.com/login", "user" => {"email" => ""})
     click_button
   end
 
@@ -435,7 +435,7 @@ describe "click_button" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("/login", "user" => {"email" => ""})
+    webrat_session.should_receive(:get).with("http://www.example.com/login", "user" => {"email" => ""})
     click_button
   end
 
@@ -496,7 +496,7 @@ describe "click_button" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("/login", "user" => {"email" => ""})
+    webrat_session.should_receive(:get).with("http://www.example.com/login", "user" => {"email" => ""})
     click_button "Login"
   end
 end

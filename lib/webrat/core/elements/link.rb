@@ -16,9 +16,9 @@ module Webrat
       options[:javascript] = true if options[:javascript].nil?
 
       if options[:javascript]
-        @session.request_page(absolute_href, method, data)
+        @session.request_page(href, method, data)
       else
-        @session.request_page(absolute_href, :get, {})
+        @session.request_page(href, :get, {})
       end
     end
 
@@ -38,16 +38,6 @@ module Webrat
 
     def href
       Webrat::XML.attribute(@element, "href")
-    end
-
-    def absolute_href
-      if href =~ /^\?/
-        "#{@session.current_url}#{href}"
-      elsif href !~ %r{^https?://} && (href !~ /^\//)
-        "#{@session.current_url}/#{href}"
-      else
-        href
-      end
     end
 
     def authenticity_token

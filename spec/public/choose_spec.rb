@@ -36,7 +36,7 @@ describe "choose" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("/login", "user" => {"gender" => "M"})
+    webrat_session.should_receive(:get).with("http://www.example.com/login", "user" => {"gender" => "M"})
     choose "Male"
     click_button
   end
@@ -53,7 +53,7 @@ describe "choose" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("/login", "user" => {"gender" => "M"})
+    webrat_session.should_receive(:get).with("http://www.example.com/login", "user" => {"gender" => "M"})
     choose "Female"
     choose "Male"
     click_button
@@ -81,7 +81,7 @@ describe "choose" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("/login", "first_option" => "on")
+    webrat_session.should_receive(:post).with("http://www.example.com/login", "first_option" => "on")
     choose "first_option"
     click_button
   end
@@ -95,7 +95,7 @@ describe "choose" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("/login", "first_option" => "on")
+    webrat_session.should_receive(:post).with("http://www.example.com/login", "first_option" => "on")
     click_button
   end
 
@@ -111,7 +111,7 @@ describe "choose" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("/login", "user" => {"gender" => "M"})
+    webrat_session.should_receive(:post).with("http://www.example.com/login", "user" => {"gender" => "M"})
     choose "Male"
     click_button
   end
