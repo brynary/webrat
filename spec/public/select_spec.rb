@@ -243,4 +243,19 @@ describe "select" do
       pending("needs bug fix", &spec)
     end
   end
+  
+  it "should submit duplicates selected options as a single value" do
+    with_html <<-HTML
+      <html>
+      <form method="post" action="/login">
+        <select name="clothes"><option value="pants" selected="selected">pants</option><option value="pants" selected="selected">pants</option></select>
+        <input type="submit" />
+      </form>
+      </html>
+    HTML
+    
+    webrat_session.should_receive(:post).with("/login", "clothes" => "pants")
+    click_button
+  end
+  
 end

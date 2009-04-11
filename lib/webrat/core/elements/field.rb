@@ -396,7 +396,7 @@ module Webrat
       selected_options.map do |option|
         return "" if option.nil?
         Webrat::XML.attribute(option, "value") || Webrat::XML.inner_html(option)
-      end
+      end.uniq
     end
 
   end
