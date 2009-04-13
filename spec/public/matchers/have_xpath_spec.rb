@@ -88,6 +88,12 @@ describe "have_xpath" do
       end
     }.should raise_error(Spec::Expectations::ExpectationNotMetError)
   end
+  
+  it "should match negative expectations in the block" do
+    @body.should have_xpath("//div") do |node|
+      node.should_not have_xpath("//div[@id='main']")
+    end
+  end
 
   it "should match descendants of the matched elements in the block" do
     @body.should have_xpath("//ul") do |node|

@@ -14,10 +14,12 @@ module Webrat
         @block ||= block
         matched = matches(stringlike)
 
+        @block.call(matched) if @block
+
         if @options[:count]
-          matched.size == @options[:count].to_i && (!@block || @block.call(matched))
+          matched.size == @options[:count].to_i
         else
-          matched.any? && (!@block || @block.call(matched))
+          matched.any?
         end
       end
 
