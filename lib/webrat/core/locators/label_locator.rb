@@ -12,7 +12,7 @@ module Webrat
 
       def label_element
         label_elements.detect do |label_element|
-          text(label_element) =~ /^\W*#{Regexp.escape(@value.to_s)}\b/i
+          text(label_element) =~ /^\W*#{Regexp.escape(@value.to_s)}(\b|\Z)/i
         end
       end
 

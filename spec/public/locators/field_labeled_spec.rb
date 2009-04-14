@@ -153,5 +153,20 @@ describe "field_labeled" do
     should_return_a Webrat::TextField, :for => "The Label"
     with_an_id_of   "element_42",      :for => "The Label"
   end
+  
+  describe "finding a field whose label ends with an non word character" do
+    using_this_html <<-HTML
+      <html>
+      <form>
+      <label for="element_42">License #</label>
+      <input type="text" id="element_42">
+      </form>
+      </html>
+    HTML
+  
+    should_return_a Webrat::TextField, :for => "License #"
+    with_an_id_of  "element_42",       :for => "License #"
+    should_raise_error_matching /Could not find .* "Other License #"/, :for => "Other License #"
+  end
 
 end

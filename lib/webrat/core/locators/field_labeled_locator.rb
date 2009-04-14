@@ -20,7 +20,7 @@ module Webrat
 
       def matching_label_elements
         label_elements.select do |label_element|
-          text(label_element) =~ /^\W*#{Regexp.escape(@value.to_s)}\b/i
+          text(label_element) =~ /^\W*#{Regexp.escape(@value.to_s)}(\b|\Z)/i
         end
       end
 
