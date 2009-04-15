@@ -26,6 +26,8 @@ module Webrat
       SinatraSession
     when :mechanize
       MechanizeSession
+    when :rack_test
+      RackTestSession
     else
       raise WebratError.new(<<-STR)
 Unknown Webrat mode: #{Webrat.configuration.mode.inspect}
@@ -122,11 +124,8 @@ For example:
 
       url = canonicalize_url(url)
       debug_log "REQUESTING PAGE: #{http_method.to_s.upcase} #{url} with #{data.inspect} and HTTP headers #{h.inspect}"
-      if h.empty?
-        send "#{http_method}", url, data || {}
-      else
-        send "#{http_method}", url, data || {}, h
-      end
+
+      process_request(http_method, url, data, h)
 
       save_and_open_page if exception_caught? && Webrat.configuration.open_error_files?
       raise PageLoadError.new("Page load was not successful (Code: #{response_code.inspect}):\n#{formatted_error}") unless success_code?
@@ -281,6 +280,14 @@ For example:
 
   private
 
+    def process_request(http_method, url, data, headers)
+      if headers.empty?
+        send "#{http_method}", url, data || {}
+      else
+        send "#{http_method}", url, data || {}, headers
+      end
+    end
+    
     def response_location
       canonicalize_url(response.headers["Location"])
     end
