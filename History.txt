@@ -1,3 +1,10 @@
+== 0.4.5 / ?
+
+* Minor enhancements
+
+  * Added support for field_labeled_locators ending in non word characters
+    lh 148 (Zach Dennis)
+
 == 0.4.4 / 2009-04-06
 
 * Major enhancements
