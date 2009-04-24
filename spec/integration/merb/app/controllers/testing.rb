@@ -4,6 +4,15 @@ class Testing < Application
     render
   end
 
+  def upload
+    case request.method
+    when :get then render
+    when :post then
+      uploaded_file = params[:uploaded_file]
+      render [uploaded_file[:filename], uploaded_file[:tempfile].class.name].inspect
+    end
+  end
+
   def submit_form
   end
 

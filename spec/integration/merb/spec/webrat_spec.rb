@@ -29,4 +29,11 @@ describe "Webrat" do
     response = visit "/external_redirect"
     response.status.should == 302
   end
+
+  it "should upload files" do
+    visit "/upload"
+    attach_file "File", __FILE__
+    response = click_button "Upload"
+    response.should contain(%(["webrat_spec.rb", "Tempfile"]))
+  end
 end
