@@ -5,6 +5,8 @@ gem "extlib"
 require "extlib"
 require "merb-core"
 
+require "merb-core/two-oh"
+
 # HashWithIndifferentAccess = Mash
 
 module Webrat
@@ -36,13 +38,36 @@ module Webrat
     def response_code
       @response.status
     end
+    include Merb::Test::MultipartRequestHelper
 
     def do_request(url, data, headers, method)
-      @response = request(url,
-        :params => (data && data.any?) ? data : nil,
-        :headers => headers,
-        :method => method)
+      if method == "POST" && has_file?(data)
+        @response = multipart_post(url, data, :headers => headers)
+
+      elsif method == "PUT" && has_file?(data)
+        @response = multipart_put(url, data, :headers => headers)
+
+      else
+        @response = request(url,
+          :params => (data && data.any?) ? data : nil,
+          :headers => headers,
+          :method => method)
+      end
     end
+
+    protected
+
+      # Recursively search the data for a file attachment.
+      def has_file?(data)
+        data.each do |key, value|
+          if value.is_a?(Hash)
+            return has_file?(value)
+          else
+            return true if value.is_a?(File)
+          end
+        end
+        return false
+      end
 
   end
 end
