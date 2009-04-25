@@ -264,7 +264,7 @@ For example:
     end
 
     def current_host
-      URI.parse(current_url).host || "www.example.com"
+      URI.parse(current_url).host || @custom_headers["Host"] || "www.example.com"
     end
 
     def response_location_host
