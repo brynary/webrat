@@ -6,8 +6,5 @@
 require "webrat/core/matchers"
 
 Spec::Runner.configure do |config|
-  # rspec should support :type => [:controller, :helper, :view] - but until it does ...
-  config.include(Webrat::Matchers, :type => :controller)
-  config.include(Webrat::Matchers, :type => :helper)
-  config.include(Webrat::Matchers, :type => :view)
+  config.include(Webrat::Matchers, :type => [:controller, :helper, :view])
 end
