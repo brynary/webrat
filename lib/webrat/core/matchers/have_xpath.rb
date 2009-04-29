@@ -32,7 +32,7 @@ module Webrat
 
       def rexml_matches(stringlike)
         if REXML::Node === stringlike || Array === stringlike
-          @query = query.map { |q| q.gsub(%r'//', './') }
+          @query = query.map { |q| q.gsub(%r'^//', './/') }
         else
           @query = query
         end
@@ -52,7 +52,7 @@ module Webrat
 
       def nokogiri_matches(stringlike)
         if Nokogiri::XML::NodeSet === stringlike
-          @query = query.gsub(%r'//', './')
+          @query = query.gsub(%r'^//', './/')
         else
           @query = query
         end

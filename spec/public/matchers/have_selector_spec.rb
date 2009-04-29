@@ -13,6 +13,7 @@ describe "have_selector" do
         <ul>
           <li>First</li>
           <li>Second</li>
+          <li><a href="http://example.org/">Third</a></li>
         </ul>
       </div>
     HTML
@@ -52,12 +53,12 @@ describe "have_selector" do
 
   describe "specifying counts" do
     it "should be able to specify the number of occurences of the tag" do
-      @body.should have_selector("li", :count => 2)
+      @body.should have_selector("li", :count => 3)
     end
 
     it "should not match if the count is wrong" do
       lambda {
-        @body.should have_selector("li", :count => 3)
+        @body.should have_selector("li", :count => 4)
       }.should raise_error(Spec::Expectations::ExpectationNotMetError)
     end
   end
@@ -95,6 +96,12 @@ describe "have_selector" do
       @body.should have_selector("ul") do |n|
         n.should have_selector("li", :content => "First")
         n.should have_selector("li", :content => "Second")
+      end
+    end
+
+    it "should work with descendants of the matched elements" do
+      @body.should have_selector("ul") do |n|
+        n.should have_selector("a", :content => "Third")
       end
     end
   end
