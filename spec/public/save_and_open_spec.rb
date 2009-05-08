@@ -10,6 +10,7 @@ describe "save_and_open_page" do
         <body>
           <h1>Hello world</h1>
           <img src="/images/bar.png" />
+          <img src='/images/foo.png' />
         </body>
       </html>
     HTML
@@ -25,15 +26,23 @@ describe "save_and_open_page" do
 
   it "should rewrite css rules" do
     @file_handle.should_receive(:write) do |html|
-      html.should =~ %r|#{webrat_session.doc_root}/stylesheets/foo.css|s
+      html.should =~ %r|"#{webrat_session.doc_root}/stylesheets/foo.css"|s
     end
 
     save_and_open_page
   end
 
-  it "should rewrite image paths" do
+  it "should rewrite image paths with double quotes" do
     @file_handle.should_receive(:write) do |html|
-      html.should =~ %r|#{webrat_session.doc_root}/images/bar.png|s
+      html.should =~ %r|"#{webrat_session.doc_root}/images/bar.png"|s
+    end
+
+    save_and_open_page
+  end
+
+  it "should rewrite image paths with single quotes" do
+    @file_handle.should_receive(:write) do |html|
+      html.should =~ %r|'#{webrat_session.doc_root}/images/foo.png'|s
     end
 
     save_and_open_page

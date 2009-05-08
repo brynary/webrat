@@ -28,7 +28,7 @@ module Webrat
 
     def rewrite_css_and_image_references(response_html) # :nodoc:
       return response_html unless doc_root
-      response_html.gsub(/"\/(stylesheets|images)/, doc_root + '/\1')
+      response_html.gsub(/("|')\/(stylesheets|images)/, '\1' + doc_root + '/\2')
     end
 
     def saved_page_dir #:nodoc:

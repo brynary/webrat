@@ -21,6 +21,10 @@
   * Adding fix for fields with labels with special characters (Thomas Jack, Mike Gaffney, Bryan Hemlkamp)
   * Deprecated current_page lh50 (Mike Gaffney)
 
+* Bug fixes
+
+  * Translate CSS and image paths with single quotes in save_and_open_page (Erin Staniland)
+
 == 0.4.4 / 2009-04-06
 
 * Major enhancements
