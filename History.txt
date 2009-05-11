@@ -1,5 +1,9 @@
 == brynary/master (in git)
 
+* Major enhancements
+
+  * Improve performance (~2x) on JRuby by supporting Nokogiri
+
 * Minor enhancements
 
   * Added support for field_labeled_locators ending in non word characters

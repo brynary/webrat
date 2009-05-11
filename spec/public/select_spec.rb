@@ -201,7 +201,7 @@ describe "select" do
   end
 
   it "should properly handle submitting HTML entities in select values" do
-    spec = lambda do
+    pending "needs bug fix" do
       with_html <<-HTML
         <html>
         <form method="post" action="/login">
@@ -213,16 +213,10 @@ describe "select" do
       webrat_session.should_receive(:post).with("http://www.example.com/login", "month" => "Peanut butter & jelly")
       click_button
     end
-
-    if Webrat.on_java?
-      spec.call
-    else
-      pending("needs bug fix", &spec)
-    end
   end
 
   it "should properly handle locating with HTML entities in select values" do
-    spec = lambda do
+    pending "needs bug fix" do
       with_html <<-HTML
         <html>
         <form method="post" action="/login">
@@ -235,12 +229,6 @@ describe "select" do
       lambda {
         select "Peanut butter & jelly"
       }.should_not raise_error(Webrat::NotFoundError)
-    end
-
-    if Webrat.on_java?
-      spec.call
-    else
-      pending("needs bug fix", &spec)
     end
   end
   

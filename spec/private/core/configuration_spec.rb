@@ -9,15 +9,8 @@ describe Webrat::Configuration do
   end
 
   it "should use Nokogiri as the parser by default" do
-    Webrat.stub!(:on_java? => false)
     config = Webrat::Configuration.new
     config.should parse_with_nokogiri
-  end
-
-  it "should not use Nokogiri as the parser when on JRuby" do
-    Webrat.stub!(:on_java? => true)
-    config = Webrat::Configuration.new
-    config.should_not parse_with_nokogiri
   end
 
   it "should open error files by default" do
