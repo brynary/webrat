@@ -90,7 +90,7 @@ describe "select_date" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("http://www.example.com/appointments",
+      webrat_session.should_receive(:post).with("/appointments",
       "appointment" => {"date(1i)" => '2003', "date(2i)" => "12", "date(3i)" => "25"})
     select_date Date.parse("December 25, 2003"), :from => "date ?"
     click_button

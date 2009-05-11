@@ -242,7 +242,7 @@ describe "select" do
       </html>
     HTML
 
-    webrat_session.should_receive(:post).with("http://www.example.com/login", "clothes" => "pants")
+    webrat_session.should_receive(:post).with("/login", "clothes" => "pants")
     click_button
   end
 

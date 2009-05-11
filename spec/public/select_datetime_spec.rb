@@ -85,7 +85,7 @@ describe "select_datetime" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("http://www.example.com/appointments",
+    webrat_session.should_receive(:post).with("/appointments",
       "appointment" => {"time(1i)" => '2003', "time(2i)" => "12", "time(3i)" => "25", "time(4i)" => "09", "time(5i)" => "30"})
     select_datetime "December 25, 2003 9:30", :from => "Time ?"
     click_button
