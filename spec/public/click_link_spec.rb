@@ -108,7 +108,7 @@ describe "click_link" do
       <a title="piddle" href="/page">Link text</a>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("/page", {})
+    webrat_session.should_receive(:get).with("http://www.example.com/page", {})
     click_link 'piddle'
   end
   
@@ -118,7 +118,7 @@ describe "click_link" do
       <a title="piddlediddle" href="/page">Link text</a>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("/page", {})
+    webrat_session.should_receive(:get).with("http://www.example.com/page", {})
     click_link /iddle/
   end
   

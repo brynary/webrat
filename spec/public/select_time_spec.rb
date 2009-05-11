@@ -58,7 +58,7 @@ describe "select_time" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("/appointments",
+    webrat_session.should_receive(:post).with("http://www.example.com/appointments",
       "appointment" => {"time(4i)" => "09", "time(5i)" => "30"})
     select_time "9:30AM", :from => "Time #"
     click_button
