@@ -62,7 +62,7 @@ describe "select" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("http://www.example.com/login", "month" => "1")
+    webrat_session.should_receive(:post).with("/login", "month" => "1")
     select "January", :from => "month"
     click_button
   end
@@ -76,7 +76,7 @@ describe "select" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("http://www.example.com/login", "encoded" => "A & B")
+    webrat_session.should_receive(:post).with("/login", "encoded" => "A & B")
     select "Encoded", :from => "encoded"
     click_button
   end
@@ -90,7 +90,7 @@ describe "select" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("http://www.example.com/login", 'month' => '')
+    webrat_session.should_receive(:post).with("/login", 'month' => '')
     click_button
   end
 
@@ -103,7 +103,7 @@ describe "select" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("http://www.example.com/login", "month" => "1")
+    webrat_session.should_receive(:post).with("/login", "month" => "1")
     select "January"
     click_button
   end
@@ -118,7 +118,7 @@ describe "select" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("http://www.example.com/login", "start_month" => "s1", "end_month" => "e1")
+    webrat_session.should_receive(:post).with("/login", "start_month" => "s1", "end_month" => "e1")
     select "January", :from => "end_month"
     click_button
   end
@@ -135,7 +135,7 @@ describe "select" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("http://www.example.com/login", "start_month" => "s1", "end_month" => "e1")
+    webrat_session.should_receive(:post).with("/login", "start_month" => "s1", "end_month" => "e1")
     select "January", :from => "End Month"
     click_button
   end
@@ -149,7 +149,7 @@ describe "select" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("http://www.example.com/login", "month" => "January")
+    webrat_session.should_receive(:post).with("/login", "month" => "January")
     select "January", :from => "month"
     click_button
   end
@@ -163,7 +163,7 @@ describe "select" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("http://www.example.com/login", "month" => "January")
+    webrat_session.should_receive(:post).with("/login", "month" => "January")
     select /jan/i
     click_button
   end
@@ -195,7 +195,7 @@ describe "select" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("http://www.example.com/login", "start_month" => "s1", "end_month" => "e1")
+    webrat_session.should_receive(:post).with("/login", "start_month" => "s1", "end_month" => "e1")
     select /jan/i, :from => "End Month"
     click_button
   end
@@ -210,7 +210,7 @@ describe "select" do
         </form>
         </html>
       HTML
-      webrat_session.should_receive(:post).with("http://www.example.com/login", "month" => "Peanut butter & jelly")
+      webrat_session.should_receive(:post).with("/login", "month" => "Peanut butter & jelly")
       click_button
     end
   end

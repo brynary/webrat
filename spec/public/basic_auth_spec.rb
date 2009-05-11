@@ -6,7 +6,7 @@ describe "Basic Auth HTTP headers" do
   end
 
   it "should be present in visit" do
-    webrat_session.should_receive(:get).with("http://www.example.com/", {}, {'HTTP_AUTHORIZATION' => "Basic dXNlcjpzZWNyZXQ=\n"})
+    webrat_session.should_receive(:get).with("/", {}, {'HTTP_AUTHORIZATION' => "Basic dXNlcjpzZWNyZXQ=\n"})
     visit("/")
   end
 
@@ -18,7 +18,7 @@ describe "Basic Auth HTTP headers" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("http://www.example.com/form1", {}, {'HTTP_AUTHORIZATION' => "Basic dXNlcjpzZWNyZXQ=\n"})
+    webrat_session.should_receive(:post).with("/form1", {}, {'HTTP_AUTHORIZATION' => "Basic dXNlcjpzZWNyZXQ=\n"})
     click_button
   end
 end

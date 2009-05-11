@@ -36,7 +36,7 @@ describe "check" do
       </html>
     HTML
 
-    webrat_session.should_receive(:get).with("http://www.example.com/login", "user" => {"tos" => "1"})
+    webrat_session.should_receive(:get).with("/login", "user" => {"tos" => "1"})
     check "TOS"
     click_button
   end
@@ -51,7 +51,7 @@ describe "check" do
       </html>
     HTML
 
-    webrat_session.should_receive(:post).with("http://www.example.com/login", "remember_me" => "on")
+    webrat_session.should_receive(:post).with("/login", "remember_me" => "on")
     check "remember_me"
     click_button
   end
@@ -79,7 +79,7 @@ describe "check" do
       </html>
     HTML
 
-    webrat_session.should_receive(:post).with("http://www.example.com/login", "remember_me" => "yes")
+    webrat_session.should_receive(:post).with("/login", "remember_me" => "yes")
     check "remember_me"
     click_button
   end
@@ -132,7 +132,7 @@ describe "uncheck" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("http://www.example.com/login", "user" => {"tos" => "0"})
+    webrat_session.should_receive(:get).with("/login", "user" => {"tos" => "0"})
     check "TOS"
     uncheck "TOS"
     click_button
@@ -147,7 +147,7 @@ describe "uncheck" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("http://www.example.com/login", {})
+    webrat_session.should_receive(:post).with("/login", {})
     uncheck "remember_me"
     click_button
   end
@@ -164,7 +164,7 @@ describe "uncheck" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("http://www.example.com/login", {"options" => ["1", "2"]})
+    webrat_session.should_receive(:post).with("/login", {"options" => ["1", "2"]})
     check 'Option 1'
     check 'Option 2'
     click_button
@@ -183,7 +183,7 @@ describe "uncheck" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("http://www.example.com/login", "user" => {"tos" => "0"})
+    webrat_session.should_receive(:get).with("/login", "user" => {"tos" => "0"})
     uncheck "TOS"
     click_button
   end

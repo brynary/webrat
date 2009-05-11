@@ -9,7 +9,7 @@ describe "click_area" do
       </map>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("http://www.example.com/page", {})
+    webrat_session.should_receive(:get).with("/page", {})
     click_area "Berlin"
   end
 
@@ -62,13 +62,13 @@ describe "click_area" do
       </map>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("http://www.example.com/page", {})
+    webrat_session.should_receive(:get).with("/page", {})
     click_area "berlin"
   end
 
 
   it "should follow relative links" do
-    webrat_session.stub!(:current_url => "http://www.example.com/page")
+    webrat_session.stub!(:current_url => "/page")
     with_html <<-HTML
       <html>
       <map name="map_de" id="map_de">
@@ -76,7 +76,7 @@ describe "click_area" do
       </map>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("http://www.example.com/page/sub", {})
+    webrat_session.should_receive(:get).with("/page/sub", {})
     click_area "Berlin"
   end
 
@@ -100,7 +100,7 @@ describe "click_area" do
       </map>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("http://www.example.com/page?foo=bar", {})
+    webrat_session.should_receive(:get).with("/page?foo=bar", {})
     click_area "Berlin"
   end
 end

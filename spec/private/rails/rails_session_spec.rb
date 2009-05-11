@@ -96,8 +96,7 @@ describe Webrat::RailsSession do
 
     response = mock("response", :body => body, :headers => {}, :code => 200)
     @integration_session.stub!(:response => response)
-    @integration_session.stub!(:https!)
-    @integration_session.should_receive(:get).with("http://www.example.com/page2", {}, nil)
+    @integration_session.should_receive(:get).with("/page2", {}, nil)
 
     rails_session = Webrat::RailsSession.new(@integration_session)
 
