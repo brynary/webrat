@@ -26,6 +26,8 @@ module Webrat
       SinatraSession
     when :mechanize
       MechanizeSession
+    when :rack_test
+      RackTestSession
     else
       raise WebratError.new(<<-STR)
 Unknown Webrat mode: #{Webrat.configuration.mode.inspect}
@@ -95,16 +97,35 @@ For example:
       @default_headers.dup.merge(@custom_headers.dup)
     end
 
+    def canonicalize_url(href_url)
+      @current_url ||= "http://www.example.com/" # @current_url can't be blank, or things break
+      # Case one: relative url
+      if href_url !~ %r{^https?://} && (href_url !~ /^\//)
+        # If the relative url starts with # or ?, we need append it as is _if_ there are three slashes in the current url;
+        # otherwise, ensure there's a slash between it and the current
+        # url
+        if (href_url =~ /^\?/ or href_url =~ /^#/) && current_url.scan('/').length > 2
+        "#{current_url}#{href_url}"
+        else
+          "#{current_url.chomp('/')}/#{href_url}"
+        end
+      # Case two: absolute url without host
+      elsif href_url =~ /^\//
+        "http://#{current_host}#{href_url}"
+      # Case three: absolute url with scheme and host.
+      else
+        href_url
+      end
+    end
+
     def request_page(url, http_method, data) #:nodoc:
       h = headers
       h['HTTP_REFERER'] = @current_url if @current_url
 
+      url = canonicalize_url(url)
       debug_log "REQUESTING PAGE: #{http_method.to_s.upcase} #{url} with #{data.inspect} and HTTP headers #{h.inspect}"
-      if h.empty?
-        send "#{http_method}", url, data || {}
-      else
-        send "#{http_method}", url, data || {}, h
-      end
+
+      process_request(http_method, url, data, h)
 
       save_and_open_page if exception_caught? && Webrat.configuration.open_error_files?
       raise PageLoadError.new("Page load was not successful (Code: #{response_code.inspect}):\n#{formatted_error}") unless success_code?
@@ -259,8 +280,16 @@ For example:
 
   private
 
+    def process_request(http_method, url, data, headers)
+      if headers.empty?
+        send "#{http_method}", url, data || {}
+      else
+        send "#{http_method}", url, data || {}, headers
+      end
+    end
+
     def response_location
-      response.headers["Location"]
+      canonicalize_url(response.headers["Location"])
     end
 
     def current_host

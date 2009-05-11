@@ -118,7 +118,7 @@ describe Webrat::Session do
 
       webrat_session.request_page("/oldurl", :get, {})
 
-      webrat_session.current_url.should == "/oldurl"
+      webrat_session.current_url.should == "http://www.example.com/oldurl"
     end
   end
 
@@ -191,6 +191,75 @@ describe Webrat::Session do
       webrat_session.stub!(:redirect?         => true)
       webrat_session.stub!(:response_location => "http://www.example.com")
       webrat_session.redirected_to.should == "http://www.example.com"
+    end
+
+  end
+
+  describe "#canonicalize_url"do
+
+    it "should turn 'http://www.example.com/' into 'http://www.example.com/'" do
+      webrat_session.stub!(:current_url       => "http://www.example.com")
+      webrat_session.canonicalize_url("http://www.example.com/").should == "http://www.example.com/"
+    end
+
+    it "should turn '/login' into 'http://www.example.com/login' if current_url is 'http://www.example.com/'" do
+      webrat_session.stub!(:current_url       => "http://www.example.com/")
+      webrat_session.canonicalize_url("/login").should == "http://www.example.com/login"
+    end
+
+    it "should turn '/login' into 'http://www.example.com/login' if current_url is 'http://www.example.com'" do
+      webrat_session.stub!(:current_url       => "http://www.example.com")
+      webrat_session.canonicalize_url("/login").should == "http://www.example.com/login"
+    end
+
+    it "should turn 'login' into 'http://www.example.com/login' if current_url is 'http://www.example.com'" do
+      webrat_session.stub!(:current_url       => "http://www.example.com")
+      webrat_session.canonicalize_url("login").should == "http://www.example.com/login"
+    end
+
+    it "should turn 'login' into 'http://www.example.com/login' if current_url is 'http://www.example.com/'" do
+      webrat_session.stub!(:current_url       => "http://www.example.com/")
+      webrat_session.canonicalize_url("login").should == "http://www.example.com/login"
+    end
+
+    it "should turn '?login' into 'http://www.example.com/?login' if current_url is 'http://www.example.com'" do
+      webrat_session.stub!(:current_url       => "http://www.example.com")
+      webrat_session.canonicalize_url("?login").should == "http://www.example.com/?login"
+    end
+
+    it "should turn '?login' into 'http://www.example.com/?login' if current_url is 'http://www.example.com/'" do
+      webrat_session.stub!(:current_url       => "http://www.example.com/")
+      webrat_session.canonicalize_url("?login").should == "http://www.example.com/?login"
+    end
+
+    it "should turn '?login' into 'http://www.example.com/page?login' if current_url is 'http://www.example.com/page'" do
+      webrat_session.stub!(:current_url       => "http://www.example.com/page")
+      webrat_session.canonicalize_url("?login").should == "http://www.example.com/page?login"
+    end
+
+    it "should turn '?login' into 'http://www.example.com/page/?login' if current_url is 'http://www.example.com/page/'" do
+      webrat_session.stub!(:current_url       => "http://www.example.com/page/")
+      webrat_session.canonicalize_url("?login").should == "http://www.example.com/page/?login"
+    end
+
+    it "should turn '#anchor' into 'http://www.example.com/#anchor' if current_url is 'http://www.example.com'" do
+      webrat_session.stub!(:current_url       => "http://www.example.com")
+      webrat_session.canonicalize_url("#anchor").should == "http://www.example.com/#anchor"
+    end
+
+    it "should turn '#anchor' into 'http://www.example.com/#anchor' if current_url is 'http://www.example.com/'" do
+      webrat_session.stub!(:current_url       => "http://www.example.com/")
+      webrat_session.canonicalize_url("#anchor").should == "http://www.example.com/#anchor"
+    end
+
+    it "should turn '#anchor' into 'http://www.example.com/page#anchor' if current_url is 'http://www.example.com/page'" do
+      webrat_session.stub!(:current_url       => "http://www.example.com/page")
+      webrat_session.canonicalize_url("#anchor").should == "http://www.example.com/page#anchor"
+    end
+
+    it "should turn '#anchor' into 'http://www.example.com/page/#anchor' if current_url is 'http://www.example.com/page/'" do
+      webrat_session.stub!(:current_url       => "http://www.example.com/page/")
+      webrat_session.canonicalize_url("#anchor").should == "http://www.example.com/page/#anchor"
     end
 
   end

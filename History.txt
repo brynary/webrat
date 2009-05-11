@@ -1,19 +1,24 @@
-== 0.4.5 / ?
+== brynary/master (in git)
+
+* Major enhancements
+
+  * Improve performance (~2x) on JRuby by supporting Nokogiri
 
 * Minor enhancements
 
   * Added support for field_labeled_locators ending in non word characters
     lh 148 (Zach Dennis)
   * Filled in tests on click link lh 195 (diabolo)
+  * Canonicalize all URLs (Shalon Wood)
 
 == 0.4.4 / 2009-04-06
 
 * Major enhancements
 
   * Make selenium process management code more robust and informative
-  
+
 * Minor enhancements
-  
+
   * Add support for Rails javascript post links (Mark Menard)
   * Upgrade selenium-client dependency to 1.2.14, and update for new waiting
     API (Balint Erdi)
@@ -24,7 +29,7 @@
   * Don't create a new instance of WWW::Mechanize for each request
     (Mark Menard)
   * Select fields with duplicate selected options sent an incorrect value (Noah Davis)
-  
+
 == 0.4.3 / 2009-03-17
 
 * Minor enhancements
@@ -34,7 +39,7 @@
   * Initial Merb and Sinatra compatibility for Selenium mode (Corey Donohoe)
   * When faced with a label with no for attribute, that contains a hidden field
     and another field, as can be the case in Rails 2.3's checkbox view,
-    webrat now locates the non-hidden field. (Luke Melia) 
+    webrat now locates the non-hidden field. (Luke Melia)
   * Add application_framework config for Selenium mode to determine how to
     start and stop the app server (Corey Donohoe)
 
@@ -50,7 +55,7 @@
     attributes in a hash and :count and :content options. See
     have_selector_spec.rb for more.
   * Add the same functionality mentioned above to have_xpath
-    
+
 * Minor enhancements
 
   * Squeeze extra whitespace out of failures messages from contain
@@ -77,7 +82,7 @@
     redirected to (Adam Greene)
   * Recognize input tags with type button (Lena Herrmann)
   * Add uncheck method to Selenium mode (Lee Bankewitz)
-    
+
 * Bug fixes
 
   * Make requests to a Rails app using a full URL instead of a relative path. This change
@@ -88,7 +93,7 @@
     to behave correctly (Noah Davis)
   * Switch to using selenium.click instead of .check when checking a checkbox
     (Noah Davis)
-  * Create tmp/pids directory if directory does not exist. (Amos King and Mike Gaffney)  
+  * Create tmp/pids directory if directory does not exist. (Amos King and Mike Gaffney)
   * Setup deprecated writers for the selenium_environment= and selenium_port= config
   * Ensure the previous pages params aren't passed through redirect (Daniel Lucraft and
     Bryan Helmkamp)
@@ -164,7 +169,7 @@
   * Added save_and_open_screengrab for Selenium mode (Luke Melia)
 
 * Bug fixes
-  
+
   * field_labeled should disregard labels without matching fields (Kyle Hargraves)
   * Fixed bug where Scope was creating a new DOM rather than re-using the existing DOM.
     [#105] (Zach Dennis)

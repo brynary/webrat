@@ -27,7 +27,7 @@ describe "attach_file" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("/widgets", { "widget" => { "file" => "" } })
+    webrat_session.should_receive(:post).with("http://www.example.com/widgets", { "widget" => { "file" => "" } })
     click_button
   end
 
@@ -41,7 +41,7 @@ describe "attach_file" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("/widgets", { "widget" => { "file" => @uploaded_file } })
+    webrat_session.should_receive(:post).with("http://www.example.com/widgets", { "widget" => { "file" => @uploaded_file } })
     attach_file "Document", @filename
     click_button
   end
@@ -58,7 +58,7 @@ describe "attach_file" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("/widgets", { "widget" => { "files" => [@uploaded_file, @uploaded_file] } })
+    webrat_session.should_receive(:post).with("http://www.example.com/widgets", { "widget" => { "files" => [@uploaded_file, @uploaded_file] } })
     attach_file "Document", @filename
     attach_file "Spreadsheet", @filename
     click_button

@@ -7,7 +7,7 @@ describe "click_link" do
       <a href="/page">Save &amp; go back</a>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("/page", {})
+    webrat_session.should_receive(:get).with("http://www.example.com/page", {})
     click_link "Save & go back"
   end
 
@@ -17,7 +17,7 @@ describe "click_link" do
       <a href="/page">Link text</a>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("/page", {})
+    webrat_session.should_receive(:get).with("http://www.example.com/page", {})
     click_link "Link text"
   end
 
@@ -27,7 +27,7 @@ describe "click_link" do
       <a href="/page">Link text</a>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("/page", {})
+    webrat_session.should_receive(:get).with("http://www.example.com/page", {})
     click_link "Link text", :method => :get
   end
 
@@ -37,7 +37,7 @@ describe "click_link" do
       <a href="/page">Link text</a>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("/page", {})
+    webrat_session.should_receive(:get).with("http://www.example.com/page", {})
     click_link "ink tex", :method => :get
   end
 
@@ -47,7 +47,7 @@ describe "click_link" do
       <a href="/page">Link text</a>
       </html>
     HTML
-    webrat_session.should_receive(:delete).with("/page", {})
+    webrat_session.should_receive(:delete).with("http://www.example.com/page", {})
     click_link "Link text", :method => :delete
   end
 
@@ -58,7 +58,7 @@ describe "click_link" do
       <a href="/page">Link text</a>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("/page", {})
+    webrat_session.should_receive(:post).with("http://www.example.com/page", {})
     click_link "Link text", :method => :post
   end
 
@@ -68,7 +68,7 @@ describe "click_link" do
       <a href="/page">Link text</a>
       </html>
     HTML
-    webrat_session.should_receive(:put).with("/page", {})
+    webrat_session.should_receive(:put).with("http://www.example.com/page", {})
     click_link "Link text", :method => :put
   end
 
@@ -78,7 +78,7 @@ describe "click_link" do
       <a href="/page">Link text</a>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("/page", {})
+    webrat_session.should_receive(:get).with("http://www.example.com/page", {})
     click_link /link [a-z]/i
   end
 
@@ -88,7 +88,7 @@ describe "click_link" do
       <a id="link_text_link" href="/page">Link text</a>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("/page", {})
+    webrat_session.should_receive(:get).with("http://www.example.com/page", {})
     click_link "link_text_link"
   end
 
@@ -98,30 +98,30 @@ describe "click_link" do
       <a id="link_text_link" href="/page">Link text</a>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("/page", {})
+    webrat_session.should_receive(:get).with("http://www.example.com/page", {})
     click_link /_text_/
   end
-  
+
   it "should click links by title" do
     with_html <<-HTML
       <html>
       <a title="piddle" href="/page">Link text</a>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("/page", {})
+    webrat_session.should_receive(:get).with("http://www.example.com/page", {})
     click_link 'piddle'
   end
-  
+
   it "should click links by title regex" do
     with_html <<-HTML
       <html>
       <a title="piddlediddle" href="/page">Link text</a>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("/page", {})
+    webrat_session.should_receive(:get).with("http://www.example.com/page", {})
     click_link /iddle/
   end
-  
+
 
   it "should click rails javascript links with authenticity tokens" do
     with_html <<-HTML
@@ -140,7 +140,7 @@ describe "click_link" do
         return false;">Posts</a>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("/posts", "authenticity_token" => "aa79cb354597a60a3786e7e291ed4f74d77d3a62")
+    webrat_session.should_receive(:post).with("http://www.example.com/posts", "authenticity_token" => "aa79cb354597a60a3786e7e291ed4f74d77d3a62")
     click_link "Posts"
   end
 
@@ -161,7 +161,7 @@ describe "click_link" do
         return false;">Delete</a>
       </html>
     HTML
-    webrat_session.should_receive(:delete).with("/posts/1", {})
+    webrat_session.should_receive(:delete).with("http://www.example.com/posts/1", {})
     click_link "Delete"
   end
 
@@ -177,7 +177,7 @@ describe "click_link" do
         return false;">Posts</a>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("/posts", {})
+    webrat_session.should_receive(:post).with("http://www.example.com/posts", {})
     click_link "Posts"
   end
 
@@ -193,7 +193,7 @@ describe "click_link" do
         return false;">Posts</a>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("/posts", {})
+    webrat_session.should_receive(:get).with("http://www.example.com/posts", {})
     click_link "Posts", :javascript => false
   end
 
@@ -214,7 +214,7 @@ describe "click_link" do
         return false;">Post</a></h2>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("/posts", {})
+    webrat_session.should_receive(:post).with("http://www.example.com/posts", {})
     click_link "Post"
   end
 
@@ -235,7 +235,7 @@ describe "click_link" do
         return false;">Put</a></h2>
       </html>
     HTML
-    webrat_session.should_receive(:put).with("/posts", {})
+    webrat_session.should_receive(:put).with("http://www.example.com/posts", {})
     click_link "Put"
   end
 
@@ -302,7 +302,7 @@ describe "click_link" do
       <a href="/page">Link text</a>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("/page", {})
+    webrat_session.should_receive(:get).with("http://www.example.com/page", {})
     click_link "LINK TEXT"
   end
 
@@ -312,7 +312,7 @@ describe "click_link" do
       <a href="/page">This is some cool link text, isn't it?</a>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("/page", {})
+    webrat_session.should_receive(:get).with("http://www.example.com/page", {})
     click_link "Link text"
   end
 
@@ -322,7 +322,7 @@ describe "click_link" do
       <a href="/page"><span>Link text</span></a>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("/page", {})
+    webrat_session.should_receive(:get).with("http://www.example.com/page", {})
     click_link "Link text"
   end
 
@@ -333,7 +333,7 @@ describe "click_link" do
       <a href="/page2">Link text</a>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("/page1", {})
+    webrat_session.should_receive(:get).with("http://www.example.com/page1", {})
     click_link "Link text"
   end
 
@@ -345,7 +345,7 @@ describe "click_link" do
       </html>
     HTML
 
-    webrat_session.should_receive(:get).with("/page2", {})
+    webrat_session.should_receive(:get).with("http://www.example.com/page2", {})
     click_link "Link"
   end
 
@@ -356,7 +356,7 @@ describe "click_link" do
       </html>
     HTML
 
-    webrat_session.should_receive(:get).with("/page1", {})
+    webrat_session.should_receive(:get).with("http://www.example.com/page1", {})
     click_link "This is a link"
   end
 
@@ -369,7 +369,7 @@ describe "click_link" do
         </html>
       HTML
 
-      webrat_session.should_receive(:get).with("/page2", {})
+      webrat_session.should_receive(:get).with("http://www.example.com/page2", {})
       click_link "Location"
     end
   end
@@ -384,7 +384,7 @@ describe "click_link" do
     </html>
     HTML
 
-    webrat_session.should_receive(:get).with("/page2", {})
+    webrat_session.should_receive(:get).with("http://www.example.com/page2", {})
     click_link_within "#container", "Link"
   end
 
@@ -400,18 +400,18 @@ describe "click_link" do
   end
 
   it "should follow relative links" do
-    webrat_session.stub!(:current_url => "/page")
+    webrat_session.stub!(:current_url => "http://www.example.com/page")
     with_html <<-HTML
       <html>
       <a href="sub">Jump to sub page</a>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("/page/sub", {})
+    webrat_session.should_receive(:get).with("http://www.example.com/page/sub", {})
     click_link "Jump to sub page"
   end
 
   it "should follow fully qualified local links" do
-    webrat_session.stub!(:current_url => "/page")
+    webrat_session.stub!(:current_url => "http://www.example.com/page")
     with_html <<-HTML
       <html>
       <a href="http://subdomain.example.com/page/sub">Jump to sub page</a>
@@ -432,13 +432,13 @@ describe "click_link" do
   end
 
   it "should follow query parameters" do
-    webrat_session.stub!(:current_url => "/page")
+    webrat_session.stub!(:current_url => "http://www.example.com/page")
     with_html <<-HTML
       <html>
       <a href="?foo=bar">Jump to foo bar</a>
       </html>
     HTML
-    webrat_session.should_receive(:get).with("/page?foo=bar", {})
+    webrat_session.should_receive(:get).with("http://www.example.com/page?foo=bar", {})
     click_link "Jump to foo bar"
   end
 

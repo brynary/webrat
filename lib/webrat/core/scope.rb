@@ -209,8 +209,8 @@ module Webrat
     # along with the form. An optional <tt>content_type</tt> may be given.
     #
     # Example:
-    #   attaches_file "Resume", "/path/to/the/resume.txt"
-    #   attaches_file "Photo", "/path/to/the/image.png", "image/png"
+    #   attach_file "Resume", "/path/to/the/resume.txt"
+    #   attach_file "Photo", "/path/to/the/image.png", "image/png"
     def attach_file(field_locator, path, content_type = nil)
       locate_field(field_locator, FileField).set(path, content_type)
     end

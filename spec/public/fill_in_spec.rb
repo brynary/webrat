@@ -11,7 +11,7 @@ describe "fill_in" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("/login", "user" => {"text" => "filling text area"})
+    webrat_session.should_receive(:post).with("http://www.example.com/login", "user" => {"text" => "filling text area"})
     fill_in "User Text", :with => "filling text area"
     click_button
   end
@@ -25,7 +25,7 @@ describe "fill_in" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("/login", "user" => {"text" => "pass"})
+    webrat_session.should_receive(:post).with("http://www.example.com/login", "user" => {"text" => "pass"})
     fill_in "user_text", :with => "pass"
     click_button
   end
@@ -65,7 +65,7 @@ describe "fill_in" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("/login", "user" => {"email" => "foo@example.com"})
+    webrat_session.should_receive(:post).with("http://www.example.com/login", "user" => {"email" => "foo@example.com"})
     fill_in "user[email]", :with => "foo@example.com"
     click_button
   end
@@ -83,7 +83,7 @@ describe "fill_in" do
       </html>
     HTML
 
-    webrat_session.should_receive(:post).with("/login", "user" => {"mail1" => "", "mail2" => "value"})
+    webrat_session.should_receive(:post).with("http://www.example.com/login", "user" => {"mail1" => "", "mail2" => "value"})
     fill_in "Some", :with => "value"
     click_button
   end
@@ -101,7 +101,7 @@ describe "fill_in" do
       </html>
     HTML
 
-    webrat_session.should_receive(:post).with("/login", "user" => {"mail1" => "value", "mail2" => ""})
+    webrat_session.should_receive(:post).with("http://www.example.com/login", "user" => {"mail1" => "value", "mail2" => ""})
     fill_in "Some mail", :with => "value"
     click_button
   end
@@ -144,7 +144,7 @@ describe "fill_in" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("/login", "user" => {"email" => "foo@example.com"})
+    webrat_session.should_receive(:post).with("http://www.example.com/login", "user" => {"email" => "foo@example.com"})
     fill_in "Email", :with => "foo@example.com"
     click_button
   end
@@ -158,7 +158,7 @@ describe "fill_in" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("/login", "user" => {"email" => "foo@example.com"})
+    webrat_session.should_receive(:post).with("http://www.example.com/login", "user" => {"email" => "foo@example.com"})
     fill_in "user[email]", :with => "foo@example.com"
     click_button
   end
@@ -172,7 +172,7 @@ describe "fill_in" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("/login", "user" => {"email" => "foo@example.com"})
+    webrat_session.should_receive(:post).with("http://www.example.com/login", "user" => {"email" => "foo@example.com"})
     fill_in "user[email]", :with => "foo@example.com"
     click_button
   end
@@ -187,7 +187,7 @@ describe "fill_in" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("/login", "user" => {"email" => "foo@example.com"})
+    webrat_session.should_receive(:post).with("http://www.example.com/login", "user" => {"email" => "foo@example.com"})
     fill_in :email, :with => "foo@example.com"
     click_button
   end
@@ -202,7 +202,7 @@ describe "fill_in" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("/users", "user" => {"phone" => "+1 22 33"})
+    webrat_session.should_receive(:post).with("http://www.example.com/users", "user" => {"phone" => "+1 22 33"})
     fill_in 'Phone', :with => "+1 22 33"
     click_button
   end

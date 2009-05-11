@@ -13,7 +13,10 @@ module Webrat
       when :merb
         Merb.logger
       else
-        nil
+        @logger ||= begin
+          require "logger"
+          ::Logger.new("webrat.log")
+        end
       end
     end
 
