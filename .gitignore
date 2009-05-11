@@ -12,3 +12,4 @@ log
 results
 test_apps
 *.tmproj
+*.log
