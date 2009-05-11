@@ -231,7 +231,7 @@ describe "select" do
       }.should_not raise_error(Webrat::NotFoundError)
     end
   end
-  
+
   it "should submit duplicates selected options as a single value" do
     with_html <<-HTML
       <html>
@@ -241,9 +241,9 @@ describe "select" do
       </form>
       </html>
     HTML
-    
+
     webrat_session.should_receive(:post).with("http://www.example.com/login", "clothes" => "pants")
     click_button
   end
-  
+
 end

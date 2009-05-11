@@ -71,7 +71,7 @@ describe "select_date" do
     select_date "December 25, 2003"
     click_button
   end
-  
+
   it "should work when the label ends in a non word character" do
     with_html <<-HTML
       <html>

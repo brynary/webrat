@@ -101,7 +101,7 @@ describe "click_link" do
     webrat_session.should_receive(:get).with("http://www.example.com/page", {})
     click_link /_text_/
   end
-  
+
   it "should click links by title" do
     with_html <<-HTML
       <html>
@@ -111,7 +111,7 @@ describe "click_link" do
     webrat_session.should_receive(:get).with("http://www.example.com/page", {})
     click_link 'piddle'
   end
-  
+
   it "should click links by title regex" do
     with_html <<-HTML
       <html>
@@ -121,7 +121,7 @@ describe "click_link" do
     webrat_session.should_receive(:get).with("http://www.example.com/page", {})
     click_link /iddle/
   end
-  
+
 
   it "should click rails javascript links with authenticity tokens" do
     with_html <<-HTML

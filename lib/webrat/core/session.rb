@@ -287,7 +287,7 @@ For example:
         send "#{http_method}", url, data || {}, headers
       end
     end
-    
+
     def response_location
       canonicalize_url(response.headers["Location"])
     end

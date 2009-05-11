@@ -15,7 +15,7 @@ module Webrat
     else
       gem "nokogiri", ">= 1.0.6"
     end
-    
+
     require "nokogiri"
     require "webrat/core/xml/nokogiri"
   end

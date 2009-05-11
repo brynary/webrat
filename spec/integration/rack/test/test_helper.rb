@@ -13,7 +13,7 @@ class Test::Unit::TestCase
   include Rack::Test::Methods
   include Webrat::Methods
   include Webrat::Matchers
-  
+
   def app
     RackApp.new
   end
