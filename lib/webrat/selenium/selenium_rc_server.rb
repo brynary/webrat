@@ -2,6 +2,8 @@ module Webrat
   module Selenium
 
     class SeleniumRCServer
+      
+      include Webrat::SilentStream
 
       def self.boot
         new.boot
