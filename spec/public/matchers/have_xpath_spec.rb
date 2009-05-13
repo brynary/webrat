@@ -89,9 +89,15 @@ describe "have_xpath" do
     }.should raise_error(Spec::Expectations::ExpectationNotMetError)
   end
 
-  it "should work with descendants of the matched elements" do
+  it "should match descendants of the matched elements in the block" do
     @body.should have_xpath("//ul") do |node|
       node.should have_xpath("//a[@href='http://example.org']")
+    end
+  end
+  
+  it "should allow descendant selectors in the block" do
+    @body.should have_xpath("//div[@id='main']") do |node|
+      node.should have_xpath("//ul//a")
     end
   end
 
