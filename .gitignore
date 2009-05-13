@@ -12,4 +12,4 @@ log
 results
 test_apps
 *.tmproj
-webrat.log
+*.log
