@@ -1,7 +1,13 @@
 require "webrat"
 gem "selenium-client", ">=1.2.14"
 require "selenium/client"
-require "webrat/selenium/silence_stream"
+
+# active_support already defines silence_stream, no need to do that again if it's already present.
+# http://github.com/rails/rails/blob/master/activesupport/lib/active_support/core_ext/kernel/reporting.rb
+unless Kernel.respond_to?(:silence_stream)
+  require "webrat/selenium/silence_stream"
+end
+
 require "webrat/selenium/selenium_session"
 require "webrat/selenium/matchers"
 require "webrat/core_extensions/tcp_socket"
