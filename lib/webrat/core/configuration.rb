@@ -1,17 +1,6 @@
 require "webrat/core_extensions/deprecate"
 
 module Webrat
-  
-  module SilentStream
-    def silence_stream(stream)
-      old_stream = stream.dup
-      stream.reopen(RUBY_PLATFORM =~ /mswin/ ? 'NUL:' : '/dev/null')
-      stream.sync = true
-      yield
-    ensure
-      stream.reopen(old_stream)
-    end
-  end
 
   # Configures Webrat. If this is not done, Webrat will be created
   # with all of the default settings.

@@ -3,7 +3,7 @@ module Webrat
 
     class ApplicationServer
       
-      include Webrat::SilentStream
+      include Webrat::Selenium::SilenceStream
 
       def self.boot
         case Webrat.configuration.application_framework

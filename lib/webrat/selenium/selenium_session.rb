@@ -22,7 +22,7 @@ module Webrat
 
   class SeleniumSession
     include Webrat::SaveAndOpenPage
-    include Webrat::SilentStream
+    include Webrat::Selenium::SilenceStream
 
     def initialize(*args) # :nodoc:
     end
