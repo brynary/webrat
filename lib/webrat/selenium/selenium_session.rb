@@ -55,6 +55,10 @@ module Webrat
       selenium.get_html_source
     end
 
+    def current_url
+      selenium.location
+    end
+
     def click_button(button_text_or_regexp = nil, options = {})
       if button_text_or_regexp.is_a?(Hash) && options == {}
         pattern, options = nil, button_text_or_regexp
