@@ -2,6 +2,8 @@ module Webrat
   module Selenium
 
     class ApplicationServer
+      
+      include Webrat::Selenium::SilenceStream
 
       def self.boot
         case Webrat.configuration.application_framework
