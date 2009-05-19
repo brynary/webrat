@@ -2,6 +2,8 @@ module Webrat
   module Selenium
 
     class SeleniumRCServer
+      
+      include Webrat::Selenium::SilenceStream
 
       def self.boot
         new.boot
@@ -30,7 +32,9 @@ module Webrat
       def remote_control
         return @remote_control if @remote_control
 
-        @remote_control = ::Selenium::RemoteControl::RemoteControl.new("0.0.0.0", Webrat.configuration.selenium_server_port, 5)
+        @remote_control = ::Selenium::RemoteControl::RemoteControl.new("0.0.0.0", 
+                                                                       Webrat.configuration.selenium_server_port, 
+                                                                       Webrat.configuration.selenium_browser_startup_timeout)
         @remote_control.jar_file = jar_path
 
         return @remote_control

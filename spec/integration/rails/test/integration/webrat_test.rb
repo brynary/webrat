@@ -10,6 +10,7 @@ class WebratTest < ActionController::IntegrationTest
   test "should visit pages" do
     visit root_path
     assert_contain("Webrat Form")
+    assert URI.parse(current_url).path, root_path
   end
 
   test "should submit forms" do

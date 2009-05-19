@@ -22,6 +22,7 @@ module Webrat
 
   class SeleniumSession
     include Webrat::SaveAndOpenPage
+    include Webrat::Selenium::SilenceStream
 
     def initialize(*args) # :nodoc:
     end
@@ -53,6 +54,10 @@ module Webrat
 
     def response_body #:nodoc:
       selenium.get_html_source
+    end
+
+    def current_url
+      selenium.location
     end
 
     def click_button(button_text_or_regexp = nil, options = {})
@@ -181,15 +186,6 @@ module Webrat
     end
 
   protected
-
-    def silence_stream(stream)
-      old_stream = stream.dup
-      stream.reopen(RUBY_PLATFORM =~ /mswin/ ? 'NUL:' : '/dev/null')
-      stream.sync = true
-      yield
-    ensure
-      stream.reopen(old_stream)
-    end
 
     def setup #:nodoc:
       Webrat::Selenium::SeleniumRCServer.boot
