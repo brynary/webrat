@@ -134,7 +134,8 @@ module Webrat
     end
 
     def escaped_value
-      CGI.escape(@value.to_s)
+      value = @value.respond_to?(:join) ? @value.join : @value
+      value ? CGI.escape(value) : ""
     end
 
     def labels
