@@ -57,9 +57,7 @@ module Webrat
       :field_by_xpath,
       :field_with_id,
       :selenium,
-      :simulate, :automate
-
-
-
+      :simulate, :automate,
+      :field_named
   end
 end
