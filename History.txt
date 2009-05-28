@@ -11,7 +11,7 @@
   * Filled in tests on click link lh 195 (diabolo)
   * Added current_url to selenium session lh 215 (Luke Amdor)
   * Added silence spec to selenium lh 238 (Martin Gamsjaeger aka snusnu)
-  * Added ability to configure the browser startup timeout for selenium lh 242 (Mike Gaffney)
+  * Added ability to configure the browser startup timeout for selenium lh 242 (Mike Gaffney, Mark Dodwell)
   * Added delegation for field_named lh194 (pivotal labs)
 
 == 0.4.4 / 2009-04-06
