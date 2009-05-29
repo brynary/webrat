@@ -13,6 +13,7 @@
   * Added silence spec to selenium lh 238 (Martin Gamsjaeger aka snusnu)
   * Added ability to configure the browser startup timeout for selenium lh 242 (Mike Gaffney, Mark Dodwell)
   * Added delegation for field_named lh194 (pivotal labs)
+  * Added fix to keep from escaping field values in mechanize mode lh256 (jish)
 
 == 0.4.4 / 2009-04-06
 
