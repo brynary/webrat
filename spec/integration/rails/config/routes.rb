@@ -9,6 +9,7 @@ ActionController::Routing::Routes.draw do |map|
     webrat.redirect_to_show_params  "/redirect_to_show_params", :action => "redirect_to_show_params"
     webrat.show_params              "/show_params",             :action => "show_params"
 
+    webrat.buttons "/buttons", :action => "buttons"
     webrat.root :action => "form"
   end
 end
