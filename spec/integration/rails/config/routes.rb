@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resource 'links', :only => [:show]
+  map.resource 'buttons', :only => [:show, :create]
   map.with_options :controller => "webrat" do |webrat|
     webrat.submit             "/submit",            :action => "submit"
     webrat.internal_redirect  "/internal_redirect", :action => "internal_redirect"
@@ -9,8 +11,6 @@ ActionController::Routing::Routes.draw do |map|
     webrat.redirect_to_show_params  "/redirect_to_show_params", :action => "redirect_to_show_params"
     webrat.show_params              "/show_params",             :action => "show_params"
 
-    webrat.buttons "/buttons", :action => "buttons"
     webrat.root :action => "form"
   end
-  map.resource 'links'
 end

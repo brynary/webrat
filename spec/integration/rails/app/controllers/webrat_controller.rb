@@ -9,9 +9,6 @@ class WebratController < ApplicationController
   def form
   end
   
-  def buttons
-  end
-  
   def submit
     render :text => "OK <a href='/' id='link_id'>Test Link Text</a>"
   end
