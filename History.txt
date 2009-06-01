@@ -15,6 +15,7 @@
   * Added delegation for field_named lh194 (pivotal labs)
   * Added fix to keep from escaping field values in mechanize mode lh256 (jish)
   * Adding fixes for click button/link and made the integration specs pass for the same in selenium lh254 (Ldiehl, Matthias Marschall)
+  * Adding clicking link by id in selenium mode lh221 (larrytheliquid)
 
 == 0.4.4 / 2009-04-06
 
