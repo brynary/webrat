@@ -12,4 +12,5 @@ ActionController::Routing::Routes.draw do |map|
     webrat.buttons "/buttons", :action => "buttons"
     webrat.root :action => "form"
   end
+  map.resource 'links'
 end
