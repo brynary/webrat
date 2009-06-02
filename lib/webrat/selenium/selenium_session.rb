@@ -41,7 +41,7 @@ module Webrat
     webrat_deprecate :visits, :visit
 
     def fill_in(field_identifier, options)
-      locator = "webrat=#{Regexp.escape(field_identifier)}"
+      locator = "webrat=#{field_identifier}"
       selenium.wait_for_element locator, :timeout_in_seconds => 5
       selenium.type(locator, "#{options[:with]}")
     end
