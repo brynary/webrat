@@ -66,4 +66,20 @@ module Webrat
       radio_button.should_not be_checked
     end
   end
+
+  describe TextField do
+    it 'should not escape values in mechanize mode' do
+      Webrat.configuration.mode = :mechanize
+
+      html = <<-HTML
+        <html>
+          <input type="text" name="email" value="user@example.com" />
+        </html>
+      HTML
+
+      element    = Webrat::XML.css_search(Webrat::XML.document(html), 'input').first
+      text_field = TextField.new(nil, element)
+      text_field.to_param.should == { 'email' => 'user@example.com' }
+    end
+  end
 end
