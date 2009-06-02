@@ -17,4 +17,8 @@ class FillInTest < ActionController::IntegrationTest
     visit fields_path
     fill_in "FieldByLabelId", :with => "value"
   end
+  test "should fill in text field by label with special characters" do
+    visit fields_path
+    fill_in "[Field]:", :with => "value"
+  end
 end
