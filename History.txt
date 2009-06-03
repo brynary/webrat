@@ -18,6 +18,7 @@
   * Adding clicking link by id in selenium mode lh221 (larrytheliquid)
   * Adding fix for have_selector and have_xpath in descendent blocks lh234 (Thomas Jack)
   * Adding fix for fields with labels with special characters (Thomas Jack, Mike Gaffney, Bryan Hemlkamp)
+  * Deprecated current_page lh50 (Mike Gaffney)
 
 == 0.4.4 / 2009-04-06
 

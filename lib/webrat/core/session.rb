@@ -69,6 +69,7 @@ For example:
 
     # For backwards compatibility -- removing in 1.0
     def current_page #:nodoc:
+      warn "current_page is deprecated and will be going away in the next release. Use current_url instead."
       page = OpenStruct.new
       page.url = @current_url
       page.http_method = @http_method
