@@ -150,7 +150,7 @@ module Webrat
 
         begin
           value = yield
-        rescue ::Spec::Expectations::ExpectationNotMetError, ::Selenium::CommandError, Webrat::WebratError
+        rescue ::Selenium::CommandError, Webrat::WebratError
           value = nil
         end
 
