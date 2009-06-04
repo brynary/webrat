@@ -14,6 +14,9 @@ module Webrat
         when :rails
           require "webrat/selenium/rails_application_server"
           return RailsApplicationServer.new
+        when :external
+          require "webrat/selenium/application_servers/external"
+          return Webrat::Selenium::ApplicationServers::External.new
         else
           raise WebratError.new(<<-STR)
 Unknown Webrat application_framework: #{Webrat.configuration.application_framework.inspect}

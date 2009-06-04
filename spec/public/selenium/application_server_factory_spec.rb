@@ -4,9 +4,7 @@ require "webrat/selenium/silence_stream"
 require "webrat/selenium/application_server_factory"
 require "webrat/selenium/application_server"
 
-require "webrat/selenium/sinatra_application_server"
-require "webrat/selenium/merb_application_server"
-require "webrat/selenium/rails_application_server"
+require "webrat/selenium/application_servers"
 
 describe Webrat::Selenium::ApplicationServerFactory do
 
@@ -31,6 +29,14 @@ describe Webrat::Selenium::ApplicationServerFactory do
     Webrat.configuration.application_framework = :rails
     Webrat::Selenium::ApplicationServerFactory.should_receive(:require).with("webrat/selenium/rails_application_server")
     Webrat::Selenium::RailsApplicationServer.should_receive(:new).and_return(server)
+    Webrat::Selenium::ApplicationServerFactory.app_server_instance
+  end
+
+  it "should require and create a rails server in external mode" do
+    server = mock(Webrat::Selenium::ApplicationServers::External)
+    Webrat.configuration.application_framework = :external
+    Webrat::Selenium::ApplicationServerFactory.should_receive(:require).with("webrat/selenium/application_servers/external")
+    Webrat::Selenium::ApplicationServers::External.should_receive(:new).and_return(server)
     Webrat::Selenium::ApplicationServerFactory.app_server_instance
   end
 
