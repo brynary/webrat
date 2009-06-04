@@ -34,6 +34,9 @@ class WebratTest < ActionController::IntegrationTest
     fill_in "Text field", :with => "value"
     click_button
 
+    automate do
+      selenium.wait_for_page_to_load
+    end
     assert response.body !~ /value/
     assert response.body =~ /custom_param/
   end

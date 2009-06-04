@@ -5,34 +5,6 @@ module Webrat
 
       include Webrat::Selenium::SilenceStream
 
-      def self.boot
-        case Webrat.configuration.application_framework
-        when :sinatra
-          require "webrat/selenium/sinatra_application_server"
-          SinatraApplicationServer.new.boot
-        when :merb
-          require "webrat/selenium/merb_application_server"
-          MerbApplicationServer.new.boot
-        when :rails
-          require "webrat/selenium/rails_application_server"
-          RailsApplicationServer.new.boot
-        else
-          raise WebratError.new(<<-STR)
-Unknown Webrat application_framework: #{Webrat.configuration.application_framework.inspect}
-
-Please ensure you have a Webrat configuration block that specifies an application_framework
-in your test_helper.rb, spec_helper.rb, or env.rb (for Cucumber).
-
-For example:
-
-  Webrat.configure do |config|
-    # ...
-    config.application_framework = :rails
-  end
-      STR
-        end
-      end
-
       def boot
         start
         wait

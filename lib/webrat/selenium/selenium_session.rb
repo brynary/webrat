@@ -1,5 +1,6 @@
 require "webrat/core/save_and_open_page"
 require "webrat/selenium/selenium_rc_server"
+require "webrat/selenium/application_server_factory"
 require "webrat/selenium/application_server"
 
 module Webrat
@@ -198,7 +199,7 @@ module Webrat
 
     def setup #:nodoc:
       Webrat::Selenium::SeleniumRCServer.boot
-      Webrat::Selenium::ApplicationServer.boot
+      Webrat::Selenium::ApplicationServerFactory.app_server_instance.boot
 
       create_browser
       $browser.start
