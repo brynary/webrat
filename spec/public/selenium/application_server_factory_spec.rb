@@ -2,7 +2,6 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 require "webrat/selenium/silence_stream"
 require "webrat/selenium/application_server_factory"
-require "webrat/selenium/application_server"
 
 require "webrat/selenium/application_servers"
 

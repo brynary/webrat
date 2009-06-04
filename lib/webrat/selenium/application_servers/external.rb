@@ -1,7 +1,7 @@
 module Webrat
   module Selenium
     module ApplicationServers
-      class External < ApplicationServer
+      class External < Webrat::Selenium::ApplicationServers::Base
         def start
           warn "Webrat Ignoring Start Of Application Server Due to External Mode"
         end

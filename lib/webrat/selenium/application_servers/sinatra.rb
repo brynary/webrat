@@ -1,7 +1,7 @@
 module Webrat
   module Selenium
     module ApplicationServers
-      class Sinatra < ApplicationServer
+      class Sinatra < Webrat::Selenium::ApplicationServers::Base
 
         def start
           fork do

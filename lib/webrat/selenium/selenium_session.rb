@@ -1,7 +1,7 @@
 require "webrat/core/save_and_open_page"
 require "webrat/selenium/selenium_rc_server"
 require "webrat/selenium/application_server_factory"
-require "webrat/selenium/application_server"
+require "webrat/selenium/application_servers/base"
 
 module Webrat
   class TimeoutError < WebratError

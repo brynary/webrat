@@ -1,3 +1,4 @@
+require "webrat/selenium/application_servers/base"
 require "webrat/selenium/application_servers/sinatra"
 require "webrat/selenium/application_servers/merb"
 require "webrat/selenium/application_servers/rails"

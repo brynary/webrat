@@ -1,8 +1,7 @@
 module Webrat
   module Selenium
-
     module ApplicationServers
-      class Rails < ApplicationServer
+      class Rails < Webrat::Selenium::ApplicationServers::Base
 
         def start
           system start_command

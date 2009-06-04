@@ -1,7 +1,7 @@
 module Webrat
   module Selenium
     module ApplicationServers
-      class Merb < ApplicationServer
+      class Merb < Webrat::Selenium::ApplicationServers::Base
 
         def start
           system start_command
