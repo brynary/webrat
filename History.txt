@@ -3,6 +3,7 @@
 * Major enhancements
 
   * Improve performance (~2x) on JRuby by supporting Nokogiri
+  * Added support for external app servers in selenium mode (basically don't start one) (Mike Gaffney)
 
 * Minor enhancements
 
