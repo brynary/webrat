@@ -20,9 +20,29 @@ describe Webrat::SeleniumSession do
     @selenium.yieldable_exceptions.should == [::Spec::Expectations::ExpectationNotMetError, ::Selenium::CommandError, Webrat::WebratError]
   end
   
-  it "should handle yieldable exceptions in the wait_for" do
+  it "should throw timeout instead of spec expectionnotmet error" do
     begin
-      @selenium.wait_for(:timeout => 0.25) do
+      @selenium.wait_for(:timeout => 0.1) do
+        raise ::Spec::Expectations::ExpectationNotMetError
+      end
+      fail("didn't throw")
+    rescue Webrat::TimeoutError
+    end
+  end
+  
+  it "should throw timeout instead of selenium command error" do
+    begin
+      @selenium.wait_for(:timeout => 0.1) do
+        raise ::Selenium::CommandError
+      end
+      fail("didn't throw")
+    rescue Webrat::TimeoutError
+    end
+  end
+  
+  it "should throw timeout instead of webrat error" do
+    begin
+      @selenium.wait_for(:timeout => 0.1) do
         raise Webrat::WebratError.new
       end
       fail("didn't throw")
