@@ -94,7 +94,7 @@ describe "have_xpath" do
       node.should have_xpath("//a[@href='http://example.org']")
     end
   end
-  
+
   it "should allow descendant selectors in the block" do
     @body.should have_xpath("//div[@id='main']") do |node|
       node.should have_xpath("//ul//a")

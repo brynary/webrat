@@ -12,7 +12,7 @@ class LinkClickTest < ActionController::IntegrationTest
     click_link "link_by_id"
     assert_contain("Link:link_by_id")
   end
-  
+
   test "should click link by title" do
     visit links_path
     click_link "LinkByTitle"

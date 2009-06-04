@@ -42,7 +42,7 @@ class ButtonClickTest < ActionController::IntegrationTest
     visit buttons_path
     click_button "button_image_text"
   end
-  
+
   # <input type="button" ...>
   test "should click image with type button by id" do
     visit buttons_path
@@ -76,5 +76,5 @@ class ButtonClickTest < ActionController::IntegrationTest
     visit buttons_path
     click_button "input_image_alt"
   end
-  
+
 end

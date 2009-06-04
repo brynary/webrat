@@ -12,7 +12,7 @@ module Webrat
         ensure
           stream.reopen(old_stream)
         end
-      end      
+      end
     end
   end
 end

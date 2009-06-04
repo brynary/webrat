@@ -53,7 +53,7 @@ module Webrat
 
     # Set the key that Selenium uses to determine the browser running. Default *firefox
     attr_accessor :selenium_browser_key
-    
+
     # Set the timeout for waiting for the browser process to start
     attr_accessor :selenium_browser_startup_timeout
 
