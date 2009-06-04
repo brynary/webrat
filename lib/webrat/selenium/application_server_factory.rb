@@ -6,14 +6,14 @@ module Webrat
       def self.app_server_instance
         case Webrat.configuration.application_framework
         when :sinatra
-          require "webrat/selenium/sinatra_application_server"
-          return SinatraApplicationServer.new
+          require "webrat/selenium/application_servers/sinatra"
+          return Webrat::Selenium::ApplicationServers::Sinatra.new
         when :merb
-          require "webrat/selenium/merb_application_server"
-          return MerbApplicationServer.new
+          require "webrat/selenium/application_servers/merb"
+          return Webrat::Selenium::ApplicationServers::Merb.new
         when :rails
-          require "webrat/selenium/rails_application_server"
-          return RailsApplicationServer.new
+          require "webrat/selenium/application_servers/rails"
+          return Webrat::Selenium::ApplicationServers::Rails.new
         when :external
           require "webrat/selenium/application_servers/external"
           return Webrat::Selenium::ApplicationServers::External.new
