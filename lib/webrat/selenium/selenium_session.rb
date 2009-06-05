@@ -152,7 +152,9 @@ module Webrat
         begin
           value = yield
         rescue Exception => e
-          raise e unless yieldable_exceptions.include?(e.class)
+          unless is_ignorable_wait_for_exception?(e)
+            raise e
+          end
         end
 
         return value if value
@@ -187,14 +189,13 @@ module Webrat
 
     end
 
-    def yieldable_exceptions
-      return [::Selenium::CommandError, Webrat::WebratError] unless lib_defined?(::Spec::Expectations::ExpectationNotMetError)
-      [::Spec::Expectations::ExpectationNotMetError, ::Selenium::CommandError, Webrat::WebratError]
-    end
-
     protected
-    def lib_defined?(library)
-      defined?(library)
+    def is_ignorable_wait_for_exception?(exception) #:nodoc:
+      if defined?(::Spec::Expectations::ExpectationNotMetError)
+        return true if exception.class == ::Spec::Expectations::ExpectationNotMetError
+      end
+      return true if [::Selenium::CommandError, Webrat::WebratError].include?(exception.class)
+      return false
     end
 
     def setup #:nodoc:
