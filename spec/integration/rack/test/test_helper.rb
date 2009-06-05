@@ -15,6 +15,9 @@ class Test::Unit::TestCase
   include Webrat::Matchers
 
   def app
-    RackApp.new
+    Rack::Builder.new {
+      use Rack::Lint
+      run RackApp.new
+    }
   end
 end
