@@ -45,7 +45,11 @@ module Webrat
       end
 
       def replace_nbsp(str)
-        str.gsub([0xA0].pack('U'), ' ')
+        if str.respond_to?(:force_encoding)
+          str.force_encoding('UTF-8').gsub(/\xc2\xa0/u, ' ')
+        else
+          str.gsub("\xc2\xa0", ' ')
+        end
       end
 
       def replace_nbsp_ref(str)
