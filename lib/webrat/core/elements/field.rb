@@ -134,7 +134,7 @@ module Webrat
     end
 
     def escaped_value
-      CGI.escape(@value.to_s)
+      CGI.escape([*@value].first.to_s)
     end
 
     def labels
