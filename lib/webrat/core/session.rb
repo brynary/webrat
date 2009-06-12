@@ -20,8 +20,6 @@ module Webrat
       MerbSession
     when :selenium
       SeleniumSession
-    when :rack
-      RackSession
     when :sinatra
       SinatraSession
     when :mechanize

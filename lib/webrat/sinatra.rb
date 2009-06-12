@@ -2,7 +2,7 @@ require "webrat/rack"
 require "sinatra/test"
 
 module Webrat
-  class SinatraSession < RackSession
+  class SinatraSession < Session
     include Sinatra::Test
 
     attr_reader :request, :response
