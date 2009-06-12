@@ -6,7 +6,7 @@ require "rack/test"
 require File.dirname(__FILE__) + "/../../../../lib/webrat"
 
 Webrat.configure do |config|
-  config.mode = :rack_test
+  config.mode = :rack
 end
 
 class Test::Unit::TestCase

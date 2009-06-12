@@ -24,8 +24,8 @@ module Webrat
       SinatraSession
     when :mechanize
       MechanizeSession
-    when :rack_test
-      RackTestSession
+    when :rack
+      RackSession
     else
       raise WebratError.new(<<-STR)
 Unknown Webrat mode: #{Webrat.configuration.mode.inspect}

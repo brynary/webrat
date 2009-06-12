@@ -1,5 +1,5 @@
 module Webrat
-  class RackTestSession < Session
+  class RackSession < Session
 
     def initialize(rack_test_session) #:nodoc:
       super()
