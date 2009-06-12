@@ -51,12 +51,16 @@ For example:
     attr_reader :current_url
     attr_reader :elements
 
-    def initialize(context = nil) #:nodoc:
+    def_delegators :@adapter, :response, :response_code, :response_body,
+      :response_body=, :response_code=,
+      :get, :post, :put, :delete
+
+    def initialize(adapter=nil)
       @http_method     = :get
       @data            = {}
       @default_headers = {}
       @custom_headers  = {}
-      @context         = context
+      @adapter         = adapter
 
       reset
     end

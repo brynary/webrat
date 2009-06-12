@@ -87,6 +87,8 @@ describe Webrat::RailsSession do
   end
 
   it "should accept an ActiveRecord argument to #within and translate to a selector using dom_id" do
+    pending "Move this to spec/public/within_spec.rb"
+
     body = <<-HTML
       <a href="/page1">Edit</a>
       <div id="new_object">

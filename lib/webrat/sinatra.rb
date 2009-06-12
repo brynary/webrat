@@ -2,15 +2,12 @@ require "webrat/rack"
 require "sinatra/test"
 
 module Webrat
-  class SinatraSession < Session
+  class SinatraSession
     include Sinatra::Test
 
-    attr_reader :request, :response
-
-    def initialize(context = nil)
-      super(context)
-
+    def initialize(context)
       app = context.respond_to?(:app) ? context.app : Sinatra::Application
+
       @browser = Sinatra::TestHarness.new(app)
     end
 
@@ -32,7 +29,7 @@ module Webrat
     end
 
     def response_code
-      @browser.status
+      @browser.response.status
     end
 
     private

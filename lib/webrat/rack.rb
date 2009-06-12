@@ -3,10 +3,13 @@ require "rack/test"
 Rack::Test::DEFAULT_HOST.replace("www.example.com")
 
 module Webrat
-  class RackSession < Session
-    def initialize(rack_test_session) #:nodoc:
-      super()
-      @rack_test_session = rack_test_session
+  class RackSession
+    extend Forwardable
+
+    def_delegators :@session, :get, :post, :put, :delete
+
+    def initialize(session) #:nodoc:
+      @session = session
     end
 
     def response_body
@@ -18,17 +21,7 @@ module Webrat
     end
 
     def response
-      @rack_test_session.last_response
-    end
-
-  protected
-
-    def process_request(http_method, url, data = {}, headers = {})
-      headers ||= {}
-      data    ||= {}
-
-      env = headers.merge(:params => data, :method => http_method.to_s.upcase)
-      @rack_test_session.request(url, env)
+      @session.last_response
     end
   end
 end
