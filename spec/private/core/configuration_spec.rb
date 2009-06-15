@@ -1,9 +1,19 @@
 require File.expand_path(File.dirname(__FILE__) + "/../../spec_helper")
 
 describe Webrat::Configuration do
-  predicate_matchers[:parse_with_nokogiri]  = :parse_with_nokogiri?
-  predicate_matchers[:open_error_files]     = :open_error_files?
-
+  
+  Spec::Matchers.define :parse_with_nokogiri do
+    match do |config|
+      config.parse_with_nokogiri?
+    end
+  end
+  
+  Spec::Matchers.define :open_error_files do
+    match do |config|
+      config.open_error_files?
+    end
+  end
+  
   it "should have a mode" do
     Webrat.configuration.should respond_to(:mode)
   end
