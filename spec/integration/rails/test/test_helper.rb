@@ -2,10 +2,10 @@ ENV["RAILS_ENV"] = "test"
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'test_help'
 
-begin
-  require "redgreen"
-rescue MissingSourceFile
-end
+# begin
+#   require "redgreen"
+# rescue MissingSourceFile
+# end
 
 require File.dirname(__FILE__) + "/../../../../lib/webrat"
 
