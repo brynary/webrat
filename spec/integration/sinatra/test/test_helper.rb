@@ -1,6 +1,6 @@
 require "rubygems"
 require "test/unit"
-require "redgreen"
+# require "redgreen"
 
 require File.dirname(__FILE__) + "/../../../../lib/webrat"
 
