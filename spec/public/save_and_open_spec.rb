@@ -17,7 +17,9 @@ describe "save_and_open_page" do
 
     File.stub!(:exist? => true)
     Time.stub!(:now => 1234)
-    webrat_session.stub!(:open_in_browser)
+
+    require "launchy"
+    Launchy::Browser.stub!(:run)
 
     @file_handle = mock("file handle")
     File.stub!(:open).with(filename, 'w').and_yield(@file_handle)
@@ -48,9 +50,17 @@ describe "save_and_open_page" do
     save_and_open_page
   end
 
-  it "should open the temp file in a browser" do
-    webrat_session.should_receive(:open_in_browser).with(filename)
+  it "should open the temp file in a browser with Launchy" do
+    Launchy::Browser.should_receive(:run)
     save_and_open_page
+  end
+
+  it "should fail gracefully if Launchy is not available" do
+    Launchy::Browser.should_receive(:run).and_raise(LoadError)
+
+    lambda do
+      save_and_open_page
+    end.should_not raise_error
   end
 
   def filename

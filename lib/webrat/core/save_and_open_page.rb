@@ -18,12 +18,10 @@ module Webrat
     end
 
     def open_in_browser(path) # :nodoc
-      platform = ruby_platform
-      if platform =~ /cygwin/ || platform =~ /win32/
-        `rundll32 url.dll,FileProtocolHandler #{path.gsub("/", "\\\\")}`
-      elsif platform =~ /darwin/
-        `open #{path}`
-      end
+      require "launchy"
+      Launchy::Browser.run(path)
+    rescue LoadError
+      warn "Sorry, you need to install launchy to open pages: `gem install launchy`"
     end
 
     def rewrite_css_and_image_references(response_html) # :nodoc:

@@ -8,6 +8,7 @@
 
 * Minor enhancements
 
+  * Use Launchy to handle opening pages in the browser with cross-platform compatibility (Bryan Helmkamp)
   * Added support for field_labeled_locators ending in non word characters
     lh 148 (Zach Dennis)
   * Filled in tests on click link lh 195 (diabolo)
