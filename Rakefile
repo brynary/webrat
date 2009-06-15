@@ -2,6 +2,7 @@
 require "rake/gempackagetask"
 require 'rake/rdoctask'
 require "rake/clean"
+gem "rspec", "1.2.6"
 require 'spec'
 require 'spec/rake/spectask'
 require 'spec/rake/verify_rcov'
