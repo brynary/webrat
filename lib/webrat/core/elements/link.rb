@@ -1,5 +1,6 @@
-require "webrat/core_extensions/blank"
+require "English"
 
+require "webrat/core_extensions/blank"
 require "webrat/core/elements/element"
 
 module Webrat
@@ -53,7 +54,7 @@ module Webrat
     def authenticity_token
       return unless onclick && onclick.include?("s.setAttribute('name', 'authenticity_token');") &&
         onclick =~ /s\.setAttribute\('value', '([a-f0-9]{40})'\);/
-      $~.captures.first
+      $LAST_MATCH_INFO.captures.first
     end
 
     def onclick
