@@ -17,10 +17,10 @@ class WebratRackTest < Test::Unit::TestCase
     assert_equal "/", last_request.env["PATH_INFO"]
   end
 
-  def test_redirects
-    visit "/redirect_absolute_url"
-    assert_equal "spam", response_body
-  end
+  # def test_redirects
+  #   visit "/redirect_absolute_url"
+  #   assert_equal "spam", response_body
+  # end
 
   def test_assertions_after_visit
     visit "/"
