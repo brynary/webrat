@@ -2,6 +2,7 @@
 
 * Major enhancements
 
+  * Ruby 1.9 compatibility (Michael Fellinger, Jakub Kuźma)
   * Improve performance (~2x) on JRuby by supporting Nokogiri
   * Added support for external app servers in selenium mode (basically don't start one) (Mike Gaffney)
   * Added support for uploading files for Merb (Ryan Carver)
@@ -27,7 +28,6 @@
 * Bug fixes
 
   * Translate CSS and image paths with single quotes in save_and_open_page (Erin Staniland)
-  * Ruby 1.9 compatibility: Avoid calling #to_s on Arrays (Jakub Kuźma)
 
 == 0.4.4 / 2009-04-06
 
