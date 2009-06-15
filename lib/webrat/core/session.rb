@@ -144,7 +144,7 @@ For example:
     end
 
     def redirect? #:nodoc:
-      response_code / 100 == 3
+      (response_code / 100).to_i == 3
     end
 
     def internal_redirect?
