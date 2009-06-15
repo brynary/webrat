@@ -53,7 +53,7 @@ module Webrat
     def authenticity_token
       return unless onclick && onclick.include?("s.setAttribute('name', 'authenticity_token');") &&
         onclick =~ /s\.setAttribute\('value', '([a-f0-9]{40})'\);/
-      $LAST_MATCH_INFO.captures.first
+      $~.captures.first
     end
 
     def onclick

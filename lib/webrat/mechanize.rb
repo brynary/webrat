@@ -67,7 +67,7 @@ module Webrat #:nodoc:
         else
           current_path.split("/")[0..(-1 - levels_up)].join("/")
         end
-        descendent = url.split("/")[levels_up..-1]
+        descendent = url.split("/")[levels_up..-1].join
         "#{ancestor}/#{descendent}"
       end
   end
