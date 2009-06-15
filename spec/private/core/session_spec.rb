@@ -106,6 +106,24 @@ describe Webrat::Session do
       webrat_session = Webrat::Session.new
     end
 
+    it "should return true if the last response was a redirect and Fixnum#/ returns a Rational" do
+      # This happens if the ruby-units gem has been required
+      Fixnum.class_eval do
+        alias_method :original_divide, "/".to_sym
+
+        def /(other)
+          Rational(self, other)
+        end
+      end
+
+      webrat_session.stub!(:response_code => 301)
+      webrat_session.redirect?.should be_true
+
+      Fixnum.class_eval do
+        alias_method "/".to_sym, :original_divide
+      end
+    end
+
     it "should return true if the last response was a redirect" do
       webrat_session.stub!(:response_code => 301)
       webrat_session.redirect?.should be_true
