@@ -90,32 +90,43 @@ desc "Run everything against multiruby"
 task :multiruby do
   result = system "multiruby -S rake spec"
   raise "Multiruby tests failed" unless result
+  result = system "jruby -S rake spec"
+  raise "JRuby tests failed" unless result
 
   Dir.chdir "spec/integration/rails" do
     result = system "multiruby -S rake test_unit:rails"
+    raise "Rails integration tests failed" unless result
+
+    result = system "jruby -S rake test_unit:rails"
     raise "Rails integration tests failed" unless result
   end
 
   Dir.chdir "spec/integration/merb" do
     result = system "multiruby -S rake spec"
     raise "Merb integration tests failed" unless result
+
+    result = system "jruby -S rake spec"
+    raise "Rails integration tests failed" unless result
   end
 
   Dir.chdir "spec/integration/sinatra" do
     result = system "multiruby -S rake test"
+    raise "Sinatra integration tests failed" unless result
+
+    result = system "jruby -S rake test"
     raise "Sinatra integration tests failed" unless result
   end
 
   Dir.chdir "spec/integration/rack" do
     result = system "multiruby -S rake test"
     raise "Rack integration tests failed" unless result
-  end
-end
 
-desc "Run specs using jruby"
-task "spec:jruby" do
-  result = system "jruby -S rake spec"
-  raise "JRuby tests failed" unless result
+    result = system "jruby -S rake test"
+    raise "Rack integration tests failed" unless result
+  end
+
+  puts
+  puts "Multiruby OK!"
 end
 
 desc "Run each spec in isolation to test for dependency issues"
@@ -182,8 +193,6 @@ namespace :spec do
 end
 
 task :default => :spec
-
-task :precommit => ["spec", "spec:jruby", "spec:integration"]
 
 desc 'Removes trailing whitespace'
 task :whitespace do
