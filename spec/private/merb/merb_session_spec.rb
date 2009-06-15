@@ -22,6 +22,25 @@ describe Webrat::MerbSession do
     end
   end
 
+  %w{post put}.each do |request_method|
+    it "should call do request with method #{request_method.upcase} with a file attachment" do
+      session = Webrat::MerbSession.new
+      response = OpenStruct.new
+      response.status = 200
+
+      file = File.new(__FILE__)
+      session.should_receive(:request).with { |path, env|
+        path.should == "url"
+        env[:method].should == request_method.upcase
+        env[:headers].should be_nil
+        env[:input].should be_an_instance_of(StringIO)
+        env["CONTENT_LENGTH"].should be_an_instance_of(Fixnum)
+        env["CONTENT_TYPE"].should match(/multipart.*boundary/)
+      }.and_return(response)
+      session.send(request_method, 'url', { :file => file }, nil)
+    end
+  end
+
   context "a session with a response" do
     before do
       @session = Webrat::MerbSession.new

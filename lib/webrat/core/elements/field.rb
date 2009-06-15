@@ -359,10 +359,16 @@ module Webrat
   protected
 
     def test_uploaded_file
-      if content_type
-        ActionController::TestUploadedFile.new(@value, content_type)
-      else
-        ActionController::TestUploadedFile.new(@value)
+      case Webrat.configuration.mode
+      when :rails
+        if content_type
+          ActionController::TestUploadedFile.new(@value, content_type)
+        else
+          ActionController::TestUploadedFile.new(@value)
+        end
+      when :merb
+        # TODO: support content_type
+        File.new(@value)
       end
     end
 
