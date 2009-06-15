@@ -8,6 +8,7 @@
 
 * Minor enhancements
 
+  * Make redirect detection work in the face of rational maths (like when ruby-units is active) (Piers Cawley)
   * Use Launchy to handle opening pages in the browser with cross-platform compatibility (Bryan Helmkamp)
   * Added support for field_labeled_locators ending in non word characters
     lh 148 (Zach Dennis)
