@@ -86,6 +86,32 @@ task :docs => :clobber_docs do
   system "hanna --title 'Webrat #{Webrat::VERSION} API Documentation'"
 end
 
+desc "Run everything against multiruby"
+task :multiruby do
+  result = system "multiruby -S rake spec"
+  raise "Multiruby tests failed" unless result
+
+  Dir.chdir "spec/integration/rails" do
+    result = system "multiruby -S rake test_unit:rails"
+    raise "Rails integration tests failed" unless result
+  end
+
+  Dir.chdir "spec/integration/merb" do
+    result = system "multiruby -S rake spec"
+    raise "Merb integration tests failed" unless result
+  end
+
+  Dir.chdir "spec/integration/sinatra" do
+    result = system "multiruby -S rake test"
+    raise "Sinatra integration tests failed" unless result
+  end
+
+  Dir.chdir "spec/integration/rack" do
+    result = system "multiruby -S rake test"
+    raise "Rack integration tests failed" unless result
+  end
+end
+
 desc "Run specs using jruby"
 task "spec:jruby" do
   result = system "jruby -S rake spec"
@@ -144,7 +170,7 @@ namespace :spec do
         raise "Sinatra integration tests failed" unless result
       end
     end
-    
+
     desc "Run the Sinatra integration specs"
     task :rack do
       Dir.chdir "spec/integration/rack" do
