@@ -1,3 +1,5 @@
+require "webrat/selenium/application_servers/base"
+
 module Webrat
   module Selenium
     module ApplicationServers

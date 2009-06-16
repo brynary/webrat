@@ -1,3 +1,5 @@
+require "webrat/selenium/silence_stream"
+
 module Webrat
   module Selenium
     module ApplicationServers
@@ -25,9 +27,9 @@ module Webrat
         def wait_for_socket
           silence_stream(STDOUT) do
             TCPSocket.wait_for_service_with_timeout \
-            :host     => Webrat.configuration.application_address,
-            :port     => Webrat.configuration.application_port.to_i,
-            :timeout  => 30 # seconds
+              :host     => "0.0.0.0",
+              :port     => Webrat.configuration.application_port.to_i,
+              :timeout  => 30 # seconds
           end
           rescue SocketError
           fail
