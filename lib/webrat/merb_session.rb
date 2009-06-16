@@ -4,19 +4,17 @@ require "cgi"
 gem "extlib"
 require "extlib"
 require "merb-core"
-
-begin
-  # Require Merb::Test::MultipartRequestHelper with multipart support.
-  require "merb-core/two-oh"
-rescue LoadError => e
-  # Maybe Merb got rid of this. We'll do more checking for multiparth support.
-end
+require "webrat/merb_multipart_support"
 
 # HashWithIndifferentAccess = Mash
 
 module Webrat
   class MerbSession < Session #:nodoc:
     include Merb::Test::MakeRequest
+
+    # Include Webrat's own version of multipart_post/put because the officially
+    # supported methods in Merb don't perform the request correctly.
+    include MerbMultipartSupport
 
     attr_accessor :response
 
@@ -44,13 +42,11 @@ module Webrat
       @response.status
     end
 
-    include Merb::Test::MultipartRequestHelper
-
     def do_request(url, data, headers, method)
-      if method == "POST" && supports_multipart? && has_file?(data)
+      if method == "POST" && has_file?(data)
         @response = multipart_post(url, data, :headers => headers)
 
-      elsif method == "PUT" && supports_multipart? && has_file?(data)
+      elsif method == "PUT" && has_file?(data)
         @response = multipart_put(url, data, :headers => headers)
 
       else
@@ -62,13 +58,6 @@ module Webrat
     end
 
     protected
-
-      # multipart_post and multipart_put which use request to do their
-      # business through multipart_request. Older implementations of
-      # multipart_post and multipart_put use the controller directly.
-      def supports_multipart?
-        respond_to?(:multipart_request)
-      end
 
       # Recursively search the data for a file attachment.
       def has_file?(data)
