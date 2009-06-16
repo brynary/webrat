@@ -24,6 +24,7 @@
   * Adding fix for have_selector and have_xpath in descendent blocks lh234 (Thomas Jack)
   * Adding fix for fields with labels with special characters (Thomas Jack, Mike Gaffney, Bryan Hemlkamp)
   * Deprecated current_page lh50 (Mike Gaffney)
+  * Fixed issue with redirects and multiple hosts lh168 (Mutwin Kraus)
 
 * Bug fixes
 
