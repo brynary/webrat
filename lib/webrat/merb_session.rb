@@ -1,12 +1,6 @@
 require "webrat"
-
-require "cgi"
-gem "extlib"
-require "extlib"
 require "merb-core"
 require "webrat/merb_multipart_support"
-
-# HashWithIndifferentAccess = Mash
 
 module Webrat
   class MerbSession < Session #:nodoc:
@@ -82,11 +76,5 @@ module Merb #:nodoc:
         @_webrat_session.response = @_webrat_session.request(uri, env)
       end
     end
-  end
-end
-
-class Merb::Test::RspecStory #:nodoc:
-  def browser
-    @browser ||= Webrat::MerbSession.new
   end
 end
