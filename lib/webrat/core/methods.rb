@@ -20,12 +20,7 @@ module Webrat
     end
 
     def webrat_adapter
-      @_webrat_adapter ||=
-        if Webrat.configuration.mode == :rack
-          Webrat::RackSession.new(rack_test_session)
-        else
-          Webrat.session_class.new(self)
-        end
+      @_webrat_adapter ||= Webrat.session_class.new(self)
     end
 
     # all of these methods delegate to the @session, which should
