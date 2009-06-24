@@ -4,6 +4,7 @@ require "rack/test"
 # require "redgreen"
 
 require File.dirname(__FILE__) + "/../../../../lib/webrat"
+require File.dirname(__FILE__) + "/../app"
 
 Webrat.configure do |config|
   config.mode = :rack
@@ -13,6 +14,7 @@ class Test::Unit::TestCase
   include Rack::Test::Methods
   include Webrat::Methods
   include Webrat::Matchers
+  include Webrat::HaveTagMatcher
 
   def app
     Rack::Builder.new {
