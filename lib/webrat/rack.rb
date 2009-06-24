@@ -1,6 +1,7 @@
+require "rack/test"
+
 module Webrat
   class RackSession < Session
-
     def initialize(rack_test_session) #:nodoc:
       super()
       @rack_test_session = rack_test_session
@@ -27,6 +28,5 @@ module Webrat
       env = headers.merge(:params => data, :method => http_method.to_s.upcase)
       @rack_test_session.request(url, env)
     end
-
   end
 end
