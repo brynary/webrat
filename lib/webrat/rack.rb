@@ -1,5 +1,7 @@
 require "rack/test"
 
+Rack::Test::DEFAULT_HOST.replace("www.example.com")
+
 module Webrat
   class RackSession < Session
     def initialize(rack_test_session) #:nodoc:
