@@ -87,10 +87,8 @@ module Webrat
         parse_rails_request_params("#{name}=#{escaped_value}")
       when :merb
         ::Merb::Parse.query("#{name}=#{escaped_value}")
-      when :mechanize
-        { name => value }
       else
-        { name => escaped_value }
+        { name => value }
       end
     end
 

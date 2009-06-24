@@ -8,15 +8,15 @@ class WebratRackTest < Test::Unit::TestCase
      assert_have_tag("form[@method='post'][@action='/go']")
   end
 
-  # def test_submits_form
-  #   visit "/go"
-  #   fill_in "Name", :with => "World"
-  #   fill_in "Email", :with => "world@example.org"
-  #   click_button "Submit"
-  #
-  #   assert_contain "Hello, World"
-  #   assert_contain "Your email is: world@example.org"
-  # end
+  def test_submits_form
+    visit "/go"
+    fill_in "Name", :with => "World"
+    fill_in "Email", :with => "world@example.org"
+    click_button "Submit"
+
+    assert_contain "Hello, World"
+    assert_contain "Your email is: world@example.org"
+  end
 
   def test_check_value_of_field
     visit "/"
