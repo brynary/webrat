@@ -11,11 +11,6 @@ Webrat.configure do |config|
 end
 
 class Test::Unit::TestCase
-  include Rack::Test::Methods
-  include Webrat::Methods
-  include Webrat::Matchers
-  include Webrat::HaveTagMatcher
-
   def app
     Rack::Builder.new {
       use Rack::Lint

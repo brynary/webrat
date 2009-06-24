@@ -1,6 +1,11 @@
 require File.dirname(__FILE__) + "/helper"
 
 class WebratRackTest < Test::Unit::TestCase
+  include Rack::Test::Methods
+  include Webrat::Methods
+  include Webrat::Matchers
+  include Webrat::HaveTagMatcher
+
   def test_visits_pages
      visit "/"
      click_link "there"
@@ -36,5 +41,18 @@ class WebratRackTest < Test::Unit::TestCase
   def test_absolute_url_redirect
     visit "/absolute_redirect"
     assert_contain "spam"
+  end
+end
+
+class WebratRackSetupTest < Test::Unit::TestCase
+  def test_usable_without_mixin
+    rack_test_session = Rack::Test::Session.new(app)
+    adapter = Webrat::RackSession.new(rack_test_session)
+    session = Webrat::Session.new(adapter)
+
+    session.visit "/foo"
+
+    assert_equal "spam", session.response_body
+    assert_equal "spam", rack_test_session.last_response.body
   end
 end
