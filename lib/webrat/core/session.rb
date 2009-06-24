@@ -18,14 +18,17 @@ module Webrat
       RailsSession
     when :merb
       MerbSession
+    when :rack
+      RackSession
+    when :sinatra
+      warn("The :sinatra mode is deprecated. Please use :rack instead")
+      SinatraSession
     when :selenium
       SeleniumSession
     when :sinatra
       SinatraSession
     when :mechanize
       MechanizeSession
-    when :rack
-      RackSession
     else
       raise WebratError.new(<<-STR)
 Unknown Webrat mode: #{Webrat.configuration.mode.inspect}
