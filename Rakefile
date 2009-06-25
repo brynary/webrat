@@ -30,6 +30,7 @@ spec = Gem::Specification.new do |s|
 
   # Dependencies
   s.add_dependency "nokogiri", ">= 1.2.0"
+  s.add_dependency "rack", ">= 1.0"
 
   s.rubyforge_project = "webrat"
 end
