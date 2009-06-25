@@ -62,6 +62,11 @@ describe Webrat::Session do
     it "should raise an error if a symbol Mime type is passed that does not exist" do
       lambda { webrat_session.http_accept(:oogabooga) }.should raise_error(ArgumentError)
     end
+
+    it "should recognize a couple of webrat-specific formats" do
+      webrat_session.http_accept(:multipart_form).should == "multipart/form-data"
+      webrat_session.http_accept(:url_encoded_form).should == "application/x-www-form-urlencoded"
+    end
   end
 
   describe "#request_page" do
