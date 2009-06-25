@@ -363,10 +363,7 @@ module Webrat
         else
           ActionController::TestUploadedFile.new(@value)
         end
-      when :merb
-        # TODO: support content_type
-        File.new(@value)
-      when :rack
+      when :rack, :merb
         Rack::Test::UploadedFile.new(@value, content_type)
       end
     end

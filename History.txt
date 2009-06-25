@@ -1,3 +1,9 @@
+== Git
+
+* Minor enhancements
+
+  * Update the Merb support to be based directly on Rack (Simon Rozet)
+
 == 0.5.1 / 2009-08-18
 
 * Minor enhancements
