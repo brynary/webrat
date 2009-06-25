@@ -366,6 +366,8 @@ module Webrat
       when :merb
         # TODO: support content_type
         File.new(@value)
+      when :rack
+        Rack::Test::UploadedFile.new(@value, content_type)
       end
     end
 
