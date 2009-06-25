@@ -20,6 +20,10 @@ module Webrat
       MerbSession
     when :rack
       RackSession
+    when :rack_test
+      warn("The :rack_test mode is deprecated. Please use :rack instead")
+      require "webrat/rack"
+      RackSession
     when :sinatra
       warn("The :sinatra mode is deprecated. Please use :rack instead")
       SinatraSession
