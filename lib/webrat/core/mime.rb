@@ -1,5 +1,3 @@
-require "rack/mime"
-
 module Webrat #:nodoc:
   module MIME #:nodoc:
     MIME_TYPES = Rack::Mime::MIME_TYPES.dup.merge(
