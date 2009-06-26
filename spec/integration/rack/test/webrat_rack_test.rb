@@ -6,6 +6,10 @@ class WebratRackTest < Test::Unit::TestCase
   include Webrat::Matchers
   include Webrat::HaveTagMatcher
 
+  def build_rack_mock_session
+    Rack::MockSession.new(app, "www.example.com")
+  end
+
   def test_visits_pages
      visit "/"
      click_link "there"
@@ -46,7 +50,7 @@ end
 
 class WebratRackSetupTest < Test::Unit::TestCase
   def test_usable_without_mixin
-    rack_test_session = Rack::Test::Session.new(app)
+    rack_test_session = Rack::Test::Session.new(Rack::MockSession.new(app))
     adapter = Webrat::RackSession.new(rack_test_session)
     session = Webrat::Session.new(adapter)
 
