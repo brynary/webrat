@@ -9,6 +9,8 @@
 
 * Minor enhancements
 
+  * Upgrade to selenium-client to 1.2.16 (Brian Landau)
+  * Upgrade selenium-server.jar to 1.0.1 (Brian Landau)
   * Make redirect detection work in the face of rational maths (like when ruby-units is active) (Piers Cawley)
   * Use Launchy to handle opening pages in the browser with cross-platform compatibility (Bryan Helmkamp)
   * Added support for field_labeled_locators ending in non word characters
