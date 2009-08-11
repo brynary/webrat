@@ -34,7 +34,7 @@ module Webrat
 
         @remote_control = ::Selenium::RemoteControl::RemoteControl.new("0.0.0.0",
                                                                        Webrat.configuration.selenium_server_port,
-                                                                       Webrat.configuration.selenium_browser_startup_timeout)
+                                                                       :timeout => Webrat.configuration.selenium_browser_startup_timeout)
         @remote_control.jar_file = jar_path
 
         return @remote_control
@@ -74,7 +74,9 @@ module Webrat
 
       def stop
         silence_stream(STDOUT) do
-          ::Selenium::RemoteControl::RemoteControl.new("0.0.0.0", Webrat.configuration.selenium_server_port, 5).stop
+          ::Selenium::RemoteControl::RemoteControl.new("0.0.0.0", 
+                                                       Webrat.configuration.selenium_server_port, 
+                                                       :timeout => 5).stop
         end
       end
 

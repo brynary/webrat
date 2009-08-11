@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + "/../../spec_helper")
 
 module Webrat
   describe Field do
-    unless Webrat.on_java?
+    unless RUBY_PLATFORM =~ /java/
       it "should have nice inspect output" do
         html = <<-HTML
           <html>

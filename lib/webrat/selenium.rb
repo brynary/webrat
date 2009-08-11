@@ -1,5 +1,4 @@
 require "webrat"
-gem "selenium-client", ">=1.2.14"
 require "selenium/client"
 require "webrat/selenium/silence_stream"
 require "webrat/selenium/selenium_session"
