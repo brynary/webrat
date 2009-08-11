@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
      "MIT-LICENSE.txt",
      "README.rdoc",
      "Rakefile",
+     "VERSION",
      "install.rb",
      "lib/webrat.rb",
      "lib/webrat/core.rb",
@@ -225,7 +226,8 @@ Gem::Specification.new do |s|
      "spec/rcov.opts",
      "spec/spec.opts",
      "spec/spec_helper.rb",
-     "vendor/selenium-server.jar"
+     "vendor/selenium-server.jar",
+     "webrat.gemspec"
   ]
   s.homepage = %q{http://github.com/brynary/webrat}
   s.rdoc_options = ["--charset=UTF-8"]
