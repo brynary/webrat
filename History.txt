@@ -1,3 +1,9 @@
+== Git
+
+* Minor enhancements
+
+  * Don't require rubygems at runtime (Simon Rozet)
+
 == 0.4.5 / 2009-08-10
 
 * Major enhancements
