@@ -1,5 +1,9 @@
 == Git
 
+* Major enhancements
+
+  * Depreacate :rack_test and :sinatra in favor of :rack, which uses Rack::Test (Simon Rozet)
+
 * Minor enhancements
 
   * Don't require rubygems at runtime (Simon Rozet)
