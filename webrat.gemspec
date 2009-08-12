@@ -10,6 +10,12 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Bryan Helmkamp"]
   s.date = %q{2009-08-12}
+  s.description = %q{Webrat lets you quickly write expressive and robust acceptance tests
+for a Ruby web application. It supports simulating a browser inside
+a Ruby process to avoid the performance hit and browser dependency of
+Selenium or Watir, but the same API can also be used to drive real
+Selenium tests when necessary (eg. for testing AJAX interactions).
+Most Ruby web frameworks and testing frameworks are supported.}
   s.email = %q{bryan@brynary.com}
   s.extra_rdoc_files = [
     "History.txt",

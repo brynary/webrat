@@ -7,7 +7,14 @@ begin
     s.email     = "bryan" + "@" + "brynary.com"
     s.homepage  = "http://github.com/brynary/webrat"
     s.summary   = "Ruby Acceptance Testing for Web applications"
-    # s.description  = "TODO"
+    s.description  = <<-EOS.strip
+Webrat lets you quickly write expressive and robust acceptance tests
+for a Ruby web application. It supports simulating a browser inside
+a Ruby process to avoid the performance hit and browser dependency of
+Selenium or Watir, but the same API can also be used to drive real
+Selenium tests when necessary (eg. for testing AJAX interactions).
+Most Ruby web frameworks and testing frameworks are supported.
+    EOS
 
     s.rubyforge_project = "webrat"
     s.extra_rdoc_files = %w[README.rdoc MIT-LICENSE.txt History.txt]
