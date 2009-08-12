@@ -56,13 +56,13 @@ describe "contain" do
       it "should throw an exception when the body doesnt contain the text" do
         lambda {
           assert_contain("monkeys")
-        }.should raise_error(Test::Unit::AssertionFailedError)
+        }.should raise_error(AssertionFailedError)
       end
 
       it "should throw an exception when the body doesnt contain the regexp" do
         lambda {
           assert_contain(/monkeys/)
-        }.should raise_error(Test::Unit::AssertionFailedError)
+        }.should raise_error(AssertionFailedError)
       end
     end
 
@@ -78,13 +78,13 @@ describe "contain" do
       it "should throw an exception when the body does contain the text" do
         lambda {
           assert_not_contain("hello, world")
-        }.should raise_error(Test::Unit::AssertionFailedError)
+        }.should raise_error(AssertionFailedError)
       end
 
       it "should throw an exception when the body does contain the regexp" do
         lambda {
           assert_not_contain(/hello, world/)
-        }.should raise_error(Test::Unit::AssertionFailedError)
+        }.should raise_error(AssertionFailedError)
       end
     end
   end
