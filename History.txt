@@ -1,4 +1,4 @@
-== Git
+== 0.5.0 / 2009-08-12
 
 * Major enhancements
 
