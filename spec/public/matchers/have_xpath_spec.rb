@@ -117,7 +117,7 @@ describe "have_xpath" do
       it "should throw an exception when the body doesnt have matching xpath" do
         lambda {
           assert_have_xpath("//p")
-        }.should raise_error(Test::Unit::AssertionFailedError)
+        }.should raise_error(AssertionFailedError)
       end
     end
 
@@ -129,7 +129,7 @@ describe "have_xpath" do
       it "should throw an exception when the body does contain the xpath" do
         lambda {
           assert_have_no_xpath("//div")
-        }.should raise_error(Test::Unit::AssertionFailedError)
+        }.should raise_error(AssertionFailedError)
       end
     end
   end
