@@ -7,7 +7,8 @@ require 'test_help'
 # rescue MissingSourceFile
 # end
 
-require File.dirname(__FILE__) + "/../../../../lib/webrat"
+$LOAD_PATH.unshift File.dirname(__FILE__) + "/../../../../lib"
+require "webrat"
 
 Webrat.configure do |config|
   config.mode = ENV['WEBRAT_INTEGRATION_MODE'].to_sym

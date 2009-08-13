@@ -3,7 +3,8 @@ require "test/unit"
 require "rack/test"
 # require "redgreen"
 
-require File.dirname(__FILE__) + "/../../../../lib/webrat"
+$LOAD_PATH.unshift File.dirname(__FILE__) + "/../../../../lib"
+require "webrat"
 require File.dirname(__FILE__) + "/../app"
 
 Webrat.configure do |config|

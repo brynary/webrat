@@ -62,7 +62,7 @@ end
 class WebratRackSetupTest < Test::Unit::TestCase
   def test_usable_without_mixin
     rack_test_session = Rack::Test::Session.new(Rack::MockSession.new(app))
-    adapter = Webrat::RackSession.new(rack_test_session)
+    adapter = Webrat::RackAdapter.new(rack_test_session)
     session = Webrat::Session.new(adapter)
 
     session.visit "/foo"

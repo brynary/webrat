@@ -1,7 +1,7 @@
 require "rack/test"
 
 module Webrat
-  class RackSession
+  class RackAdapter
     extend Forwardable
 
     def_delegators :@session, :get, :post, :put, :delete

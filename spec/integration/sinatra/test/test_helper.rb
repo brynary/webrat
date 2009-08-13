@@ -2,7 +2,8 @@ require "rubygems"
 require "test/unit"
 # require "redgreen"
 
-require File.dirname(__FILE__) + "/../../../../lib/webrat"
+$LOAD_PATH.unshift File.dirname(__FILE__) + "/../../../../lib"
+require "webrat"
 
 Webrat.configure do |config|
   config.mode = :sinatra

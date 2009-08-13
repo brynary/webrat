@@ -19,11 +19,11 @@ module Webrat
     when :merb
       MerbSession
     when :rack
-      RackSession
+      RackAdapter
     when :rack_test
       warn("The :rack_test mode is deprecated. Please use :rack instead")
       require "webrat/rack"
-      RackSession
+      RackAdapter
     when :sinatra
       warn("The :sinatra mode is deprecated. Please use :rack instead")
       SinatraSession
