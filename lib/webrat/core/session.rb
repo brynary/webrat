@@ -21,7 +21,7 @@ module Webrat
     when :rails
       RailsSession
     when :merb
-      MerbSession
+      MerbAdapter
     when :rack
       RackAdapter
     when :rack_test

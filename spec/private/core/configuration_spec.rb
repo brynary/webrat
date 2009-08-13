@@ -68,9 +68,9 @@ describe Webrat::Configuration do
     end
   end
 
-  it "should require merb_session when in merb mode" do
+  it "should require merb_adapter when in merb mode" do
     config = Webrat::Configuration.new
-    config.should_receive(:require).with("webrat/merb_session")
+    config.should_receive(:require).with("webrat/merb_adapter")
     config.mode = :merb
   end
 

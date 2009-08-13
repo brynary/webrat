@@ -3,7 +3,7 @@ require "merb-core"
 require "webrat/merb_multipart_support"
 
 module Webrat
-  class MerbSession #:nodoc:
+  class MerbAdapter #:nodoc:
     include Merb::Test::MakeRequest
 
     # Include Webrat's own version of multipart_post/put because the officially
@@ -74,7 +74,7 @@ module Merb #:nodoc:
   module Test #:nodoc:
     module RequestHelper #:nodoc:
       def request(uri, env = {})
-        @_webrat_session ||= Webrat::MerbSession.new
+        @_webrat_session ||= Webrat::MerbAdapter.new
         @_webrat_session.response = @_webrat_session.request(uri, env)
       end
     end

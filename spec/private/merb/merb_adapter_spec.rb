@@ -2,9 +2,9 @@ require File.expand_path(File.dirname(__FILE__) + "/../../spec_helper")
 
 require "webrat/merb"
 
-describe Webrat::MerbSession do
+describe Webrat::MerbAdapter do
   it "should not pass empty params if data is and empty hash" do
-    session = Webrat::MerbSession.new
+    session = Webrat::MerbAdapter.new
     response = OpenStruct.new
     response.status = 200
     session.should_receive(:request).with('url', {:params=> nil, :method=>"GET", :headers=>nil}).and_return(response)
@@ -13,7 +13,7 @@ describe Webrat::MerbSession do
 
   %w{post put delete}.each do |request_method|
     it "should call do request with method #{request_method.upcase} for a #{request_method} call" do
-      session = Webrat::MerbSession.new
+      session = Webrat::MerbAdapter.new
       response = OpenStruct.new
       response.status = 200
 
@@ -24,7 +24,7 @@ describe Webrat::MerbSession do
 
   %w{post put}.each do |request_method|
     it "should call do request with method #{request_method.upcase} with a file attachment" do
-      session = Webrat::MerbSession.new
+      session = Webrat::MerbAdapter.new
       response = OpenStruct.new
       response.status = 200
 
@@ -43,7 +43,7 @@ describe Webrat::MerbSession do
 
   context "a session with a response" do
     before do
-      @session = Webrat::MerbSession.new
+      @session = Webrat::MerbAdapter.new
       @response = OpenStruct.new
       @response.status = 200
       @response.body = 'test response'
