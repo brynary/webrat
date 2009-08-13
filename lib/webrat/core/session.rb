@@ -13,7 +13,11 @@ module Webrat
   end
 
   def self.session_class
-    Session
+    if Webrat.configuration.mode == :selenium
+      SeleniumSession
+    else
+      Session
+    end
   end
 
   def self.adapter_class
@@ -31,8 +35,6 @@ module Webrat
     when :sinatra
       warn("The :sinatra mode is deprecated. Please use :rack instead")
       SinatraAdapter
-    when :selenium
-      SeleniumSession
     when :mechanize
       MechanizeAdapter
     else
