@@ -3,6 +3,7 @@
 Minor enhancements
 
   * Base Webrat::MIME on Rack::Mime (Simon Rozet)
+  * Support file uploads in Rack mode (Simon Rozet)
 
 == 0.5.0 / 2009-08-12
 
