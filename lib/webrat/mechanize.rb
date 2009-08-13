@@ -1,10 +1,14 @@
 require "mechanize"
 
 module Webrat #:nodoc:
-  class MechanizeAdapter < Session #:nodoc:
+  class MechanizeAdapter #:nodoc:
+    extend Forwardable
 
     attr_accessor :response
     alias :page :response
+
+    def initialize(*args)
+    end
 
     def request_page(url, http_method, data) #:nodoc:
       super(absolute_url(url), http_method, data)
