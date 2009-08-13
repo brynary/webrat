@@ -59,6 +59,9 @@ For example:
     extend Forwardable
     include Logging
     include SaveAndOpenPage
+
+    attr_accessor :adapter
+
     attr_reader :current_url
     attr_reader :elements
 
@@ -66,13 +69,12 @@ For example:
       :response_body=, :response_code=,
       :get, :post, :put, :delete
 
-    def initialize(adapter=nil)
+    def initialize(adapter = nil)
+      @adapter         = adapter
       @http_method     = :get
       @data            = {}
       @default_headers = {}
       @custom_headers  = {}
-      @adapter         = adapter
-
       reset
     end
 
