@@ -113,7 +113,7 @@ end
 
 namespace :spec do
   desc "Run the integration specs"
-  task :integration => ["integration:rails", "integration:merb", "integration:sinatra", "integration:rack"]
+  task :integration => ["integration:rails", "integration:merb", "integration:sinatra", "integration:rack", "integration:mechanize"]
 
   namespace :integration do
     desc "Run the Rails integration specs"
@@ -156,6 +156,14 @@ namespace :spec do
       Dir.chdir "spec/integration/rack" do
         result = system "rake test"
         raise "Rack integration tests failed" unless result
+      end
+    end
+
+    desc "Run the Mechanize integration specs"
+    task :mechanize do
+      Dir.chdir "spec/integration/mechanize" do
+        result = system "rake spec"
+        raise "Mechanize integration tests failed" unless result
       end
     end
   end
