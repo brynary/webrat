@@ -4,6 +4,7 @@ module Webrat
   end
 end
 
+require "rack"
 require "nokogiri"
 require "webrat/core/xml/nokogiri"
 require "webrat/core"
