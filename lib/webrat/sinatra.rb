@@ -1,7 +1,7 @@
 require "webrat/rack"
 
 module Webrat
-  class SinatraSession < RackAdapter
+  class SinatraAdapter < RackAdapter
     def initialize(context)
       app = context.respond_to?(:app) ? context.app : Sinatra::Application
 

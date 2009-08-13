@@ -26,7 +26,7 @@ module Webrat
       RackAdapter
     when :sinatra
       warn("The :sinatra mode is deprecated. Please use :rack instead")
-      SinatraSession
+      SinatraAdapter
     when :selenium
       SeleniumSession
     when :mechanize
