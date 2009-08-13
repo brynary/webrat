@@ -29,8 +29,6 @@ module Webrat
       SinatraSession
     when :selenium
       SeleniumSession
-    when :sinatra
-      SinatraSession
     when :mechanize
       MechanizeSession
     else
