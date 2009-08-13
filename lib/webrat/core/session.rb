@@ -19,7 +19,7 @@ module Webrat
   def self.adapter_class
     case Webrat.configuration.mode
     when :rails
-      RailsSession
+      RailsAdapter
     when :merb
       MerbAdapter
     when :rack
