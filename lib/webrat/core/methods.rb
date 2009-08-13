@@ -20,7 +20,7 @@ module Webrat
     end
 
     def webrat_adapter
-      @_webrat_adapter ||= Webrat.session_class.new(self)
+      @_webrat_adapter ||= Webrat.adapter_class.new(self)
     end
 
     # all of these methods delegate to the @session, which should

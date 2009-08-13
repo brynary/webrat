@@ -1,5 +1,5 @@
 module Webrat #:nodoc:
-  def self.session_class #:nodoc:
+  def self.adapter_class #:nodoc:
     TestSession
   end
 

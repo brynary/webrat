@@ -12,7 +12,7 @@ module Webrat
   class InfiniteRedirectError < WebratError
   end
 
-  def self.session_class
+  def self.adapter_class
     case Webrat.configuration.mode
     when :rails
       RailsSession
