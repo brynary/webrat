@@ -1,11 +1,14 @@
 module Webrat #:nodoc:
   def self.adapter_class #:nodoc:
-    TestSession
+    TestAdapter
   end
 
-  class TestSession < Session #:nodoc:
+  class TestAdapter #:nodoc:
     attr_accessor :response_body
     attr_writer :response_code
+
+    def initialize(*args)
+    end
 
     def doc_root
       File.expand_path(File.join(".", "public"))

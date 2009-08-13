@@ -11,12 +11,6 @@ describe Webrat::MechanizeAdapter do
     @mech = Webrat::MechanizeAdapter.new
   end
 
-  describe "headers method" do
-    it "should return empty headers for a newly initialized session" do
-      @mech.headers.should == {}
-    end
-  end
-
   describe "post" do
     def url
       'http://test.host/users'

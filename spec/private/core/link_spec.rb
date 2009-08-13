@@ -4,7 +4,7 @@ describe Webrat::Link do
 #  include Webrat::Link
 
   before do
-    webrat_session = mock(Webrat::TestSession)
+    webrat_session = mock(Webrat::TestAdapter)
     @link_text_with_nbsp = 'Link' + [0xA0].pack("U") + 'Text'
   end
 
