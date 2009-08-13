@@ -33,6 +33,14 @@ class RackApp < Sinatra::Base
     @email = params[:email]
     erb :hello
   end
+
+  get "/upload" do
+    erb :uploader
+  end
+
+  post "/upload" do
+    params[:uploaded_file].to_yaml
+  end
 end
 
 __END__
@@ -71,3 +79,11 @@ __END__
 @@ hello
 <p>Hello, <%= @user %></p>
 <p>Your email is: <%= @email %></p>
+
+@@ uploader
+<form action="/upload" method="post">
+  <label>
+    File <input type="file" name="uploaded_file" />
+  </label>
+  <input type="submit" value="Upload">
+</form>
