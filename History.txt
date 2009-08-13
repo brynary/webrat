@@ -1,3 +1,9 @@
+== Git
+
+Minor enhancements
+
+  * Base Webrat::MIME on Rack::Mime (Simon Rozet)
+
 == 0.5.0 / 2009-08-12
 
 * Major enhancements
