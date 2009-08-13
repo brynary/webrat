@@ -34,7 +34,7 @@ module Webrat
     when :selenium
       SeleniumSession
     when :mechanize
-      MechanizeSession
+      MechanizeAdapter
     else
       raise WebratError.new(<<-STR)
 Unknown Webrat mode: #{Webrat.configuration.mode.inspect}

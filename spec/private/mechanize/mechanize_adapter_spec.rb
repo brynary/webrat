@@ -2,13 +2,13 @@ require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 require "webrat/mechanize"
 
-describe Webrat::MechanizeSession do
+describe Webrat::MechanizeAdapter do
   before :each do
     Webrat.configuration.mode = :mechanize
   end
 
   before(:each) do
-    @mech = Webrat::MechanizeSession.new
+    @mech = Webrat::MechanizeAdapter.new
   end
 
   describe "headers method" do
@@ -34,13 +34,13 @@ describe Webrat::MechanizeSession do
       mechanize = mock(:mechanize)
       WWW::Mechanize.stub!(:new => mechanize)
       mechanize.should_receive(:post).with(url, flattened_data)
-      Webrat::MechanizeSession.new.post(url, data)
+      Webrat::MechanizeAdapter.new.post(url, data)
     end
   end
 
   describe "#absolute_url" do
     before(:each) do
-      @session = Webrat::MechanizeSession.new
+      @session = Webrat::MechanizeAdapter.new
       @session.stub!(:current_url).and_return(absolute_url)
     end
 
