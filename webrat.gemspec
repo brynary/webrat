@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{webrat}
-  s.version = "0.5.0"
+  s.version = "0.5.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Bryan Helmkamp"]
-  s.date = %q{2009-08-12}
+  s.date = %q{2009-08-18}
   s.description = %q{Webrat lets you quickly write expressive and robust acceptance tests
 for a Ruby web application. It supports simulating a browser inside
 a Ruby process to avoid the performance hit and browser dependency of
@@ -76,8 +76,8 @@ Most Ruby web frameworks and testing frameworks are supported.}
      "lib/webrat/core_extensions/tcp_socket.rb",
      "lib/webrat/mechanize.rb",
      "lib/webrat/merb.rb",
+     "lib/webrat/merb_adapter.rb",
      "lib/webrat/merb_multipart_support.rb",
-     "lib/webrat/merb_session.rb",
      "lib/webrat/rack.rb",
      "lib/webrat/rails.rb",
      "lib/webrat/rspec-rails.rb",
@@ -105,7 +105,12 @@ Most Ruby web frameworks and testing frameworks are supported.}
      "lib/webrat/selenium/selenium_session.rb",
      "lib/webrat/selenium/silence_stream.rb",
      "lib/webrat/sinatra.rb",
-     "spec/fakes/test_session.rb",
+     "spec/fakes/test_adapter.rb",
+     "spec/integration/mechanize/Rakefile",
+     "spec/integration/mechanize/config.ru",
+     "spec/integration/mechanize/sample_app.rb",
+     "spec/integration/mechanize/spec/mechanize_spec.rb",
+     "spec/integration/mechanize/spec/spec_helper.rb",
      "spec/integration/merb/.gitignore",
      "spec/integration/merb/Rakefile",
      "spec/integration/merb/app/controllers/application.rb",
@@ -194,12 +199,12 @@ Most Ruby web frameworks and testing frameworks are supported.}
      "spec/private/core/link_spec.rb",
      "spec/private/core/logging_spec.rb",
      "spec/private/core/session_spec.rb",
-     "spec/private/mechanize/mechanize_session_spec.rb",
+     "spec/private/mechanize/mechanize_adapter_spec.rb",
      "spec/private/merb/attaches_file_spec.rb",
-     "spec/private/merb/merb_session_spec.rb",
+     "spec/private/merb/merb_adapter_spec.rb",
      "spec/private/nokogiri_spec.rb",
      "spec/private/rails/attaches_file_spec.rb",
-     "spec/private/rails/rails_session_spec.rb",
+     "spec/private/rails/rails_adapter_spec.rb",
      "spec/private/selenium/application_servers/rails_spec.rb",
      "spec/public/basic_auth_spec.rb",
      "spec/public/check_spec.rb",
@@ -241,7 +246,10 @@ Most Ruby web frameworks and testing frameworks are supported.}
   s.rubygems_version = %q{1.3.4}
   s.summary = %q{Ruby Acceptance Testing for Web applications}
   s.test_files = [
-    "spec/fakes/test_session.rb",
+    "spec/fakes/test_adapter.rb",
+     "spec/integration/mechanize/sample_app.rb",
+     "spec/integration/mechanize/spec/mechanize_spec.rb",
+     "spec/integration/mechanize/spec/spec_helper.rb",
      "spec/integration/merb/app/controllers/application.rb",
      "spec/integration/merb/app/controllers/exceptions.rb",
      "spec/integration/merb/app/controllers/testing.rb",
@@ -293,12 +301,12 @@ Most Ruby web frameworks and testing frameworks are supported.}
      "spec/private/core/link_spec.rb",
      "spec/private/core/logging_spec.rb",
      "spec/private/core/session_spec.rb",
-     "spec/private/mechanize/mechanize_session_spec.rb",
+     "spec/private/mechanize/mechanize_adapter_spec.rb",
      "spec/private/merb/attaches_file_spec.rb",
-     "spec/private/merb/merb_session_spec.rb",
+     "spec/private/merb/merb_adapter_spec.rb",
      "spec/private/nokogiri_spec.rb",
      "spec/private/rails/attaches_file_spec.rb",
-     "spec/private/rails/rails_session_spec.rb",
+     "spec/private/rails/rails_adapter_spec.rb",
      "spec/private/selenium/application_servers/rails_spec.rb",
      "spec/public/basic_auth_spec.rb",
      "spec/public/check_spec.rb",
@@ -336,10 +344,13 @@ Most Ruby web frameworks and testing frameworks are supported.}
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<nokogiri>, [">= 1.2.0"])
+      s.add_runtime_dependency(%q<rack>, [">= 1.0"])
     else
       s.add_dependency(%q<nokogiri>, [">= 1.2.0"])
+      s.add_dependency(%q<rack>, [">= 1.0"])
     end
   else
     s.add_dependency(%q<nokogiri>, [">= 1.2.0"])
+    s.add_dependency(%q<rack>, [">= 1.0"])
   end
 end
