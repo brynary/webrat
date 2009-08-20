@@ -7,6 +7,9 @@ REMOVED: Support for Hpricot + REXML as an alternative to Nokogiri.
   that Nokogiri works on JRuby, Webrat is going to use it as it's sole
   XML backend.
 
+CHANGED: Due to a reorganization, if you're currently requiring "webrat/rspec-rails",
+  please change your code to require "webrat/integrations/rspec-rails"
+
 * Minor enhancements
 
   * Update the Merb support to be based directly on Rack (Simon Rozet)
