@@ -10,8 +10,6 @@ module Webrat #:nodoc:
         stringlike
       elsif Nokogiri::XML::NodeSet === stringlike
         stringlike
-      elsif StringIO === stringlike
-        Nokogiri::HTML(stringlike.string)
       elsif stringlike.respond_to?(:body)
         Nokogiri::HTML(stringlike.body.to_s)
       else
@@ -26,8 +24,6 @@ module Webrat #:nodoc:
         stringlike
       elsif Nokogiri::XML::NodeSet === stringlike
         stringlike
-      elsif StringIO === stringlike
-        Nokogiri::HTML(stringlike.string)
       elsif stringlike.respond_to?(:body)
         Nokogiri::HTML(stringlike.body.to_s)
       else
@@ -42,8 +38,6 @@ module Webrat #:nodoc:
         stringlike
       elsif Nokogiri::XML::NodeSet === stringlike
         stringlike
-      elsif StringIO === stringlike
-        Nokogiri::XML(stringlike.string)
       elsif stringlike.respond_to?(:body)
         Nokogiri::XML(stringlike.body.to_s)
       else
