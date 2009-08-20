@@ -10,7 +10,7 @@ module Webrat
           </html>
         HTML
 
-        element = Webrat::XML.css_search(Webrat::XML.document(html), "input").first
+        element = Webrat::XML.document(html).css("input").first
         checkbox = CheckboxField.new(nil, element)
         checkbox.inspect.should =~ /#<Webrat::CheckboxField @element=<input type=['"]checkbox['"] checked(=['"]checked['"])?\/?>>/
       end
@@ -25,7 +25,7 @@ module Webrat
         </html>
       HTML
 
-      element = Webrat::XML.css_search(Webrat::XML.document(html), "input").first
+      element = Webrat::XML.document(html).css("input").first
       checkbox = CheckboxField.new(nil, element)
       checkbox.should be_checked
     end
@@ -37,7 +37,7 @@ module Webrat
         </html>
       HTML
 
-      element = Webrat::XML.css_search(Webrat::XML.document(html), "input").first
+      element = Webrat::XML.document(html).css("input").first
       checkbox = CheckboxField.new(nil, element)
       checkbox.should_not be_checked
     end
@@ -51,7 +51,7 @@ module Webrat
         </html>
       HTML
 
-      element = Webrat::XML.css_search(Webrat::XML.document(html), "input").first
+      element = Webrat::XML.document(html).css("input").first
       radio_button = RadioField.new(nil, element)
       radio_button.should be_checked
     end
@@ -61,7 +61,7 @@ module Webrat
         <html><input type='radio' /></html>
       HTML
 
-      element = Webrat::XML.css_search(Webrat::XML.document(html), "input").first
+      element = Webrat::XML.document(html).css("input").first
       radio_button = RadioField.new(nil, element)
       radio_button.should_not be_checked
     end
@@ -77,7 +77,7 @@ module Webrat
         </html>
       HTML
 
-      element    = Webrat::XML.css_search(Webrat::XML.document(html), 'input').first
+      element    = Webrat::XML.document(html).css('input').first
       text_field = TextField.new(nil, element)
       text_field.to_param.should == { 'email' => 'user@example.com' }
     end

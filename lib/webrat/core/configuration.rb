@@ -16,12 +16,9 @@ module Webrat
   # Webrat can be configured using the Webrat.configure method. For example:
   #
   #   Webrat.configure do |config|
-  #     config.parse_with_nokogiri = false
+  #     config.mode = :sinatra
   #   end
   class Configuration
-
-    # Should XHTML be parsed with Nokogiri? Defaults to true, except on JRuby. When false, Hpricot and REXML are used
-    attr_writer :parse_with_nokogiri
 
     # Webrat's mode, set automatically when requiring webrat/rails, webrat/merb, etc.
     attr_reader :mode # :nodoc:
@@ -63,7 +60,6 @@ module Webrat
 
     def initialize # :nodoc:
       self.open_error_files = true
-      self.parse_with_nokogiri = true
       self.application_environment = :test
       self.application_port = 3001
       self.application_address = 'localhost'
@@ -72,10 +68,6 @@ module Webrat
       self.infinite_redirect_limit = 10
       self.selenium_browser_key = '*firefox'
       self.selenium_browser_startup_timeout = 5
-    end
-
-    def parse_with_nokogiri? #:nodoc:
-      @parse_with_nokogiri ? true : false
     end
 
     def open_error_files? #:nodoc:

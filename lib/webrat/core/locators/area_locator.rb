@@ -11,8 +11,8 @@ module Webrat
 
       def area_element
         area_elements.detect do |area_element|
-          Webrat::XML.attribute(area_element, "title") =~ matcher ||
-          Webrat::XML.attribute(area_element, "id") =~ matcher
+          area_element["title"] =~ matcher ||
+          area_element["id"] =~ matcher
         end
       end
 
@@ -21,7 +21,7 @@ module Webrat
       end
 
       def area_elements
-        Webrat::XML.xpath_search(@dom, Area.xpath_search)
+        @dom.xpath(*Area.xpath_search)
       end
 
       def error_message

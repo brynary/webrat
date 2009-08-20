@@ -32,7 +32,7 @@ module Webrat
 
     def self.load(session, element)
       return nil if element.nil?
-      session.elements[Webrat::XML.xpath_to(element)] ||= field_class(element).new(session, element)
+      session.elements[element.path] ||= field_class(element).new(session, element)
     end
 
     def self.field_class(element)
@@ -41,7 +41,7 @@ module Webrat
       when "select"   then SelectField
       when "textarea" then TextareaField
       else
-        case Webrat::XML.attribute(element, "type")
+        case element["type"]
         when "checkbox" then CheckboxField
         when "hidden"   then HiddenField
         when "radio"    then RadioField
@@ -67,11 +67,11 @@ module Webrat
     end
 
     def id
-      Webrat::XML.attribute(@element, "id")
+      @element["id"]
     end
 
     def disabled?
-      @element.attributes.has_key?("disabled") && Webrat::XML.attribute(@element, "disabled") != 'false'
+      @element.attributes.has_key?("disabled") && @element["disabled"] != 'false'
     end
 
     def raise_error_if_disabled
@@ -128,7 +128,7 @@ module Webrat
     end
 
     def name
-      Webrat::XML.attribute(@element, "name")
+      @element["name"]
     end
 
     def escaped_value
@@ -155,14 +155,14 @@ module Webrat
       end
 
       unless id.blank?
-        @label_elements += Webrat::XML.xpath_search(form.element, ".//label[@for = '#{id}']")
+        @label_elements += form.element.xpath(".//label[@for = '#{id}']")
       end
 
       @label_elements
     end
 
     def default_value
-      Webrat::XML.attribute(@element, "value")
+      @element["value"]
     end
 
     def replace_param_value(params, oval, nval)
@@ -199,7 +199,7 @@ module Webrat
 
     def click
       raise_error_if_disabled
-      set(Webrat::XML.attribute(@element, "value")) unless Webrat::XML.attribute(@element, "name").blank?
+      set(@element["value"]) unless @element["name"].blank?
       form.submit
     end
 
@@ -246,11 +246,11 @@ module Webrat
 
     def check
       raise_error_if_disabled
-      set(Webrat::XML.attribute(@element, "value") || "on")
+      set(@element["value"] || "on")
     end
 
     def checked?
-      Webrat::XML.attribute(@element, "checked") == "checked"
+      @element["checked"] == "checked"
     end
 
     def uncheck
@@ -261,8 +261,8 @@ module Webrat
   protected
 
     def default_value
-      if Webrat::XML.attribute(@element, "checked") == "checked"
-        Webrat::XML.attribute(@element, "value") || "on"
+      if @element["checked"] == "checked"
+        @element["value"] || "on"
       else
         nil
       end
@@ -295,11 +295,11 @@ module Webrat
         option.set(nil)
       end
 
-      set(Webrat::XML.attribute(@element, "value") || "on")
+      set(@element["value"] || "on")
     end
 
     def checked?
-      Webrat::XML.attribute(@element, "checked") == "checked"
+      @element["checked"] == "checked"
     end
 
   protected
@@ -309,8 +309,8 @@ module Webrat
     end
 
     def default_value
-      if Webrat::XML.attribute(@element, "checked") == "checked"
-        Webrat::XML.attribute(@element, "value") || "on"
+      if @element["checked"] == "checked"
+        @element["value"] || "on"
       else
         nil
       end
@@ -327,7 +327,7 @@ module Webrat
   protected
 
     def default_value
-      Webrat::XML.inner_html(@element)
+      @element.inner_html
     end
 
   end
@@ -378,14 +378,14 @@ module Webrat
 
   class ResetField < Field #:nodoc:
     def self.xpath_search
-      ".//input[@type = 'reset']"
+      [".//input[@type = 'reset']"]
     end
   end
 
   class SelectField < Field #:nodoc:
 
     def self.xpath_search
-      ".//select"
+      [".//select"]
     end
 
     def options
@@ -395,12 +395,12 @@ module Webrat
   protected
 
     def default_value
-      selected_options = Webrat::XML.xpath_search(@element, ".//option[@selected = 'selected']")
-      selected_options = Webrat::XML.xpath_search(@element, ".//option[position() = 1]") if selected_options.empty?
+      selected_options = @element.xpath(".//option[@selected = 'selected']")
+      selected_options = @element.xpath(".//option[position() = 1]") if selected_options.empty?
 
       selected_options.map do |option|
         return "" if option.nil?
-        Webrat::XML.attribute(option, "value") || Webrat::XML.inner_html(option)
+        option["value"] || option.inner_html
       end.uniq
     end
 

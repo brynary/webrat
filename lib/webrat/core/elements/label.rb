@@ -6,11 +6,11 @@ module Webrat
     attr_reader :element
 
     def self.xpath_search
-      ".//label"
+      [".//label"]
     end
 
     def for_id
-      Webrat::XML.attribute(@element, "for")
+      @element["for"]
     end
 
     def field
@@ -21,9 +21,9 @@ module Webrat
 
     def field_element
       if for_id.blank?
-        Webrat::XML.xpath_at(@element, *Field.xpath_search_excluding_hidden)
+        @element.xpath(*Field.xpath_search_excluding_hidden).first
       else
-        Webrat::XML.css_search(@session.current_dom, "#" + for_id).first
+        @session.current_dom.css("#" + for_id).first
       end
     end
 

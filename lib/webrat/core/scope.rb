@@ -312,12 +312,12 @@ module Webrat
         dom = Webrat::XML.html_document(@response_body)
       end
 
-      Webrat.define_dom_method(@response, dom)
+      Webrat::XML.define_dom_method(@response, dom)
       return dom
     end
 
     def scoped_dom
-      Webrat::XML.css_at(@scope.dom, @selector)
+      @scope.dom.css(@selector).first
     end
 
     def locate_field(field_locator, *field_types) #:nodoc:

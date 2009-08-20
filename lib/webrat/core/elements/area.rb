@@ -4,7 +4,7 @@ module Webrat
   class Area < Element #:nodoc:
 
     def self.xpath_search
-      ".//area"
+      [".//area"]
     end
 
     def click(method = nil, options = {})
@@ -14,7 +14,7 @@ module Webrat
   protected
 
     def href
-      Webrat::XML.attribute(@element, "href")
+      @element["href"]
     end
 
     def absolute_href

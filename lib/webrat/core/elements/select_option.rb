@@ -4,7 +4,7 @@ module Webrat
   class SelectOption < Element #:nodoc:
 
     def self.xpath_search
-      ".//option"
+      [".//option"]
     end
 
     def choose
@@ -28,7 +28,7 @@ module Webrat
     end
 
     def value
-      Webrat::XML.attribute(@element, "value") || Webrat::XML.inner_html(@element)
+      @element["value"] || @element.inner_html
     end
 
   end

@@ -19,17 +19,17 @@ module Webrat
 
           field.options.detect do |o|
             if @option_text.is_a?(Regexp)
-              Webrat::XML.inner_html(o.element) =~ @option_text
+              o.element.inner_html =~ @option_text
             else
-              Webrat::XML.inner_html(o.element) == @option_text.to_s
+              o.element.inner_html == @option_text.to_s
             end
           end
         else
           option_element = option_elements.detect do |o|
             if @option_text.is_a?(Regexp)
-              Webrat::XML.inner_html(o) =~ @option_text
+              o.inner_html =~ @option_text
             else
-              Webrat::XML.inner_html(o) == @option_text.to_s
+              o.inner_html == @option_text.to_s
             end
           end
 
@@ -38,7 +38,7 @@ module Webrat
       end
 
       def option_elements
-        Webrat::XML.xpath_search(@dom, *SelectOption.xpath_search)
+        @dom.xpath(*SelectOption.xpath_search)
       end
 
       def error_message

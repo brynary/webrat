@@ -20,24 +20,24 @@ module Webrat
       end
 
       def matches_id?(element)
-        (@value.is_a?(Regexp) && Webrat::XML.attribute(element, "id") =~ @value) ||
-        (!@value.is_a?(Regexp) && Webrat::XML.attribute(element, "id") == @value.to_s)
+        (@value.is_a?(Regexp) && element["id"] =~ @value) ||
+        (!@value.is_a?(Regexp) && element["id"] == @value.to_s)
       end
 
       def matches_value?(element)
-        Webrat::XML.attribute(element, "value") =~ /^\W*#{Regexp.escape(@value.to_s)}/i
+        element["value"] =~ /^\W*#{Regexp.escape(@value.to_s)}/i
       end
 
       def matches_html?(element)
-        Webrat::XML.inner_html(element) =~ /#{Regexp.escape(@value.to_s)}/i
+        element.inner_html =~ /#{Regexp.escape(@value.to_s)}/i
       end
 
       def matches_alt?(element)
-        Webrat::XML.attribute(element, "alt") =~ /^\W*#{Regexp.escape(@value.to_s)}/i
+        element["alt"] =~ /^\W*#{Regexp.escape(@value.to_s)}/i
       end
 
       def button_elements
-        Webrat::XML.xpath_search(@dom, *ButtonField.xpath_search)
+        @dom.xpath(*ButtonField.xpath_search)
       end
 
       def error_message

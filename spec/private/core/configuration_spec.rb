@@ -1,26 +1,15 @@
 require File.expand_path(File.dirname(__FILE__) + "/../../spec_helper")
 
 describe Webrat::Configuration do
-  
-  Spec::Matchers.define :parse_with_nokogiri do
-    match do |config|
-      config.parse_with_nokogiri?
-    end
-  end
-  
+
   Spec::Matchers.define :open_error_files do
     match do |config|
       config.open_error_files?
     end
   end
-  
+
   it "should have a mode" do
     Webrat.configuration.should respond_to(:mode)
-  end
-
-  it "should use Nokogiri as the parser by default" do
-    config = Webrat::Configuration.new
-    config.should parse_with_nokogiri
   end
 
   it "should open error files by default" do

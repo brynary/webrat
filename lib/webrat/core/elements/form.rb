@@ -9,7 +9,7 @@ module Webrat
     attr_reader :element
 
     def self.xpath_search
-      ".//form"
+      [".//form"]
     end
 
     def fields
@@ -27,7 +27,7 @@ module Webrat
   protected
 
     def dom
-      Webrat::XML.xpath_at(@session.dom, path)
+      @session.dom.xpath(path).first
     end
 
     def fields_by_type(field_types)
@@ -50,11 +50,11 @@ module Webrat
     end
 
     def form_method
-      Webrat::XML.attribute(@element, "method").blank? ? :get : Webrat::XML.attribute(@element, "method").downcase
+      @element["method"].blank? ? :get : @element["method"].downcase
     end
 
     def form_action
-      Webrat::XML.attribute(@element, "action").blank? ? @session.current_url : Webrat::XML.attribute(@element, "action")
+      @element["action"].blank? ? @session.current_url : @element["action"]
     end
 
     def merge(all_params, new_param)

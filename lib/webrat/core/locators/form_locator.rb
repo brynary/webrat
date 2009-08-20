@@ -10,7 +10,7 @@ module Webrat
       end
 
       def form_element
-        Webrat::XML.css_at(@dom, "#" + @value)
+        @dom.css("#" + @value).first
       end
 
     end

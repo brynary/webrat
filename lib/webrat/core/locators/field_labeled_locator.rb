@@ -25,7 +25,7 @@ module Webrat
       end
 
       def label_elements
-        Webrat::XML.xpath_search(@dom, Label.xpath_search)
+        @dom.xpath(*Label.xpath_search)
       end
 
       def error_message
@@ -33,7 +33,7 @@ module Webrat
       end
 
       def text(element)
-        str = Webrat::XML.all_inner_text(element)
+        str = element.inner_text
         str.gsub!("\n","")
         str.strip!
         str.squeeze!(" ")

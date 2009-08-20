@@ -7,7 +7,7 @@ module Webrat
   class Link < Element #:nodoc:
 
     def self.xpath_search
-      ".//a[@href]"
+      [".//a[@href]"]
     end
 
     def click(options = {})
@@ -26,7 +26,7 @@ module Webrat
   protected
 
     def id
-      Webrat::XML.attribute(@element, "id")
+      @element["id"]
     end
 
     def data
@@ -34,11 +34,11 @@ module Webrat
     end
 
     def title
-      Webrat::XML.attribute(@element, "title")
+      @element["title"]
     end
 
     def href
-      Webrat::XML.attribute(@element, "href")
+      @element["href"]
     end
 
     def absolute_href
@@ -58,7 +58,7 @@ module Webrat
     end
 
     def onclick
-      Webrat::XML.attribute(@element, "onclick")
+      @element["onclick"]
     end
 
     def http_method

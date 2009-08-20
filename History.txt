@@ -1,5 +1,12 @@
 == Git
 
+REMOVED: Support for Hpricot + REXML as an alternative to Nokogiri.
+
+  Hpricot and REXML were difficult to work with, REXML is terribly slow,
+  and Nokogiri is recommended even by the author of Hpricot (_why). Now
+  that Nokogiri works on JRuby, Webrat is going to use it as it's sole
+  XML backend.
+
 * Minor enhancements
 
   * Update the Merb support to be based directly on Rack (Simon Rozet)

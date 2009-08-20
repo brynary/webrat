@@ -1,5 +1,4 @@
-require "webrat/core/xml/nokogiri"
-require "webrat/core/xml/rexml"
+require "webrat/core/xml"
 
 module Webrat
   module Matchers
@@ -23,31 +22,7 @@ module Webrat
       end
 
       def matches(stringlike)
-        if Webrat.configuration.parse_with_nokogiri?
-          nokogiri_matches(stringlike)
-        else
-          rexml_matches(stringlike)
-        end
-      end
-
-      def rexml_matches(stringlike)
-        if REXML::Node === stringlike || Array === stringlike
-          @query = query.map { |q| q.gsub(%r'^//', './/') }
-        else
-          @query = query
-        end
-
-        add_options_conditions_to(@query)
-
-        @document = Webrat.rexml_document(stringlike)
-
-        @query.map do |q|
-          if @document.is_a?(Array)
-            @document.map { |d| REXML::XPath.match(d, q) }
-          else
-            REXML::XPath.match(@document, q)
-          end
-        end.flatten.compact
+        nokogiri_matches(stringlike)
       end
 
       def nokogiri_matches(stringlike)

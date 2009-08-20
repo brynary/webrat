@@ -17,11 +17,11 @@ module Webrat
       end
 
       def label_elements
-        Webrat::XML.xpath_search(@dom, Label.xpath_search)
+        @dom.xpath(*Label.xpath_search)
       end
 
       def text(label_element)
-        str = Webrat::XML.all_inner_text(label_element)
+        str = label_element.inner_text
         str.gsub!("\n","")
         str.strip!
         str.squeeze!(" ")

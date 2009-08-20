@@ -12,15 +12,15 @@ module Webrat
       def field_element
         field_elements.detect do |field_element|
           if @value.is_a?(Regexp)
-            Webrat::XML.attribute(field_element, "id") =~ @value
+            field_element["id"] =~ @value
           else
-            Webrat::XML.attribute(field_element, "id") == @value.to_s
+            field_element["id"] == @value.to_s
           end
         end
       end
 
       def field_elements
-        Webrat::XML.xpath_search(@dom, *Field.xpath_search)
+        @dom.xpath(*Field.xpath_search)
       end
 
       def error_message
