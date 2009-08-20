@@ -79,13 +79,11 @@ module Webrat
     def mode=(mode)
       @mode = mode.to_sym
 
-      # This is a temporary hack to support backwards compatibility
-      # with Merb 1.0.8 until it's updated to use the new Webrat.configure
-      # syntax
-      if @mode == :merb
-        require("webrat/merb_adapter")
-      else
-        require("webrat/#{mode}")
+      begin
+        require("webrat/integrations/#{mode}")
+      rescue LoadError
+        # Only some modes have integration code that needs to
+        # be loaded, so this is OK
       end
     end
 

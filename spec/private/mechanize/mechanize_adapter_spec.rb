@@ -1,7 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
-require "webrat/mechanize"
-
 describe Webrat::MechanizeAdapter do
   before :each do
     Webrat.configuration.mode = :mechanize

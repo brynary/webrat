@@ -47,6 +47,8 @@ Spec::Runner.configure do |config|
   end
 end
 
+require "merb-core"
+
 Webrat.configure do |config|
   config.mode = :merb
 end

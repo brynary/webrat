@@ -1,5 +1,3 @@
-require "webrat/rack"
-
 module Webrat
   class SinatraAdapter < RackAdapter
     def initialize(context)
