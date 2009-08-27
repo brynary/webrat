@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{webrat}
-  s.version = "0.5.1"
+  s.version = "0.5.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Bryan Helmkamp"]
-  s.date = %q{2009-08-18}
+  s.date = %q{2009-08-27}
   s.description = %q{Webrat lets you quickly write expressive and robust acceptance tests
 for a Ruby web application. It supports simulating a browser inside
 a Ruby process to avoid the performance hit and browser dependency of
