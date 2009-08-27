@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{webrat}
-  s.version = "0.5.2"
+  s.version = "0.5.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Bryan Helmkamp"]
-  s.date = %q{2009-08-27}
+  s.date = %q{2009-08-18}
   s.description = %q{Webrat lets you quickly write expressive and robust acceptance tests
 for a Ruby web application. It supports simulating a browser inside
 a Ruby process to avoid the performance hit and browser dependency of
@@ -65,13 +65,21 @@ Most Ruby web frameworks and testing frameworks are supported.}
      "lib/webrat/core/scope.rb",
      "lib/webrat/core/session.rb",
      "lib/webrat/core/xml.rb",
+     "lib/webrat/core/xml/hpricot.rb",
+     "lib/webrat/core/xml/nokogiri.rb",
+     "lib/webrat/core/xml/rexml.rb",
      "lib/webrat/core_extensions/blank.rb",
      "lib/webrat/core_extensions/deprecate.rb",
      "lib/webrat/core_extensions/detect_mapped.rb",
      "lib/webrat/core_extensions/meta_class.rb",
      "lib/webrat/core_extensions/nil_to_param.rb",
      "lib/webrat/core_extensions/tcp_socket.rb",
+     "lib/webrat/mechanize.rb",
      "lib/webrat/merb.rb",
+     "lib/webrat/merb_adapter.rb",
+     "lib/webrat/merb_multipart_support.rb",
+     "lib/webrat/rack.rb",
+     "lib/webrat/rails.rb",
      "lib/webrat/rspec-rails.rb",
      "lib/webrat/selenium.rb",
      "lib/webrat/selenium/application_server_factory.rb",
@@ -96,6 +104,7 @@ Most Ruby web frameworks and testing frameworks are supported.}
      "lib/webrat/selenium/selenium_rc_server.rb",
      "lib/webrat/selenium/selenium_session.rb",
      "lib/webrat/selenium/silence_stream.rb",
+     "lib/webrat/sinatra.rb",
      "spec/fakes/test_adapter.rb",
      "spec/integration/mechanize/Rakefile",
      "spec/integration/mechanize/config.ru",
@@ -191,6 +200,8 @@ Most Ruby web frameworks and testing frameworks are supported.}
      "spec/private/core/logging_spec.rb",
      "spec/private/core/session_spec.rb",
      "spec/private/mechanize/mechanize_adapter_spec.rb",
+     "spec/private/merb/attaches_file_spec.rb",
+     "spec/private/merb/merb_adapter_spec.rb",
      "spec/private/nokogiri_spec.rb",
      "spec/private/rails/attaches_file_spec.rb",
      "spec/private/rails/rails_adapter_spec.rb",
