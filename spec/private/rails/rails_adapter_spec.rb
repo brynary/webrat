@@ -1,5 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
+require "action_controller"
 require "webrat/rails"
 
 describe Webrat::RailsAdapter do
