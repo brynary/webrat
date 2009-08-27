@@ -1,3 +1,9 @@
+== 0.5.2 / 2009-08-27
+
+* Minor enhancements
+
+  * Remove unnecessary requires which are to the wrong paths on Edge Rails
+
 == 0.5.1 / 2009-08-18
 
 * Minor enhancements
