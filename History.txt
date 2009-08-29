@@ -1,3 +1,9 @@
+== Git
+
+  * Bug fixes
+
+    * Fix logger issue when running inside Cucumber (Damian Janowski)
+
 == 0.5.3 / 2009-08-27
 
 * Minor enhancements
