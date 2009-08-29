@@ -14,6 +14,10 @@ CHANGED: Due to a reorganization, if you're currently requiring "webrat/rspec-ra
 
   * Update the Merb support to be based directly on Rack (Simon Rozet)
 
+* Bug fixes
+
+	* Fix logger issue when running inside Cucumber (Damian Janowski)
+
 == 0.5.1 / 2009-08-18
 
 * Minor enhancements
