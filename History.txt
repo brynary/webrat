@@ -16,7 +16,7 @@ CHANGED: Due to a reorganization, if you're currently requiring "webrat/rspec-ra
 
 * Bug fixes
 
-	* Fix logger issue when running inside Cucumber (Damian Janowski)
+  * Fix logger issue when running inside Cucumber (Damian Janowski)
 
 == 0.5.1 / 2009-08-18
 
