@@ -1,3 +1,5 @@
+require "logger"
+
 module Webrat
   module Logging #:nodoc:
 
@@ -13,10 +15,7 @@ module Webrat
       when :merb
         Merb.logger
       else
-        @logger ||= begin
-          require "logger"
-          ::Logger.new("webrat.log")
-        end
+        @logger ||= ::Logger.new("webrat.log")
       end
     end
 
