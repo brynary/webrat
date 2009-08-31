@@ -201,7 +201,6 @@ describe "select" do
   end
 
   it "should properly handle submitting HTML entities in select values" do
-    pending "needs bug fix" do
       with_html <<-HTML
         <html>
         <form method="post" action="/login">
@@ -212,11 +211,9 @@ describe "select" do
       HTML
       webrat_session.should_receive(:post).with("/login", "month" => "Peanut butter & jelly")
       click_button
-    end
   end
 
   it "should properly handle locating with HTML entities in select values" do
-    pending "needs bug fix" do
       with_html <<-HTML
         <html>
         <form method="post" action="/login">
@@ -229,7 +226,6 @@ describe "select" do
       lambda {
         select "Peanut butter & jelly"
       }.should_not raise_error(Webrat::NotFoundError)
-    end
   end
 
   it "should submit duplicates selected options as a single value" do
@@ -243,6 +239,170 @@ describe "select" do
     HTML
 
     webrat_session.should_receive(:post).with("/login", "clothes" => "pants")
+    click_button
+  end
+
+  it "should allow fields to be unselected" do
+    with_html <<-HTML
+      <html>
+      <form method="post" action="/login">
+        <select name="clothes">
+          <option value="tshirt" selected="selected">tshirt</option>
+          <option value="pants">pants</option>
+        </select>
+        <input type="submit" />
+      </form>
+      </html>
+    HTML
+
+    webrat_session.should_receive(:post).with("/login", {"clothes"=>""})
+    unselect "tshirt"
+    click_button
+  end
+
+  #
+  # Mutliple Selection Fields
+  #
+
+  it "should not submit any values for multiples without any selected" do
+    with_html <<-HTML
+      <html>
+      <form method="post" action="/login">
+        <select name="clothes[]" multiple="multiple">
+          <option value="tshirt">tshirt</option>
+          <option value="pants">pants</option>
+        </select>
+        <input type="submit" />
+      </form>
+      </html>
+    HTML
+
+    webrat_session.should_receive(:post).with("/login", {})
+    click_button
+  end
+
+  it "should submit with preselected values" do
+    with_html <<-HTML
+      <html>
+      <form method="post" action="/login">
+        <select name="clothes[]" multiple="multiple">
+          <option value="tshirt" selected="selected">tshirt</option>
+          <option value="pants" selected="selected">pants</option>
+        </select>
+        <input type="submit" />
+      </form>
+      </html>
+    HTML
+
+    webrat_session.should_receive(:post).with("/login", "clothes" => ['tshirt', 'pants'])
+    click_button
+  end
+
+  it "should allow selection of multiple fields" do
+    with_html <<-HTML
+      <html>
+      <form method="post" action="/login">
+        <select name="clothes[]" multiple="multiple">
+          <option value="tshirt">tshirt</option>
+          <option value="pants">pants</option>
+        </select>
+        <input type="submit" />
+      </form>
+      </html>
+    HTML
+
+    webrat_session.should_receive(:post).with("/login", "clothes" => ['pants'])
+    select 'pants'
+    click_button
+  end
+
+  it "should not overwrite preselected multiples" do
+    with_html <<-HTML
+      <html>
+      <form method="post" action="/login">
+        <select name="clothes[]" multiple="multiple">
+          <option value="tshirt" selected="selected">tshirt</option>
+          <option value="pants">pants</option>
+        </select>
+        <input type="submit" />
+      </form>
+      </html>
+    HTML
+
+    webrat_session.should_receive(:post).with("/login", "clothes" => ['tshirt', 'pants'])
+    select 'pants'
+    click_button
+  end
+
+  it "should allow fields that exist to be selected or throw errors" do
+    with_html <<-HTML
+      <html>
+      <form method="post" action="/login">
+        <select name="clothes[]" multiple="multiple">
+          <option value="top" selected="selected">shirt</option>
+          <option value="pants">trousers</option>
+        </select>
+        <input type="submit" />
+      </form>
+      </html>
+    HTML
+
+    lambda { select "shirt" }.should_not raise_error(Webrat::NotFoundError)
+    lambda { select "trousers" }.should_not raise_error(Webrat::NotFoundError)
+    lambda { select "shoes" }.should raise_error(Webrat::NotFoundError)
+  end
+
+  it "should allow selected fields to be unselected" do
+    with_html <<-HTML
+      <html>
+      <form method="post" action="/login">
+        <select name="clothes[]" multiple="multiple">
+          <option value="tshirt" selected="selected">tshirt</option>
+          <option value="pants" selected="selected">pants</option>
+        </select>
+        <input type="submit" />
+      </form>
+      </html>
+    HTML
+
+    webrat_session.should_receive(:post).with("/login", "clothes" => ['pants'])
+    unselect 'tshirt'
+    click_button
+  end
+
+  it "should be able to select options with special characters" do
+    with_html <<-HTML
+      <html>
+      <form method="post" action="/login">
+        <select name="clothes[]" multiple="multiple">
+          <option>tshirt &amp; sweater</option>
+          <option>pants &amp; socks</option>
+        </select>
+        <input type="submit" />
+      </form>
+      </html>
+    HTML
+
+    webrat_session.should_receive(:post).with("/login", "clothes" => ['pants & socks'])
+    select 'pants & socks'
+    click_button
+  end
+
+  it "should be able to unselect options with special characters" do
+    with_html <<-HTML
+      <html>
+      <form method="post" action="/login">
+        <select name="clothes[]" multiple="multiple">
+          <option selected="selected">tshirt &amp; sweater</option>
+          <option selected="selected">pants &amp; socks</option>
+        </select>
+        <input type="submit" />
+      </form>
+      </html>
+    HTML
+
+    webrat_session.should_receive(:post).with("/login", "clothes" => ['tshirt & sweater'])
+    unselect 'pants & socks'
     click_button
   end
 

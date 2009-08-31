@@ -39,6 +39,7 @@ module Webrat
       :unchecks, :uncheck,
       :chooses, :choose,
       :selects, :select,
+      :unselects, :unselect,
       :attaches_file, :attach_file,
       :current_page,
       :current_url,

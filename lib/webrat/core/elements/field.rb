@@ -38,7 +38,12 @@ module Webrat
     def self.field_class(element)
       case element.name
       when "button"   then ButtonField
-      when "select"   then SelectField
+      when "select"
+        if element.attributes["multiple"].nil?
+          SelectField
+        else
+          MultipleSelectField
+        end
       when "textarea" then TextareaField
       else
         case element["type"]
@@ -82,14 +87,16 @@ module Webrat
     def to_param
       return nil if disabled?
 
-      case Webrat.configuration.mode
+      params = case Webrat.configuration.mode
       when :rails
         parse_rails_request_params("#{name}=#{escaped_value}")
       when :merb
         ::Merb::Parse.query("#{name}=#{escaped_value}")
       else
-        { name => value }
+        { name => [*@value].first.to_s }
       end
+
+      unescape_params(params)
     end
 
     def set(value)
@@ -133,6 +140,21 @@ module Webrat
 
     def escaped_value
       CGI.escape([*@value].first.to_s)
+    end
+
+    # Because we have to escape it before sending it to the above case statement,
+    # we have to make sure we unescape each value when it gets back so assertions
+    # involving characters like <, >, and &  work as expected
+    def unescape_params(params)
+      case params.class.name
+      when 'Hash', 'Mash'
+        params.each { |key,value| params[key] = unescape_params(value) }
+        params
+      when 'Array'
+        params.collect { |value| unescape_params(value) }
+      else
+        CGI.unescapeHTML(params)
+      end
     end
 
     def labels
@@ -385,11 +407,15 @@ module Webrat
   class SelectField < Field #:nodoc:
 
     def self.xpath_search
-      [".//select"]
+      [".//select[not(@multiple)]"]
     end
 
     def options
       @options ||= SelectOption.load_all(@session, @element)
+    end
+
+    def unset(value)
+      @value = []
     end
 
   protected
@@ -405,4 +431,53 @@ module Webrat
     end
 
   end
+
+  class MultipleSelectField < SelectField #:nodoc:
+
+    def self.xpath_search
+      [".//select[@multiple='multiple']"]
+    end
+
+    def set(value)
+      @value << value
+    end
+
+    def unset(value)
+      @value.delete(value)
+    end
+
+    # We have to overide how the uri string is formed when dealing with multiples
+    # Where normally a select field might produce   name=value   with a multiple,
+    # we need to form something like   name[]=value1&name[]=value2
+    def to_param
+      return nil if disabled?
+
+      uri_string = @value.collect {|value| "#{name}=#{CGI.escape(value)}"}.join("&")
+      params = case Webrat.configuration.mode
+      when :rails
+        parse_rails_request_params(uri_string)
+      when :merb
+        ::Merb::Parse.query(uri_string)
+      else
+        { name => @value }
+      end
+
+      unescape_params(params)
+    end
+
+  protected
+
+    # Overwrite SelectField definition because we don't want to select the first option
+    # (mutliples don't select the first option unlike their non multiple versions)
+    def default_value
+      selected_options = @element.xpath(".//option[@selected = 'selected']")
+
+      selected_options.map do |option|
+        return "" if option.nil?
+        option["value"] || option.inner_html
+      end.uniq
+    end
+
+  end
+
 end

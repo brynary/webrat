@@ -112,6 +112,21 @@ module Webrat
 
     webrat_deprecate :selects, :select
 
+    # Verifies that a an option element exists on the current page with the specified
+    # text. You can optionally restrict the search to a specific select list by
+    # assigning <tt>options[:from]</tt> the value of the select list's name or
+    # a label. Remove the option's value before the form is submitted.
+    #
+    # Examples:
+    #   unselect "January"
+    #   unselect "February", :from => "event_month"
+    #   unselect "February", :from => "Event Month"
+    def unselect(option_text, options={})
+      select_option(option_text, options[:from]).unchoose
+    end
+
+    webrat_deprecate :unselects, :unselect
+
     DATE_TIME_SUFFIXES = {
       :year   => '1i',
       :month  => '2i',

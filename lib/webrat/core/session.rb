@@ -260,6 +260,7 @@ For example:
     def_delegators :current_scope, :uncheck,            :unchecks
     def_delegators :current_scope, :choose,             :chooses
     def_delegators :current_scope, :select,             :selects
+    def_delegators :current_scope, :unselect,           :unselects
     def_delegators :current_scope, :select_datetime,    :selects_datetime
     def_delegators :current_scope, :select_date,        :selects_date
     def_delegators :current_scope, :select_time,        :selects_time

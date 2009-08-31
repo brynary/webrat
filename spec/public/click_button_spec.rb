@@ -331,18 +331,16 @@ describe "click_button" do
   end
 
   it "should properly handle HTML entities in textarea default values" do
-    pending "needs bug fix" do
-      with_html <<-HTML
-        <html>
-        <form method="post" action="/posts">
-          <textarea name="post[body]">Peanut butter &amp; jelly</textarea>
-          <input type="submit" />
-        </form>
-        </html>
-      HTML
-      webrat_session.should_receive(:post).with("/posts", "post" => {"body" => "Peanut butter & jelly"})
-      click_button
-    end
+    with_html <<-HTML
+      <html>
+      <form method="post" action="/posts">
+        <textarea name="post[body]">Peanut butter &amp; jelly</textarea>
+        <input type="submit" />
+      </form>
+      </html>
+    HTML
+    webrat_session.should_receive(:post).with("/posts", "post" => {"body" => "Peanut butter & jelly"})
+    click_button
   end
 
   it "should send default selected option value from select" do
