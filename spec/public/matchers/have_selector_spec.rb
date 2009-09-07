@@ -61,6 +61,10 @@ describe "have_selector" do
         @body.should have_selector("li", :count => 4)
       }.should raise_error(Spec::Expectations::ExpectationNotMetError)
     end
+    
+    it "should convert a string to an integer for count" do
+      @body.should have_selector("li", :count => "3")
+    end
   end
 
   describe "specifying nested elements" do
