@@ -168,6 +168,36 @@ describe "select" do
     click_button
   end
 
+  it "should find options by regexp with HTML entities" do
+    with_html <<-HTML
+      <html>
+      <form method="post" action="/login">
+        <select name="month"><option>Peanut butter &amp; jelly</option></select>
+        <input type="submit" />
+      </form>
+      </html>
+    HTML
+
+    webrat_session.should_receive(:post).with("/login", "month" => "Peanut butter & jelly")
+    select /Peanut butter & jelly/
+    click_button
+  end
+
+  it "should not find options by regexp with HTML entities in the regexp" do
+    with_html <<-HTML
+      <html>
+      <form method="post" action="/login">
+        <select name="month"><option>Peanut butter &amp; jelly</option></select>
+        <input type="submit" />
+      </form>
+      </html>
+    HTML
+
+    lambda {
+      select /Peanut butter &amp; jelly/
+    }.should raise_error(Webrat::NotFoundError)
+  end
+
   it "should fail if no option matching the regexp exists" do
     with_html <<-HTML
       <html>
@@ -201,31 +231,47 @@ describe "select" do
   end
 
   it "should properly handle submitting HTML entities in select values" do
-      with_html <<-HTML
-        <html>
-        <form method="post" action="/login">
-          <select name="month"><option>Peanut butter &amp; jelly</option></select>
-          <input type="submit" />
-        </form>
-        </html>
-      HTML
-      webrat_session.should_receive(:post).with("/login", "month" => "Peanut butter & jelly")
-      click_button
+    with_html <<-HTML
+      <html>
+      <form method="post" action="/login">
+        <select name="month"><option>Peanut butter &amp; jelly</option></select>
+        <input type="submit" />
+      </form>
+      </html>
+    HTML
+
+    webrat_session.should_receive(:post).with("/login", "month" => "Peanut butter & jelly")
+    click_button
   end
 
   it "should properly handle locating with HTML entities in select values" do
-      with_html <<-HTML
-        <html>
-        <form method="post" action="/login">
-          <select name="month"><option>Peanut butter &amp; jelly</option></select>
-          <input type="submit" />
-        </form>
-        </html>
-      HTML
+    with_html <<-HTML
+      <html>
+      <form method="post" action="/login">
+        <select name="month"><option>Peanut butter &amp; jelly</option></select>
+        <input type="submit" />
+      </form>
+      </html>
+    HTML
 
-      lambda {
-        select "Peanut butter & jelly"
-      }.should_not raise_error(Webrat::NotFoundError)
+    webrat_session.should_receive(:post).with("/login", "month" => "Peanut butter & jelly")
+    select "Peanut butter & jelly"
+    click_button
+  end
+
+  it "should not locate based on HTML entities" do
+    with_html <<-HTML
+      <html>
+      <form method="post" action="/login">
+        <select name="month"><option>Peanut butter &amp; jelly</option></select>
+        <input type="submit" />
+      </form>
+      </html>
+    HTML
+
+    lambda {
+      select "Peanut butter &amp; jelly"
+    }.should raise_error(Webrat::NotFoundError)
   end
 
   it "should submit duplicates selected options as a single value" do

@@ -19,7 +19,7 @@ module Webrat
 
           field.options.detect do |o|
             if @option_text.is_a?(Regexp)
-              o.element.inner_html =~ @option_text
+              o.element.inner_text =~ @option_text
             else
               o.inner_text == @option_text.to_s
             end
@@ -27,7 +27,7 @@ module Webrat
         else
           option_element = option_elements.detect do |o|
             if @option_text.is_a?(Regexp)
-              o.inner_html =~ @option_text
+              o.inner_text =~ @option_text
             else
               o.inner_text == @option_text.to_s
             end
