@@ -20,6 +20,7 @@ CHANGED: Due to a reorganization, if you're currently requiring "webrat/rspec-ra
 
   * Fix logger issue when running inside Cucumber (Damian Janowski)
   * Fix various issues related to submitting values with HTML entities (Kieran P)
+  * Call #to_i on the :count option in matchers (Michael Christenson II)
 
 == 0.5.1 / 2009-08-18
 
