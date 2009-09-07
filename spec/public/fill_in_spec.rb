@@ -15,6 +15,21 @@ describe "fill_in" do
     fill_in "User Text", :with => "filling text area"
     click_button
   end
+  
+  it "should support multiline values" do
+    with_html <<-HTML
+      <html>
+      <form method="post" action="/login">
+        <label for="user_text">User Text</label>
+        <textarea id="user_text" name="user[text]"></textarea>
+        <input type="submit" />
+      </form>
+      </html>
+    HTML
+    webrat_session.should_receive(:post).with("/login", "user" => {"text" => "One\nTwo"})
+    fill_in "User Text", :with => "One\nTwo"
+    click_button
+  end
 
   it "should work with password fields" do
     with_html <<-HTML

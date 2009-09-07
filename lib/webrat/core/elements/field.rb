@@ -139,7 +139,7 @@ module Webrat
     end
 
     def escaped_value
-      CGI.escape([*@value].first.to_s)
+      CGI.escape(@value.to_s)
     end
 
     # Because we have to escape it before sending it to the above case statement,
@@ -415,7 +415,7 @@ module Webrat
     end
 
     def unset(value)
-      @value = []
+      @value = nil
     end
 
   protected
@@ -427,15 +427,19 @@ module Webrat
       selected_options.map do |option|
         return "" if option.nil?
         option["value"] || option.inner_html
-      end.uniq
+      end.uniq.first
     end
 
   end
 
-  class MultipleSelectField < SelectField #:nodoc:
+  class MultipleSelectField < Field #:nodoc:
 
     def self.xpath_search
       [".//select[@multiple='multiple']"]
+    end
+
+    def options
+      @options ||= SelectOption.load_all(@session, @element)
     end
 
     def set(value)
