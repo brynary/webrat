@@ -25,7 +25,9 @@ Most Ruby web frameworks and testing frameworks are supported.
     s.add_dependency "nokogiri", ">= 1.2.0"
     s.add_dependency "rack", ">= 1.0"
 
-    # TODO: Add development dependencies
+    s.add_development_dependency "rails", ">= 2.3"
+    s.add_development_dependency "merb-core", ">= 1.0"
+    s.add_development_dependency "launchy"
   end
 
   Jeweler::RubyforgeTasks.new
