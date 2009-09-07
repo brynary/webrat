@@ -21,7 +21,7 @@ module Webrat
             if @option_text.is_a?(Regexp)
               o.element.inner_html =~ @option_text
             else
-              escaped_or_non_escaped_values.include?(o.element.inner_html)
+              o.inner_text == @option_text.to_s
             end
           end
         else
@@ -29,16 +29,12 @@ module Webrat
             if @option_text.is_a?(Regexp)
               o.inner_html =~ @option_text
             else
-              escaped_or_non_escaped_values.include?(o.inner_html)
+              o.inner_text == @option_text.to_s
             end
           end
 
           SelectOption.load(@session, option_element)
         end
-      end
-
-      def escaped_or_non_escaped_values
-        [@option_text.to_s, CGI.escapeHTML(@option_text.to_s)]
       end
 
       def option_elements

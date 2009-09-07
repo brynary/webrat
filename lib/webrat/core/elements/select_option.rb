@@ -17,6 +17,10 @@ module Webrat
       select.unset(value)
     end
 
+    def inner_text
+      @element.inner_text
+    end
+
   protected
 
     def select
