@@ -4,7 +4,7 @@ REMOVED: Support for Hpricot + REXML as an alternative to Nokogiri.
 
   Hpricot and REXML were difficult to work with, REXML is terribly slow,
   and Nokogiri is recommended even by the author of Hpricot (_why). Now
-  that Nokogiri works on JRuby, Webrat is going to use it as it's sole
+  that Nokogiri works on JRuby, Webrat is going to use it as its sole
   XML backend.
 
 CHANGED: Due to a reorganization, if you're currently requiring "webrat/rspec-rails",
@@ -13,10 +13,13 @@ CHANGED: Due to a reorganization, if you're currently requiring "webrat/rspec-ra
 * Minor enhancements
 
   * Update the Merb support to be based directly on Rack (Simon Rozet)
+  * Support multiple select fields (Kieran P)
+  * When locating select options, always match against text, not HTML
 
 * Bug fixes
 
   * Fix logger issue when running inside Cucumber (Damian Janowski)
+  * Fix various issues related to submitting values with HTML entities (Kieran P)
 
 == 0.5.1 / 2009-08-18
 
