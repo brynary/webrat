@@ -180,6 +180,7 @@ end
 
 if defined?(Jeweler)
   task :spec => :check_dependencies
+  task :build => :gemspec
 end
 
 task :default => :spec
