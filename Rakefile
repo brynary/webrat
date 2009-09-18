@@ -117,12 +117,16 @@ end
 
 namespace :spec do
   desc "Run the integration specs"
-  task :integration => ["integration:rails", "integration:merb", "integration:sinatra", "integration:rack", "integration:mechanize"]
+  task :integration => [
+    "integration:rack",
+    "integration:sinatra",
+    "integration:merb",
+    "integration:mechanize",
+    "integration:rails:webrat",
+    "integration:rails:selenium",
+  ]
 
   namespace :integration do
-    desc "Run the Rails integration specs"
-    task :rails => ['rails:webrat'] #,'rails:selenium'] currently not running selenium as it doesn't pass.
-
     namespace :rails do
       task :selenium do
         Dir.chdir "spec/integration/rails" do
