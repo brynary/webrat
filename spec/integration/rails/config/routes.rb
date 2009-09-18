@@ -12,6 +12,7 @@ ActionController::Routing::Routes.draw do |map|
     webrat.before_redirect_form     "/before_redirect_form",    :action => "before_redirect_form"
     webrat.redirect_to_show_params  "/redirect_to_show_params", :action => "redirect_to_show_params"
     webrat.show_params              "/show_params",             :action => "show_params"
+    webrat.within                   "/within",                  :action => "within"
 
     webrat.root :action => "form"
   end

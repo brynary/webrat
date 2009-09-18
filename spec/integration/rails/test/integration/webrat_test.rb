@@ -89,6 +89,23 @@ class WebratTest < ActionController::IntegrationTest
     assert_have_selector "h1"
   end
 
+  test "should accept an Object argument to #within and translate using dom_id" do
+    webrat.simulate do
+      visit within_path
+
+      object = Object.new
+      def object.id
+        nil
+      end
+
+      within(object) do
+        click_link "Edit Object"
+      end
+
+      assert_contain "Webrat Form"
+    end
+  end
+
   # Firefox detects and prevents infinite redirects under Selenium
   unless ENV['WEBRAT_INTEGRATION_MODE'] == 'selenium'
      test "should detect infinite redirects" do

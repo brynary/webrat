@@ -83,28 +83,4 @@ describe Webrat::RailsAdapter do
   it "should provide a doc_root" do
     Webrat::RailsAdapter.new(mock("integration session")).should respond_to(:doc_root)
   end
-
-  it "should accept an ActiveRecord argument to #within and translate to a selector using dom_id" do
-    pending "Move this to spec/public/within_spec.rb"
-
-    body = <<-HTML
-      <a href="/page1">Edit</a>
-      <div id="new_object">
-        <a href="/page2">Edit</a>
-      </div>
-    HTML
-
-    response = mock("response", :body => body, :headers => {}, :code => 200)
-    @integration_session.stub!(:response => response)
-    @integration_session.should_receive(:get).with("/page2", {}, nil)
-
-    rails_session = Webrat::RailsAdapter.new(@integration_session)
-
-    object = Object.new
-    object.stub!(:id => nil)
-
-    rails_session.within(object) do
-      rails_session.click_link 'Edit'
-    end
-  end
 end

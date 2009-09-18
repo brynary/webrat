@@ -40,4 +40,7 @@ class WebratController < ApplicationController
     render :text => params.to_json
   end
 
+  def within
+  end
+
 end

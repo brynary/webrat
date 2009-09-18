@@ -11,21 +11,6 @@ module Webrat
       @integration_session = session
     end
 
-    # The Rails version of within supports passing in a model and Webrat
-    # will apply a scope based on Rails' dom_id for that model.
-    #
-    # Example:
-    #   within User.last do
-    #     click_link "Delete"
-    #   end
-    def within(selector_or_object, &block)
-      if selector_or_object.is_a?(String)
-        super
-      else
-        super('#' + dom_id(selector_or_object), &block)
-      end
-    end
-
     def doc_root
       File.expand_path(File.join(RAILS_ROOT, 'public'))
     end
