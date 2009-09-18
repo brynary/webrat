@@ -25,8 +25,10 @@ class WebratTest < ActionController::IntegrationTest
   end
 
   test "should check the value of a field" do
-    visit "/"
-    assert field_labeled("Prefilled").value, "text"
+    webrat.simulate do
+      visit "/"
+      assert field_labeled("Prefilled").value, "text"
+    end
   end
 
   test "should not carry params through redirects" do
@@ -43,20 +45,26 @@ class WebratTest < ActionController::IntegrationTest
 
   test "should follow internal redirects" do
     visit internal_redirect_path
-    assert !response.redirect?
+    webrat.simulate do
+      assert !response.redirect?
+    end
     assert response.body.include?("OK")
   end
 
   test "should not follow external redirects" do
-    visit external_redirect_path
-    assert response.redirect?
+    webrat.simulate do
+      visit external_redirect_path
+      assert response.redirect?
+    end
   end
 
   test "should recognize the host header to follow redirects properly" do
-    header "Host", "foo.bar"
-    visit host_redirect_path
-    assert !response.redirect?
-    assert response.body.include?("OK")
+    webrat.simulate do
+      header "Host", "foo.bar"
+      visit host_redirect_path
+      assert !response.redirect?
+      assert response.body.include?("OK")
+    end
   end
 
   test "should click link by text" do
