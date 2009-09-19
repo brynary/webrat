@@ -1,7 +1,7 @@
 require "rubygems"
 
 begin
-  require 'jewelerz'
+  require 'jeweler'
 rescue LoadError
   desc "Install gem using sudo"
   task(:install) do
