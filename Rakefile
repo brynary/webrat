@@ -1,8 +1,13 @@
 require "rubygems"
 
 begin
-  require 'jeweler'
-
+  require 'jewelerz'
+rescue LoadError
+  desc "Install gem using sudo"
+  task(:install) do
+    $stderr.puts "Jeweler not available. `gem install jeweler` to install this gem"
+  end
+else
   Jeweler::Tasks.new do |s|
     s.name      = "webrat"
     s.author    = "Bryan Helmkamp"
@@ -31,32 +36,29 @@ Most Ruby web frameworks and testing frameworks are supported.
   end
 
   Jeweler::RubyforgeTasks.new
+end
+
+begin
+  require 'spec/rake/spectask'
 rescue LoadError
-  puts "Jeweler not available. Install it with: gem install jeweler"
-end
-
-# require 'spec'
-require 'spec/rake/spectask'
-require 'spec/rake/verify_rcov'
-
-desc "Run API and Core specs"
-Spec::Rake::SpecTask.new do |t|
-  t.spec_opts = ['--options', "\"#{File.dirname(__FILE__)}/spec/spec.opts\""]
-  t.spec_files = FileList['spec/public/**/*_spec.rb'] + FileList['spec/private/**/*_spec.rb']
-end
-
-desc "Run all specs in spec directory with RCov"
-Spec::Rake::SpecTask.new(:rcov) do |t|
-  t.spec_opts = ['--options', "\"#{File.dirname(__FILE__)}/spec/spec.opts\""]
-  t.spec_files = FileList['spec/public/**/*_spec.rb'] + FileList['spec/private/**/*_spec.rb']
-  t.rcov = true
-  t.rcov_opts = lambda do
-    IO.readlines(File.dirname(__FILE__) + "/spec/rcov.opts").map {|l| l.chomp.split " "}.flatten
+  desc "Run specs"
+  task(:spec) { $stderr.puts '`gem install rspec` to run specs' }
+else
+  desc "Run API and Core specs"
+  Spec::Rake::SpecTask.new do |t|
+    t.spec_opts = ['--options', "\"#{File.dirname(__FILE__)}/spec/spec.opts\""]
+    t.spec_files = FileList['spec/public/**/*_spec.rb'] + FileList['spec/private/**/*_spec.rb']
   end
-end
 
-RCov::VerifyTask.new(:verify_rcov => :rcov) do |t|
-  t.threshold = 96.2 # Make sure you have rcov 0.7 or higher!
+  desc "Run all specs in spec directory with RCov"
+  Spec::Rake::SpecTask.new(:rcov) do |t|
+    t.spec_opts = ['--options', "\"#{File.dirname(__FILE__)}/spec/spec.opts\""]
+    t.spec_files = FileList['spec/public/**/*_spec.rb'] + FileList['spec/private/**/*_spec.rb']
+    t.rcov = true
+    t.rcov_opts = lambda do
+      IO.readlines(File.dirname(__FILE__) + "/spec/rcov.opts").map {|l| l.chomp.split " "}.flatten
+    end
+  end
 end
 
 desc "Run everything against multiruby"
@@ -109,10 +111,6 @@ task :spec_deps do
       puts "Dependency Issues: #{test}"
     end
   end
-end
-
-task :prepare do
-  system "ln -s ../../../../.. ./spec/integration/rails/vendor/plugins/webrat"
 end
 
 namespace :spec do
