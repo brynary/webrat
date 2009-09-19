@@ -15,7 +15,7 @@ describe "fill_in" do
     fill_in "User Text", :with => "filling text area"
     click_button
   end
-  
+
   it "should support multiline values" do
     with_html <<-HTML
       <html>

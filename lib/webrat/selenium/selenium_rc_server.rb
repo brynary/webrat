@@ -74,8 +74,8 @@ module Webrat
 
       def stop
         silence_stream(STDOUT) do
-          ::Selenium::RemoteControl::RemoteControl.new("0.0.0.0", 
-                                                       Webrat.configuration.selenium_server_port, 
+          ::Selenium::RemoteControl::RemoteControl.new("0.0.0.0",
+                                                       Webrat.configuration.selenium_server_port,
                                                        :timeout => 5).stop
         end
       end
