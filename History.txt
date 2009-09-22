@@ -1,4 +1,4 @@
-== Git
+== 0.6.rc1 / 2009-09-22
 
 REMOVED: Support for Hpricot + REXML as an alternative to Nokogiri.
 
