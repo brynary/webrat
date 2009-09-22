@@ -169,7 +169,19 @@ module Webrat
         sleep 0.25
       end
 
-      raise Webrat::TimeoutError.new(message + " (after #{timeout} sec)")
+      error_message = "#{message} (after #{timeout} sec)"
+
+      if $browser
+        error_message += <<-EOS
+
+
+HTML of the page was:
+
+#{selenium.get_html_source}"
+EOS
+      end
+
+      raise Webrat::TimeoutError.new(error_message)
       true
     end
 

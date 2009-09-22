@@ -12,6 +12,7 @@ CHANGED: Due to a reorganization, if you're currently requiring "webrat/rspec-ra
 
 * Minor enhancements
 
+  * When a timeout occurs in wait_for, include the HTML from Selenium in the exception
   * Update the Merb support to be based directly on Rack (Simon Rozet)
   * Support multiple select fields (Kieran P)
   * When locating select options, always match against text, not HTML
