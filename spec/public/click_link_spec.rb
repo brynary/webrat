@@ -143,6 +143,27 @@ describe "click_link" do
     webrat_session.should_receive(:post).with("/posts", "authenticity_token" => "aa79cb354597a60a3786e7e291ed4f74d77d3a62")
     click_link "Posts"
   end
+  
+  it "should click rails 2.3.4 javascript links with authenticity tokens" do
+    with_html <<-HTML
+      <html>
+      <a href="/posts" onclick="var f = document.createElement('form');
+        f.style.display = 'none';
+        this.parentNode.appendChild(f);
+        f.method = 'POST';
+        f.action = this.href;
+        var s = document.createElement('input');
+        s.setAttribute('type', 'hidden');
+        s.setAttribute('name', 'authenticity_token');
+        s.setAttribute('value', 'aa79cb354597a60a3786e7e291ed4f74d77d3a62=/$a');
+        f.appendChild(s);
+        f.submit();
+        return false;">Posts</a>
+      </html>
+    HTML
+    webrat_session.should_receive(:post).with("/posts", "authenticity_token" => "aa79cb354597a60a3786e7e291ed4f74d77d3a62=/$a")
+    click_link "Posts"
+  end
 
   it "should click rails javascript delete links" do
     with_html <<-HTML
