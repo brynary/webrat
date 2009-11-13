@@ -13,3 +13,6 @@ results
 test_apps
 *.tmproj
 *.log
+*.pid
+bin
+vendor/gems
