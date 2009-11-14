@@ -22,6 +22,7 @@ class WebratTest < ActionController::IntegrationTest
     check "TOS"
     select "January"
     click_button "Test"
+    assert_contain "OK"
   end
 
   test "should check the value of a field" do
