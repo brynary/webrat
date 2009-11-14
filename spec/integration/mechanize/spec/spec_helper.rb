@@ -21,7 +21,9 @@ Spec::Runner.configure do |config|
   end
 
   config.after :suite do
-    Process.kill("TERM", File.read("rack.pid").to_i)
+    if File.exists?("rack.pid")
+      Process.kill("TERM", File.read("rack.pid").to_i)
+    end
   end
 end
 
