@@ -29,16 +29,6 @@ class ButtonClickTest < ActionController::IntegrationTest
     click_button "button_image_text"
   end
 
-  # <input type="button" ...>
-  test "should click image with type button by id" do
-    visit buttons_path
-    click_button "input_button_id"
-  end
-  test "should click input with type button by value" do
-    visit buttons_path
-    click_button "input_button_value"
-  end
-
   # <input type="submit" ...>
   test "should click input with type submit by id" do
     visit buttons_path
