@@ -12,6 +12,7 @@ require "webrat"
 
 Webrat.configure do |config|
   config.mode = ENV['WEBRAT_INTEGRATION_MODE'].to_sym
+  config.selenium_browser_key = '*safari'
 end
 
 ActionController::Base.class_eval do
