@@ -1,20 +1,6 @@
 require 'test_helper'
 
 class ButtonClickTest < ActionController::IntegrationTest
-  # <button type="button" ...>
-  test "should click button with type button by id" do
-    visit buttons_path
-    click_button "button_button_id"
-  end
-  test "should click button with type button by value" do
-    visit buttons_path
-    click_button "button_button_value"
-  end
-  test "should click button with type button by html" do
-    visit buttons_path
-    click_button "button_button_text"
-  end
-
   # <button type="submit" ...>
   test "should click button with type submit by id" do
     visit buttons_path
@@ -76,5 +62,4 @@ class ButtonClickTest < ActionController::IntegrationTest
     visit buttons_path
     click_button "input_image_alt"
   end
-
 end
