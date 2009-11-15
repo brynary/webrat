@@ -1,44 +1,6 @@
 require "rubygems"
 
 begin
-  require 'jeweler'
-rescue LoadError
-  desc "Install gem using sudo"
-  task(:install) do
-    $stderr.puts "Jeweler not available. `gem install jeweler` to install this gem"
-  end
-else
-  Jeweler::Tasks.new do |s|
-    s.name      = "webrat"
-    s.author    = "Bryan Helmkamp"
-    s.email     = "bryan" + "@" + "brynary.com"
-    s.homepage  = "http://github.com/brynary/webrat"
-    s.summary   = "Ruby Acceptance Testing for Web applications"
-    s.description  = <<-EOS.strip
-Webrat lets you quickly write expressive and robust acceptance tests
-for a Ruby web application. It supports simulating a browser inside
-a Ruby process to avoid the performance hit and browser dependency of
-Selenium or Watir, but the same API can also be used to drive real
-Selenium tests when necessary (eg. for testing AJAX interactions).
-Most Ruby web frameworks and testing frameworks are supported.
-    EOS
-
-    s.rubyforge_project = "webrat"
-    s.extra_rdoc_files = %w[README.rdoc MIT-LICENSE.txt History.txt]
-
-    # Dependencies
-    s.add_dependency "nokogiri", ">= 1.2.0"
-    s.add_dependency "rack", ">= 1.0"
-
-    s.add_development_dependency "rails", ">= 2.3"
-    s.add_development_dependency "merb-core", ">= 1.0"
-    s.add_development_dependency "launchy"
-  end
-
-  Jeweler::RubyforgeTasks.new
-end
-
-begin
   require 'spec/rake/spectask'
 rescue LoadError
   desc "Run specs"
@@ -178,11 +140,6 @@ end
 desc 'Removes trailing whitespace'
 task :whitespace do
   sh %{find . -name '*.rb' -exec sed -i '' 's/ *$//g' {} \\;}
-end
-
-if defined?(Jeweler)
-  task :spec => :check_dependencies
-  task :build => :gemspec
 end
 
 task :default => :spec

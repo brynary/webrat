@@ -3,6 +3,7 @@ source 'http://gemcutter.org'
 
 disable_system_gems
 
+gem "git",              "1.2.5"
 gem "rake",             "0.8.7"
 gem "rspec",            "1.2.9"
 gem "diff-lcs",         "1.1.2"
