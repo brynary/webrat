@@ -6,7 +6,7 @@ describe "Basic Auth HTTP headers" do
   end
 
   it "should be present in visit" do
-    webrat_session.should_receive(:get).with("/", {}, {'HTTP_AUTHORIZATION' => "Basic dXNlcjpzZWNyZXQ=\n"})
+    webrat_session.should_receive(:get).with("/", {}, {'HTTP_AUTHORIZATION' => "Basic dXNlcjpzZWNyZXQ="})
     visit("/")
   end
 
@@ -18,7 +18,18 @@ describe "Basic Auth HTTP headers" do
       </form>
       </html>
     HTML
-    webrat_session.should_receive(:post).with("/form1", {}, {'HTTP_AUTHORIZATION' => "Basic dXNlcjpzZWNyZXQ=\n"})
+    webrat_session.should_receive(:post).with("/form1", {}, {'HTTP_AUTHORIZATION' => "Basic dXNlcjpzZWNyZXQ="})
     click_button
+  end
+
+  context "with long username and password combination" do
+    before do
+      basic_auth('user', 'secret1234567890123456789012345678901234567890123456789012345678901234567890')
+    end
+
+    it "should be present, without new lines, in visit" do
+      webrat_session.should_receive(:get).with("/", {}, {'HTTP_AUTHORIZATION' => "Basic dXNlcjpzZWNyZXQxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkw"})
+      visit("/")
+    end
   end
 end

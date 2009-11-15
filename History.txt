@@ -20,6 +20,7 @@ CHANGED: Due to a reorganization, if you're currently requiring "webrat/rspec-ra
 
 * Bug fixes
 
+  * Remove newlines from HTTP Basic authentication credentials (Michael Klett)
   * Require nokogiri form rspec-rails.rb (David Chelimsky)
   * Fix logger issue when running inside Cucumber (Damian Janowski)
   * Fix various issues related to submitting values with HTML entities (Kieran P)
