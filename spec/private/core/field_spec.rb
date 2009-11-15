@@ -2,18 +2,16 @@ require File.expand_path(File.dirname(__FILE__) + "/../../spec_helper")
 
 module Webrat
   describe Field do
-    unless RUBY_PLATFORM =~ /java/
-      it "should have nice inspect output" do
-        html = <<-HTML
-          <html>
-          <input type='checkbox' checked='checked' />
-          </html>
-        HTML
+    it "should have nice inspect output" do
+      html = <<-HTML
+        <html>
+        <input type='checkbox' checked='checked' />
+        </html>
+      HTML
 
-        element = Webrat::XML.document(html).css("input").first
-        checkbox = CheckboxField.new(nil, element)
-        checkbox.inspect.should =~ /#<Webrat::CheckboxField @element=<input type=['"]checkbox['"] checked(=['"]checked['"])?\/?>>/
-      end
+      element = Webrat::XML.document(html).css("input").first
+      checkbox = CheckboxField.new(nil, element)
+      checkbox.inspect.should =~ /^#<Webrat::CheckboxField @element=/
     end
   end
 
