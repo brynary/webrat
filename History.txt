@@ -12,6 +12,7 @@ CHANGED: Due to a reorganization, if you're currently requiring "webrat/rspec-ra
 
 * Minor enhancements
 
+  * Support Rails 2.3.4 JavaScript form authenticity tokens in simulated mode (Jonathan Weiss)
   * When a timeout occurs in wait_for, include the HTML from Selenium in the exception
   * Update the Merb support to be based directly on Rack (Simon Rozet)
   * Support multiple select fields (Kieran P)
