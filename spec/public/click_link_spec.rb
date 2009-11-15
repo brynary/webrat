@@ -143,7 +143,7 @@ describe "click_link" do
     webrat_session.should_receive(:post).with("/posts", "authenticity_token" => "aa79cb354597a60a3786e7e291ed4f74d77d3a62")
     click_link "Posts"
   end
-  
+
   it "should click rails 2.3.4 javascript links with authenticity tokens" do
     with_html <<-HTML
       <html>
