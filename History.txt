@@ -1,4 +1,4 @@
-== 0.6.rc1 / 2009-09-22
+== 0.6.0 / 2009-11-28
 
 REMOVED: Support for Hpricot + REXML as an alternative to Nokogiri.
 
