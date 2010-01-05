@@ -14,6 +14,14 @@ module Webrat
             false
         end
 
+        def does_not_match?(response)
+          response.session.wait_for do
+            !response.selenium.is_element_present("xpath=#{@expected}")
+          end
+          rescue Webrat::TimeoutError
+            false
+        end
+
         # ==== Returns
         # String:: The failure message.
         def failure_message

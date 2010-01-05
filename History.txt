@@ -1,3 +1,7 @@
+* Bug fixes
+ 
+  * Make selenium matchers handle negative match more consistently with positive match (Luke Melia)
+   
 == 0.6.0 / 2009-11-28
 
 REMOVED: Support for Hpricot + REXML as an alternative to Nokogiri.
