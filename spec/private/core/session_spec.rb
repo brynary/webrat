@@ -133,6 +133,11 @@ describe Webrat::Session do
       webrat_session.stub!(:response_code => 200)
       webrat_session.redirect?.should be_false
     end
+
+    it "should return false if the last response was a 304 Not Modified" do
+      webrat_session.stub!(:response_code => 304)
+      webrat_session.redirect?.should be_false
+    end
   end
 
   describe "#internal_redirect?" do
