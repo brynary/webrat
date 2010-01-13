@@ -1,3 +1,7 @@
+* Major enhancements
+
+  * Upgrade bundled Selenium server JAR to 2.0a1 (Henry Poydar and Jake Scruggs)
+
 * Minor enhancements
 
   * Save and open page directory specified via configuration, defaults to tmp dir otherwise current dir (Noah Davis)
