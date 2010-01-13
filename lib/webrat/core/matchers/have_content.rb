@@ -12,7 +12,7 @@ module Webrat
 
         case @content
         when String
-          @element.include?(@content)
+          @element.gsub(/\s+/, ' ').include?(@content)
         when Regexp
           @element.match(@content)
         end

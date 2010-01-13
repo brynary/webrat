@@ -4,21 +4,6 @@ describe "contain" do
   include Webrat::Matchers
 
   before(:each) do
-    @body = <<-HTML
-      <div id='main'>
-        <div class='inner'>hello, world!</div>
-        <h2>Welcome "Bryan"</h2>
-        <h3>Welcome 'Bryan'</h3>
-        <h4>Welcome 'Bryan"</h4>
-        <ul>
-          <li>First</li>
-          <li>Second</li>
-        </ul>
-      </div>
-    HTML
-  end
-
-  before(:each) do
     @body = <<-EOF
       <div id='main'>
         <div class='inner'>hello, world!</div>
@@ -33,6 +18,14 @@ describe "contain" do
 
     it "should call element#matches? when the argument is a regular expression" do
       @body.should contain(/hello, world/)
+    end
+    
+    it "should treat newlines as spaces" do
+      "<div>it takes\ndifferent strokes</div>".should contain("it takes different strokes")
+    end
+    
+    it "should multiple spaces as a single space" do
+      "<div>it takes  different strokes</div>".should contain("it takes different strokes")
     end
   end
 

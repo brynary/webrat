@@ -1,5 +1,6 @@
 * Bug fixes
- 
+
+  * Make "should contain" ignore extra whitespace when doing string comparisons (Noah Davis)
   * Make selenium matchers handle negative match more consistently with positive match (Luke Melia)
    
 == 0.6.0 / 2009-11-28
