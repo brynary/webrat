@@ -195,9 +195,9 @@ EOS
 
 
     def save_and_open_screengrab
-      return unless File.exist?(saved_page_dir)
+      return unless File.exist?(Webrat.configuration.saved_pages_dir)
 
-      filename = "#{saved_page_dir}/webrat-#{Time.now.to_i}.png"
+      filename = "#{Webrat.configuration.saved_pages_dir}/webrat-#{Time.now.to_i}.png"
 
       if $browser.chrome_backend?
         $browser.capture_entire_page_screenshot(filename, '')

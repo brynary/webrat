@@ -15,10 +15,6 @@ module Webrat
       File.expand_path(File.join(RAILS_ROOT, 'public'))
     end
 
-    def saved_page_dir
-      File.expand_path(File.join(RAILS_ROOT, "tmp"))
-    end
-
     def get(url, data, headers = nil)
       do_request(:get, url, data, headers)
     end

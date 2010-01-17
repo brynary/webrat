@@ -1,3 +1,7 @@
+* Minor enhancements
+
+  * Save and open page directory specified via configuration (Noah Davis)
+
 * Bug fixes
 
   * Make "should contain" ignore extra whitespace when doing string comparisons (Noah Davis)

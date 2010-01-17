@@ -6,9 +6,9 @@ module Webrat
     # Example:
     #   save_and_open_page
     def save_and_open_page
-      return unless File.exist?(saved_page_dir)
+      return unless File.exist?(Webrat.configuration.saved_pages_dir)
 
-      filename = "#{saved_page_dir}/webrat-#{Time.now.to_i}.html"
+      filename = "#{Webrat.configuration.saved_pages_dir}/webrat-#{Time.now.to_i}.html"
 
       File.open(filename, "w") do |f|
         f.write rewrite_css_and_image_references(response_body)
@@ -27,10 +27,6 @@ module Webrat
     def rewrite_css_and_image_references(response_html) # :nodoc:
       return response_html unless doc_root
       response_html.gsub(/("|')\/(stylesheets|images)/, '\1' + doc_root + '/\2')
-    end
-
-    def saved_page_dir #:nodoc:
-      File.expand_path(".")
     end
 
     def doc_root #:nodoc:
