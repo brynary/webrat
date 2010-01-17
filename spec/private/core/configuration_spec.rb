@@ -17,11 +17,6 @@ describe Webrat::Configuration do
     config.should open_error_files
   end
 
-  it "should default saved_pages_dir to current dir" do
-    config = Webrat::Configuration.new
-    config.saved_pages_dir.should == File.expand_path(".")
-  end
-
   it "should detect infinite redirects after 10" do
     config = Webrat::Configuration.new
     config.infinite_redirect_limit.should == 10
