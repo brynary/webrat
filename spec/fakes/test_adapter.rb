@@ -10,10 +10,6 @@ module Webrat #:nodoc:
     def initialize(*args)
     end
 
-    def doc_root
-      File.expand_path(File.join(".", "public"))
-    end
-
     def response
       @response ||= Object.new
     end

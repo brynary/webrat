@@ -2,11 +2,6 @@ require File.expand_path(File.dirname(__FILE__) + "/../../spec_helper")
 
 describe Webrat::Session do
 
-  it "should not have a doc_root" do
-    session = Webrat::Session.new
-    session.doc_root.should be_nil
-  end
-
   it "should expose the current_dom" do
     session = Webrat::Session.new
 

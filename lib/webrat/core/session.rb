@@ -92,10 +92,6 @@ For example:
       page
     end
 
-    def doc_root #:nodoc:
-      nil
-    end
-
     def header(key, value)
       @custom_headers[key] = value
     end

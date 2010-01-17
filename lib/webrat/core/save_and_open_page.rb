@@ -11,7 +11,7 @@ module Webrat
       filename = "#{Webrat.configuration.saved_pages_dir}/webrat-#{Time.now.to_i}.html"
 
       File.open(filename, "w") do |f|
-        f.write rewrite_css_and_image_references(response_body)
+        f.write response_body
       end
 
       open_in_browser(filename)
@@ -22,22 +22,6 @@ module Webrat
       Launchy::Browser.run(path)
     rescue LoadError
       warn "Sorry, you need to install launchy to open pages: `gem install launchy`"
-    end
-
-    def rewrite_css_and_image_references(response_html) # :nodoc:
-      return response_html unless doc_root
-      response_html.gsub(/("|')\/(stylesheets|images)/, '\1' + doc_root + '/\2')
-    end
-
-    def doc_root #:nodoc:
-      nil
-    end
-
-  private
-
-    # accessor for testing
-    def ruby_platform
-      RUBY_PLATFORM
     end
 
   end

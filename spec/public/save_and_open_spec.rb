@@ -33,30 +33,6 @@ describe "save_and_open_page" do
     save_and_open_page
   end
 
-  it "should rewrite css rules" do
-    @file_handle.should_receive(:write) do |html|
-      html.should =~ %r|"#{webrat_session.doc_root}/stylesheets/foo.css"|s
-    end
-
-    save_and_open_page
-  end
-
-  it "should rewrite image paths with double quotes" do
-    @file_handle.should_receive(:write) do |html|
-      html.should =~ %r|"#{webrat_session.doc_root}/images/bar.png"|s
-    end
-
-    save_and_open_page
-  end
-
-  it "should rewrite image paths with single quotes" do
-    @file_handle.should_receive(:write) do |html|
-      html.should =~ %r|'#{webrat_session.doc_root}/images/foo.png'|s
-    end
-
-    save_and_open_page
-  end
-
   it "should open the temp file in a browser with Launchy" do
     Launchy::Browser.should_receive(:run)
     save_and_open_page
