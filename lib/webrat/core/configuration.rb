@@ -29,7 +29,7 @@ module Webrat
     # Save and open page storage directory, defaults to current directory
     attr_accessor :saved_pages_dir
 
-    # Which rails environment should the selenium tests be run in? Defaults to selenium.
+    # Which rails environment should the selenium tests be run in? Defaults to test.
     attr_accessor :application_environment
     webrat_deprecate :selenium_environment, :application_environment
     webrat_deprecate :selenium_environment=, :application_environment=
