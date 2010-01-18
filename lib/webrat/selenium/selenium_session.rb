@@ -232,7 +232,7 @@ EOS
 
     def create_browser
       $browser = ::Selenium::Client::Driver.new(Webrat.configuration.selenium_server_address || "localhost",
-      Webrat.configuration.selenium_server_port, Webrat.configuration.selenium_browser_key, "http://#{Webrat.configuration.application_address}:#{Webrat.configuration.application_port}")
+      Webrat.configuration.selenium_server_port, Webrat.configuration.selenium_browser_key, "http://#{Webrat.configuration.application_address}:#{Webrat.configuration.application_port_for_selenium}")
       $browser.set_speed(0) unless Webrat.configuration.selenium_server_address
 
       at_exit do

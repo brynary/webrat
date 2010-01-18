@@ -40,6 +40,13 @@ module Webrat
     webrat_deprecate :selenium_port, :application_port
     webrat_deprecate :selenium_port=, :application_port=
 
+    # Which port should selenium use to access the application. Defaults to application_port
+    attr_writer :application_port_for_selenium
+    
+    def application_port_for_selenium
+      @application_port_for_selenium || self.application_port
+    end
+
     # Which underlying app framework we're testing with selenium
     attr_accessor :application_framework
 
@@ -76,7 +83,7 @@ module Webrat
       tmp_dir = Pathname.new(Dir.pwd).join("tmp")
       self.saved_pages_dir = tmp_dir.exist? ? tmp_dir : Dir.pwd
     end
-
+    
     def open_error_files? #:nodoc:
       @open_error_files ? true : false
     end
