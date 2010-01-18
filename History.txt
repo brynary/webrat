@@ -7,7 +7,8 @@
   * Save and open page directory specified via configuration, defaults to tmp dir otherwise current dir (Noah Davis)
 
 * Bug fixes
-  
+
+  * Added missing dependency "rack-test" to gemspec (LH #339) (Noah Davis)
   * Removed save_and_open_page's rewriting of static asset paths before saving (was not actually working) (Noah Davis)
   * Make "should contain" ignore extra whitespace when doing string comparisons (Noah Davis)
   * Make selenium matchers handle negative match more consistently with positive match (Luke Melia)

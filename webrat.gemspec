@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Bryan Helmkamp"]
-  s.date = %q{2009-11-28}
+  s.date = %q{2010-01-17}
   s.description = %q{Webrat lets you quickly write expressive and robust acceptance tests
 for a Ruby web application. It supports simulating a browser inside
 a Ruby process to avoid the performance hit and browser dependency of
@@ -337,12 +337,15 @@ Most Ruby web frameworks and testing frameworks are supported.}
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<nokogiri>, [">= 1.2.0"])
       s.add_runtime_dependency(%q<rack>, [">= 1.0"])
+      s.add_runtime_dependency(%q<rack-test>, [">= 0.5.3"])
     else
       s.add_dependency(%q<nokogiri>, [">= 1.2.0"])
       s.add_dependency(%q<rack>, [">= 1.0"])
+      s.add_dependency(%q<rack-test>, [">= 0.5.3"])
     end
   else
     s.add_dependency(%q<nokogiri>, [">= 1.2.0"])
     s.add_dependency(%q<rack>, [">= 1.0"])
+    s.add_dependency(%q<rack-test>, [">= 0.5.3"])
   end
 end
