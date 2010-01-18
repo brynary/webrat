@@ -29,7 +29,7 @@ describe "save_and_open_page" do
   it "should save pages to the directory configured" do
     Webrat.configuration.stub!(:saved_pages_dir => "path/to/dir")
     File.should_receive(:open).with("path/to/dir/webrat-1234.html", "w").and_yield(@file_handle)
-    
+
     save_and_open_page
   end
 

@@ -19,11 +19,11 @@ describe "contain" do
     it "should call element#matches? when the argument is a regular expression" do
       @body.should contain(/hello, world/)
     end
-    
+
     it "should treat newlines as spaces" do
       "<div>it takes\ndifferent strokes</div>".should contain("it takes different strokes")
     end
-    
+
     it "should multiple spaces as a single space" do
       "<div>it takes  different strokes</div>".should contain("it takes different strokes")
     end

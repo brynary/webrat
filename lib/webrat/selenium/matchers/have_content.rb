@@ -14,7 +14,7 @@ module Webrat
           @error_message = e.message
           false
         end
-        
+
         def does_not_match?(response)
           response.session.wait_for do
             !response.selenium.is_text_present(text_finder)
@@ -44,7 +44,7 @@ module Webrat
             "match #{@content.inspect}"
           end
         end
-        
+
         def text_finder
           if @content.is_a?(Regexp)
             "regexp:#{@content.source}"
