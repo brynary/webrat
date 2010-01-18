@@ -1,6 +1,6 @@
 * Minor enhancements
 
-  * Save and open page directory specified via configuration (Noah Davis)
+  * Save and open page directory specified via configuration, defaults to tmp dir otherwise current dir (Noah Davis)
 
 * Bug fixes
   
