@@ -1,3 +1,5 @@
+== 0.7.0 / 2010-01-17
+
 * Major enhancements
 
   * Upgrade bundled Selenium server JAR to 2.0a1 (Henry Poydar and Jake Scruggs)
