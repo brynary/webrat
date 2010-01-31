@@ -62,7 +62,9 @@ module Webrat
     end
 
     def http_method
-      if !onclick.blank? && onclick.include?("f.submit()")
+      if @element["data-method"] && %w(get post put delete).include?(@element["data-method"])
+       @element["data-method"].to_sym
+      elsif !onclick.blank? && onclick.include?("f.submit()") || @element["data-method"]
         http_method_from_js_form
       else
         :get
@@ -70,7 +72,7 @@ module Webrat
     end
 
     def http_method_from_js_form
-      if onclick.include?("m.setAttribute('name', '_method')")
+      if !onclick.blank? && onclick.include?("m.setAttribute('name', '_method')")
         http_method_from_fake_method_param
       else
         :post
