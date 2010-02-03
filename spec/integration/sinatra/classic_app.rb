@@ -1,4 +1,3 @@
-require "rubygems"
 require "sinatra"
 
 use_in_file_templates!
