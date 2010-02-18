@@ -40,7 +40,11 @@ module Webrat #:nodoc:
     end
 
     def mechanize
-      @mechanize ||= WWW::Mechanize.new
+      unless @mechanize
+        @mechanize = Mechanize.new
+        @mechanize.redirect_ok = false
+      end
+      @mechanize
     end
 
     def_delegators :mechanize, :basic_auth
