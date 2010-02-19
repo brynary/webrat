@@ -9,6 +9,13 @@ describe Webrat::MechanizeAdapter do
     @mech = Webrat::MechanizeAdapter.new
   end
 
+  describe "mechanize" do
+    it "should disable the following of redirects on the mechanize instance" do
+      mech = @mech.mechanize
+      mech.redirect_ok.should be_false
+    end
+  end
+
   describe "post" do
     def url
       'http://test.host/users'
@@ -24,7 +31,8 @@ describe Webrat::MechanizeAdapter do
 
     it "should flatten model post data" do
       mechanize = mock(:mechanize)
-      WWW::Mechanize.stub!(:new => mechanize)
+      mechanize.stub!(:redirect_ok=)
+      Mechanize.stub!(:new => mechanize)
       mechanize.should_receive(:post).with(url, flattened_data)
       Webrat::MechanizeAdapter.new.post(url, data)
     end
