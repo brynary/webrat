@@ -35,6 +35,10 @@ module Webrat
       response.code.to_i
     end
 
+    def response_headers
+      response.headers
+    end
+
     def xml_content_type?
       response.headers["Content-Type"].to_s =~ /xml/
     end

@@ -39,6 +39,10 @@ module Webrat #:nodoc:
       @response.code.to_i
     end
 
+    def response_headers
+      @response.header
+    end
+
     def mechanize
       unless @mechanize
         @mechanize = Mechanize.new

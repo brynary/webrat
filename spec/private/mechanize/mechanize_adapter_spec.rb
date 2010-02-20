@@ -78,4 +78,16 @@ describe Webrat::MechanizeAdapter do
       @session.absolute_url(relative_url).should == 'https://test.host/wilma'
     end
   end
+
+  describe "response_headers" do
+    it "should return the Headers object from the response" do
+      mech = @mech.mechanize
+      resp = mock('Mechanize::File')
+      hdr = Mechanize::Headers.new
+      resp.should_receive(:header).and_return(hdr)
+      mech.stub!(:get).and_return(resp)
+      @mech.get('/', nil)
+      @mech.response_headers.should == hdr
+    end
+  end
 end
