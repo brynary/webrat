@@ -1,6 +1,9 @@
+== 0.7.1
+
 * Minor enhancements
 
   * Added application_port_for_selenium to webrat configuration. The use case is when you want to test through a web server sitting in front of your application server. (Luke Melia)
+  * New webrat configuration option selenium_firefox_profile which is passed to selenium server
 
 == 0.7.0 / 2010-01-17
 

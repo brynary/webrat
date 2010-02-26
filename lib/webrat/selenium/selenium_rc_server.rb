@@ -31,10 +31,13 @@ module Webrat
 
       def remote_control
         return @remote_control if @remote_control
+        server_options = { :timeout => Webrat.configuration.selenium_browser_startup_timeout }
+        server_options[:firefox_profile] = Webrat.configuration.selenium_firefox_profile if Webrat.configuration.selenium_firefox_profile
 
         @remote_control = ::Selenium::RemoteControl::RemoteControl.new("0.0.0.0",
                                                                        Webrat.configuration.selenium_server_port,
-                                                                       :timeout => Webrat.configuration.selenium_browser_startup_timeout)
+                                                                       server_options)
+
         @remote_control.jar_file = jar_path
 
         return @remote_control
