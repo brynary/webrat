@@ -77,7 +77,7 @@ module Webrat
 
       element    = Webrat::XML.document(html).css('input').first
       text_field = TextField.new(nil, element)
-      text_field.to_param.should == { 'email' => 'user@example.com' }
+      text_field.to_query_string.should == 'email=user@example.com'
     end
   end
 end
