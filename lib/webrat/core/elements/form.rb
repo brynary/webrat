@@ -73,7 +73,7 @@ module Webrat
         when Hash
           value = replace_param_value(value, oval, nval)
         when Array
-          value = value.map { |o| o == oval ? nval : o }
+          value = value.map { |o| o == oval ? nval : ( o.is_a?(Hash) ? replace_param_value(o, oval, nval) : o) }
         when oval
           value = nval
         end
