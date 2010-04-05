@@ -51,11 +51,11 @@ module Webrat
         query_string << field.to_query_string
       end
 
-      query_params = Form.query_string_to_params(query_string.join('&'))
+      query_params = self.class.query_string_to_params(query_string.join('&'))
 
-      query_params = Form.replace_params_values(query_params, replaces)
+      query_params = self.class.replace_params_values(query_params, replaces)
 
-      Form.unescape_params(query_params)
+      self.class.unescape_params(query_params)
     end
 
     def form_method
@@ -65,8 +65,6 @@ module Webrat
     def form_action
       @element["action"].blank? ? @session.current_url : @element["action"]
     end
-
-    protected
 
     def self.replace_param_value(params, oval, nval)
       output = Hash.new
