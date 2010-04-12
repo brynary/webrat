@@ -38,15 +38,24 @@ module Webrat
       end
     end
 
+    # iterate over all form fields to build a request querystring to get params from it,
+    # for file_field we made a work around to pass a digest as value to later replace it
+    # in params hash with the real file.
     def params
-      all_params = {}
+      query_string = []
+      replaces = {}
 
       fields.each do |field|
-        next if field.to_param.nil?
-        merge(all_params, field.to_param)
+        next if field.to_query_string.nil?
+        replaces.merge!({field.digest_value => field.test_uploaded_file}) if field.is_a?(FileField)
+        query_string << field.to_query_string
       end
 
-      all_params
+      query_params = self.class.query_string_to_params(query_string.join('&'))
+
+      query_params = self.class.replace_params_values(query_params, replaces)
+
+      self.class.unescape_params(query_params)
     end
 
     def form_method
@@ -57,47 +66,62 @@ module Webrat
       @element["action"].blank? ? @session.current_url : @element["action"]
     end
 
-    def merge(all_params, new_param)
-      new_param.each do |key, value|
-        case all_params[key]
-        when *hash_classes
-          merge_hash_values(all_params[key], value)
+    def self.replace_param_value(params, oval, nval)
+      output = Hash.new
+      params.each do |key, value|
+        case value
+        when Hash
+          value = replace_param_value(value, oval, nval)
         when Array
-          all_params[key] += value
-        else
-          all_params[key] = value
+          value = value.map { |o| o == oval ? nval : ( o.is_a?(Hash) ? replace_param_value(o, oval, nval) : o) }
+        when oval
+          value = nval
         end
+        output[key] = value
+      end
+      output
+    end
+
+    def self.replace_params_values(params, values)
+      values.each do |key, value|
+        params = replace_param_value(params, key, value)
+      end
+      params
+    end
+
+    def self.unescape_params(params)
+      case params.class.name
+      when 'Hash', 'Mash'
+        params.each { |key,value| params[key] = unescape_params(value) }
+        params
+      when 'Array'
+        params.collect { |value| unescape_params(value) }
+      else
+        params.is_a?(String) ? CGI.unescapeHTML(params) : params
       end
     end
 
-    def merge_hash_values(a, b) # :nodoc:
-      a.keys.each do |k|
-        if b.has_key?(k)
-          case [a[k], b[k]].map{|value| value.class}
-          when *hash_classes.zip(hash_classes)
-            a[k] = merge_hash_values(a[k], b[k])
-            b.delete(k)
-          when [Array, Array]
-            a[k] += b[k]
-            b.delete(k)
-          end
-        end
-      end
-      a.merge!(b)
-    end
-
-    def hash_classes
-      klasses = [Hash]
-
+    def self.query_string_to_params(query_string)
       case Webrat.configuration.mode
       when :rails
-        klasses << HashWithIndifferentAccess
+        parse_rails_request_params(query_string)
       when :merb
-        klasses << Mash
+        ::Merb::Parse.query(query_string)
+      when :rack, :sinatra
+        Rack::Utils.parse_nested_query(query_string)
+      else
+        query_string.split('&').map {|query| { query.split('=').first => query.split('=').last }}
       end
-
-      klasses
     end
 
+    def self.parse_rails_request_params(query_string)
+      if defined?(ActionController::AbstractRequest)
+        ActionController::AbstractRequest.parse_query_parameters(query_string)
+      elsif defined?(ActionController::UrlEncodedPairParser)
+        ActionController::UrlEncodedPairParser.parse_query_parameters(query_string)
+      else
+        Rack::Utils.parse_nested_query(query_string)
+      end
+    end
   end
 end

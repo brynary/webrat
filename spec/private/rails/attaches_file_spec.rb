@@ -78,4 +78,37 @@ describe "attach_file" do
     attach_file "Picture", @filename, "image/png"
     click_button
   end
+
+  it "should support nested attributes" do
+    with_html <<-HTML
+      <html>
+      <form method="post" action="/albums">
+        <label for="photo_file1">Photo</label>
+        <input type="file" id="photo_file1" name="album[photos_attributes][][image]" />
+        <input type="submit" />
+      </form>
+      </html>
+    HTML
+    webrat_session.should_receive(:post).with("/albums", { "album" => { "photos_attributes" => [{"image" => @uploaded_file}] } })
+    attach_file "Photo", @filename
+    click_button
+  end
+
+  it "should support nested attributes with multiple files" do
+    with_html <<-HTML
+      <html>
+      <form method="post" action="/albums">
+        <label for="photo_file1">Photo 1</label>
+        <input type="file" id="photo_file1" name="album[photos_attributes][][image]" />
+        <label for="photo_file2">Photo 2</label>
+        <input type="file" id="photo_file2" name="album[photos_attributes][][image]" />
+        <input type="submit" />
+      </form>
+      </html>
+    HTML
+    webrat_session.should_receive(:post).with("/albums", { "album" => { "photos_attributes" => [{"image" => @uploaded_file}, {"image" => @uploaded_file}] } })
+    attach_file "Photo 1", @filename
+    attach_file "Photo 2", @filename
+    click_button
+  end
 end
