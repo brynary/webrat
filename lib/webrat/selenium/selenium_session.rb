@@ -3,7 +3,12 @@ require "webrat/selenium/selenium_rc_server"
 require "webrat/selenium/application_server_factory"
 require "webrat/selenium/application_servers/base"
 
-require "selenium"
+begin
+  require "selenium"
+rescue LoadError => e
+  e.message << " (You may need to install the selenium-rc gem)"
+  raise e
+end
 
 module Webrat
   class TimeoutError < WebratError
