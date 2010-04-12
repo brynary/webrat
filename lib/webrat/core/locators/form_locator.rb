@@ -10,7 +10,7 @@ module Webrat
       end
 
       def form_element
-        @dom.css("#" + @value).first
+        @dom.css("#" + @value).first || @dom.css(@value).first
       end
 
     end
