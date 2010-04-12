@@ -3,7 +3,7 @@ module Webrat
 
     def self.delegate_to_session(*meths)
       meths.each do |meth|
-        self.class_eval <<-RUBY
+        self.class_eval(<<-RUBY, __FILE__, __LINE__)
           def #{meth}(*args, &blk)
             webrat_session.#{meth}(*args, &blk)
           end
