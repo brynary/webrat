@@ -282,7 +282,7 @@ For example:
     end
 
     def response_location
-      response.headers["Location"]
+      response_headers['Location']
     end
 
     def current_host

@@ -41,8 +41,16 @@ module Webrat #:nodoc:
       @response.code.to_i
     end
 
+    def response_headers
+      @response.header
+    end
+
     def mechanize
-      @mechanize ||= Mechanize.new
+      @mechanize ||= begin
+        mechanize = Mechanize.new
+        mechanize.redirect_ok = false
+        mechanize
+      end
     end
 
     def_delegators :mechanize, :basic_auth

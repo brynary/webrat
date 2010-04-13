@@ -1,12 +1,22 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe Webrat::MechanizeAdapter do
+
+  Mechanize = WWW::Mechanize if defined?(WWW::Mechanize)
+
   before :each do
     Webrat.configuration.mode = :mechanize
   end
 
   before(:each) do
     @mech = Webrat::MechanizeAdapter.new
+  end
+
+  describe "mechanize" do
+    it "should disable the following of redirects on the mechanize instance" do
+      mech = @mech.mechanize
+      mech.redirect_ok.should be_false
+    end
   end
 
   describe "post" do
@@ -24,7 +34,8 @@ describe Webrat::MechanizeAdapter do
 
     it "should flatten model post data" do
       mechanize = mock(:mechanize)
-      WWW::Mechanize.stub!(:new => mechanize)
+      mechanize.stub!(:redirect_ok=)
+      Mechanize.stub!(:new => mechanize)
       mechanize.should_receive(:post).with(url, flattened_data)
       Webrat::MechanizeAdapter.new.post(url, data)
     end
@@ -68,6 +79,18 @@ describe Webrat::MechanizeAdapter do
     it "should cope with https" do
       @session.stub!(:current_url).and_return('https://test.host')
       @session.absolute_url(relative_url).should == 'https://test.host/wilma'
+    end
+  end
+
+  describe "response_headers" do
+    it "should return the Headers object from the response" do
+      mech = @mech.mechanize
+      resp = mock('Mechanize::File')
+      hdr = Mechanize::Headers.new
+      resp.should_receive(:header).and_return(hdr)
+      mech.stub!(:get).and_return(resp)
+      @mech.get('/', nil)
+      @mech.response_headers.should == hdr
     end
   end
 end

@@ -18,6 +18,10 @@ module Webrat
       response.status
     end
 
+    def response_headers
+      response.headers
+    end
+
     def response
       @session.last_response
     end
