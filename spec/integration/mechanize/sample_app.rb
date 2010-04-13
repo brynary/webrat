@@ -16,4 +16,20 @@ class SampleApp < Sinatra::Default
   get "/redirected" do
     "Redirected"
   end
+
+  get "/form" do
+    <<-EOS
+    <html>
+      <form action="/form" method="post">
+        <input type="hidden" name="_method" value="put" />
+        <label for="email">Email:</label> <input type="text" id="email" name="email" /></label>
+        <input type="submit" value="Add" />
+      </form>
+    </html>
+    EOS
+  end
+
+  put "/form" do
+    "Welcome #{params[:email]}"
+  end
 end

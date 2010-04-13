@@ -12,7 +12,15 @@ describe "Webrat's Mechanize mode" do
   end
 
   it "should follow links"
-  it "should submit forms"
+
+  it "should submit forms" do
+    visit "http://localhost:9292/form"
+    fill_in "Email", :with => "albert@example.com"
+    click_button "Add"
+
+    response.should contain("Welcome albert@example.com")
+  end
+
   it "should not follow external redirects" do
     pending do
       response = visit("http://localhost:9292/external_redirect")
