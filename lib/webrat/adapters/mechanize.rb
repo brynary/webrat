@@ -4,6 +4,8 @@ module Webrat #:nodoc:
   class MechanizeAdapter #:nodoc:
     extend Forwardable
 
+    Mechanize = WWW::Mechanize if defined?(WWW::Mechanize)
+
     attr_accessor :response
     alias :page :response
 
@@ -40,7 +42,7 @@ module Webrat #:nodoc:
     end
 
     def mechanize
-      @mechanize ||= WWW::Mechanize.new
+      @mechanize ||= Mechanize.new
     end
 
     def_delegators :mechanize, :basic_auth
