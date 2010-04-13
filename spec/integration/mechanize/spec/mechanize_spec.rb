@@ -16,7 +16,7 @@ describe "Webrat's Mechanize mode" do
   it "should submit forms" do
     visit "http://localhost:9292/form"
     fill_in "Email", :with => "albert@example.com"
-    click_button "Add"
+    response = click_button "Add"
 
     response.should contain("Welcome albert@example.com")
   end
