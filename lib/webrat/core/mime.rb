@@ -8,8 +8,8 @@ module Webrat #:nodoc:
     def mime_type(type)
       return type if type.nil? || type.to_s.include?("/")
       type = ".#{type}" unless type.to_s[0] == ?.
-      MIME_TYPES.fetch(type) { |type|
-        raise ArgumentError.new("Invalid Mime type: #{type}")
+      MIME_TYPES.fetch(type) { |invalid_type|
+        raise ArgumentError.new("Invalid Mime type: #{invalid_type}")
       }
     end
 

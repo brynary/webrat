@@ -15,7 +15,7 @@ module Webrat #:nodoc:
     end
 
     def response_code
-      @response_code || 200
+      @response_code ||= 200
     end
 
     def get(url, data, headers = nil)

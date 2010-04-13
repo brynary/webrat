@@ -28,6 +28,7 @@ module Webrat
     attr_reader :session
 
     def initialize(session, &block) #:nodoc:
+      @selector, @dom = nil
       @session = session
       instance_eval(&block) if block_given?
 
