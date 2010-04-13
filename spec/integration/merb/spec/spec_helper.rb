@@ -1,3 +1,5 @@
+require "rubygems"
+
 $LOAD_PATH.unshift File.dirname(__FILE__) + "/../../../../lib"
 
 # Add the local gems dir if found within the app root; any dependencies loaded

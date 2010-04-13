@@ -1,5 +1,3 @@
-require "rubygems"
-
 begin
   require 'spec/rake/spectask'
 rescue LoadError
@@ -90,14 +88,14 @@ namespace :spec do
     namespace :rails do
       task :selenium do
         Dir.chdir "spec/integration/rails" do
-          result = system "rake test_unit:selenium"
+          result = system "rake -rubygems test_unit:selenium"
           raise "Rails integration tests failed" unless result
         end
       end
 
       task :webrat do
         Dir.chdir "spec/integration/rails" do
-          result = system "rake test_unit:rails"
+          result = system "rake -rubygems test_unit:rails"
           raise "Rails integration tests failed" unless result
         end
       end
@@ -106,7 +104,7 @@ namespace :spec do
     desc "Run the Merb integration specs"
     task :merb do
       Dir.chdir "spec/integration/merb" do
-        result = system "rake spec"
+        result = system "rake -rubygems spec"
         raise "Merb integration tests failed" unless result
       end
     end
@@ -114,7 +112,7 @@ namespace :spec do
     desc "Run the Sinatra integration specs"
     task :sinatra do
       Dir.chdir "spec/integration/sinatra" do
-        result = system "rake test"
+        result = system "rake -rubygems test"
         raise "Sinatra integration tests failed" unless result
       end
     end
@@ -122,7 +120,7 @@ namespace :spec do
     desc "Run the Sinatra integration specs"
     task :rack do
       Dir.chdir "spec/integration/rack" do
-        result = system "rake test"
+        result = system "rake -rubygems test"
         raise "Rack integration tests failed" unless result
       end
     end
@@ -130,7 +128,7 @@ namespace :spec do
     desc "Run the Mechanize integration specs"
     task :mechanize do
       Dir.chdir "spec/integration/mechanize" do
-        result = system "rake spec"
+        result = system "rake -rubygems spec"
         raise "Mechanize integration tests failed" unless result
       end
     end
