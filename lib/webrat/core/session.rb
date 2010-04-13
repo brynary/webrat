@@ -65,7 +65,7 @@ For example:
     attr_reader :current_url
     attr_reader :elements
 
-    def_delegators :@adapter, :response, :response_code, :response_body,
+    def_delegators :@adapter, :response, :response_code, :response_body, :response_headers,
       :response_body=, :response_code=,
       :get, :post, :put, :delete
 
