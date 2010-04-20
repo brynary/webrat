@@ -72,6 +72,10 @@ module Webrat
     # loop? Defaults to 10
     attr_accessor :infinite_redirect_limit
 
+    # Print out the full HTML on wait failure
+    # Defaults to false
+    attr_accessor :selenium_verbose_output
+
     def initialize # :nodoc:
       self.open_error_files = true
       self.application_environment = :test
@@ -82,6 +86,7 @@ module Webrat
       self.infinite_redirect_limit = 10
       self.selenium_browser_key = '*firefox'
       self.selenium_browser_startup_timeout = 5
+      self.selenium_verbose_output = false
 
       tmp_dir = Pathname.new(Dir.pwd).join("tmp")
       self.saved_pages_dir = tmp_dir.exist? ? tmp_dir : Dir.pwd

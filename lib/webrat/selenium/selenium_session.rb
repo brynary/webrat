@@ -175,8 +175,8 @@ module Webrat
       end
 
       error_message = "#{message} (after #{timeout} sec)"
-
-      if $browser
+      
+      if $browser && Webrat.configuration.selenium_verbose_output
         error_message += <<-EOS
 
 

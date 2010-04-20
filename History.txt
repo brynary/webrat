@@ -2,6 +2,7 @@
 
 * Minor enhancements
 
+  * Move verbose selenium output that can clutter build output behind setting
   * Added application_port_for_selenium to webrat configuration. The use case is when you want to test through a web server sitting in front of your application server. (Luke Melia)
   * New webrat configuration option selenium_firefox_profile which is passed to selenium server
 
