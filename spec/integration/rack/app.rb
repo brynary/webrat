@@ -38,7 +38,8 @@ class RackApp < Sinatra::Base
   end
 
   post "/upload" do
-    params[:uploaded_file].to_yaml
+    uploaded_file = params[:uploaded_file]
+    Marshal.dump(:tempfile => uploaded_file[:tempfile].read, :type => uploaded_file[:type], :filename => uploaded_file[:filename])
   end
 end
 

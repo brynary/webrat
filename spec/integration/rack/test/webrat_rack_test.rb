@@ -53,10 +53,10 @@ class WebratRackTest < Test::Unit::TestCase
     attach_file "File", __FILE__, "text/ruby"
     click_button "Upload"
 
-    upload = YAML.load(response_body)
+    upload = Marshal.load(response_body)
     assert_equal "text/ruby", upload[:type]
     assert_equal "webrat_rack_test.rb", upload[:filename]
-    assert upload[:tempfile].respond_to?(:read)
+    assert_equal File.read(__FILE__), upload[:tempfile]
   end
 end
 
