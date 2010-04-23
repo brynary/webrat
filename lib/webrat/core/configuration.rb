@@ -42,7 +42,7 @@ module Webrat
 
     # Which port should selenium use to access the application. Defaults to application_port
     attr_writer :application_port_for_selenium
-    
+
     def application_port_for_selenium
       @application_port_for_selenium || self.application_port
     end
@@ -91,9 +91,9 @@ module Webrat
       tmp_dir = Pathname.new(Dir.pwd).join("tmp")
       self.saved_pages_dir = tmp_dir.exist? ? tmp_dir : Dir.pwd
     end
-    
+
     def open_error_files? #:nodoc:
-      @open_error_files ? true : false
+      !! @open_error_files
     end
 
     # Allows setting of webrat's mode, valid modes are:

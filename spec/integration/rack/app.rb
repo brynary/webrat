@@ -41,6 +41,10 @@ class RackApp < Sinatra::Base
     uploaded_file = params[:uploaded_file]
     Marshal.dump(:tempfile => uploaded_file[:tempfile].read, :type => uploaded_file[:type], :filename => uploaded_file[:filename])
   end
+
+  get "/error" do
+    ["Exception caught: you wanted it."]
+  end
 end
 
 __END__

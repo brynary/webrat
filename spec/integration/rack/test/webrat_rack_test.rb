@@ -58,6 +58,24 @@ class WebratRackTest < Test::Unit::TestCase
     assert_equal "webrat_rack_test.rb", upload[:filename]
     assert_equal File.read(__FILE__), upload[:tempfile]
   end
+
+  def test_open_errors
+    $open_pages = []
+
+    Webrat.configure do |config|
+      config.open_error_files = true
+    end
+
+    def webrat_session.open_in_browser(path)
+      $open_pages << path
+    end
+
+    5.times do
+      visit "/error"
+    end
+
+    assert_equal 3, $open_pages.size
+  end
 end
 
 class WebratRackSetupTest < Test::Unit::TestCase

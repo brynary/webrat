@@ -76,6 +76,7 @@ For example:
       @default_headers = {}
       @custom_headers  = {}
       @current_url     = nil
+      @exceptions      = 0
       reset
     end
 
@@ -118,8 +119,7 @@ For example:
 
       process_request(http_method, url, data, h)
 
-      save_and_open_page if exception_caught? && Webrat.configuration.open_error_files?
-      raise PageLoadError.new("Page load was not successful (Code: #{response_code.inspect}):\n#{formatted_error}") unless success_code?
+      process_response_errors
 
       reset
 
@@ -297,6 +297,15 @@ For example:
       @elements     = {}
       @_scopes      = nil
       @_page_scope  = nil
+    end
+
+    def process_response_errors
+      if exception_caught? && @exceptions < 3 && Webrat.configuration.open_error_files?
+        save_and_open_page
+        @exceptions += 1
+      end
+
+      raise PageLoadError.new("Page load was not successful (Code: #{response_code.inspect}):\n#{formatted_error}") unless success_code?
     end
 
   end
