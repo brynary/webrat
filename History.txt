@@ -13,6 +13,7 @@
   * Fix attach_file with nested params [#341] (Álvaro Gil)
   * Fix that a 304 was considered a redirect (Larry Marburger)
   * Fix selection of LABEL elements in Selenium mode under IE [#317] (Damian Janowski, Noah Davis)
+  * Fix have_xpath not matching negative expectation in the block [#182] (Luismi Cavallé)
 
 == 0.7.0 / 2010-01-17
 
