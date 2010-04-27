@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{webrat}
-  s.version = "0.7.1.pre"
+  s.version = "0.7.1"
 
-  s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
+  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Bryan Helmkamp"]
-  s.date = %q{2010-01-17}
+  s.date = %q{2010-04-26}
   s.description = %q{Webrat lets you quickly write expressive and robust acceptance tests
 for a Ruby web application. It supports simulating a browser inside
 a Ruby process to avoid the performance hit and browser dependency of
@@ -72,7 +72,7 @@ Most Ruby web frameworks and testing frameworks are supported.}
     "lib/webrat/core_extensions/deprecate.rb",
     "lib/webrat/core_extensions/detect_mapped.rb",
     "lib/webrat/core_extensions/meta_class.rb",
-    "lib/webrat/core_extensions/nil_to_param.rb",
+    "lib/webrat/core_extensions/nil_to_query_string.rb",
     "lib/webrat/core_extensions/tcp_socket.rb",
     "lib/webrat/integrations/merb.rb",
     "lib/webrat/integrations/rails.rb",
@@ -195,6 +195,7 @@ Most Ruby web frameworks and testing frameworks are supported.}
     "spec/integration/sinatra/test/test_helper.rb",
     "spec/private/core/configuration_spec.rb",
     "spec/private/core/field_spec.rb",
+    "spec/private/core/form_spec.rb",
     "spec/private/core/link_spec.rb",
     "spec/private/core/session_spec.rb",
     "spec/private/mechanize/mechanize_adapter_spec.rb",
@@ -238,7 +239,7 @@ Most Ruby web frameworks and testing frameworks are supported.}
   s.homepage = %q{http://github.com/brynary/webrat}
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{webrat}
-  s.rubygems_version = %q{1.3.5}
+  s.rubygems_version = %q{1.3.6}
   s.summary = %q{Ruby Acceptance Testing for Web applications}
   s.test_files = [
     "spec/fakes/test_adapter.rb",
@@ -293,6 +294,7 @@ Most Ruby web frameworks and testing frameworks are supported.}
     "spec/integration/sinatra/test/test_helper.rb",
     "spec/private/core/configuration_spec.rb",
     "spec/private/core/field_spec.rb",
+    "spec/private/core/form_spec.rb",
     "spec/private/core/link_spec.rb",
     "spec/private/core/session_spec.rb",
     "spec/private/mechanize/mechanize_adapter_spec.rb",
