@@ -13,6 +13,8 @@ ActionController::Routing::Routes.draw do |map|
     webrat.redirect_to_show_params  "/redirect_to_show_params", :action => "redirect_to_show_params"
     webrat.show_params              "/show_params",             :action => "show_params"
     webrat.within                   "/within",                  :action => "within"
+    webrat.file                     "/file",                    :action => "file"
+    webrat.post_file                "/post_file",               :action => "post_file"
 
     webrat.root :action => "form"
   end

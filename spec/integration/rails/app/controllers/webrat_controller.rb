@@ -43,4 +43,16 @@ class WebratController < ApplicationController
   def within
   end
 
+  def file
+    @album = Album.new
+
+    3.times { @album.photos.build }
+  end
+
+  def post_file
+    album = Album.new(params[:album])
+
+    render :text => "#{album.photos.size} photos."
+  end
+
 end

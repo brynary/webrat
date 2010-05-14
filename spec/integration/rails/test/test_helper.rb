@@ -1,5 +1,6 @@
 ENV["RAILS_ENV"] = "test"
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
+load File.expand_path(File.dirname(__FILE__) + "/../db/schema.rb")
 require 'test_help'
 
 # begin

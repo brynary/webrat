@@ -1,0 +1,14 @@
+<%- count = 0 %>
+
+<% form_for(@album, :url => post_file_path, :html => {:multipart => true}) do |f| %>
+  <p>
+    <% f.fields_for :photos do |uf| %>
+      <%= uf.label :image, "Photo #{count += 1}" %>
+      <%= uf.file_field :image %><br/>
+    <% end %>
+  </p>
+
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>

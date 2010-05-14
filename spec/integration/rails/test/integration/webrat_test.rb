@@ -107,6 +107,18 @@ class WebratTest < ActionController::IntegrationTest
     end
   end
 
+  test "post nested params for files" do
+    visit "/file"
+
+    attach_file "Photo 1", "test/fixtures/image.jpg", "image/jpeg"
+    attach_file "Photo 2", "test/fixtures/image.jpg", "image/jpeg"
+    attach_file "Photo 3", "test/fixtures/image.jpg", "image/jpeg"
+
+    click_button "Create"
+
+    assert_contain "3 photos."
+  end
+
   # Firefox detects and prevents infinite redirects under Selenium
   unless ENV['WEBRAT_INTEGRATION_MODE'] == 'selenium'
      test "should detect infinite redirects" do
