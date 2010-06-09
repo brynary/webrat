@@ -15,7 +15,7 @@ module Webrat
 
       def locate
         if @id_or_name_or_label
-          field = FieldLocator.new(@session, @dom, @id_or_name_or_label, SelectField).locate!
+          field = FieldLocator.new(@session, @dom, @id_or_name_or_label, SelectField, MultipleSelectField).locate!
 
           field.options.detect do |o|
             if @option_text.is_a?(Regexp)

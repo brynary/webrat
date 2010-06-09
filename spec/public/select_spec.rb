@@ -362,6 +362,25 @@ describe "select" do
     click_button
   end
 
+  it "should allow selection of multiple fields when including from" do
+    with_html <<-HTML
+      <html>
+      <form method="post" action="/login">
+        <select name="clothes[]" multiple="multiple">
+          <option value="tshirt">tshirt</option>
+          <option value="pants">pants</option>
+        </select>
+        <input type="submit" />
+      </form>
+      </html>
+    HTML
+
+    webrat_session.should_receive(:post).with("/login", "clothes" => ['pants'])
+    select 'pants', :from => 'clothes[]'
+    click_button
+  end
+
+
   it "should not overwrite preselected multiples" do
     with_html <<-HTML
       <html>
