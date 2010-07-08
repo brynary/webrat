@@ -370,6 +370,18 @@ describe "click_link" do
     click_link "Link"
   end
 
+  it "should choose the shortest link text match, preferring text" do
+    with_html <<-HTML
+      <html>
+        <a href="/page1">Linkerama</a>
+        <a title="Link" href="/page2">Foo</a>
+      </html>
+    HTML
+
+    webrat_session.should_receive(:get).with("/page1", {})
+    click_link "Link"
+  end
+
   it "should treat non-breaking spaces as spaces" do
     with_html <<-HTML
       <html>

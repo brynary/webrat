@@ -10,7 +10,11 @@ module Webrat
       end
 
       def link_element
-        matching_links.min { |a, b| a.inner_text.length <=> b.inner_text.length }
+        matching_links.min { |a, b|
+          a_score = a.inner_text =~ matcher ? a.inner_text.length : 100
+          b_score = b.inner_text =~ matcher ? b.inner_text.length : 100
+          a_score <=> b_score
+        }
       end
 
       def matching_links
@@ -21,15 +25,19 @@ module Webrat
       end
 
       def matches_text?(link)
-        if @value.is_a?(Regexp)
-          matcher = @value
-        else
-          matcher = /#{Regexp.escape(@value.to_s)}/i
-        end
-
         replace_nbsp(link.inner_text) =~ matcher ||
         replace_nbsp_ref(link.inner_html) =~ matcher ||
         link["title"] =~ matcher
+      end
+      
+      def matcher
+        @matcher ||= begin
+          if @value.is_a?(Regexp)
+            @value
+          else
+            /#{Regexp.escape(@value.to_s)}/i
+          end
+        end
       end
 
       def matches_id?(link)
