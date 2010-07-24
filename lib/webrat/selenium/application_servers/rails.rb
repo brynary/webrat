@@ -31,11 +31,11 @@ module Webrat
         end
 
         def start_command
-        "mongrel_rails start -d --chdir='#{::Rails.root}' --port=#{Webrat.configuration.application_port} --environment=#{Webrat.configuration.application_environment} --pid #{pid_file} &"
+          "mongrel_rails start -d --chdir='#{::Rails.root}' --port=#{Webrat.configuration.application_port} --environment=#{Webrat.configuration.application_environment} --pid #{pid_file} &"
         end
 
         def stop_command
-        "mongrel_rails stop -c #{::Rails.root} --pid #{pid_file}"
+          "mongrel_rails stop -c #{::Rails.root} --pid #{pid_file}"
         end
 
       end
