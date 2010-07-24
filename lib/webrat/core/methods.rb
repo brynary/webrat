@@ -23,6 +23,15 @@ module Webrat
       end
     end
 
+    # Temporary hack to work with Rails 3
+    def response
+      if Webrat.configuration.mode == :rack
+        webrat_session.response
+      else
+        super
+      end
+    end
+
     # all of these methods delegate to the @session, which should
     # be created transparently.
     #
