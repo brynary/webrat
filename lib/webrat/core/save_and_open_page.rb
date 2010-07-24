@@ -1,6 +1,6 @@
 module Webrat
   module SaveAndOpenPage
-    # Saves the page out to RAILS_ROOT/tmp/ and opens it in the default
+    # Saves the page out to Rails.root/tmp/ and opens it in the default
     # web browser if on OS X. Useful for debugging.
     #
     # Example:
