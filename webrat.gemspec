@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{webrat}
-  s.version = "0.7.2.pre"
+  s.version = "0.7.2.beta.1"
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Bryan Helmkamp"]
-  s.date = %q{2010-04-26}
+  s.date = %q{2010-07-25}
   s.description = %q{Webrat lets you quickly write expressive and robust acceptance tests
 for a Ruby web application. It supports simulating a browser inside
 a Ruby process to avoid the performance hit and browser dependency of
@@ -75,6 +75,7 @@ Most Ruby web frameworks and testing frameworks are supported.}
     "lib/webrat/core_extensions/nil_to_query_string.rb",
     "lib/webrat/core_extensions/tcp_socket.rb",
     "lib/webrat/integrations/merb.rb",
+    "lib/webrat/integrations/rack.rb",
     "lib/webrat/integrations/rails.rb",
     "lib/webrat/integrations/rspec-rails.rb",
     "lib/webrat/integrations/selenium.rb",
@@ -86,6 +87,7 @@ Most Ruby web frameworks and testing frameworks are supported.}
     "lib/webrat/selenium/application_servers/base.rb",
     "lib/webrat/selenium/application_servers/external.rb",
     "lib/webrat/selenium/application_servers/merb.rb",
+    "lib/webrat/selenium/application_servers/rack.rb",
     "lib/webrat/selenium/application_servers/rails.rb",
     "lib/webrat/selenium/application_servers/sinatra.rb",
     "lib/webrat/selenium/location_strategy_javascript/button.js",
@@ -239,7 +241,7 @@ Most Ruby web frameworks and testing frameworks are supported.}
   s.homepage = %q{http://github.com/brynary/webrat}
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{webrat}
-  s.rubygems_version = %q{1.3.6}
+  s.rubygems_version = %q{1.3.7}
   s.summary = %q{Ruby Acceptance Testing for Web applications}
   s.test_files = [
     "spec/fakes/test_adapter.rb",
@@ -336,7 +338,7 @@ Most Ruby web frameworks and testing frameworks are supported.}
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
     s.specification_version = 3
 
-    if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
+    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<nokogiri>, [">= 1.2.0"])
       s.add_runtime_dependency(%q<rack>, [">= 1.0"])
       s.add_runtime_dependency(%q<rack-test>, [">= 0.5.3"])
