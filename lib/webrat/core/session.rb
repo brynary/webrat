@@ -219,6 +219,17 @@ For example:
 
     webrat_deprecate :visits, :visit
 
+    # Redirects to the address given at headers["Location"].
+    #
+    # Example:
+    #   click_button "Save"
+    #   follow_redirect!
+    def follow_redirect!
+      raise "not a redirect! Got #{response_code}" unless redirect?
+      visit(response_location)
+      response_code
+    end
+
     # Subclasses can override this to show error messages without html
     def formatted_error #:nodoc:
       response_body

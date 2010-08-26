@@ -68,6 +68,6 @@ module Webrat
       :field_with_id,
       :selenium,
       :simulate, :automate,
-      :field_named
+      :field_named, :follow_redirect!
   end
 end
