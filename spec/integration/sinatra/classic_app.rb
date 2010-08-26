@@ -1,6 +1,6 @@
 require "sinatra"
 
-use_in_file_templates!
+enable :inline_templates
 
 get "/" do
   erb :home

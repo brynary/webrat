@@ -1,7 +1,7 @@
 require "sinatra/base"
 
 class RackApp < Sinatra::Base
-  use_in_file_templates!
+  enable :inline_templates
 
   get "/" do
     erb :home
