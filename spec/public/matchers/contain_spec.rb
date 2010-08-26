@@ -4,20 +4,23 @@ describe "contain" do
   include Webrat::Matchers
 
   before(:each) do
-    @body = <<-EOF
+    with_html <<-HTML
+      <html>
       <div id='main'>
         <div class='inner'>hello, world!</div>
+        <div class='another'>hello ladies</div>
       </div>
-    EOF
+      </html>
+    HTML
   end
 
   describe "#matches?" do
     it "should call element#contains? when the argument is a string" do
-      @body.should contain("hello, world!")
+      webrat_session.response_body.should contain("hello, world!")
     end
 
     it "should call element#matches? when the argument is a regular expression" do
-      @body.should contain(/hello, world/)
+      webrat_session.response_body.should contain(/hello, world/)
     end
 
     it "should treat newlines as spaces" do
@@ -30,12 +33,8 @@ describe "contain" do
   end
 
   describe "asserts for contains," do
+    require 'test/unit'
     include Test::Unit::Assertions
-
-    before(:each) do
-      should_receive(:response_body).and_return @body
-      require 'test/unit'
-    end
 
     describe "assert_contain" do
       it "should pass when containing the text" do
@@ -44,6 +43,12 @@ describe "contain" do
 
       it "should pass when containing the regexp" do
         assert_contain(/hello, world/)
+      end
+
+      it "should respect current dom" do
+        within ".inner" do
+          assert_contain("hello, world")
+        end
       end
 
       it "should throw an exception when the body doesnt contain the text" do
@@ -68,6 +73,12 @@ describe "contain" do
         assert_not_contain(/monkeys/)
       end
 
+      it "should respect current dom" do
+        within ".another" do
+          assert_not_contain("hello, world")
+        end
+      end
+
       it "should throw an exception when the body does contain the text" do
         lambda {
           assert_not_contain("hello, world")
@@ -85,21 +96,21 @@ describe "contain" do
   describe "#failure_message" do
     it "should include the content string" do
       hc = Webrat::Matchers::HasContent.new("hello, world!")
-      hc.matches?(@body)
+      hc.matches?(webrat_session.response_body)
 
       hc.failure_message.should include("\"hello, world!\"")
     end
 
     it "should include the content regular expresson" do
       hc = Webrat::Matchers::HasContent.new(/hello,\sworld!/)
-      hc.matches?(@body)
+      hc.matches?(webrat_session.response_body)
 
       hc.failure_message.should include("/hello,\\sworld!/")
     end
 
     it "should include the element's inner content" do
       hc = Webrat::Matchers::HasContent.new(/hello,\sworld!/)
-      hc.matches?(@body)
+      hc.matches?(webrat_session.response_body)
 
       hc.failure_message.should include("hello, world!")
     end
