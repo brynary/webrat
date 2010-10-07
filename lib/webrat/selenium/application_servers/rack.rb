@@ -7,12 +7,16 @@ module Webrat
 
         def start
           @pid = fork do
+            if File.exist?("log")
+              redirect_io(STDOUT, File.join("log", "webrat.webrick.stdout.log"))
+              redirect_io(STDERR, File.join("log", "webrat.webrick.stderr.log"))
+            end
             exec start_command
           end
         end
 
         def stop
-          Process.kill("TERM", @pid)
+          Process.kill("INT", @pid)
         end
 
         def fail
@@ -27,7 +31,18 @@ module Webrat
         end
 
         def start_command
-          "rackup --port #{Webrat.configuration.application_port} --env #{Webrat.configuration.application_environment}"
+          "#{bundler} rackup -s webrick --port #{Webrat.configuration.application_port} --env #{Webrat.configuration.application_environment}".strip
+        end
+
+      private
+
+        def bundler
+          File.exist?("./Gemfile") ? "bundle exec " : ""
+        end
+
+        def redirect_io(io, path)
+          File.open(path, 'ab') { |fp| io.reopen(fp) } if path
+          io.sync = true
         end
 
       end
