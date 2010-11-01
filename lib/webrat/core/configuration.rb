@@ -53,6 +53,9 @@ module Webrat
     # Which server the application is running on for selenium testing? Defaults to localhost
     attr_accessor :application_address
 
+    # Set the timeout for waiting for the application to start (seconds)
+    attr_accessor :application_startup_timeout
+
     # Which server Selenium server is running on. Defaults to nil(server starts in webrat process and runs locally)
     attr_accessor :selenium_server_address
 
@@ -82,6 +85,7 @@ module Webrat
       self.application_port = 3001
       self.application_address = 'localhost'
       self.application_framework = :rails
+      self.application_startup_timeout = 30
       self.selenium_server_port = 4444
       self.infinite_redirect_limit = 10
       self.selenium_browser_key = '*firefox'

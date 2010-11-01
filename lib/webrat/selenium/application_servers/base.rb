@@ -29,7 +29,7 @@ module Webrat
             TCPSocket.wait_for_service_with_timeout \
               :host     => "0.0.0.0",
               :port     => Webrat.configuration.application_port.to_i,
-              :timeout  => 30 # seconds
+              :timeout  => Webrat.configuration.application_startup_timeout.to_i
           end
           rescue SocketError
           fail
