@@ -37,7 +37,7 @@ module Webrat
         add_options_conditions_to(@query)
 
         @document = Webrat::XML.document(stringlike)
-        @document.xpath(*@query)
+        @document.xpath(@query)
       end
 
       def add_options_conditions_to(query)
