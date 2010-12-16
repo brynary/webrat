@@ -1,15 +1,11 @@
 = Webrat - Ruby Acceptance Testing for Web applications
 
-- http://gitrdoc.com/brynary/webrat
 - http://groups.google.com/group/webrat
-- http://webrat.lighthouseapp.com/
-- http://github.com/brynary/webrat
-- #webrat on Freenode
+- http://github.com/jbrien/webrat
 
 == Description
 
-Webrat lets you quickly write expressive and robust acceptance tests for a Ruby
-web application. 
+This is my version to correct the session issues with a Rails 3 application. Webrat lets you quickly write expressive and robust acceptance tests for a Ruby web application. 
 
 == Features
 
@@ -53,11 +49,11 @@ Otherwise the Nokogiri gem, which Webrat depends on, won't install properly.
 
 To install the latest release as a gem:
 
-  sudo gem install webrat
+  sudo gem install jbd-webrat
   
 To install the latest code as a plugin: (_Note:_ This may be less stable than using a released version)
 
-  script/plugin install git://github.com/brynary/webrat.git
+  script/plugin install git://github.com/jbrien/webrat.git
 
 In your test_helper.rb or env.rb (for Cucumber) add:
 
@@ -74,6 +70,7 @@ methods from Webrat::Session in your specs.
 
 == Authors
 
+- Updated by {John Brien Dilts}[mailto:iam@hybridindie.com]
 - Maintained by {Bryan Helmkamp}[mailto:bryan@brynary.com]
 - Original code written by {Seth Fitzsimmons}[mailto:seth@mojodna.net]
 - Initial development was sponsored by EastMedia[http://www.eastmedia.com]
@@ -81,5 +78,4 @@ methods from Webrat::Session in your specs.
 
 == License
 
-Copyright (c) 2007-2008 Bryan Helmkamp, Seth Fitzsimmons.
 See MIT-LICENSE.txt in this directory.
