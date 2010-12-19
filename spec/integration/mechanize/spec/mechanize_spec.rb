@@ -18,7 +18,15 @@ describe "Webrat's Mechanize mode" do
     fill_in "Email", :with => "albert@example.com"
     response = click_button "Add"
 
-    response.should contain("Welcome albert@example.com")
+    response.should contain("Welcome 'albert@example.com'")
+  end
+
+  it "should submit forms with field whose value is blank" do
+    visit "http://localhost:9292/form"
+    fill_in "Email", :with => ""
+    response = click_button "Add"
+
+    response.should contain("Welcome ''")
   end
 
   it "should not follow external redirects" do

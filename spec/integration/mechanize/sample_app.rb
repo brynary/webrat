@@ -30,6 +30,6 @@ class SampleApp < Sinatra::Default
   end
 
   put "/form" do
-    "Welcome #{params[:email]}"
+    "Welcome '#{params[:email]}'"
   end
 end
