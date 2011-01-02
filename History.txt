@@ -1,3 +1,13 @@
+== 0.7.3 / 2011-01-01
+
+* Minor enhancements
+
+  * Use Selenium's eval_css to work with cssQuery and Sizzle (Santiago Suarez Ordoñez)
+
+== 0.7.2 / 2010-10-19
+
+* TODO: Fill in from git history
+
 == 0.7.1 / 2010-04-26
 
 * Minor enhancements
