@@ -4,9 +4,9 @@ require "webrat/selenium/application_server_factory"
 require "webrat/selenium/application_servers/base"
 
 begin
-  require "selenium"
+  require "selenium/client"
 rescue LoadError => e
-  e.message << " (You may need to install the selenium-rc gem)"
+  e.message << " (You may need to install the selenium-webdriver gem)"
   raise e
 end
 
