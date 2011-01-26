@@ -31,11 +31,19 @@ module Webrat
         end
 
         def start_command
-          "mongrel_rails start -d --chdir='#{::Rails.root}' --port=#{Webrat.configuration.application_port} --environment=#{Webrat.configuration.application_environment} --pid #{pid_file} &"
+          if File.exists?(File.join(::Rails.root, 'script', 'rails'))
+            "cd #{::Rails.root} && ./script/rails server --port=#{Webrat.configuration.application_port} --environment=#{Webrat.configuration.application_environment} --pid #{pid_file} &"
+          else
+            "mongrel_rails start -d --chdir='#{::Rails.root}' --port=#{Webrat.configuration.application_port} --environment=#{Webrat.configuration.application_environment} --pid #{pid_file} &"
+          end
         end
 
         def stop_command
-          "mongrel_rails stop -c #{::Rails.root} --pid #{pid_file}"
+          if File.exists?(File.join(::Rails.root, 'script', 'rails'))
+            "kill `cat #{pid_file}`"
+          else
+            "mongrel_rails stop -c #{::Rails.root} --pid #{pid_file}"
+          end
         end
 
       end
