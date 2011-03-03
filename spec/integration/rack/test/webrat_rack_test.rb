@@ -8,7 +8,7 @@ class WebratRackTest < Test::Unit::TestCase
   include Webrat::HaveTagMatcher
 
   def build_rack_mock_session
-    Rack::MockSession.new(app, "www.example.com")
+    Rack::MockSession.new(app, "example.net")
   end
 
   def test_visits_pages
