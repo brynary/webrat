@@ -286,11 +286,15 @@ For example:
     end
 
     def current_host
-      URI.parse(current_url).host || @custom_headers["Host"] || adapter.session.rack_mock_session.default_host
+      URI.parse(current_url).host || @custom_headers["Host"] || default_current_host
     end
 
     def response_location_host
-      URI.parse(response_location).host || adapter.session.rack_mock_session.default_host
+      URI.parse(response_location).host || default_current_host
+    end
+
+    def default_current_host
+      adapter.session.rack_mock_session.default_host
     end
 
     def reset
