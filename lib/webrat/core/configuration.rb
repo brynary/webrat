@@ -68,6 +68,9 @@ module Webrat
     # Set the firefox profile for selenium to use
     attr_accessor :selenium_firefox_profile
 
+    # Set Browser-specific options for Selenium session
+    attr_accessor :selenium_browser_options
+
     # How many redirects to the same URL should be halted as an infinite redirect
     # loop? Defaults to 10
     attr_accessor :infinite_redirect_limit
@@ -87,6 +90,7 @@ module Webrat
       self.selenium_browser_key = '*firefox'
       self.selenium_browser_startup_timeout = 5
       self.selenium_verbose_output = false
+      self.selenium_browser_options = {}
 
       tmp_dir = Pathname.new(Dir.pwd).join("tmp")
       self.saved_pages_dir = tmp_dir.exist? ? tmp_dir : Dir.pwd
