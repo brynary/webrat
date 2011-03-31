@@ -20,6 +20,10 @@ module Webrat #:nodoc:
       @response = mechanize.get(url, data)
     end
 
+    def head(url, data, headers_argument_not_used = nil)
+      @response = mechanize.head(url, data)
+    end
+
     def post(url, data, headers_argument_not_used = nil)
       post_data = data.inject({}) do |memo, param|
         case param

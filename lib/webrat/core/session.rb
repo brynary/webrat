@@ -67,7 +67,7 @@ For example:
 
     def_delegators :@adapter, :response, :response_code, :response_body, :response_headers,
       :response_body=, :response_code=,
-      :get, :post, :put, :delete
+      :get, :post, :put, :delete, :head
 
     def initialize(adapter = nil)
       @adapter         = adapter
@@ -127,7 +127,8 @@ For example:
       @http_method  = http_method
       @data         = data
 
-      if internal_redirect?
+      # Do not follow redirects for HEAD requests
+      if internal_redirect? and http_method != 'head'
         check_for_infinite_redirects
         request_page(response_location, :get, {})
       end
