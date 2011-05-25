@@ -11,6 +11,13 @@ describe Webrat::Selenium::ApplicationServers::Rails do
     # require "rubygems"; require "ruby-debug"; Debugger.start; debugger
     @server.stub!(:system)
     @server.stub!(:at_exit)
+
+
+    class Rails
+      def self.root
+        RAILS_ROOT
+      end
+    end
   end
 
   describe "boot" do
