@@ -31,6 +31,14 @@ describe Webrat::Selenium::ApplicationServerFactory do
     Webrat::Selenium::ApplicationServerFactory.app_server_instance
   end
 
+  it "should require and create a rails unicorn server in rails_unicorn mode" do
+    server = mock(Webrat::Selenium::ApplicationServers::RailsUnicorn)
+    Webrat.configuration.application_framework = :rails_unicorn
+    Webrat::Selenium::ApplicationServerFactory.should_receive(:require).with("webrat/selenium/application_servers/rails_unicorn")
+    Webrat::Selenium::ApplicationServers::RailsUnicorn.should_receive(:new).and_return(server)
+    Webrat::Selenium::ApplicationServerFactory.app_server_instance
+  end
+
   it "should require and create a rails server in external mode" do
     server = mock(Webrat::Selenium::ApplicationServers::External)
     Webrat.configuration.application_framework = :external
