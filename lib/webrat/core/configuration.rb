@@ -53,6 +53,9 @@ module Webrat
     # Which server the application is running on for selenium testing? Defaults to localhost
     attr_accessor :application_address
 
+    # Path to unicorn configuration file if :application_framework == :unicorn
+    attr_accessor :unicorn_conf_file
+
     # Which server Selenium server is running on. Defaults to nil(server starts in webrat process and runs locally)
     attr_accessor :selenium_server_address
 
