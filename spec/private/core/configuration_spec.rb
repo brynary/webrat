@@ -62,6 +62,10 @@ describe Webrat::Configuration do
       @config.application_address.should == 'localhost'
     end
 
+    it 'should default application protocol to http' do
+      @config.application_protocol.should == 'http'
+    end
+
     it 'should default selenium server address to nil' do
       @config.selenium_server_address.should be_nil
     end
