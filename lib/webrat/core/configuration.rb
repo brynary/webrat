@@ -76,6 +76,9 @@ module Webrat
     # Defaults to false
     attr_accessor :selenium_verbose_output
 
+    # Set the javascript framework for selenium to use
+    attr_accessor :javascript_framework
+
     def initialize # :nodoc:
       self.open_error_files = true
       self.application_environment = :test
@@ -87,6 +90,7 @@ module Webrat
       self.selenium_browser_key = '*firefox'
       self.selenium_browser_startup_timeout = 5
       self.selenium_verbose_output = false
+      self.javascript_framework = :jquery
 
       tmp_dir = Pathname.new(Dir.pwd).join("tmp")
       self.saved_pages_dir = tmp_dir.exist? ? tmp_dir : Dir.pwd
