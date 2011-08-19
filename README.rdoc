@@ -1,6 +1,6 @@
 = Webrat - Ruby Acceptance Testing for Web applications
 
-- http://gitrdoc.com/brynary/webrat
+- http://rdoc.info/github/brynary/webrat
 - http://groups.google.com/group/webrat
 - http://webrat.lighthouseapp.com/
 - http://github.com/brynary/webrat
