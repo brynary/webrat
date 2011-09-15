@@ -54,7 +54,7 @@ module Webrat #:nodoc:
     def mechanize
       @mechanize ||= begin
         mechanize = Mechanize.new
-        mechanize.redirect_ok = false
+        mechanize.redirect_ok = Webrat.configuration.follow_redirects
         mechanize
       end
     end
