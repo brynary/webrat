@@ -4,6 +4,17 @@ module Webrat
   module Matchers
 
     class HaveSelector < HaveXpath #:nodoc:
+
+      # ==== Returns
+      # String:: The default description for the spec when it is not provided.
+      def description
+        "have selector #{@expected.inspect}" + if @options && @options.any?
+          " with #{@options.inspect}"
+        else
+          ''
+        end
+      end
+
       # ==== Returns
       # String:: The failure message.
       def failure_message
