@@ -322,11 +322,7 @@ module Webrat
     def page_dom #:nodoc:
       return @response.dom if @response.respond_to?(:dom)
 
-      if @session.xml_content_type?
-        dom = Webrat::XML.xml_document(@response_body)
-      else
-        dom = Webrat::XML.html_document(@response_body)
-      end
+      dom = Webrat::XML.document(@response_body)
 
       Webrat::XML.define_dom_method(@response, dom)
       return dom

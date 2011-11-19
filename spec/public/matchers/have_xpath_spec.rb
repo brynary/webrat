@@ -140,3 +140,26 @@ describe "have_xpath" do
     end
   end
 end
+
+describe "have_xpath for XML" do
+  include Webrat::Matchers
+
+  before(:each) do
+    @body = <<-XML
+    <?xml version="1.0" encoding="UTF-8"?>
+    <response>
+      <message><![CDATA[Bla-bla]]></message>
+    </response>
+    XML
+  end
+
+  it "should be able to match an XPATH" do
+    @body.should have_xpath("//response")
+  end
+
+  it "should be able to match an XPATH with CDATA content" do
+    @body.should have_xpath("//response") do |el|
+      el.should have_xpath("message", :content => "Bla-bla")
+    end
+  end
+end
