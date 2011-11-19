@@ -19,7 +19,7 @@ describe "save_and_open_page" do
     Time.stub!(:now => 1234)
 
     require "launchy"
-    Launchy::Browser.stub!(:run)
+    Launchy.stub!(:open)
 
     @file_handle = mock("file handle")
     File.stub!(:open).and_yield(@file_handle)
@@ -34,12 +34,12 @@ describe "save_and_open_page" do
   end
 
   it "should open the temp file in a browser with Launchy" do
-    Launchy::Browser.should_receive(:run)
+    Launchy.should_receive(:open)
     save_and_open_page
   end
 
   it "should fail gracefully if Launchy is not available" do
-    Launchy::Browser.should_receive(:run).and_raise(LoadError)
+    Launchy.should_receive(:open).and_raise(LoadError)
 
     lambda do
       save_and_open_page
