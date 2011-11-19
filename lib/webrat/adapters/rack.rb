@@ -4,6 +4,7 @@ module Webrat
   class RackAdapter
     extend Forwardable
 
+    attr :session
     def_delegators :@session, :get, :post, :put, :delete
 
     def initialize(session) #:nodoc:
