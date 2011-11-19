@@ -1,3 +1,13 @@
+== 0.7.4 / 2011-11-19
+
+* Minor enhancements
+
+  * parse XML as XML instead of as HTML
+  * handle controller redirects correctly (Daniel Libanori)
+  * work with rspec it { should blah } examples (Dmytrii Nagirniak)
+  * compatibility with Launchy 2.0 (Jeremy Hinegardner)
+  * add follow_redirect! (José Valim)
+
 == 0.7.3 / 2011-01-01
 
 * Minor enhancements
