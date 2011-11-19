@@ -16,3 +16,6 @@ test_apps
 *.pid
 bin
 vendor/gems
+.bundle/
+vendor/bundle/
+Gemfile.lock
