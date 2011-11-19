@@ -1,8 +1,14 @@
+== 0.7.5 / 2011-11-19
+
+* Minor enhancements
+
+  * have_selector on XML documents without re-parsing them as HTML
+
 == 0.7.4 / 2011-11-19
 
 * Minor enhancements
 
-  * parse XML as XML instead of as HTML
+  * parse XML as XML instead of as HTML (Alex Eagle/Anton Orel)
   * handle controller redirects correctly (Daniel Libanori)
   * work with rspec it { should blah } examples (Dmytrii Nagirniak)
   * compatibility with Launchy 2.0 (Jeremy Hinegardner)
