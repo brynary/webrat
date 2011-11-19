@@ -19,7 +19,7 @@ module Webrat
 
     def open_in_browser(path) # :nodoc
       require "launchy"
-      Launchy::Browser.run(path)
+      Launchy.open(path)
     rescue LoadError
       warn "Sorry, you need to install launchy to open pages: `gem install launchy`"
     end
