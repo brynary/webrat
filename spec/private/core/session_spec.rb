@@ -101,6 +101,25 @@ describe Webrat::Session do
     end
   end
 
+  describe "#follow_internal_redirects" do
+    before(:each) do
+      webrat_session = Webrat::Session.new
+    end
+
+    it "should not follow internal redirects if specified" do
+      webrat_session.follow_internal_redirects = false
+
+      webrat_session.stub!(:current_url => "http://example.com/redirect")
+      webrat_session.stub!(:response_code => 301)
+      webrat_session.stub!(:response_location => "http://example.com/")
+
+      webrat_session.request_page("http://example.com/redirect", :get, {})
+      webrat_session.redirect?.should be_true
+      webrat_session.internal_redirect?.should be_true
+      webrat_session.redirected_to.should == "http://example.com/"
+    end
+  end
+
   describe "#redirect?" do
     before(:each) do
       webrat_session = Webrat::Session.new

@@ -64,6 +64,7 @@ For example:
 
     attr_reader :current_url
     attr_reader :elements
+    attr_accessor :follow_internal_redirects
 
     def_delegators :@adapter, :response, :response_code, :response_body, :response_headers,
       :response_body=, :response_code=,
@@ -76,6 +77,7 @@ For example:
       @default_headers = {}
       @custom_headers  = {}
       @current_url     = nil
+      @follow_internal_redirects = Webrat.configuration.follow_internal_redirects
       reset
     end
 
@@ -129,7 +131,7 @@ For example:
 
       if internal_redirect?
         check_for_infinite_redirects
-        request_page(response_location, :get, {})
+        request_page(response_location, :get, {}) if follow_internal_redirects
       end
 
       return response

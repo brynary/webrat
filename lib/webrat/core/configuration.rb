@@ -72,6 +72,10 @@ module Webrat
     # loop? Defaults to 10
     attr_accessor :infinite_redirect_limit
 
+    # Follow internal_redirects (same domain)
+    # Defaults to true
+    attr_accessor :follow_internal_redirects
+
     # Print out the full HTML on wait failure
     # Defaults to false
     attr_accessor :selenium_verbose_output
@@ -87,6 +91,7 @@ module Webrat
       self.selenium_browser_key = '*firefox'
       self.selenium_browser_startup_timeout = 5
       self.selenium_verbose_output = false
+      self.follow_internal_redirects = true
 
       tmp_dir = Pathname.new(Dir.pwd).join("tmp")
       self.saved_pages_dir = tmp_dir.exist? ? tmp_dir : Dir.pwd

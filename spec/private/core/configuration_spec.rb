@@ -22,6 +22,11 @@ describe Webrat::Configuration do
     config.infinite_redirect_limit.should == 10
   end
 
+  it "should follow internal redirects by default" do
+    config = Webrat::Configuration.new
+    config.follow_internal_redirects.should == true
+  end
+
   it "should be configurable with a block" do
     Webrat.configure do |config|
       config.open_error_files = false
