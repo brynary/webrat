@@ -7,8 +7,7 @@ module Webrat #:nodoc:
       return stringlike.dom if stringlike.respond_to?(:dom)
 
       case stringlike
-      when Nokogiri::HTML::Document
-      when Nokogiri::XML::NodeSet
+      when Nokogiri::HTML::Document, Nokogiri::XML::NodeSet
         stringlike
       else
         stringlike = stringlike.body if stringlike.respond_to?(:body)
