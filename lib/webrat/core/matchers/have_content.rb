@@ -19,6 +19,12 @@ module Webrat
       end
 
       # ==== Returns
+      # String:: The default description for the spec when it is not provided.
+      def description
+        "contain #{@content.inspect}"
+      end
+
+      # ==== Returns
       # String:: The failure message.
       def failure_message
         "expected the following element's content to #{content_message}:\n#{squeeze_space(@element)}"

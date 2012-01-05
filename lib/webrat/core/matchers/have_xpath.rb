@@ -68,6 +68,20 @@ module Webrat
         @expected
       end
 
+      def matcher_name
+        self.class.name.split('::').last.sub(/^Have/, '').downcase
+      end
+
+      # ==== Returns
+      # String:: The default description for the spec when it is not provided.
+      def description
+        "have #{matcher_name} #{@expected.inspect}" + if @options && @options.any?
+          " with #{@options.inspect}"
+        else
+          ''
+        end
+      end
+
       # ==== Returns
       # String:: The failure message.
       def failure_message
