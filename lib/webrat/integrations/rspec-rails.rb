@@ -6,6 +6,6 @@
 require "nokogiri"
 require "webrat/core/matchers"
 
-Spec::Runner.configure do |config|
+RSpec.configure do |config|
   config.include(Webrat::Matchers, :type => [:controller, :helper, :view])
 end
