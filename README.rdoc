@@ -1,4 +1,4 @@
-= Webrat - Ruby Acceptance Testing for Web applications
+= Webrat {<img src="https://codeclimate.com/badge.png" />}[https://codeclimate.com/github/brynary/webrat]
 
 - http://rdoc.info/github/brynary/webrat/master/frames
 - http://groups.google.com/group/webrat
