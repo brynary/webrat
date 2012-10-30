@@ -11,7 +11,11 @@ module Webrat
 
       def field_element
         field_elements.detect do |field_element|
-          field_element["name"] == @value.to_s
+          if @value.is_a?(Regexp)
+            field_element["name"] =~ @value
+          else
+            field_element["name"] == @value.to_s
+          end
         end
       end
 
