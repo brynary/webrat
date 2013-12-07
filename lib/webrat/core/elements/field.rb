@@ -190,7 +190,8 @@ module Webrat
     def click
       raise_error_if_disabled
       set(@element["value"]) unless @element["name"].blank?
-      form.submit
+      form.submit_input_action(@element["formaction"]) if @element["formaction"]
+      form.submit unless @element["formaction"]
     end
 
   end
