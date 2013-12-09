@@ -66,8 +66,9 @@ For example:
     attr_reader :elements
 
     def_delegators :@adapter, :response, :response_code, :response_body, :response_headers,
-      :response_body=, :response_code=,
-      :get, :post, :put, :delete
+      :response_body=, :response_code=, :get, :post, :put, :delete, :internal_redirects_disabled?,
+      :disable_internal_redirects, :enable_internal_redirects
+
 
     def initialize(adapter = nil)
       @adapter         = adapter
