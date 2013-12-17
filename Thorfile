@@ -10,6 +10,7 @@ module GemHelpers
       s.author    = "Bryan Helmkamp"
       s.email     = "bryan@brynary.com"
       s.homepage  = "http://github.com/brynary/webrat"
+      s.license   = "MIT"
       s.summary   = "Ruby Acceptance Testing for Web applications"
       s.description  = <<-EOS.strip
 Webrat lets you quickly write expressive and robust acceptance tests
