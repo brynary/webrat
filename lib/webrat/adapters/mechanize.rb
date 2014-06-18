@@ -1,4 +1,5 @@
 require "mechanize"
+require "logger"
 
 module Webrat #:nodoc:
   class MechanizeAdapter #:nodoc:
@@ -17,7 +18,7 @@ module Webrat #:nodoc:
     end
 
     def get(url, data, headers_argument_not_used = nil)
-      @response = mechanize.get(url, data)
+      @response = mechanize.get(url, data[0])
     end
 
     def post(url, data, headers_argument_not_used = nil)
@@ -54,7 +55,7 @@ module Webrat #:nodoc:
     def mechanize
       @mechanize ||= begin
         mechanize = Mechanize.new
-        mechanize.redirect_ok = false
+        mechanize.redirect_ok = Webrat.configuration.follow_redirects
         mechanize
       end
     end

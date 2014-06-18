@@ -23,6 +23,7 @@ module Webrat
 
     # Webrat's mode, set automatically when requiring webrat/rails, webrat/merb, etc.
     attr_reader :mode # :nodoc:
+    attr_reader :follow_redirects # :nodoc:
 
     # Save and open pages with error status codes (500-599) in a browser? Defualts to true.
     attr_writer :open_error_files
@@ -107,6 +108,10 @@ module Webrat
         # Only some modes have integration code that needs to
         # be loaded, so this is OK
       end
+    end
+
+    def follow_redirects=(follow_redirects)
+      @follow_redirects = follow_redirects
     end
 
   end
