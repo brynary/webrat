@@ -227,7 +227,7 @@ EOS
       Webrat::Selenium::ApplicationServerFactory.app_server_instance.boot
 
       create_browser
-      $browser.start
+      $browser.start_new_browser_session(Webrat.configuration.selenium_browser_options)
 
       extend_selenium
       define_location_strategies
