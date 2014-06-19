@@ -68,6 +68,8 @@ module Webrat
       :field_with_id,
       :selenium,
       :simulate, :automate,
-      :field_named, :follow_redirect!
+      :field_named, :follow_redirect!,
+      :disable_internal_redirects,
+      :enable_internal_redirects
   end
 end

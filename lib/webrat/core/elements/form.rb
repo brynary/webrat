@@ -20,6 +20,10 @@ module Webrat
       @session.request_page(form_action, form_method, params)
     end
 
+    def submit_input_action(action)
+      @session.request_page(action, form_method, params)
+    end
+
     def field_named(name, *field_types)
       Webrat::Locators::FieldNamedLocator.new(@session, dom, name, *field_types).locate
     end

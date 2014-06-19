@@ -66,8 +66,9 @@ For example:
     attr_reader :elements
 
     def_delegators :@adapter, :response, :response_code, :response_body, :response_headers,
-      :response_body=, :response_code=,
-      :get, :post, :put, :delete
+      :response_body=, :response_code=, :get, :post, :put, :delete, :internal_redirects_disabled?,
+      :disable_internal_redirects, :enable_internal_redirects
+
 
     def initialize(adapter = nil)
       @adapter         = adapter
@@ -76,6 +77,7 @@ For example:
       @default_headers = {}
       @custom_headers  = {}
       @current_url     = nil
+      @internal_redirects_disabled = false
       reset
     end
 
@@ -110,6 +112,17 @@ For example:
       @default_headers.dup.merge(@custom_headers.dup)
     end
 
+    def internal_redirects_disabled?
+      return true if @internal_redirects_disabled
+    end
+    def disable_internal_redirects
+      @internal_redirects_disabled = true
+    end
+  
+    def enable_internal_redirects
+      @internal_redirects_disabled = false
+    end
+
     def request_page(url, http_method, data) #:nodoc:
       h = headers
       h['HTTP_REFERER'] = @current_url if @current_url
@@ -127,7 +140,7 @@ For example:
       @http_method  = http_method
       @data         = data
 
-      if internal_redirect?
+      if internal_redirect? and not internal_redirects_disabled?
         check_for_infinite_redirects
         request_page(response_location, :get, {})
       end
