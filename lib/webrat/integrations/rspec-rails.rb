@@ -6,6 +6,8 @@
 require "nokogiri"
 require "webrat/core/matchers"
 
-Spec::Runner.configure do |config|
+# If Rspec 2 is being used, avoid deprecation warning
+configure_method = defined?(RSpec) ? RSpec.method(:configure) : Spec::Runner.method(:configure)
+configure_method.call do |config|
   config.include(Webrat::Matchers, :type => [:controller, :helper, :view])
 end
