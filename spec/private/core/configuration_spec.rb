@@ -82,6 +82,10 @@ describe Webrat::Configuration do
       @config.selenium_browser_startup_timeout = 10
       @config.selenium_browser_startup_timeout.should == 10
     end
+
+    it 'should default unicorn configuration file path to nil' do
+      @config.unicorn_conf_file.should be_nil
+    end
   end
 
 end
