@@ -15,6 +15,7 @@ describe "have_xpath" do
           <li>Second</li>
           <li><a href="http://example.org">Third</a></li>
         </ul>
+        <pre>line\nbroken</pre>
       </div>
     HTML
   end
@@ -29,6 +30,10 @@ describe "have_xpath" do
 
   it "should be able to match an XPATH with content" do
     @body.should have_xpath("//div", :content => "hello, world!")
+  end
+
+  it "should be able to match an XPATH with content with line breaks" do
+    @body.should have_xpath("//pre", :content => "line\nbroken")
   end
 
   it "should not match an XPATH without content" do
@@ -88,7 +93,7 @@ describe "have_xpath" do
       end
     }.should raise_error(Spec::Expectations::ExpectationNotMetError)
   end
-  
+
   it "should match negative expectations in the block" do
     @body.should have_xpath("//div") do |node|
       node.should_not have_xpath("//div[@id='main']")
