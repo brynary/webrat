@@ -53,7 +53,7 @@ Otherwise the Nokogiri gem, which Webrat depends on, won't install properly.
 
 To install the latest release as a gem:
 
-  sudo gem install webrat
+  gem install webrat
   
 To install the latest code as a plugin: (_Note:_ This may be less stable than using a released version)
 
