@@ -46,8 +46,10 @@ class Hash #:nodoc:
 end
 
 class String #:nodoc:
-  def blank?
-    self !~ /\S/
+  unless method_defined?(:blank?)
+    def blank?
+      self !~ /\S/
+    end
   end
 end
 
