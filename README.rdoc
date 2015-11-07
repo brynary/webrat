@@ -1,4 +1,4 @@
-= Webrat {<img src="https://codeclimate.com/badge.png" />}[https://codeclimate.com/github/brynary/webrat]
+= Webrat {<img src="https://codeclimate.com/github/brynary/webrat/badges/gpa.svg" />}[https://codeclimate.com/github/brynary/webrat]
 
 - http://rdoc.info/github/brynary/webrat/master/frames
 - http://groups.google.com/group/webrat
